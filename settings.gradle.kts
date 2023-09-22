@@ -1,4 +1,7 @@
 include("museum-railway-eventcollectors")
+include("museum-railway-backend")
+include("museum-railway-openapi")
+include("museum-railway-web")
 
 pluginManagement {
     val quarkusPluginVersion: String by settings
@@ -13,3 +16,4 @@ pluginManagement {
     }
 }
 rootProject.name = "museum-railway-events"
+include("museum-railway-openapi")

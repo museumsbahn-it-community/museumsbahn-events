@@ -1,0 +1,73 @@
+---
+openapi: 3.0.3
+info:
+  title: museum-railway-backend API
+  version: 1.0-SNAPSHOT
+paths:
+  /api/location:
+    get:
+      tags:
+      - Locations Resource
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/MuseumLocation'
+components:
+  schemas:
+    Location:
+      required:
+      - country
+      - state
+      - street
+      type: object
+      properties:
+        lat:
+          format: float
+          type: number
+        lon:
+          format: float
+          type: number
+        country:
+          type: string
+        state:
+          type: string
+        street:
+          type: string
+        city:
+          type: string
+          nullable: true
+        zipCode:
+          type: string
+          nullable: true
+    MuseumLocation:
+      required:
+      - name
+      - location
+      - webUrl
+      - description
+      - imageName
+      type: object
+      properties:
+        name:
+          type: string
+        shortName:
+          type: string
+          nullable: true
+        location:
+          $ref: '#/components/schemas/Location'
+        webUrl:
+          type: string
+        description:
+          type: string
+        imageName:
+          type: string
+  securitySchemes:
+    SecurityScheme:
+      type: http
+      description: Authentication
+      scheme: basic
