@@ -9,7 +9,7 @@
   },
   "dependencies": {
     "vue": "^3.3.4",
-    "museum-railway-api-client": "0.0.1"
+    "vue-router": "^4.2.5"
   },
   "devDependencies": {
     "@vitejs/plugin-vue": "^4.3.4",
