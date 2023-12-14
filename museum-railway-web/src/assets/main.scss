@@ -1,0 +1,29 @@
+$navbar-height: 48px;
+
+body {
+  display: flex;
+  flex-direction: column;
+}
+
+.navbar {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: $navbar-height;
+  width: 100%;
+}
+
+.menubar {
+  height: $navbar-height;
+}
+
+.navbar > h1 {
+  font-size: $navbar-height;
+}
+
+.content {
+  position: absolute;
+  top: $navbar-height;
+  height: calc(100vh - $navbar-height);
+  background: beige;
+}
