@@ -1,4 +1,6 @@
-$navbar-height: 48px;
+$navbar-height: 3rem;
+$navbar-padding: 1rem;
+$navbar-total: calc($navbar-height + 2 * $navbar-padding);
 
 body {
   display: flex;
@@ -11,19 +13,20 @@ body {
   left: 0;
   height: $navbar-height;
   width: 100%;
+  padding: $navbar-padding;
+  align-items: center;
 }
 
 .menubar {
   height: $navbar-height;
-}
-
-.navbar > h1 {
-  font-size: $navbar-height;
+  margin-left: 1rem;
 }
 
 .content {
   position: absolute;
-  top: $navbar-height;
-  height: calc(100vh - $navbar-height);
+  left: 0;
+  top: $navbar-total;
+  width: 100%;
+  height: calc(100vh - $navbar-total);
   background: beige;
 }

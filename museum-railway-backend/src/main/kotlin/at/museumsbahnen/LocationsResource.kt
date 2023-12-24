@@ -32,8 +32,8 @@ class LocationsResource {
                     country = "Österreich",
                     state = data[LOCATION_INDEX + 2],
                     street = data[LOCATION_INDEX + 3],
-                    city = data[LOCATION_INDEX + 4],
-                    zipCode = data[LOCATION_INDEX + 5],
+                    zipCode = data[LOCATION_INDEX + 4],
+                    city = data[LOCATION_INDEX + 5],
                 )
 
                 MuseumLocation(
@@ -41,7 +41,7 @@ class LocationsResource {
                     shortName = data[1],
                     location,
                     webUrl = data[2],
-                    "",
+                    "test description",
                     ""
                 )
             }.toList()
