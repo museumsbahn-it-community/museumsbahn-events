@@ -11,7 +11,7 @@ const items: MenuItem[] = [
         <header class="navbar p-3">
             <div class="flex flex-row">
                 <h1 class="m-0">
-                    museumsbahnen.at
+                    museumsbahn-events.at
                 </h1>
                 <P-Menubar
                     class="menubar"
