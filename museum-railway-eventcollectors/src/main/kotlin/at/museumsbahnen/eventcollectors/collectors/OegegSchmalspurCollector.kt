@@ -1,11 +1,9 @@
 package at.museumsbahnen.eventcollectors.collectors
 
-import events.boudicca.api.eventcollector.Event
-import events.boudicca.api.eventcollector.EventCollector
+import base.boudicca.api.eventcollector.EventCollector
+import base.boudicca.model.Event
 import org.jsoup.Jsoup
-import java.time.Instant
-import java.time.OffsetDateTime
-import java.time.ZoneId
+import java.time.*
 import java.util.*
 
 class OegegSchmalspurCollector : EventCollector {

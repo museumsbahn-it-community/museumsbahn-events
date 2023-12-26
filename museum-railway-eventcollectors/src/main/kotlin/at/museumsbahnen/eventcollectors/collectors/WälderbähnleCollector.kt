@@ -1,11 +1,10 @@
 package at.museumsbahnen.eventcollectors.collectors
 
-import events.boudicca.api.eventcollector.Event
-import events.boudicca.api.eventcollector.EventCollector
+import base.boudicca.api.eventcollector.EventCollector
+import base.boudicca.model.Event
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Element
 import org.jsoup.select.Elements
-import java.text.SimpleDateFormat
 import java.time.*
 import java.time.format.DateTimeFormatter
 import java.time.format.DateTimeFormatterBuilder

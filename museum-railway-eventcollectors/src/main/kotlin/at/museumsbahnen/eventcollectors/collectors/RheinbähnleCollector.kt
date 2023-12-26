@@ -1,14 +1,12 @@
 package at.museumsbahnen.eventcollectors.collectors
 
-import events.boudicca.SemanticKeys
-import events.boudicca.api.eventcollector.Event
-import events.boudicca.api.eventcollector.EventCollector
+import base.boudicca.SemanticKeys
+import base.boudicca.api.eventcollector.EventCollector
+import base.boudicca.model.Event
 import org.jsoup.Jsoup
-import java.time.Instant
-import java.time.LocalDateTime
-import java.time.OffsetDateTime
-import java.time.ZoneId
+import java.time.*
 import java.time.format.DateTimeFormatter
+import java.util.*
 
 class RheinbähnleCollector : EventCollector {
     val beginString = "Beginn der Veranstaltung"

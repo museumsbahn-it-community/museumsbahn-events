@@ -9,8 +9,9 @@ repositories {
 
 dependencies {
     implementation("org.jetbrains.kotlin:kotlin-stdlib")
-    implementation("events.boudicca.api:eventcollector-api:0.0.1-SNAPSHOT")
-    implementation("events.boudicca.api:semantic-conventions:0.0.1-SNAPSHOT")
+    implementation("base.boudicca:eventdb-openapi:0.0.1-SNAPSHOT")
+    implementation("base.boudicca:semantic-conventions:0.0.1-SNAPSHOT")
+    implementation("base.boudicca:eventcollector-client:0.0.1-SNAPSHOT")
     implementation("org.jsoup:jsoup:1.16.1")
     implementation("org.mnode.ical4j:ical4j:3.2.10")
     implementation("com.rometools:rome:2.1.0")
@@ -21,12 +22,12 @@ group = "at.museumsbahnen"
 version = "1.0-SNAPSHOT"
 
 java {
-    sourceCompatibility = JavaVersion.VERSION_17
-    targetCompatibility = JavaVersion.VERSION_17
+    sourceCompatibility = JavaVersion.VERSION_21
+    targetCompatibility = JavaVersion.VERSION_21
 }
 
 tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
-    kotlinOptions.jvmTarget = JavaVersion.VERSION_17.toString()
+    kotlinOptions.jvmTarget = JavaVersion.VERSION_21.toString()
     kotlinOptions.javaParameters = true
 }
 
