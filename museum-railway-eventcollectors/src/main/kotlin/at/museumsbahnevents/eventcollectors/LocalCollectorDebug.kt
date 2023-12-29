@@ -1,6 +1,6 @@
-package at.museumsbahnen.eventcollectors
+package at.museumsbahnevents.eventcollectors
 
-import at.museumsbahnen.eventcollectors.collectors.WälderbähnleCollector
+import at.museumsbahnevents.eventcollectors.collectors.WälderbähnleCollector
 import base.boudicca.api.eventcollector.EventCollectorDebugger
 
 fun main() {

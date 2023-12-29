@@ -8,6 +8,12 @@ paths:
     get:
       tags:
       - Locations Resource
+      parameters:
+      - name: operatorId
+        in: query
+        schema:
+          type: string
+          nullable: true
       responses:
         "200":
           description: OK
@@ -17,6 +23,26 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/MuseumLocation'
+  /api/manage/reloadData:
+    post:
+      tags:
+      - Management Resource
+      responses:
+        "201":
+          description: Created
+  /api/operator:
+    get:
+      tags:
+      - Operators Resource
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/MuseumOperator'
 components:
   schemas:
     Location:
@@ -47,25 +73,67 @@ components:
     MuseumLocation:
       required:
       - name
-      - location
+      - type
+      - operatorId
+      - eventLocationId
       - webUrl
       - description
       - imageName
+      - eventCollectorType
+      - eventCollectionNotPossibleReason
+      - location
       type: object
       properties:
         name:
           type: string
-        shortName:
+        type:
+          $ref: '#/components/schemas/MuseumType'
+        operatorId:
           type: string
-          nullable: true
-        location:
-          $ref: '#/components/schemas/Location'
+        eventLocationId:
+          type: string
         webUrl:
           type: string
         description:
           type: string
         imageName:
           type: string
+        eventCollectorType:
+          type: string
+        eventCollectionNotPossibleReason:
+          type: string
+        location:
+          $ref: '#/components/schemas/Location'
+    MuseumOperator:
+      required:
+      - name
+      - identifier
+      - webUrl
+      - description
+      - imageName
+      - location
+      type: object
+      properties:
+        name:
+          type: string
+        identifier:
+          type: string
+        webUrl:
+          type: string
+        description:
+          type: string
+        imageName:
+          type: string
+        location:
+          $ref: '#/components/schemas/Location'
+    MuseumType:
+      enum:
+      - Museum
+      - ModelRailway
+      - Station
+      - Event
+      - RailLine
+      type: string
   securitySchemes:
     SecurityScheme:
       type: http

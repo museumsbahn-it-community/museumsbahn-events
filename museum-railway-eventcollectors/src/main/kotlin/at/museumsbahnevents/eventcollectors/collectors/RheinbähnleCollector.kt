@@ -1,4 +1,4 @@
-package at.museumsbahnen.eventcollectors.collectors
+package at.museumsbahnevents.eventcollectors.collectors
 
 import base.boudicca.SemanticKeys
 import base.boudicca.api.eventcollector.EventCollector
