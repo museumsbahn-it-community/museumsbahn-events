@@ -13,6 +13,8 @@
   "dependencies": {
     "@rushstack/eslint-patch": "^1.6.1",
     "@types/leaflet": "^1.9.8",
+    "axios": "^1.6.3",
+    "boudicca-search-api-client": "file:../boudicca-search-api-client/src/main/generated",
     "leaflet": "^1.9.4",
     "museum-railway-api-client": "file:../museum-railway-openapi/src/main/generated",
     "pinia": "^2.1.7",

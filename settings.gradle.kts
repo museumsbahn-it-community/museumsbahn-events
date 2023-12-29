@@ -3,6 +3,7 @@ include("museum-railway-backend")
 include("museum-railway-openapi")
 include("museum-railway-web")
 include("museum-railway-api")
+include("boudicca-search-api-client")
 
 pluginManagement {
     val quarkusPluginVersion: String by settings

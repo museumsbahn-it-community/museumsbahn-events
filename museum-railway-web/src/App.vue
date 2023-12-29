@@ -1,7 +1,10 @@
 <script setup lang="ts">
+import { MenuItem } from 'primevue/menuitem';
+
 const items: MenuItem[] = [
   {label: "News", route: "/"},
   {label: "Locations", route: "/locations"},
+  {label: "Events", route: "/events"},
   {label: "About", route: "/about"}
 ];
 </script>

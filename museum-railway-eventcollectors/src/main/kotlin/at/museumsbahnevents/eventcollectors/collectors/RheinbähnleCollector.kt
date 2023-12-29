@@ -6,7 +6,6 @@ import base.boudicca.model.Event
 import org.jsoup.Jsoup
 import java.time.*
 import java.time.format.DateTimeFormatter
-import java.util.*
 
 class RheinbähnleCollector : EventCollector {
     val beginString = "Beginn der Veranstaltung"
