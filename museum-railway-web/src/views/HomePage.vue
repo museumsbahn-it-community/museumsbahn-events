@@ -60,12 +60,25 @@ async function created() {
 
 </script>
 <template>
-  <h1>News</h1>
+  <div class="flex flex-column h-full">
+    <div class="flex flex-row w-full mb-2">
+      <div class="page-heading">
+        <h1 class="m-2">News</h1>
+      </div>
+      <div class="flex-grow-1"></div>
+    </div>
 
-  <PCard>
-    <template #content>
-      Test Entry
-      <div v-html="newsContent"></div>
-    </template>
-  </PCard>
+    <ScrollPanel>
+      <PCard>
+        <template #header>
+          <h1 class="m-0"> Test Entry</h1>
+          <p class="text-sm">01.01.2024</p>
+        </template>
+        <template #content>
+          Test Entry
+          <div v-html="newsContent"></div>
+        </template>
+      </PCard>
+    </ScrollPanel>
+  </div>
 </template>

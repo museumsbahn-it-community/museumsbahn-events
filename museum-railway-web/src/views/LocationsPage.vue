@@ -1,30 +1,40 @@
 <template>
   <div class="flex flex-row h-full">
-    <div class="flex-column h-full overflow-y-auto">
+    <ScrollPanel class="flex-column h-full w-4">
+
       <div v-for="location in locations">
-        <P-Card>
-          <template #title>
-            {{ location.name }}
+        <Panel collapsed toggleable>
+          <template #header>
+            <div class="flex flex-column w-8">
+                <span class="font-bold">
+                {{ location.name }}
+                </span>
+              <div class="flex align-items-center m-1 text-sm">
+                <span class="material-icons-outlined">location_on</span> {{ location.location.city }},
+                {{ location.location.state }}
+              </div>
+            </div>
           </template>
-          <template #subtitle>
-            <i class="pi pi-location"/> {{ location.location.city }}, {{ location.location.state }}
+          <template #icons>
+            <button class="p-panel-header-icon p-link mr-2">
+              <span class="pi pi-info-circle"></span>
+            </button>
+            <button class="p-panel-header-icon p-link mr-2">
+              <span class="pi pi-map"></span>
+            </button>
           </template>
-          <template #content>
-            <p class="m-0">
-              {{ location.description }}
-            </p>
-            <p>
-              <i class="pi pi-globe"/> <a href="{{location.webUrl}}">{{ location.webUrl }}</a>
-            </p>
-          </template>
-        </P-Card>
+          <p>
+            {{ location.description }}
+            <i class="pi pi-globe"/> <a href="{{location.webUrl}}">{{ location.webUrl }}</a>
+          </p>
+        </Panel>
         <div class="h-1rem"/>
       </div>
-    </div>
+    </ScrollPanel>
     <div class="flex-grow h-full w-full ml-5">
       <div
           ref="mapContainer"
-          class="flex-grow-1 h-full w-full"
+          class="flex-grow-1 h-full w-full map-container"
       >
         map
       </div>

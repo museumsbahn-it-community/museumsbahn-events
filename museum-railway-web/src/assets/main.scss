@@ -1,6 +1,19 @@
-$navbar-height: 3rem;
-$navbar-padding: 1rem;
-$navbar-total: calc($navbar-height + 2 * $navbar-padding);
+$navbar-height: 6rem;
+$navbar-padding: 2rem;
+$navbar-total: calc($navbar-height);
+
+$color-blutorange: #ff4d2e;
+$color-elfenbein: #ffe3b3;
+$color-umbragrau: #4d4d4d;
+$color-verkehrsrot: #de2514;
+$color-achatgrau: #cccccc;
+$color-grauweiß: #f6f6f6;
+$color-ultramarinblau: #00387b;
+$color-mariazellerbraun: #5a3826;
+
+$text-color-light: $color-achatgrau;
+$text-color-dark: $color-umbragrau;
+
 
 body {
   display: flex;
@@ -13,13 +26,25 @@ body {
   left: 0;
   height: $navbar-height;
   width: 100%;
-  padding: $navbar-padding;
+  padding-left: $navbar-padding;
+  padding-right: $navbar-padding;
   align-items: center;
+  background: $color-grauweiß;
 }
 
 .menubar {
   height: $navbar-height;
-  margin-left: 1rem;
+  margin-left: 3rem;
+  background: $color-grauweiß;
+}
+
+.text-sm {
+  font-size: 0.75rem;
+  color: $color-umbragrau;
+}
+
+.borderless-menubar {
+  border: 0;
 }
 
 .content {
@@ -28,5 +53,50 @@ body {
   top: $navbar-total;
   width: 100%;
   height: calc(100vh - $navbar-total);
-  background: beige;
+  background: $color-verkehrsrot;
+}
+
+.map-container {
+  border-radius: 10px;
+}
+
+.page-heading {
+  color: $color-umbragrau;
+  background: $color-grauweiß;
+  border-radius: 5px;
+}
+
+/*.p-scrollpanel {
+  background: $color-grauweiß;
+  border-radius: 10px;
+}*/
+
+.p-panel-header {
+  padding: 0.5rem 1rem !important;
+  border-radius: 4px;
+}
+
+.p-scrollpanel-content {
+  padding: 1rem 1.5rem 1rem 1rem;
+}
+
+.p-scrollpanel-wrapper {
+  padding-right: 1px;
+  border-right: 10px solid var(--surface-ground);
+  border-radius: 5px;
+}
+
+.p-scrollpanel-bar-y {
+  background: $color-ultramarinblau;
+}
+.p-scrollpanel-bar-y:hover {
+  background: $color-ultramarinblau;
+}
+
+.p-panel-header {
+  padding-bottom: 0;
+}
+
+.p-panel-content {
+  padding: 1rem;
 }
