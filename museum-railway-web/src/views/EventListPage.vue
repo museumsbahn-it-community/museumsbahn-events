@@ -8,7 +8,7 @@
   <div class="flex flex-column h-full w-full">
     <div class="flex flex-column md:w-5 md:flex-row m-2">
       <InlineMessage severity="warn"> Achtung! Die Daten werden automatisch erfasst und nicht manuell geprüft.
-        Abfahrtszeiten und aktuelle Informationen immer auf den Webseiten der Vereine kontrollieren!
+        Abfahrtszeiten und aktuelle Informationen immer auf den Webseiten der jeweiligen Veranstalter kontrollieren!
       </InlineMessage>
     </div>
     <div class="flex flex-column md:w-5 md:flex-row">
@@ -30,13 +30,22 @@
           <h1 class="timeline-heading">{{ eventGroup.label }}</h1>
           <Timeline :value="eventGroup.events" align="left" class="customized-timeline">
             <template #content="slotProps">
-              <PCard class="mt-3">
+              <PCard class="mt-3" :class="{ selected: isSelected(slotProps.item)}"
+                     >
                 <template #title>
                   {{ slotProps.item.name }}
                 </template>
                 <template #subtitle>
                   <p> {{ getEventDate(slotProps.item.date).toDateString() }}</p>
-                  <p> {{ slotProps.item.location?.location?.city }}, {{ slotProps.item.location?.location?.state }}</p>
+                  <p> {{ slotProps.item.location?.location?.city }}, {{
+                      slotProps.item.location?.location?.state
+                    }}</p>
+                </template>
+                <template #content>
+                  <div class="flex align-items-end w-full">
+                    <div class="flex-grow-1"></div>
+                    <PButton class="dark-text" @click="selectEvent(slotProps.item)" text>Details</PButton>
+                  </div>
                 </template>
               </PCard>
             </template>
@@ -55,9 +64,11 @@
 import { computed, onMounted, ref } from 'vue';
 import { useEventsStore } from '../store/EventsStore';
 import { useLocationsStore } from '../store/LocationsStore.ts';
+import { MuseumEvent } from '../model/museumEvent.ts';
 
 const eventsStore = useEventsStore();
 const locationsStore = useLocationsStore();
+const selectedEvent = ref<MuseumEvent | undefined>(undefined);
 
 const selectedStates = ref<{ name: string, code: string }[] | undefined>(undefined);
 const states = ref<{ name: string, code: string }[]>([]);
@@ -89,4 +100,15 @@ function clearFilters(): void {
 function getEventDate(value: string): Date {
   return new Date(value);
 }
+
+function selectEvent(value: MuseumEvent) {
+  console.log("select event");
+  console.log(value)
+  selectedEvent.value = value;
+}
+
+function isSelected(value: MuseumEvent) {
+  return value == selectedEvent.value;
+}
+
 </script>
