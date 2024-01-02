@@ -55,6 +55,15 @@ body {
   color: $color-umbragrau;
 }
 
+.text-content {
+  border-radius: 4px;
+  background: $color-grauweiß;
+}
+
+.article-content{
+  background: #ffffff;
+}
+
 .timeline-heading {
   color: $color-grauweiß;
   font-weight: bold;
@@ -82,11 +91,6 @@ body {
   background: $color-grauweiß;
   border-radius: 5px;
 }
-
-/*.p-scrollpanel {
-  background: $color-grauweiß;
-  border-radius: 10px;
-}*/
 
 .p-panel-header {
   padding: 0.5rem 1rem !important;

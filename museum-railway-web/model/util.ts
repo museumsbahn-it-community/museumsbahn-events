@@ -1,4 +1,4 @@
-import { Entry } from '../store/EventsStore';
+import { Entry } from '~/stores/EventsStore';
 import { MuseumEvent } from './museumEvent';
 import { CommonKeys } from './commonKeys';
 import { SemanticKeys } from './semanticKeys';

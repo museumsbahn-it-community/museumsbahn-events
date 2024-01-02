@@ -22,7 +22,7 @@
       />
       <Calendar class="m-2 w-full md:w-5" v-model="dates" placeholder="Select Dates" selectionMode="range"
                 :manualInput="false"/>
-      <PButton text><i class="pi pi-filter-slash" @click="clearFilters()"/></PButton>
+      <Button text><i class="pi pi-filter-slash" @click="clearFilters()"/></Button>
     </div>
     <div class="flex flex-grow-1 min-h-0 w-full md:w-5 m-2">
       <ScrollPanel v-if="groupedEvents.length > 0" class="w-full">
@@ -30,7 +30,7 @@
           <h1 class="timeline-heading">{{ eventGroup.label }}</h1>
           <Timeline :value="eventGroup.events" align="left" class="customized-timeline">
             <template #content="slotProps">
-              <PCard class="mt-3" :class="{ selected: isSelected(slotProps.item)}"
+              <Card class="mt-3" :class="{ selected: isSelected(slotProps.item)}"
                      >
                 <template #title>
                   {{ slotProps.item.name }}
@@ -44,10 +44,10 @@
                 <template #content>
                   <div class="flex align-items-end w-full">
                     <div class="flex-grow-1"></div>
-                    <PButton class="dark-text" @click="selectEvent(slotProps.item)" text>Details</PButton>
+                    <Button class="dark-text" @click="selectEvent(slotProps.item)" text>Details</Button>
                   </div>
                 </template>
-              </PCard>
+              </Card>
             </template>
           </Timeline>
         </div>
@@ -60,12 +60,6 @@
   </div>
 </template>
 <script setup lang="ts">
-
-import { computed, onMounted, ref } from 'vue';
-import { useEventsStore } from '../store/EventsStore';
-import { useLocationsStore } from '../store/LocationsStore.ts';
-import { MuseumEvent } from '../model/museumEvent.ts';
-
 const eventsStore = useEventsStore();
 const locationsStore = useLocationsStore();
 const selectedEvent = ref<MuseumEvent | undefined>(undefined);

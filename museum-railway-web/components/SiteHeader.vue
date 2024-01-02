@@ -1,6 +1,4 @@
 <script setup lang="ts">
-import { MenuItem } from 'primevue/menuitem';
-
 const items: MenuItem[] = [
   {label: 'News', route: '/'},
   {label: 'Locations', route: '/locations'},
@@ -17,7 +15,7 @@ const items: MenuItem[] = [
         </h1>
         <span class="text-sm">Alle Infos zu Museumsbahnen in Österreich</span>
       </div>
-      <P-Menubar
+      <Menubar
           class="menubar borderless-menubar"
           :model="items"
       >
@@ -56,7 +54,7 @@ const items: MenuItem[] = [
             />
           </a>
         </template>
-      </P-Menubar>
+      </Menubar>
       <div class="flex-grow-1"></div>
     </div>
   </header>

@@ -1,15 +1,15 @@
 <script setup lang="ts">
-import SiteHeader from './SiteHeader.vue';
+import SiteHeader from './components/SiteHeader.vue';
 </script>
 
 <template>
   <div class="flex flex-row">
-  <SiteHeader></SiteHeader>
+    <SiteHeader></SiteHeader>
 
     <main class="content w-full flex-grow md:p-5">
       <!-- route outlet -->
       <!-- component matched by the route will render here -->
-      <router-view/>
+      <NuxtPage/>
     </main>
   </div>
 </template>
