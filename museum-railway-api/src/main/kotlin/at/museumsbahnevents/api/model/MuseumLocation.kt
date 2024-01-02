@@ -4,7 +4,7 @@ data class MuseumLocation (
     val name: String,
     val type: MuseumType,
     val operatorId: String,
-    val eventLocationId: String,
+    val locationId: String,
     val webUrl: String,
     val description: String,
     val imageName: String,

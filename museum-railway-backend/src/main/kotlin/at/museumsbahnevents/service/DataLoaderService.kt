@@ -89,7 +89,7 @@ class DataLoaderService {
             name = data[0],
             type = type,
             operatorId = data[2],
-            eventLocationId = data[3],
+            locationId = data[3],
             webUrl = data[4],
             description = data[5],
             imageName = data[6],
