@@ -86,16 +86,22 @@ export interface MuseumLocation {
     'name': string;
     /**
      * 
+     * @type {MuseumType}
+     * @memberof MuseumLocation
+     */
+    'type': MuseumType;
+    /**
+     * 
      * @type {string}
      * @memberof MuseumLocation
      */
-    'shortName'?: string | null;
+    'operatorId': string;
     /**
      * 
-     * @type {Location}
+     * @type {string}
      * @memberof MuseumLocation
      */
-    'location': Location;
+    'locationId': string;
     /**
      * 
      * @type {string}
@@ -114,7 +120,87 @@ export interface MuseumLocation {
      * @memberof MuseumLocation
      */
     'imageName': string;
+    /**
+     * 
+     * @type {string}
+     * @memberof MuseumLocation
+     */
+    'eventCollectorType': string;
+    /**
+     * 
+     * @type {string}
+     * @memberof MuseumLocation
+     */
+    'eventCollectionNotPossibleReason': string;
+    /**
+     * 
+     * @type {Location}
+     * @memberof MuseumLocation
+     */
+    'location': Location;
 }
+
+
+/**
+ * 
+ * @export
+ * @interface MuseumOperator
+ */
+export interface MuseumOperator {
+    /**
+     * 
+     * @type {string}
+     * @memberof MuseumOperator
+     */
+    'name': string;
+    /**
+     * 
+     * @type {string}
+     * @memberof MuseumOperator
+     */
+    'identifier': string;
+    /**
+     * 
+     * @type {string}
+     * @memberof MuseumOperator
+     */
+    'webUrl': string;
+    /**
+     * 
+     * @type {string}
+     * @memberof MuseumOperator
+     */
+    'description': string;
+    /**
+     * 
+     * @type {string}
+     * @memberof MuseumOperator
+     */
+    'imageName': string;
+    /**
+     * 
+     * @type {Location}
+     * @memberof MuseumOperator
+     */
+    'location': Location;
+}
+/**
+ * 
+ * @export
+ * @enum {string}
+ */
+
+export const MuseumType = {
+    Museum: 'Museum',
+    ModelRailway: 'ModelRailway',
+    Station: 'Station',
+    Event: 'Event',
+    RailLine: 'RailLine'
+} as const;
+
+export type MuseumType = typeof MuseumType[keyof typeof MuseumType];
+
+
 
 /**
  * LocationsResourceApi - axios parameter creator
@@ -124,11 +210,209 @@ export const LocationsResourceApiAxiosParamCreator = function (configuration?: C
     return {
         /**
          * 
+         * @param {string | null} [operatorId] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        apiLocationGet: async (options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+        apiLocationGet: async (operatorId?: string | null, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/api/location`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            if (operatorId !== undefined) {
+                localVarQueryParameter['operatorId'] = operatorId;
+            }
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+    }
+};
+
+/**
+ * LocationsResourceApi - functional programming interface
+ * @export
+ */
+export const LocationsResourceApiFp = function(configuration?: Configuration) {
+    const localVarAxiosParamCreator = LocationsResourceApiAxiosParamCreator(configuration)
+    return {
+        /**
+         * 
+         * @param {string | null} [operatorId] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async apiLocationGet(operatorId?: string | null, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<MuseumLocation>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.apiLocationGet(operatorId, options);
+            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+        },
+    }
+};
+
+/**
+ * LocationsResourceApi - factory interface
+ * @export
+ */
+export const LocationsResourceApiFactory = function (configuration?: Configuration, basePath?: string, axios?: AxiosInstance) {
+    const localVarFp = LocationsResourceApiFp(configuration)
+    return {
+        /**
+         * 
+         * @param {string | null} [operatorId] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        apiLocationGet(operatorId?: string | null, options?: any): AxiosPromise<Array<MuseumLocation>> {
+            return localVarFp.apiLocationGet(operatorId, options).then((request) => request(axios, basePath));
+        },
+    };
+};
+
+/**
+ * LocationsResourceApi - object-oriented interface
+ * @export
+ * @class LocationsResourceApi
+ * @extends {BaseAPI}
+ */
+export class LocationsResourceApi extends BaseAPI {
+    /**
+     * 
+     * @param {string | null} [operatorId] 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof LocationsResourceApi
+     */
+    public apiLocationGet(operatorId?: string | null, options?: AxiosRequestConfig) {
+        return LocationsResourceApiFp(this.configuration).apiLocationGet(operatorId, options).then((request) => request(this.axios, this.basePath));
+    }
+}
+
+
+
+/**
+ * ManagementResourceApi - axios parameter creator
+ * @export
+ */
+export const ManagementResourceApiAxiosParamCreator = function (configuration?: Configuration) {
+    return {
+        /**
+         * 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        apiManageReloadDataPost: async (options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+            const localVarPath = `/api/manage/reloadData`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+    }
+};
+
+/**
+ * ManagementResourceApi - functional programming interface
+ * @export
+ */
+export const ManagementResourceApiFp = function(configuration?: Configuration) {
+    const localVarAxiosParamCreator = ManagementResourceApiAxiosParamCreator(configuration)
+    return {
+        /**
+         * 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async apiManageReloadDataPost(options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.apiManageReloadDataPost(options);
+            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+        },
+    }
+};
+
+/**
+ * ManagementResourceApi - factory interface
+ * @export
+ */
+export const ManagementResourceApiFactory = function (configuration?: Configuration, basePath?: string, axios?: AxiosInstance) {
+    const localVarFp = ManagementResourceApiFp(configuration)
+    return {
+        /**
+         * 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        apiManageReloadDataPost(options?: any): AxiosPromise<void> {
+            return localVarFp.apiManageReloadDataPost(options).then((request) => request(axios, basePath));
+        },
+    };
+};
+
+/**
+ * ManagementResourceApi - object-oriented interface
+ * @export
+ * @class ManagementResourceApi
+ * @extends {BaseAPI}
+ */
+export class ManagementResourceApi extends BaseAPI {
+    /**
+     * 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof ManagementResourceApi
+     */
+    public apiManageReloadDataPost(options?: AxiosRequestConfig) {
+        return ManagementResourceApiFp(this.configuration).apiManageReloadDataPost(options).then((request) => request(this.axios, this.basePath));
+    }
+}
+
+
+
+/**
+ * OperatorsResourceApi - axios parameter creator
+ * @export
+ */
+export const OperatorsResourceApiAxiosParamCreator = function (configuration?: Configuration) {
+    return {
+        /**
+         * 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        apiOperatorGet: async (options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+            const localVarPath = `/api/operator`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
             let baseOptions;
@@ -155,57 +439,57 @@ export const LocationsResourceApiAxiosParamCreator = function (configuration?: C
 };
 
 /**
- * LocationsResourceApi - functional programming interface
+ * OperatorsResourceApi - functional programming interface
  * @export
  */
-export const LocationsResourceApiFp = function(configuration?: Configuration) {
-    const localVarAxiosParamCreator = LocationsResourceApiAxiosParamCreator(configuration)
+export const OperatorsResourceApiFp = function(configuration?: Configuration) {
+    const localVarAxiosParamCreator = OperatorsResourceApiAxiosParamCreator(configuration)
     return {
         /**
          * 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async apiLocationGet(options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<MuseumLocation>>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.apiLocationGet(options);
+        async apiOperatorGet(options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<MuseumOperator>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.apiOperatorGet(options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
     }
 };
 
 /**
- * LocationsResourceApi - factory interface
+ * OperatorsResourceApi - factory interface
  * @export
  */
-export const LocationsResourceApiFactory = function (configuration?: Configuration, basePath?: string, axios?: AxiosInstance) {
-    const localVarFp = LocationsResourceApiFp(configuration)
+export const OperatorsResourceApiFactory = function (configuration?: Configuration, basePath?: string, axios?: AxiosInstance) {
+    const localVarFp = OperatorsResourceApiFp(configuration)
     return {
         /**
          * 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        apiLocationGet(options?: any): AxiosPromise<Array<MuseumLocation>> {
-            return localVarFp.apiLocationGet(options).then((request) => request(axios, basePath));
+        apiOperatorGet(options?: any): AxiosPromise<Array<MuseumOperator>> {
+            return localVarFp.apiOperatorGet(options).then((request) => request(axios, basePath));
         },
     };
 };
 
 /**
- * LocationsResourceApi - object-oriented interface
+ * OperatorsResourceApi - object-oriented interface
  * @export
- * @class LocationsResourceApi
+ * @class OperatorsResourceApi
  * @extends {BaseAPI}
  */
-export class LocationsResourceApi extends BaseAPI {
+export class OperatorsResourceApi extends BaseAPI {
     /**
      * 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
-     * @memberof LocationsResourceApi
+     * @memberof OperatorsResourceApi
      */
-    public apiLocationGet(options?: AxiosRequestConfig) {
-        return LocationsResourceApiFp(this.configuration).apiLocationGet(options).then((request) => request(this.axios, this.basePath));
+    public apiOperatorGet(options?: AxiosRequestConfig) {
+        return OperatorsResourceApiFp(this.configuration).apiOperatorGet(options).then((request) => request(this.axios, this.basePath));
     }
 }
 
