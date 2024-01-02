@@ -1,5 +1,5 @@
 name,type,operatorId,eventLocationId,webUrl,description,imageName,eventCollectorType,eventCollectionNotPossibleReason,state,street,zipCode,city,lat,lon
-ProBahn Vorarlberg Sonderfahrten,Event,pbv ,pbv,https://probahn-vlbg.at/,,,possible,,Vorarlberg,Bahnhofstraße 48,6911,Lochau,47.5301357,9.7442811
+ProBahn Vorarlberg Sonderfahrten,MuseumEvent,pbv ,pbv,https://probahn-vlbg.at/,,,possible,,Vorarlberg,Bahnhofstraße 48,6911,Lochau,47.5301357,9.7442811
 Rhein-Schauen | Museum und Rheinbähnle,Museum,rheinschauen,rheinschauen,https://www.rheinschauen.at/,,,possible,,Vorarlberg,Höchster Straße 4,6890,Lustenau,47.4478219,9.6610929
 ÖGEG Museum Ampflwang,Museum,oegeg,oegeg_normalspur,https://www.oegeg.at/termine/termine-normalspur-museum-lokpark-ampflwang/,,,possible,,Oberösterreich,Bahnhofstraße 29,4843,Ampflwang im Hausruckwald,48.0875873,13.5611493
 ÖGEG Steyrtalbahn,Museum,oegeg,oegeg_schmalspur,https://www.oegeg.at/schmalspur-steyrtalbahn/,,,possible,,Oberösterreich,Steyrstraße 11,4594,Waldneukirchen,47.9756717,14.2681077
