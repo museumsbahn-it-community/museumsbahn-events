@@ -17,10 +17,13 @@ export const useLocationsStore = defineStore('locations', {
 		locationsCount(state): number {
 			return state.locations.length;
 		},
-
+		stateList(state: LocationsState): string[] {
+			const mappedStates = state.locations.map((value) => value.location.state);
+			return [...new Set(mappedStates)].sort((a,b) => a.localeCompare(b));
+		},
 	},
 	actions: {
-		async loadEvents() {
+		async loadLocations() {
 			const locationData = await apiStore.locationsApi.apiLocationGet();
 			this.locations = locationData.data;
 		},

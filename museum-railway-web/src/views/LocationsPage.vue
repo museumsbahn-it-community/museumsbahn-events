@@ -66,7 +66,7 @@ async function mounted(): Promise<void> {
     attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>',
   }).addTo(locationMap);
 
-  await locationsStore.loadEvents();
+  await locationsStore.loadLocations();
   locations.value = locationsStore.allLocations;
 
   locations.value.forEach((location) => {

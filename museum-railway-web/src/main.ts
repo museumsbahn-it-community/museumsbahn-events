@@ -11,7 +11,6 @@ import Card from 'primevue/card';
 import { createPinia } from 'pinia';
 import Ripple from 'primevue/ripple';
 
-import 'primevue/resources/themes/mdc-light-deeppurple/theme.css';
 import ScrollPanel from 'primevue/scrollpanel';
 import Panel from 'primevue/panel';
 import Timeline from 'primevue/timeline';

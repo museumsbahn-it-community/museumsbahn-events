@@ -14,6 +14,11 @@ $color-mariazellerbraun: #5a3826;
 $text-color-light: $color-achatgrau;
 $text-color-dark: $color-umbragrau;
 
+@import 'primevue/resources/themes/mdc-light-deeppurple/theme.css';
+
+.p-button {
+  color: white;
+}
 
 body {
   display: flex;
@@ -38,9 +43,17 @@ body {
   background: $color-grauweiß;
 }
 
-.text-sm {
-  font-size: 0.75rem;
+body {
   color: $color-umbragrau;
+}
+
+.light-text {
+  color: $color-grauweiß;
+}
+
+.timeline-heading {
+  color: $color-grauweiß;
+  font-weight: bold;
 }
 
 .borderless-menubar {
