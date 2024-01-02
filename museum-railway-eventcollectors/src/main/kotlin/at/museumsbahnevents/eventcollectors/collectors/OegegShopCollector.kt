@@ -1,27 +1,30 @@
 package at.museumsbahnevents.eventcollectors.collectors
 
-import base.boudicca.api.eventcollector.EventCollector
 import base.boudicca.model.Event
 import org.jsoup.Jsoup
 import java.time.*
 import java.util.*
 
+private val operatorId = "oegeg";
+private val locationId_bahn = "oegeg_normalspur"
+private val locationId_schiff = "oegeg_schifffahrt"
+private val urlNormalspurTermine = "https://www.oegeg.at/termine/termine-normalspur-museum-lokpark-ampflwang/"
+private val urlSchifffahrtsTermine = "https://www.oegeg.at/termine/termine-schifffahrt-dampfschiff-sch%C3%B6nbrunn/"
+
 /**
  * Collects entries from ÖGEG shop pages. This includes Normalspur and Schifffahrt, but NOT Schmalspur.
  */
-class OegegShopCollector : EventCollector {
+class OegegShopCollector : MuseumRailwayEventCollector(operatorId, locationId_bahn, urlNormalspurTermine) {
     override fun collectEvents(): List<Event> {
-        val normalspurTermine = "https://www.oegeg.at/termine/termine-normalspur-museum-lokpark-ampflwang/"
-        val schifffahrtsTermine = "https://www.oegeg.at/termine/termine-schifffahrt-dampfschiff-sch%C3%B6nbrunn/"
 
         val events = mutableListOf<Event>()
 
-        events.addAll(collectShopEvents(normalspurTermine, type="Sonderfahrt Nostalgiezug"))
-        events.addAll(collectShopEvents(schifffahrtsTermine, type="Sonderfahrt Nostalgieschiff"))
+        events.addAll(collectShopEvents(urlNormalspurTermine, locationId_bahn))
+        events.addAll(collectShopEvents(urlSchifffahrtsTermine, locationId_schiff))
         return events
     }
 
-    private fun collectShopEvents(url: String, type: String): MutableList<Event> {
+    private fun collectShopEvents(url: String, locationId: String): MutableList<Event> {
         val document = Jsoup.connect(url).get()
         val eventBoxes = document.select("div.cc-shop-product-desc")
 
@@ -56,12 +59,11 @@ class OegegShopCollector : EventCollector {
                         offset)
 
                 val additionalData = mutableMapOf<String, String>()
-                additionalData["type"] = type
                 if (!description.isNullOrBlank()) {
                     additionalData["description"] = description
                 }
 
-                events.add(Event(title, startDate, additionalData))
+                events.add(createEvent(title, startDate, additionalData, locationId, url))
             }
         }
 

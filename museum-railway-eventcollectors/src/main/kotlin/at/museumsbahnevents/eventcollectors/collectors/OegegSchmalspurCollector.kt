@@ -1,17 +1,19 @@
 package at.museumsbahnevents.eventcollectors.collectors
 
-import base.boudicca.api.eventcollector.EventCollector
 import base.boudicca.model.Event
 import org.jsoup.Jsoup
 import java.time.*
 import java.util.*
 
-class OegegSchmalspurCollector : EventCollector {
-
-    private val eventTitle = "Steyrtalbahn Zugfahrt"
+class OegegSchmalspurCollector : MuseumRailwayEventCollector(
+    operatorId = "oegeg",
+    locationId = "oegeg_schmalspur",
+    url = "https://www.oegeg.at/termine/termine-schmalspur-steyrtalbahn/"
+) {
+    private val eventTitle = "Steyrtalbahn Fahrt"
 
     override fun collectEvents(): List<Event> {
-        val document = Jsoup.connect("https://www.oegeg.at/termine/termine-schmalspur-steyrtalbahn/").get()
+        val document = Jsoup.connect(url).get()
         val eventBoxes = document.select("div.cc-m-textwithimage-inline-rte")
 
         // dates on this website can be split having multiple dates in the same line
@@ -22,7 +24,8 @@ class OegegSchmalspurCollector : EventCollector {
         eventBoxes.forEach { eventBox ->
             val dateString = eventBox.select("span").eachText().firstOrNull {
                 dateRegex.containsMatchIn(it) && monthRegex.containsMatchIn(it.lowercase()) && !it.contains(
-                    zuglokKeyword)
+                    zuglokKeyword
+                )
             }
             val zuglokString = eventBox.select("span").eachText().firstOrNull {
                 it.contains(zuglokKeyword)
@@ -60,7 +63,8 @@ class OegegSchmalspurCollector : EventCollector {
                         month.value,
                         dateValue,
                         0, 0, 0, 0,
-                        offset)
+                        offset
+                    )
                 val additionalData = mutableMapOf<String, String>()
 
                 val parsedZuglok = parseZuglok(dateValue, zuglokString)
@@ -68,12 +72,13 @@ class OegegSchmalspurCollector : EventCollector {
                     additionalData["lokomotive"] = parsedZuglok
                 }
 
-                events.add(Event(eventTitle, startDate, additionalData))
+                events.add(createEvent(eventTitle, startDate, additionalData))
             }
         }
 
         return events
     }
+
 
     private fun parseZuglok(dateValueOfEvent: Int, zuglokString: String?): String? {
         if (zuglokString == null) {

@@ -1,6 +1,6 @@
 package at.museumsbahnevents.eventcollectors.collectors
 
-import base.boudicca.api.eventcollector.EventCollector
+import at.museumsbahnevents.api.model.conventions.CommonKeys
 import base.boudicca.model.Event
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Element
@@ -10,7 +10,11 @@ import java.time.format.DateTimeFormatter
 import java.time.format.DateTimeFormatterBuilder
 import java.util.*
 
-class WälderbähnleCollector : EventCollector {
+class WälderbähnleCollector : MuseumRailwayEventCollector(
+    operatorId = "waelderbaehnle",
+    locationId = "waelderbaehnle",
+    url = "https://waelderbaehnle.at/fahrplanbetrieb-preise-2022",
+) {
     val locale = Locale.GERMAN
     val dateFormatter = getWaelderbaehnleDateFormatter(locale)
     val timeFormatter = getWaelderbaehnleTimeFormatter(locale)
@@ -20,7 +24,8 @@ class WälderbähnleCollector : EventCollector {
 
     override fun collectEvents(): List<Event> {
         // page is named 2022, but is actually 2023
-        val document = Jsoup.connect("https://waelderbaehnle.at/fahrplanbetrieb-preise-2022").get()
+        // 2024-01-02: ...and 2024 as well ;)
+        val document = Jsoup.connect(url).get()
 
         val timetables = document.select("div.timetable-wrapper")
         val departures = mutableListOf<DepartureData>()
@@ -35,13 +40,27 @@ class WälderbähnleCollector : EventCollector {
         }
 
         val events = mutableListOf<Event>()
-        departures.forEach { departure ->
-            val eventTitle = "Sonderfahrt Wälderbähnle"
+        departures
+            .groupBy { it.startTime.toLocalDate() }
+            .forEach { operatingDay ->
+            val eventTitle = "Fahrbetrieb Bregenzerwaldbahn"
             val additionalData = mutableMapOf<String, String>()
-            additionalData["station"] = departure.station
-            additionalData["traction"] = departure.traction
+            val departuresOnDay = operatingDay.value.sortedBy { it.startTime }
+            val firstDeparture = departuresOnDay.first
 
-            events.add(Event(eventTitle, departure.startTime, additionalData))
+            var description = """
+                Fahrtag auf der Bregenzerwaldbahn.
+                
+                Fahrplan:
+                             
+            """.trimIndent()
+                val departureTimeFormat = DateTimeFormatter.ofPattern("HH:mm")
+                val departureList = departuresOnDay.map { "${it.startTime.format(departureTimeFormat)} ab ${it.station}" }.joinToString("\n")
+
+            additionalData[CommonKeys.LOCOMOTIVE_TYPE] = departures.first.traction
+            additionalData[CommonKeys.DESCRIPTION] = "${description}${departureList}"
+
+            events.add(createEvent(eventTitle, firstDeparture.startTime, additionalData))
         }
 
         return events

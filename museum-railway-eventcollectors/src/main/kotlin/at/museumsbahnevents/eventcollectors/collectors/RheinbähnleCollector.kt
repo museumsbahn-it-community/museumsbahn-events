@@ -7,7 +7,11 @@ import org.jsoup.Jsoup
 import java.time.*
 import java.time.format.DateTimeFormatter
 
-class RheinbähnleCollector : EventCollector {
+class RheinbähnleCollector : MuseumRailwayEventCollector(
+    operatorId = "rheinschauen",
+    locationId = "rheinschauen",
+    url = "https://www.rheinschauen.at/museum-baehnle/fahrplan"
+) {
     val beginString = "Beginn der Veranstaltung"
     val endString = "Ende der Veranstaltung"
     val formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy [HH:mm][H:mm]")
@@ -15,7 +19,7 @@ class RheinbähnleCollector : EventCollector {
     val baseUrl = "https://www.rheinschauen.at/"
 
     override fun collectEvents(): List<Event> {
-        val document = Jsoup.connect("https://www.rheinschauen.at/museum-baehnle/fahrplan")
+        val document = Jsoup.connect(url)
             .userAgent("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/114.0.0.0 Safari/537.36")
             .header("Accept", "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7")
             .get()
@@ -50,7 +54,7 @@ class RheinbähnleCollector : EventCollector {
             additionalData[SemanticKeys.ENDDATE] = endTime.format(DateTimeFormatter.ISO_DATE_TIME)
             additionalData[SemanticKeys.LOCATION_URL] = "$baseUrl$link"
 
-            events.add(Event(title, startTime, additionalData))
+            events.add(createEvent(title, startTime, additionalData))
 
         }
 
