@@ -5,57 +5,64 @@
 }
 </style>
 <template>
-  <div class="flex flex-column h-full w-full">
-    <div class="flex flex-column md:w-5 md:flex-row m-2">
-      <InlineMessage severity="warn"> Achtung! Die Daten werden automatisch erfasst und nicht manuell geprüft.
-        Abfahrtszeiten und aktuelle Informationen immer auf den Webseiten der jeweiligen Veranstalter kontrollieren!
-      </InlineMessage>
-    </div>
-    <div class="flex flex-column md:w-5 md:flex-row">
-      <MultiSelect v-model="selectedStates"
-                   display="chip"
-                   :options="states"
-                   optionLabel="name"
-                   placeholder="Bundesland"
-                   :maxSelectedLabels="3"
-                   class="w-full m-2 md:w-5"
-      />
-      <Calendar class="m-2 w-full md:w-5" v-model="dates" placeholder="Select Dates" selectionMode="range"
-                :manualInput="false"/>
-      <Button text><i class="pi pi-filter-slash" @click="clearFilters()"/></Button>
-    </div>
-    <div class="flex flex-grow-1 min-h-0 w-full md:w-5 m-2">
-      <ScrollPanel v-if="groupedEvents.length > 0" class="w-full">
-        <div v-for="eventGroup in groupedEvents">
-          <h1 class="timeline-heading">{{ eventGroup.label }}</h1>
-          <Timeline :value="eventGroup.events" align="left" class="customized-timeline">
-            <template #content="slotProps">
-              <Card class="mt-3" :class="{ selected: isSelected(slotProps.item)}"
-                     >
-                <template #title>
-                  {{ slotProps.item.name }}
-                </template>
-                <template #subtitle>
-                  <p> {{ getEventDate(slotProps.item.date).toDateString() }}</p>
-                  <p> {{ slotProps.item.location?.location?.city }}, {{
-                      slotProps.item.location?.location?.state
-                    }}</p>
-                </template>
-                <template #content>
-                  <div class="flex align-items-end w-full">
-                    <div class="flex-grow-1"></div>
-                    <Button class="dark-text" @click="selectEvent(slotProps.item)" text>Details</Button>
-                  </div>
-                </template>
-              </Card>
-            </template>
-          </Timeline>
-        </div>
-
-      </ScrollPanel>
-      <div v-else>
-        Keine Veranstaltungen gefunden!
+  <div class="flex flex-row h-full w-full">
+    <div class="flex flex-column h-full w-full md:w-6">
+      <div class="flex flex-column md:flex-row m-2">
+        <InlineMessage severity="warn"> Achtung! Die Daten werden automatisch erfasst und nicht manuell geprüft.
+          Abfahrtszeiten und aktuelle Informationen immer auf den Webseiten der jeweiligen Veranstalter kontrollieren!
+        </InlineMessage>
       </div>
+      <div class="flex flex-column md:flex-row">
+        <MultiSelect v-model="selectedStates"
+                     display="chip"
+                     :options="states"
+                     optionLabel="name"
+                     placeholder="Bundesland"
+                     :maxSelectedLabels="3"
+                     class="w-full m-2 md:w-6"
+        />
+        <Calendar class="m-2 w-full md:w-5" v-model="dates" placeholder="Select Dates" selectionMode="range"
+                  :manualInput="false"/>
+        <Button text><i class="pi pi-filter-slash" @click="clearFilters()"/></Button>
+      </div>
+      <div class="flex flex-grow-1 min-h-0 w-full m-2">
+        <div v-if="groupedEvents.length > 0" class="w-full">
+          <div v-for="eventGroup in groupedEvents">
+            <h1 class="timeline-heading">{{ eventGroup.label }}</h1>
+            <Timeline :value="eventGroup.events" align="left" class="customized-timeline">
+              <template #content="slotProps">
+                <Card class="mt-3" :class="{ selected: isSelected(slotProps.item)}"
+                >
+                  <template #title>
+                    {{ slotProps.item.name }}
+                  </template>
+                  <template #subtitle>
+                    <p> {{ formatDate(slotProps.item.date) }}</p>
+                    <p> {{ slotProps.item.location?.location?.city }}, {{
+                        slotProps.item.location?.location?.state
+                      }}</p>
+                  </template>
+                  <template #content>
+                    <div class="flex align-items-end w-full">
+                      <div class="flex-grow-1"></div>
+                      <Button class="dark-text" @click="selectEvent(slotProps.item)" text>Details</Button>
+                    </div>
+                  </template>
+                </Card>
+              </template>
+            </Timeline>
+          </div>
+        </div>
+        <div v-else>
+          Keine Veranstaltungen gefunden!
+        </div>
+      </div>
+    </div>
+    <div class="m-5 md:w-6 sticky">
+        <EventDetails :museum-event="selectedEvent">
+          Event Details
+        </EventDetails>
+
     </div>
   </div>
 </template>
@@ -72,11 +79,15 @@ const groupedEvents = computed(() => {
   let stateFilter: string[] | undefined = selectedStates.value?.map((it) => it.code);
   let startDateFilter = dates.value[0];
   let endDateFilter = dates.value[1];
-  return eventsStore.filteredEventsGroupedByMonth(startDateFilter,
+  const events = eventsStore.filteredEventsGroupedByMonth(startDateFilter,
       endDateFilter,
       stateFilter,
       undefined,
       undefined);
+  if (events.length > 0) {
+    selectedEvent.value = events[0].events[0];
+  }
+  return events;
 });
 
 onMounted(loadData);
@@ -91,13 +102,7 @@ function clearFilters(): void {
   dates.value = [];
 }
 
-function getEventDate(value: string): Date {
-  return new Date(value);
-}
-
 function selectEvent(value: MuseumEvent) {
-  console.log("select event");
-  console.log(value)
   selectedEvent.value = value;
 }
 

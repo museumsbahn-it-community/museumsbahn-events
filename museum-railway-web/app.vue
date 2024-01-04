@@ -3,14 +3,15 @@ import SiteHeader from './components/SiteHeader.vue';
 </script>
 
 <template>
-  <div class="flex flex-row">
+  <div>
     <SiteHeader></SiteHeader>
+    <main class="content w-full">
 
-    <main class="content w-full flex-grow md:p-5">
       <!-- route outlet -->
       <!-- component matched by the route will render here -->
       <NuxtPage/>
     </main>
+    <div class="footer"></div>
   </div>
 </template>
 

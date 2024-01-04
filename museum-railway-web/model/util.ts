@@ -19,15 +19,16 @@ export function mapEntriesToEvents(entries: Entry[], locations: LocationMap): Mu
 		const locationId = value[CommonKeys.LOCATION_ID];
 		const operatorId = value[CommonKeys.OPERATOR_ID];
 		const museumLocation = locations[locationId];
+		const url = value[SemanticKeys.SOURCES];
 
-		console.log(`operator: ${operatorId}, locId: ${locationId}, loc: ${museumLocation}`)
-		console.log(museumLocation)
+		console.log(url)
 
 		return {
 			name: value[SemanticKeys.NAME],
 			date: new Date(value[SemanticKeys.STARTDATE]),
 		 	description: value[SemanticKeys.DESCRIPTION],
 			location: museumLocation,
+			url,
 			locationId,
 			operatorId,
 			locomotiveType: value[CommonKeys.LOCOMOTIVE_TYPE],

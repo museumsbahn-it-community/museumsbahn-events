@@ -1,6 +1,10 @@
 $navbar-height: 6rem;
+$footer-height: 2rem;
 $navbar-padding: 2rem;
 $navbar-total: calc($navbar-height);
+$content-padding: 32px; // TODO: use primeng defined value and do use 0 on mobile
+$min-content-height: calc(100vh - $navbar-total - $footer-height);
+$no-scroll-page-height: calc($min-content-height - 2 * $content-padding);
 
 $color-blutorange: #ff4d2e;
 $color-elfenbein: #ffe3b3;
@@ -13,6 +17,8 @@ $color-mariazellerbraun: #5a3826;
 
 $text-color-light: $color-achatgrau;
 $text-color-dark: $color-umbragrau;
+$scrollbar-width: 8px;
+
 
 @import 'primevue/resources/themes/mdc-light-deeppurple/theme.css';
 
@@ -23,10 +29,29 @@ $text-color-dark: $color-umbragrau;
 body {
   display: flex;
   flex-direction: column;
+  color: $color-umbragrau;
+  background: $color-verkehrsrot;
+  margin: 0;
+}
+
+*::-webkit-scrollbar {
+  width: $scrollbar-width;
+  background-color: #F5F5F5;
+}
+
+*::-webkit-scrollbar-thumb {
+  background-color: $color-ultramarinblau;
+}
+
+*::-webkit-scrollbar-track {
+  -webkit-box-shadow: inset 0 0 $scrollbar-width $color-grauweiß;
+  background-color: $color-grauweiß;
 }
 
 .navbar {
-  position: absolute;
+  z-index: 1000;
+  display: flex;
+  position: sticky;
   top: 0;
   left: 0;
   height: $navbar-height;
@@ -43,10 +68,6 @@ body {
   background: $color-grauweiß;
 }
 
-body {
-  color: $color-umbragrau;
-}
-
 .light-text {
   color: $color-grauweiß;
 }
@@ -60,7 +81,7 @@ body {
   background: $color-grauweiß;
 }
 
-.article-content{
+.article-content {
   background: #ffffff;
 }
 
@@ -74,12 +95,21 @@ body {
 }
 
 .content {
-  position: absolute;
   left: 0;
   top: $navbar-total;
+  min-height: $min-content-height;
   width: 100%;
-  height: calc(100vh - $navbar-total);
+  padding: $content-padding;
   background: $color-verkehrsrot;
+}
+
+.footer {
+  height: $footer-height;
+  background: $color-umbragrau;
+}
+
+.no-scroll-page {
+  height: $no-scroll-page-height;
 }
 
 .map-container {
@@ -103,15 +133,18 @@ body {
 
 .p-scrollpanel-wrapper {
   padding-right: 1px;
-  border-right: 10px solid var(--surface-ground);
+  border-right: $scrollbar-width solid var(--surface-ground);
   border-radius: 5px;
 }
 
 .p-scrollpanel-bar-y {
   background: $color-ultramarinblau;
+  width: $scrollbar-width;
 }
+
 .p-scrollpanel-bar-y:hover {
   background: $color-ultramarinblau;
+  width: $scrollbar-width;
 }
 
 .p-panel-header {

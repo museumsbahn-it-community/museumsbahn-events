@@ -1,41 +1,43 @@
 <template>
-  <div class="flex flex-row h-full">
-    <ScrollPanel class="flex-column h-full w-4">
-      <div v-for="location in locations">
-        <Panel collapsed toggleable>
-          <template #header>
-            <div class="flex flex-column w-8">
+  <div class="no-scroll-page">
+    <div class="flex flex-row h-full">
+      <ScrollPanel class="flex-column h-full w-4">
+        <div v-for="location in locations">
+          <Panel collapsed toggleable>
+            <template #header>
+              <div class="flex flex-column w-8">
                 <span class="font-bold">
                 {{ location.name }}
                 </span>
-              <div class="flex align-items-center m-1 text-sm">
-                <span class="material-icons-outlined">location_on</span> {{ location.location.city }},
-                {{ location.location.state }}
+                <div class="flex align-items-center m-1 text-sm">
+                  <span class="material-icons-outlined">location_on</span> {{ location.location.city }},
+                  {{ location.location.state }}
+                </div>
               </div>
-            </div>
-          </template>
-          <template #icons>
-            <button class="p-panel-header-icon p-link mr-2">
-              <span class="pi pi-info-circle"></span>
-            </button>
-            <button class="p-panel-header-icon p-link mr-2">
-              <span class="pi pi-map"></span>
-            </button>
-          </template>
-          <p>
-            {{ location.description }}
-            <i class="pi pi-globe"/> <a href="{{location.webUrl}}">{{ location.webUrl }}</a>
-          </p>
-        </Panel>
-        <div class="h-1rem"/>
-      </div>
-    </ScrollPanel>
-    <div class="flex-grow h-full w-full ml-5">
-      <div
-          ref="mapContainer"
-          class="flex-grow-1 h-full w-full map-container"
-      >
-        map
+            </template>
+            <template #icons>
+              <button class="p-panel-header-icon p-link mr-2">
+                <span class="pi pi-info-circle"></span>
+              </button>
+              <button class="p-panel-header-icon p-link mr-2">
+                <span class="pi pi-map"></span>
+              </button>
+            </template>
+            <p>
+              {{ location.description }}
+              <i class="pi pi-globe"/> <a href="{{location.webUrl}}">{{ location.webUrl }}</a>
+            </p>
+          </Panel>
+          <div class="h-1rem"/>
+        </div>
+      </ScrollPanel>
+      <div class="flex-grow h-full w-full ml-5">
+        <div
+            ref="mapContainer"
+            class="flex-grow-1 h-full w-full map-container"
+        >
+          map
+        </div>
       </div>
     </div>
   </div>
@@ -49,7 +51,6 @@ const mapContainer = ref();
 onMounted(mounted);
 
 async function mounted(): Promise<void> {
-  console.log('locations component mounted');
   const options: L.MapOptions = {
     center: L.latLng(47.609541, 13.784662),
     zoom: 7,
