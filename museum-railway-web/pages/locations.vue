@@ -69,7 +69,10 @@ async function mounted(): Promise<void> {
     const lon = location.location.lon;
 
     if (lat != undefined && lon != undefined) {
-      L.marker([lat, lon]).addTo(locationMap);
+      const marker = L.marker([lat, lon])
+      marker.bindPopup(`<b>${location.name}</b><br>${location.type}`)
+      marker.addTo(locationMap);
+
     }
   });
 }
