@@ -1,4 +1,4 @@
-import * as BoudiccaSearchApi from 'boudicca-search-api-client';
+import * as BoudiccaSearchApi from '@boudicca/search-api-client';
 
 export default defineNuxtPlugin(() => {
     return {

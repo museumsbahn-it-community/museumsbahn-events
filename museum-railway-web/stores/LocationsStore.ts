@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia';
 import apiStore from '../apiStore.ts';
-import { MuseumLocation } from 'museum-railway-api-client';
+import type { MuseumLocation } from '@museumrailwayevents/museum-railway-client';
 
 interface LocationsState {
 	locations: MuseumLocation[];

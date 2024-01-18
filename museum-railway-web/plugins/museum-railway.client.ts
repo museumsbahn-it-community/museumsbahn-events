@@ -1,4 +1,4 @@
-import * as MuseumRailwayApi from 'museum-railway-api-client';
+import * as MuseumRailwayApi from '@museumrailwayevents/museum-railway-client';
 
 export default defineNuxtPlugin(nuxtApp => {
     return {

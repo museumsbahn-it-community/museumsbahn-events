@@ -72,4 +72,20 @@ yarn preview
 bun run preview
 ```
 
+# Docker Build
+
+
+```
+docker build --build-arg="NPM_REPO_URL=<REPO URL WITHOUT HTTPS>" --build-arg="NPM_TOKEN=<PRIVATE ACCESS TOKEN FOR REPO>" -t museum-railway-events:0.1.0 .
+```
+
+
+# Deployment
+
+Dockerize it https://blog.stackademic.com/dockerize-nuxt-f69ccd8848d7
+
+
 Check out the [deployment documentation](https://nuxt.com/docs/getting-started/deployment) for more information.
+
+
+
