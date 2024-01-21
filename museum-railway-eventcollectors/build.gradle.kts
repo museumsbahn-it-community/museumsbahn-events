@@ -19,9 +19,6 @@ dependencies {
     implementation(project(mapOf("path" to ":museum-railway-api")))
 }
 
-group = "at.museumsbahnen"
-version = "1.0-SNAPSHOT"
-
 java {
     sourceCompatibility = JavaVersion.VERSION_21
     targetCompatibility = JavaVersion.VERSION_21
@@ -33,15 +30,17 @@ tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
 }
 
 task<Exec>("imageBuild") {
-    dependsOn(tasks.withType<Jar>())
-    commandLine("docker", "build", "-t", "boudicca-eventcollectors", "-f", "src/main/docker/Dockerfile", ".")
+    inputs.file("src/main/docker/Dockerfile")
+    inputs.files(tasks.named("jar"))
+    dependsOn(tasks.named("assemble"))
+    commandLine("docker", "build", "-t", "localhost/museum-railway-events-eventcollectors", "-f", "src/main/docker/Dockerfile", ".")
 }
 
 tasks.withType<Jar> {
-    archiveFileName.set("boudicca-eventcollectors.jar")
+    archiveFileName.set("museum-railway-events-eventcollectors.jar")
 
     manifest {
-        attributes["Main-Class"] = "events.boudicca.eventcollector.BoudiccaEventCollectorsKt"
+        attributes["Main-Class"] = "at.museumrailwayevents.eventcollectors.MuseumRailwayEventCollectorsKt"
     }
 
     duplicatesStrategy = DuplicatesStrategy.EXCLUDE
