@@ -1,4 +1,4 @@
-package at.museumsbahnevents.model.conventions
+package at.museumrailwayevents.model.conventions
 
 // unfortunately these values have to be manually copied to javascript code
 // remember this when editing any values

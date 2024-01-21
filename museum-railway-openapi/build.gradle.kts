@@ -13,15 +13,12 @@ plugins {
     id("org.openapi.generator") version "7.2.0"
 }
 
-group = "at.museumsbahnen"
-version = "0.1.1"
-
 repositories {
     mavenCentral()
 }
 
 openApiGenerate {
-    inputSpec.set("${project.projectDir}/src/main/resources/swagger.yaml")
+    inputSpec.set("${project.projectDir}/src/main/resources/museum-railway-backend.yaml")
     outputDir.set("${project.projectDir}/src/main/generated/typescript")
     generatorName.set("typescript-axios")
     configOptions.putAll(

@@ -1,8 +1,8 @@
-package at.museumsbahnevents.controller
+package at.museumrailwayevents.controller
 
-import at.museumsbahnevents.api.OperatorsApi
-import at.museumsbahnevents.model.MuseumOperator
-import at.museumsbahnevents.service.DataLoaderService
+import at.museumrailwayevents.api.OperatorsApi
+import at.museumrailwayevents.model.MuseumOperator
+import at.museumrailwayevents.service.DataLoaderService
 import org.springframework.web.bind.annotation.RestController
 
 

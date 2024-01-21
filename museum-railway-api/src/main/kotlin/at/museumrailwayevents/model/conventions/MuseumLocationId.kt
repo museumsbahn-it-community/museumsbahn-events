@@ -1,4 +1,4 @@
-package at.museumsbahnevents.model.conventions
+package at.museumrailwayevents.model.conventions
 
 object MuseumLocationId {
     const val PBV = "pbv"

@@ -1,9 +1,9 @@
-package at.museumsbahnevents.service
+package at.museumrailwayevents.service
 
-import at.museumsbahnevents.model.Location
-import at.museumsbahnevents.model.MuseumLocation
-import at.museumsbahnevents.model.MuseumOperator
-import at.museumsbahnevents.model.MuseumType
+import at.museumrailwayevents.model.Location
+import at.museumrailwayevents.model.MuseumLocation
+import at.museumrailwayevents.model.MuseumOperator
+import at.museumrailwayevents.model.MuseumType
 import mu.KotlinLogging
 import org.springframework.stereotype.Service
 import java.io.File

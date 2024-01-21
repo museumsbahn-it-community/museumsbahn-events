@@ -1,0 +1,133 @@
+---
+swagger: "2.0"
+info:
+  version: "0.1.0"
+  title: "museum-railway-backend"
+tags:
+- name: "Museum Railway Events Locations API"
+- name: "Museum Railway Events Operators API"
+paths:
+  /api/location:
+    get:
+      tags:
+      - "Museum Railway Events Locations API"
+      operationId: "allLocations"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "operatorId"
+        in: "query"
+        required: true
+        type: "string"
+      responses:
+        "200":
+          description: "successful operation"
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/MuseumLocation"
+  /api/operator:
+    get:
+      tags:
+      - "Museum Railway Events Operators API"
+      operationId: "allOperators"
+      produces:
+      - "application/json"
+      parameters: []
+      responses:
+        "200":
+          description: "successful operation"
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/MuseumOperator"
+definitions:
+  Location:
+    type: "object"
+    required:
+    - "city"
+    - "country"
+    - "lat"
+    - "lon"
+    - "state"
+    - "street"
+    - "zipCode"
+    properties:
+      lat:
+        type: "number"
+        format: "float"
+      lon:
+        type: "number"
+        format: "float"
+      country:
+        type: "string"
+      state:
+        type: "string"
+      street:
+        type: "string"
+      city:
+        type: "string"
+      zipCode:
+        type: "string"
+  MuseumLocation:
+    type: "object"
+    required:
+    - "description"
+    - "eventCollectionNotPossibleReason"
+    - "eventCollectorType"
+    - "imageName"
+    - "location"
+    - "locationId"
+    - "name"
+    - "operatorId"
+    - "type"
+    - "webUrl"
+    properties:
+      name:
+        type: "string"
+      type:
+        type: "string"
+        enum:
+        - "Museum"
+        - "ModelRailway"
+        - "Station"
+        - "Event"
+        - "RailLine"
+      operatorId:
+        type: "string"
+      locationId:
+        type: "string"
+      webUrl:
+        type: "string"
+      description:
+        type: "string"
+      imageName:
+        type: "string"
+      eventCollectorType:
+        type: "string"
+      eventCollectionNotPossibleReason:
+        type: "string"
+      location:
+        $ref: "#/definitions/Location"
+  MuseumOperator:
+    type: "object"
+    required:
+    - "description"
+    - "identifier"
+    - "imageName"
+    - "location"
+    - "name"
+    - "webUrl"
+    properties:
+      name:
+        type: "string"
+      identifier:
+        type: "string"
+      webUrl:
+        type: "string"
+      description:
+        type: "string"
+      imageName:
+        type: "string"
+      location:
+        $ref: "#/definitions/Location"

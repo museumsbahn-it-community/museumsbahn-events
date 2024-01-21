@@ -1,6 +1,6 @@
-package at.museumsbahnevents.controller
+package at.museumrailwayevents.controller
 
-import at.museumsbahnevents.service.DataLoaderService
+import at.museumrailwayevents.service.DataLoaderService
 import io.swagger.annotations.Api
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestMapping

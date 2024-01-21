@@ -1,4 +1,4 @@
-package at.museumsbahnevents.model
+package at.museumrailwayevents.model
 
 data class MuseumOperator(
     val name: String,

@@ -1,4 +1,4 @@
-package at.museumsbahnevents.model
+package at.museumrailwayevents.model
 
 enum class MuseumType {
     Museum,

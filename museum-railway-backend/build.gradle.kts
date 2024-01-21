@@ -1,7 +1,10 @@
 plugins {
+    id("org.springframework.boot")
+    id("io.spring.dependency-management")
+    id("io.cloudflight.autoconfigure.swagger-api-configure")
     kotlin("jvm")
-    kotlin("plugin.allopen")
-    id("io.quarkus")
+    kotlin("plugin.spring")
+    kotlin("kapt")
 }
 
 repositories {
@@ -9,42 +12,31 @@ repositories {
     mavenLocal()
 }
 
-val quarkusPlatformGroupId: String by project
-val quarkusPlatformArtifactId: String by project
-val quarkusPlatformVersion: String by project
-
 dependencies {
-    implementation(enforcedPlatform("${quarkusPlatformGroupId}:${quarkusPlatformArtifactId}:${quarkusPlatformVersion}"))
     implementation(project(":museum-railway-api"))
+    implementation(platform(libs.cloudflight.platform.spring.bom))
+    annotationProcessor(platform(libs.cloudflight.platform.spring.bom))
+    kapt(platform(libs.cloudflight.platform.spring.bom))
     implementation("io.github.microutils:kotlin-logging-jvm:2.0.11")
-    implementation("io.quarkus:quarkus-resteasy-reactive-jackson")
-    implementation("io.quarkus:quarkus-smallrye-openapi")
-    implementation("io.quarkus:quarkus-resteasy-reactive")
-    implementation("io.quarkus:quarkus-kotlin")
-    implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
-    implementation("io.quarkus:quarkus-arc")
-    testImplementation("io.quarkus:quarkus-junit5")
-    testImplementation("io.rest-assured:rest-assured")
+    implementation("org.springframework.boot:spring-boot-starter-security")
+    implementation("org.springframework.boot:spring-boot-starter-web")
+    implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
+    implementation("org.jetbrains.kotlin:kotlin-reflect")
+    implementation("io.swagger:swagger-annotations")
 }
 
-group = "at.museumsbahnen"
-version = "1.0-SNAPSHOT"
-
-java {
-    sourceCompatibility = JavaVersion.VERSION_21
-    targetCompatibility = JavaVersion.VERSION_21
-}
-
-tasks.withType<Test> {
-    systemProperty("java.util.logging.manager", "org.jboss.logmanager.LogManager")
-}
-allOpen {
-    annotation("jakarta.ws.rs.Path")
-    annotation("jakarta.enterprise.context.ApplicationScoped")
-    annotation("io.quarkus.test.junit.QuarkusTest")
+kotlin {
+    jvmToolchain(21)
 }
 
 tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
     kotlinOptions.jvmTarget = JavaVersion.VERSION_21.toString()
     kotlinOptions.javaParameters = true
+}
+
+task<Exec>("imageBuild") {
+    inputs.file("src/main/docker/Dockerfile")
+    inputs.files(tasks.named("bootJar"))
+    dependsOn(tasks.named("assemble"))
+    commandLine("docker", "build", "-t", "localhost/museum-railway-events-backend", "-f", "src/main/docker/Dockerfile", ".")
 }
