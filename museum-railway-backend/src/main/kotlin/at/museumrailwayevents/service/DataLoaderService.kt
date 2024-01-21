@@ -33,8 +33,9 @@ class DataLoaderService {
 
     private fun loadMuseumOperators(): List<MuseumOperator> {
         val classLoader = javaClass.getClassLoader()
-        val resource = classLoader.getResource(MUSEUM_OPERATORS_FILE)
-        val reader = File(resource.file).bufferedReader()
+        val resource = classLoader.getResource(MUSEUM_OPERATORS_FILE)?.openStream()
+        requireNotNull(resource) {"could not load museum operators resource"}
+        val reader = resource.bufferedReader()
         reader.readLine() // skip header
         val operators = reader.lineSequence()
             .filter { it.isNotBlank() }.map { line ->
@@ -46,8 +47,9 @@ class DataLoaderService {
 
     private fun loadMuseumLocations(): List<MuseumLocation> {
         val classLoader = javaClass.getClassLoader()
-        val resource = classLoader.getResource(MUSEUM_LOCATIONS_FILE)
-        val reader = File(resource.file).bufferedReader()
+        val resource = classLoader.getResource(MUSEUM_LOCATIONS_FILE)?.openStream()
+        requireNotNull(resource) {"could not load museum locations resource"}
+        val reader = resource.bufferedReader()
         reader.readLine() // skip header
         val locations = reader.lineSequence()
             .filter { it.isNotBlank() }.map { line ->
