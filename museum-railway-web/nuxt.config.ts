@@ -8,6 +8,7 @@ export default defineNuxtConfig({
     modules: [
         '@nuxt/content',
         '@pinia/nuxt',
+        '@nuxtjs/device',
         'nuxt-primevue',
     ],
     vite: {
