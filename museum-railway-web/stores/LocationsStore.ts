@@ -21,6 +21,16 @@ export const useLocationsStore = defineStore('locations', {
 			const mappedStates = state.locations.map((value) => value.location.state);
 			return [...new Set(mappedStates)].sort((a,b) => a.localeCompare(b));
 		},
+		locationById(state: LocationsState): MuseumLocation | undefined {
+			return (locationId: string) => {
+				const location = state.locations.filter((location) => location.locationId === locationId);
+				if (location.length > 0) {
+					return location[0];
+				} else {
+					return undefined;
+				}
+			}
+		}
 	},
 	actions: {
 		async loadLocations() {

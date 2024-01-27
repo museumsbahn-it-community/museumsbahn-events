@@ -3,28 +3,27 @@
     <div class="flex flex-row h-full">
       <ScrollPanel class="flex-column h-full w-4">
         <div v-for="location in locations">
-          <Panel collapsed toggleable>
+          <Panel>
             <template #header>
               <div class="flex flex-column w-8">
                 <span class="font-bold">
                 {{ location.name }}
                 </span>
-                <div class="flex align-items-center m-1 text-sm">
-                  <span class="material-icons-outlined">location_on</span> {{ location.location.city }},
-                  {{ location.location.state }}
-                </div>
               </div>
             </template>
             <template #icons>
               <button class="p-panel-header-icon p-link mr-2">
-                <span class="pi pi-info-circle"></span>
-              </button>
-              <button class="p-panel-header-icon p-link mr-2">
                 <span class="pi pi-map"></span>
+              </button>
+              <button class="p-panel-header-icon p-link mr-2" @click="openLocationDetails(location.locationId)">
+                <span class="pi pi-info-circle"></span>
               </button>
             </template>
             <p>
-              {{ location.description }}
+              <div class="flex align-items-center m-1 text-sm">
+                <span class="material-icons-outlined">location_on</span> {{ location.location.city }},
+                {{ location.location.state }}
+              </div>
               <i class="pi pi-globe"/> <a href="{{location.webUrl}}">{{ location.webUrl }}</a>
             </p>
           </Panel>
@@ -44,9 +43,15 @@
 </template>
 
 <script setup lang="ts">
+
 const locationsStore = useLocationsStore();
-const locations = ref<ApiClient.MuseumLocation[]>([]);
+const locations = ref<MuseumLocation[]>([]);
 const mapContainer = ref();
+const router = useRouter();
+
+function openLocationDetails(locationId: string) {
+  router.push({name: 'locationDetails', params: {locationId}});
+}
 
 onMounted(mounted);
 

@@ -1,10 +1,16 @@
+<style lang="scss">
+/* hide the opposite side of the timeline */
+.p-timeline-event-opposite {
+  display: none;
+}
+</style>
 <template>
-  <div class="flex flex-column md:flex-row m-2">
+  <div class="flex flex-column md:flex-row m-2 w-full">
     <InlineMessage severity="warn"> Achtung! Die Daten werden automatisch erfasst und nicht manuell geprüft.
       Abfahrtszeiten und aktuelle Informationen immer auf den Webseiten der jeweiligen Veranstalter kontrollieren!
     </InlineMessage>
   </div>
-  <div class="flex flex-column md:flex-row">
+  <div class="flex flex-column md:flex-row" v-if="showFilters">
     <MultiSelect v-model="selectedStates"
                  display="chip"
                  :options="states"
@@ -35,7 +41,7 @@
                   }}</p>
               </template>
               <template #content>
-                <div class="flex align-items-end w-full">
+                <div class="flex align-items-end w-full" v-if="showDetailsButton">
                   <div class="flex-grow-1"></div>
                   <Button class="dark-text" @click="selectEvent(slotProps.item)" text>Details</Button>
                 </div>
@@ -57,7 +63,10 @@ import { eventKey } from '~/model/util.ts';
 const EVENT_SELECTED_TOKEN = 'eventSelected';
 const emit = defineEmits([EVENT_SELECTED_TOKEN]);
 const props = defineProps<{
-  highlightedEvent: MuseumEvent | undefined
+  highlightedEvent: MuseumEvent | undefined,
+  locationIdFilter: string | undefined,
+  showFilters: boolean,
+  showDetailsButton: boolean,
 }>();
 
 const eventsStore = useEventsStore();
@@ -81,7 +90,7 @@ const groupedEvents = computed(() => {
   const events = eventsStore.filteredEventsGroupedByMonth(startDateFilter,
       endDateFilter,
       stateFilter,
-      undefined,
+      props.locationIdFilter,
       undefined);
   if (events.length > 0) {
     selectedEvent.value = events[0].events[0];
