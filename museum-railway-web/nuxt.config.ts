@@ -9,6 +9,7 @@ export default defineNuxtConfig({
         '@nuxt/content',
         '@pinia/nuxt',
         '@nuxtjs/device',
+        'nuxt-viewport',
         'nuxt-primevue',
     ],
     vite: {

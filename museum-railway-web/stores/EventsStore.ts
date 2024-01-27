@@ -4,7 +4,7 @@ import { ResultDTO } from 'boudicca-search-api-client';
 import { AxiosResponse } from 'axios';
 import { MuseumEvent } from '../model/museumEvent';
 import { useLocationsStore } from './LocationsStore';
-import { createLocationMap, mapEntriesToEvents } from '../model/util';
+import { createLocationMap, eventKey, mapEntriesToEvents } from '../model/util';
 import { format, isAfter, isBefore } from 'date-fns';
 import { de } from 'date-fns/locale/de';
 import {toRaw} from 'vue'
@@ -117,6 +117,12 @@ export const useEventsStore = defineStore('events', {
 				return groupEventsByMonth(filteredEvents);
 			};
 		},
+		getEventByKey: (state: EventsState) => {
+			return (key: string): MuseumEvent | undefined => {
+				let museumEvents: MuseumEvent | undefined = state.queriedEvents.filter((event) => eventKey(event) === key);
+				return museumEvents[0];
+			}
+		}
 	},
 	actions: {
 		async loadEventsWithLocations() {

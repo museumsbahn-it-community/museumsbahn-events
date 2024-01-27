@@ -21,8 +21,6 @@ export function mapEntriesToEvents(entries: Entry[], locations: LocationMap): Mu
 		const museumLocation = locations[locationId];
 		const url = value[SemanticKeys.SOURCES];
 
-		console.log(url)
-
 		return {
 			name: value[SemanticKeys.NAME],
 			date: new Date(value[SemanticKeys.STARTDATE]),
@@ -34,6 +32,13 @@ export function mapEntriesToEvents(entries: Entry[], locations: LocationMap): Mu
 			locomotiveType: value[CommonKeys.LOCOMOTIVE_TYPE],
 		}
 	})
+}
 
-
+export function eventKey(event: MuseumEvent): string {
+	const escapedName = event.name.trim()
+		.replace(/\s+/g, '-') // replace whitespace with dash
+		.replace(/[^0-9a-zäöüÄÖÜ_-]/gi, '') // remove non alphanum
+		.toLowerCase();
+	const dateString = event.date.toISOString().replace(/:/g, '_'); // replace ':' with _
+	return `${dateString}-${escapedName}`;
 }

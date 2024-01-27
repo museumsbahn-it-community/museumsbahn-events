@@ -38,6 +38,7 @@
     "eslint": "^8.56.0",
     "eslint-import-resolver-typescript": "^3.6.1",
     "nuxt-primevue": "^0.2.2",
+    "nuxt-viewport": "^2.1.4",
     "sass": "^1.68.0",
     "sass-loader": "^13.3.2"
   }

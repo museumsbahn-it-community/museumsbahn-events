@@ -52,14 +52,16 @@
 </template>
 <script setup lang="ts">
 import { MuseumEvent } from '~/model/museumEvent.ts';
+import { eventKey } from '~/model/util.ts';
 
 const EVENT_SELECTED_TOKEN = 'eventSelected';
 const emit = defineEmits([EVENT_SELECTED_TOKEN]);
-const props = defineProps({highlightedEvent: MuseumEvent});
+const props = defineProps<{
+  highlightedEvent: MuseumEvent | undefined
+}>();
 
 const eventsStore = useEventsStore();
 const locationsStore = useLocationsStore();
-
 const selectedEvent = ref<undefined | MuseumEvent>(undefined);
 
 const selectedStates = ref<{
@@ -87,12 +89,9 @@ const groupedEvents = computed(() => {
   return events;
 });
 
-onMounted(loadData);
-
-async function loadData(): Promise<void> {
-  await eventsStore.loadEventsWithLocations();
+computed(() => {
   states.value = locationsStore.stateList.map((state) => ({name: state, code: state}));
-}
+})
 
 function clearFilters(): void {
   selectedStates.value = [];
@@ -100,7 +99,7 @@ function clearFilters(): void {
 }
 
 function isHighlighted(value: MuseumEvent): boolean {
-  return props.highlightedEvent != undefined && toRaw(value) == toRaw(props.highlightedEvent);
+  return props.highlightedEvent != undefined && eventKey(value) == eventKey(props.highlightedEvent);
 }
 
 function selectEvent(value: MuseumEvent): void {
