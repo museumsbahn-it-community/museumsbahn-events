@@ -1,7 +1,7 @@
 <template>
   <div class="no-scroll-page">
     <div class="flex flex-row h-full">
-      <ScrollPanel class="flex-column h-full w-4">
+      <ScrollPanel class="flex-column h-full lg:w-4 w-full">
         <div v-for="location in locations">
           <Panel>
             <template #header>
@@ -30,23 +30,17 @@
           <div class="h-1rem"/>
         </div>
       </ScrollPanel>
-      <div class="flex-grow h-full w-full ml-5">
-        <div
-            ref="mapContainer"
-            class="flex-grow-1 h-full w-full map-container"
-        >
-          map
-        </div>
+      <div class="flex-grow h-full w-full ml-5" v-if="viewport.isGreaterThan('tablet')">
+        <LocationMap :locations="locations"></LocationMap>
       </div>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-
+const viewport = useViewport();
 const locationsStore = useLocationsStore();
 const locations = ref<MuseumLocation[]>([]);
-const mapContainer = ref();
 const router = useRouter();
 
 function openLocationDetails(locationId: string) {
@@ -56,29 +50,7 @@ function openLocationDetails(locationId: string) {
 onMounted(mounted);
 
 async function mounted(): Promise<void> {
-  const options: L.MapOptions = {
-    center: L.latLng(47.609541, 13.784662),
-    zoom: 7,
-  };
-  const locationMap = L.map(mapContainer.value, options);
-  L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
-    maxZoom: 19,
-    attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>',
-  }).addTo(locationMap);
-
   await locationsStore.loadLocations();
   locations.value = locationsStore.allLocations;
-
-  locations.value.forEach((location) => {
-    const lat = location.location.lat;
-    const lon = location.location.lon;
-
-    if (lat != undefined && lon != undefined) {
-      const marker = L.marker([lat, lon])
-      marker.bindPopup(`<b>${location.name}</b><br>${location.type}`)
-      marker.addTo(locationMap);
-
-    }
-  });
 }
 </script>

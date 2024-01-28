@@ -1,27 +1,36 @@
+<style>
+.p-menubar-root-list {
+  right: 0;
+  left: initial !important;
+  width: auto;
+}
+</style>
 <script setup lang="ts">
+const viewport = useViewport();
 const items: MenuItem[] = [
   {label: 'News', route: '/'},
   {label: 'Locations', route: '/locations'},
+  {label: 'Map', route: '/locationMap', visible: () => viewport.isLessThan('tablet')},
   {label: 'Events', route: '/events'},
   {label: 'About', route: '/about'},
 ];
+
 </script>
 <template>
   <header class="navbar">
-    <div class="flex flex-row align-items-center">
+    <div class="flex flex-row align-items-center w-full">
       <div class="flex flex-column">
         <h1 class="m-0">
           museumsbahn-events.at
         </h1>
         <span class="text-sm">Alle Infos zu Museumsbahnen in Österreich</span>
       </div>
+      <div class="flex-grow-1"></div>
       <Menubar
           class="menubar borderless-menubar"
           :model="items"
+          [style.textAlign]="'right'"
       >
-        <template #start>
-        </template>
-
         <template #item="{ item, props, hasSubmenu }">
           <router-link
               v-if="item.route"
@@ -55,7 +64,6 @@ const items: MenuItem[] = [
           </a>
         </template>
       </Menubar>
-      <div class="flex-grow-1"></div>
     </div>
   </header>
 </template>
