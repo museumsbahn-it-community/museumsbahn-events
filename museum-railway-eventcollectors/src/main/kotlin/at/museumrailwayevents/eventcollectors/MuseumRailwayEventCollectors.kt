@@ -1,6 +1,6 @@
-package at.museumsbahnevents.eventcollectors
+package at.museumrailwayevents.eventcollectors
 
-import at.museumsbahnevents.eventcollectors.collectors.*
+import at.museumrailwayevents.eventcollectors.collectors.*
 import base.boudicca.api.eventcollector.EventCollectorScheduler
 
 fun main() {
@@ -10,5 +10,6 @@ fun main() {
         .addEventCollector(ProBahnVorarlbergCollector())
         .addEventCollector(RheinbähnleCollector())
         .addEventCollector(WälderbähnleCollector())
+        .startWebUi()
         .run()
 }

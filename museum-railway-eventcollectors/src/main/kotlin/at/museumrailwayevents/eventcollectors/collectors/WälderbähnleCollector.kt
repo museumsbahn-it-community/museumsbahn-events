@@ -1,6 +1,6 @@
-package at.museumsbahnevents.eventcollectors.collectors
+package at.museumrailwayevents.eventcollectors.collectors
 
-import at.museumsbahnevents.model.conventions.CommonKeys
+import at.museumrailwayevents.model.conventions.CommonKeys
 import base.boudicca.model.Event
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Element
@@ -13,7 +13,7 @@ import java.util.*
 class WälderbähnleCollector : MuseumRailwayEventCollector(
     operatorId = "waelderbaehnle",
     locationId = "waelderbaehnle",
-    url = "https://waelderbaehnle.at/fahrplanbetrieb-preise-2022",
+    url = "https://waelderbaehnle.at/fahrplanbetrieb-preise-2024",
 ) {
     val locale = Locale.GERMAN
     val dateFormatter = getWaelderbaehnleDateFormatter(locale)

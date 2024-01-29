@@ -1,4 +1,4 @@
-package at.museumsbahnevents.eventcollectors.collectors
+package at.museumrailwayevents.eventcollectors.collectors
 
 import java.time.Month
 import java.time.format.DateTimeFormatterBuilder

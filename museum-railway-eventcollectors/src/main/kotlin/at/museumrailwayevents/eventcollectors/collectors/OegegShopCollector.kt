@@ -1,4 +1,4 @@
-package at.museumsbahnevents.eventcollectors.collectors
+package at.museumrailwayevents.eventcollectors.collectors
 
 import base.boudicca.model.Event
 import org.jsoup.Jsoup

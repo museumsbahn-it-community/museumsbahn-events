@@ -9,11 +9,11 @@ repositories {
 
 dependencies {
     implementation("org.jetbrains.kotlin:kotlin-stdlib")
-    implementation("base.boudicca:eventdb-openapi:0.0.1-SNAPSHOT")
-    implementation("base.boudicca:semantic-conventions:0.0.1-SNAPSHOT")
-    implementation("base.boudicca:eventcollector-client:0.0.1-SNAPSHOT")
+    implementation("base.boudicca:eventdb-openapi:0.1.1-SNAPSHOT")
+    implementation("base.boudicca:semantic-conventions:0.1.1-SNAPSHOT")
+    implementation("base.boudicca:eventcollector-client:0.1.1-SNAPSHOT")
     implementation("org.jsoup:jsoup:1.16.1")
-    implementation("org.mnode.ical4j:ical4j:3.2.10")
+    implementation("org.mnode.ical4j:ical4j:3.2.14")
     implementation("com.rometools:rome:2.1.0")
     implementation("com.beust:klaxon:5.6")
     implementation(project(mapOf("path" to ":museum-railway-api")))

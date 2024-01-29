@@ -1,10 +1,12 @@
-package at.museumsbahnevents.eventcollectors.collectors
+package at.museumrailwayevents.eventcollectors.collectors
 
 import base.boudicca.SemanticKeys
-import base.boudicca.api.eventcollector.EventCollector
 import base.boudicca.model.Event
 import org.jsoup.Jsoup
-import java.time.*
+import java.time.Instant
+import java.time.LocalDateTime
+import java.time.OffsetDateTime
+import java.time.ZoneId
 import java.time.format.DateTimeFormatter
 
 class RheinbähnleCollector : MuseumRailwayEventCollector(
@@ -21,7 +23,10 @@ class RheinbähnleCollector : MuseumRailwayEventCollector(
     override fun collectEvents(): List<Event> {
         val document = Jsoup.connect(url)
             .userAgent("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/114.0.0.0 Safari/537.36")
-            .header("Accept", "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7")
+            .header(
+                "Accept",
+                "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7"
+            )
             .get()
         val eventEntries = document.select("div.eb-event")
 
@@ -32,8 +37,10 @@ class RheinbähnleCollector : MuseumRailwayEventCollector(
             val description = event.select("div.eb-description-details > p").eachText().first()
             val link = event.select("div.eb-description-details > a").eachAttr("href").first()
 
-            val startTimeText = event.select("tr:contains($beginString)").select("td.eb-event-property-value").eachText().first()
-            val endTimeText = event.select("tr:contains($endString)").select("td.eb-event-property-value").eachText().first()
+            val startTimeText =
+                event.select("tr:contains($beginString)").select("td.eb-event-property-value").eachText().first()
+            val endTimeText =
+                event.select("tr:contains($endString)").select("td.eb-event-property-value").eachText().first()
 
             val startTime = OffsetDateTime.of(LocalDateTime.from(formatter.parse(startTimeText)), offset)
             val endTime = OffsetDateTime.of(LocalDateTime.from(formatter.parse(endTimeText)), offset)
@@ -59,7 +66,7 @@ class RheinbähnleCollector : MuseumRailwayEventCollector(
         }
 
 
-    return events
+        return events
     }
 
     override fun getName(): String = "Rheinbähnle Collector"

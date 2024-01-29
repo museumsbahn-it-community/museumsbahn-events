@@ -1,6 +1,6 @@
-package at.museumsbahnevents.eventcollectors.collectors
+package at.museumrailwayevents.eventcollectors.collectors
 
-import at.museumsbahnevents.model.conventions.CommonKeys
+import at.museumrailwayevents.model.conventions.CommonKeys
 import base.boudicca.SemanticKeys
 import base.boudicca.api.eventcollector.EventCollector
 import base.boudicca.model.Event
