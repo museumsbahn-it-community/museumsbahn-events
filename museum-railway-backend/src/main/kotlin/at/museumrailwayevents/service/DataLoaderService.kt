@@ -4,10 +4,9 @@ import at.museumrailwayevents.model.Location
 import at.museumrailwayevents.model.MuseumLocation
 import at.museumrailwayevents.model.MuseumOperator
 import at.museumrailwayevents.model.MuseumType
+import com.github.doyaaaaaken.kotlincsv.dsl.csvReader
 import mu.KotlinLogging
 import org.springframework.stereotype.Service
-import java.io.File
-
 
 @Service
 class DataLoaderService {
@@ -49,10 +48,10 @@ class DataLoaderService {
         val classLoader = javaClass.getClassLoader()
         val resource = classLoader.getResource(MUSEUM_LOCATIONS_FILE)?.openStream()
         requireNotNull(resource) {"could not load museum locations resource"}
-        val reader = resource.bufferedReader()
-        reader.readLine() // skip header
-        val locations = reader.lineSequence()
-            .filter { it.isNotBlank() }.map { line ->
+        val rows: List<List<String>> = csvReader().readAll(resource)
+        val rowsWithoutHeader = rows.subList(1, rows.size)
+
+        val locations = rowsWithoutHeader.map { line ->
                 parseMuseumLocation(line)
             }.toList()
 
@@ -74,9 +73,7 @@ class DataLoaderService {
         )
     }
 
-    private fun parseMuseumLocation(line: String): MuseumLocation {
-        val data = line.split(",")
-
+    private fun parseMuseumLocation(data: List<String>): MuseumLocation {
         val location = parseLocation(data, MUSEUM_LOCATION_INDEX)
 
         var type = MuseumType.Museum

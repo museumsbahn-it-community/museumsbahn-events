@@ -18,6 +18,7 @@ dependencies {
     annotationProcessor(platform(libs.cloudflight.platform.spring.bom))
     kapt(platform(libs.cloudflight.platform.spring.bom))
     implementation("io.github.microutils:kotlin-logging-jvm:2.0.11")
+    implementation("com.github.doyaaaaaken:kotlin-csv-jvm:1.9.3")
     implementation("org.springframework.boot:spring-boot-starter-security")
     implementation("org.springframework.boot:spring-boot-starter-web")
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin")

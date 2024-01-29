@@ -1,23 +1,25 @@
 name,type,operatorId,eventLocationId,webUrl,description,imageName,eventCollectorType,eventCollectionNotPossibleReason,state,street,zipCode,city,lat,lon
-ProBahn Vorarlberg Sonderfahrten,MuseumEvent,pbv ,pbv,https://probahn-vlbg.at/,,,possible,,Vorarlberg,Bahnhofstraße 48,6911,Lochau,47.5301357,9.7442811
-Rhein-Schauen | Museum und Rheinbähnle,Museum,rheinschauen,rheinschauen,https://www.rheinschauen.at/,,,possible,,Vorarlberg,Höchster Straße 4,6890,Lustenau,47.4478219,9.6610929
-ÖGEG Museum Ampflwang,Museum,oegeg,oegeg_normalspur,https://www.oegeg.at/termine/termine-normalspur-museum-lokpark-ampflwang/,,,possible,,Oberösterreich,Bahnhofstraße 29,4843,Ampflwang im Hausruckwald,48.0875873,13.5611493
-ÖGEG Steyrtalbahn,Museum,oegeg,oegeg_schmalspur,https://www.oegeg.at/schmalspur-steyrtalbahn/,,,possible,,Oberösterreich,Steyrstraße 11,4594,Waldneukirchen,47.9756717,14.2681077
-ÖGEG Schifffahrt,Museum,oegeg,oegeg_schifffahrt,https://www.oegeg.at/termine/termine-schifffahrt-dampfschiff-sch%C3%B6nbrunn/,,,possible,,Oberösterreich,Alt-Urfahr,4040,Linz,48.30995679999990,14.2838615
-Höllentalbahn,Museum,oeglb,hoellentalbahn,https://www.lokalbahnen.at/hoellentalbahn/,,,possible,,Niederösterreich,Baurat Schneider Straße 7,2650,Payerbach,47.6961235,15.8592199
-Ybbstalbahn Bergstrecke,Museum,oeglb,ybbstalbahn,https://www.lokalbahnen.at/bergstrecke/,,,possible,,Niederösterreich,Erlauftalstraße 106,3291,Gaming,47.9430164,15.1150156
-Eisenbahnmuseum Strasshof,Museum,oesek,oesek,https://eisenbahnmuseum-heizhaus.com/,,,partially possible,,Niederösterreich,Siller-Straße 123,2231,Strasshof an der Nordbahn,48.3254142,16.673053
-Bregenzerwaldbahn Museumsbahn Verein,Museum,waelderbaehnle,waelderbaehnle,https://waelderbaehnle.at/,,,possible,,Vorarlberg,Bahnhof 147,6870,Bezau,47.38211099999990,9.896595099999990
-Verein der Eisenbahnfreunde in Lienz,Museum,ebfl,ebfl,https://ebfl.at/,,,possible,,Tirol,Bahnhofsplatz 10,9900,Lienz,46.8276548,12.7714095
-Eisenbahnclub Mh.6,Museum,mh6,mh6,http://www.mh6.at/de/,,,partially possible,,Niederösterreich,Werkstättenstraße 18,3200,Ober-Grafendorf,48.15545789999990,15.539569
-SÜDBAHN Museum,Museum,sbm,sbm,https://www.suedbahnmuseum.at/,,,possible,,Steiermark,Heizhausgasse 2,8680,Mürzzuschlag,47.60842359999990,15.6803104
-Stainzer Flascherlzug,Museum,flascherlzug,flascherlzug,https://www.flascherlzug.at/,,,,,Steiermark,Bahnhofstraße 28,8510,Stainz,46.8904594,15.268861
-Taurachbahn,Museum,taurachbahn,taurachbahn,https://www.taurachbahn.eu/,,,,,Salzburg,Markt 153,5570,Mauterndorf,47.1337299,13.6817642
-Waldviertelbahn,Museum,noevog,waldviertelbahn,http://www.waldviertelbahn.at/,,,,,Niederösterreich,Bahnhofsplatz 2,3950,Gmünd,48.7649901,14.9832952
-Mariazellerbahn,Museum,noevog,mariazellerbahn,https://www.mariazellerbahn.at/,,,,,Niederösterreich,Bahnhofplatz 1,3100,St. Pölten,48.2087003,15.6247623
-Nostalgiebahnen in Kärnten,Museum,nbik,nbik_eisenbahn,https://www.nostalgiebahn.at/eisenbahn.html,,,,,Kärnten,Feldgasse 16,9300,St. Veit an der Glan,46.761681,14.3610401
-Historische Schifffahrt auf dem Wörthersee,Museum,nbik,nbik_schiff,https://www.nostalgiebahn.at/schifffahrt.html,,,,,Kärnten,Friedelstrand 1,9020,Klagenfurt,46.623191,14.2513402
-Technikmuseum Historama,Museum,nbik,nbik_historama,https://www.nostalgiebahn.at/historama.html,,,,,Kärnten,Auengasse 28,9170,Ferlach,46.517328,14.2947524
-Klagenfurter Stadtverkehrs- und Kinomuseum,Museum,nbik,nbik_verkehrsmuseum,https://www.nostalgiebahn.at/stadtverkehrsmuseum.html,,,,,Kärnten,Wilsonstraße 37,9020,Klagenfurt,46.6160861,14.2570533
-Lendcanaltramway,Museum,nbik,nbik_tram,https://www.nostalgiebahn.at/strassenbahnen.html,,,,,Kärnten,Wilsonstraße 37,9020,Klagenfurt,46.6160861,14.2570533
-Eisenbahnmuseum Schwechat,Museum,vef,ebm_schwechat,https://eisenbahnmuseum.at/,,,,"Fahrpläne nur als Bilder verfügbar daher keine Fahrzeiten",Niederösterreich,Hintere Bahngasse 2B,2320,Schwechat,48.1436713,16.4829206
+ProBahn Vorarlberg,Museum,pbv ,pbv,https://probahn-vlbg.at/,,,"Möglich, derzeit nicht umgesetzt.",,Vorarlberg,Bahnhofstraße 48,6911,Lochau,47.5301357,9.7442811
+Rhein-Schauen | Museum und Rheinbähnle,Museum,rheinschauen,rheinschauen,https://www.rheinschauen.at/,,,Aktiv,,Vorarlberg,Höchster Straße 4,6890,Lustenau,47.4478219,9.6610929
+ÖGEG Museum Ampflwang,Museum,oegeg,oegeg_normalspur,https://www.oegeg.at/termine/termine-normalspur-museum-lokpark-ampflwang/,,,Aktiv,,Oberösterreich,Bahnhofstraße 29,4843,Ampflwang im Hausruckwald,48.0875873,13.5611493
+ÖGEG Steyrtalbahn,Museum,oegeg,oegeg_schmalspur,https://www.oegeg.at/schmalspur-steyrtalbahn/,,,Aktiv,,Oberösterreich,Steyrstraße 11,4594,Waldneukirchen,47.9756717,14.2681077
+ÖGEG Schifffahrt,Museum,oegeg,oegeg_schifffahrt,https://www.oegeg.at/termine/termine-schifffahrt-dampfschiff-sch%C3%B6nbrunn/,,,Aktiv,,Oberösterreich,Alt-Urfahr,4040,Linz,48.30995679999990,14.2838615
+Höllentalbahn,Museum,oeglb,hoellentalbahn,https://www.lokalbahnen.at/hoellentalbahn/,,,not applicable,,Niederösterreich,Baurat Schneider Straße 7,2650,Payerbach,47.6961235,15.8592199
+Ybbstalbahn Bergstrecke,RailLine,oeglb,ybbstalbahn,https://www.lokalbahnen.at/bergstrecke/,,,"Möglich, derzeit nicht umgesetzt.",,Niederösterreich,Erlauftalstraße 106,3291,Gaming,47.9430164,15.1150156
+Eisenbahnmuseum Strasshof,Museum,oesek,oesek,https://eisenbahnmuseum-heizhaus.com/,,,"Möglich, derzeit nicht umgesetzt.",,Niederösterreich,Siller-Straße 123,2231,Strasshof an der Nordbahn,48.3254142,16.673053
+Bregenzerwaldbahn Museumsbahn Verein,Museum,waelderbaehnle,waelderbaehnle,https://waelderbaehnle.at/,,,Aktiv,,Vorarlberg,Bahnhof 147,6870,Bezau,47.38211099999990,9.896595099999990
+Verein der Eisenbahnfreunde in Lienz,Museum,ebfl,ebfl,https://ebfl.at/,,,"Möglich, derzeit nicht umgesetzt.",,Tirol,Bahnhofsplatz 10,9900,Lienz,46.8276548,12.7714095
+Eisenbahnclub Mh.6,Museum,mh6,mh6,http://www.mh6.at/de/,,,"Möglich, derzeit nicht umgesetzt.",,Niederösterreich,Werkstättenstraße 18,3200,Ober-Grafendorf,48.15545789999990,15.539569
+SÜDBAHN Museum,Museum,sbm,sbm,https://www.suedbahnmuseum.at/,,,"Möglich, derzeit nicht umgesetzt.",,Steiermark,Heizhausgasse 2,8680,Mürzzuschlag,47.60842359999990,15.6803104
+Stainzer Flascherlzug,RailLine,flascherlzug,flascherlzug,https://www.flascherlzug.at/,,,"Möglich, derzeit nicht umgesetzt.",,Steiermark,Bahnhofstraße 28,8510,Stainz,46.8904594,15.268861
+Taurachbahn,Museum,taurachbahn,taurachbahn,https://www.taurachbahn.eu/,,,"Möglich, derzeit nicht umgesetzt.",,Salzburg,Markt 153,5570,Mauterndorf,47.1337299,13.6817642
+Waldviertelbahn,RailLine,noevog,waldviertelbahn,http://www.waldviertelbahn.at/,,,"Möglich, derzeit nicht umgesetzt.",,Niederösterreich,Bahnhofsplatz 2,3950,Gmünd,48.7649901,14.9832952
+Mariazellerbahn,RailLine,noevog,mariazellerbahn,https://www.mariazellerbahn.at/,,,"Möglich, derzeit nicht umgesetzt.",,Niederösterreich,Bahnhofplatz 1,3100,St. Pölten,48.2087003,15.6247623
+Nostalgiebahnen in Kärnten,Museum,nbik,nbik_eisenbahn,https://www.nostalgiebahn.at/eisenbahn.html,,,"Möglich, derzeit nicht umgesetzt.",,Kärnten,Feldgasse 16,9300,St. Veit an der Glan,46.761681,14.3610401
+Historische Schifffahrt auf dem Wörthersee,Museum,nbik,nbik_schiff,https://www.nostalgiebahn.at/schifffahrt.html,,,"Möglich, derzeit nicht umgesetzt.",,Kärnten,Friedelstrand 1,9020,Klagenfurt,46.623191,14.2513402
+Technikmuseum Historama,Museum,nbik,nbik_historama,https://www.nostalgiebahn.at/historama.html,,,"Möglich, derzeit nicht umgesetzt.",,Kärnten,Auengasse 28,9170,Ferlach,46.517328,14.2947524
+Klagenfurter Stadtverkehrs- und Kinomuseum,Museum,nbik,nbik_verkehrsmuseum,https://www.nostalgiebahn.at/stadtverkehrsmuseum.html,,,"Möglich, derzeit nicht umgesetzt.",,Kärnten,Wilsonstraße 37,9020,Klagenfurt,46.6160861,14.2570533
+Lendcanaltramway,Museum,nbik,nbik_tram,https://www.nostalgiebahn.at/strassenbahnen.html,,,"Möglich, derzeit nicht umgesetzt.",,Kärnten,Wilsonstraße 37,9020,Klagenfurt,46.6160861,14.2570533
+Eisenbahnmuseum Schwechat,Museum,vef,ebm_schwechat,https://eisenbahnmuseum.at/,,,Nicht möglich.,Fahrpläne nur als Bilder verfügbar daher keine Fahrzeiten,Niederösterreich,Hintere Bahngasse 2B,2320,Schwechat,48.1436713,16.4829206
+Traunseetram Nostalgie,RailLine,sth,traunseetram,https://www.stern-verkehr.at/portfolio/strassenbahnnostalgie-2/,,,"Möglich, derzeit nicht umgesetzt.",,Oberösterreich,Bahnhofstraße 64,4810,Gmunden,47.926011,13.784156
+Atterseebahn Nostalgie,RailLine,sth,atterseebahn,https://www.stern-verkehr.at/portfolio/nostalgiezug/,,,"Möglich, derzeit nicht umgesetzt.",,Oberösterreich,Nußdorferstraße 8,4864,Attersee am Attersee,47.914432,13.533916
