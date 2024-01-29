@@ -1,5 +1,5 @@
 <style>
-.p-card-title{
+.p-card-title {
   font-size: 1.25rem;
 }
 
@@ -9,8 +9,12 @@
   object-fit: cover;
 }
 
-.header-icon{
+.header-icon {
   font-size: 1.75rem;
+}
+
+.collectorIndicatorBar {
+  width: 8px;
 }
 
 </style>
@@ -38,10 +42,16 @@
             </template>
             <template #content>
               <div class="mx-3 mb-3">
-<!--              <Image class="banner-image" :src="imageLocation(location.locationId)"></Image>-->
+                <!--              <Image class="banner-image" :src="imageLocation(location.locationId)"></Image>-->
                 <div class="flex align-items-center text-sm my-2">
                   <span class="material-icons-outlined">location_on</span> {{ location.location.city }},
                   {{ location.location.state }}
+                </div>
+                <div class="my-4">
+                  <EventCollectorIndicator :location="location"></EventCollectorIndicator>
+                </div>
+                <div class="my-4">
+                  <span>{{ eventCount(location.locationId) }} Veranstaltungen gefunden</span>
                 </div>
                 <div class="flex align-items-end w-full">
                   <div class="flex-grow-1"></div>
@@ -62,8 +72,12 @@
 </template>
 
 <script setup lang="ts">
+import { Colors } from '~/app/colors.ts';
+import EventCollectorIndicator from '~/components/EventCollectorIndicator.vue';
+
 const viewport = useViewport();
 const locationsStore = useLocationsStore();
+const eventsStore = useEventsStore();
 const locations = ref<MuseumLocation[]>([]);
 const highlightedLocation = ref<MuseumLocation | undefined>(undefined);
 const router = useRouter();
@@ -80,13 +94,19 @@ function showLocationOnMap(location: MuseumLocation) {
   }
 }
 
+function eventCount(locationId: string): number {
+  return eventsStore.filteredEvents(undefined, undefined, undefined, locationId).length;
+}
+
+
+
 // TODO: add image locations at later date
 // const imageLocation = (locationId: string): string => `/img/locations/${locationId}.jpg`
 
 onMounted(mounted);
 
 async function mounted(): Promise<void> {
-  await locationsStore.loadLocations();
+  await eventsStore.loadEventsWithLocations();
   locations.value = locationsStore.allLocations;
 }
 </script>

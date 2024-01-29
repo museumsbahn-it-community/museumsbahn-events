@@ -122,7 +122,7 @@ export const useEventsStore = defineStore('events', {
 				let museumEvents: MuseumEvent | undefined = state.queriedEvents.filter((event) => eventKey(event) === key);
 				return museumEvents[0];
 			}
-		}
+		},
 	},
 	actions: {
 		async loadEventsWithLocations() {

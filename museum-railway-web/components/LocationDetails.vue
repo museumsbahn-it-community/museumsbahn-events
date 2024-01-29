@@ -5,11 +5,15 @@
         <h2>{{ museumLocation.name }}</h2>
       </template>
       <template #content>
-        <div class="flex align-items-center">
+        <div class="flex align-items-center mb-4">
           <span class="material-icons-outlined">location_on</span> {{ museumLocation.location.city }}
         </div>
 
-        <div class="mx-2 my-5">
+        <div class="my-4">
+          <EventCollectorIndicator :location="museumLocation"></EventCollectorIndicator>
+        </div>
+
+        <div class="mx-2 my-4">
           {{ museumLocation.description }}
         </div>
 
