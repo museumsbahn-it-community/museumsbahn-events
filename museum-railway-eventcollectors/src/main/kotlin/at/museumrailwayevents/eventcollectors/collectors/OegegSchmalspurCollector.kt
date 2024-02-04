@@ -1,5 +1,11 @@
 package at.museumrailwayevents.eventcollectors.collectors
 
+import at.museumrailwayevents.eventcollectors.collectors.dateParser.DateParser
+import at.museumrailwayevents.eventcollectors.collectors.dateParser.DateParser.convertMonthNameToMonth
+import at.museumrailwayevents.eventcollectors.collectors.dateParser.DateParser.dateRegex
+import at.museumrailwayevents.eventcollectors.collectors.dateParser.DateParser.monthWrittenRegex
+import at.museumrailwayevents.eventcollectors.collectors.dateParser.DateParser.yearRegex
+import at.museumrailwayevents.eventcollectors.collectors.dateParser.DateParser.zoneOffset
 import base.boudicca.model.Event
 import org.jsoup.Jsoup
 import java.time.*
@@ -10,7 +16,7 @@ class OegegSchmalspurCollector : MuseumRailwayEventCollector(
     locationId = "oegeg_schmalspur",
     url = "https://www.oegeg.at/termine/termine-schmalspur-steyrtalbahn/"
 ) {
-    private val eventTitle = "Steyrtalbahn Fahrt"
+    private val eventTitle = "Steyrtal Museumsbahn"
 
     override fun collectEvents(): List<Event> {
         val document = Jsoup.connect(url).get()
@@ -23,7 +29,7 @@ class OegegSchmalspurCollector : MuseumRailwayEventCollector(
         val zuglokKeyword = "Zuglok"
         eventBoxes.forEach { eventBox ->
             val dateString = eventBox.select("span").eachText().firstOrNull {
-                dateRegex.containsMatchIn(it) && monthRegex.containsMatchIn(it.lowercase()) && !it.contains(
+                dateRegex.containsMatchIn(it) && monthWrittenRegex.containsMatchIn(it.lowercase()) && !it.contains(
                     zuglokKeyword
                 )
             }
@@ -37,24 +43,11 @@ class OegegSchmalspurCollector : MuseumRailwayEventCollector(
                 return@forEach
             }
 
-            val years = yearRegex.findAll(dateString)
-            assert(years.count() == 0 || years.count() == 1)
-            val year = if (years.count() == 0) {
-                OffsetDateTime.now().year
-                // if no year is given, then default to the current year
-                // this implementation might cause trouble if executed on 31st Dec or 1st Jan, but otherwise should work fine
-            } else {
-                years.first().value.trim().toInt()
-            }
 
-            val months = monthRegex.findAll(dateString.lowercase())
-            assert(months.count() == 1)
-            val monthName = months.first().value.trim()
-            val month = convertMonthNameToMonth(monthName, Locale("de", "DE"))
-
+            val year = DateParser.findSingleYearOrAssumeDefault(dateString)
+            val month = DateParser.findSingleWrittenMonth(dateString)
             val dates = dateRegex.findAll(dateString).toList()
 
-            val offset = ZoneId.of("Europe/Vienna").rules.getOffset(Instant.now())
             dates.forEach { dateMatch ->
                 val dateValue = dateMatch.mapToDateValue()
                 val startDate =
@@ -63,7 +56,7 @@ class OegegSchmalspurCollector : MuseumRailwayEventCollector(
                         month.value,
                         dateValue,
                         0, 0, 0, 0,
-                        offset
+                        zoneOffset,
                     )
                 val additionalData = mutableMapOf<String, String>()
 

@@ -25,6 +25,7 @@ class WälderbähnleCollector : MuseumRailwayEventCollector(
     override fun collectEvents(): List<Event> {
         // page is named 2022, but is actually 2023
         // 2024-01-02: ...and 2024 as well ;)
+        // 2024-01-21: oh damn! They renamed it. (╯°□°）╯︵ ┻━┻
         val document = Jsoup.connect(url).get()
 
         val timetables = document.select("div.timetable-wrapper")
