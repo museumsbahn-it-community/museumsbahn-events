@@ -19,14 +19,14 @@
 
 </style>
 <template>
-  <div class="no-scroll-page">
-    <div class="flex flex-row h-full">
+  <div class="no-scroll-page p-3">
+    <div class="flex flex-row h-full bg-verkehrsrot p-3 rounded-corners-small">
       <ScrollPanel class="flex-column h-full lg:w-4 w-full">
         <div v-for="location in locations">
           <Card>
             <template #title>
               <div class="flex flex-row mx-3 mt-3">
-                <span class="w-9">
+                <span class="w-8">
                 {{ location.name }}
                 </span>
                 <div class="flex-grow-1"></div>

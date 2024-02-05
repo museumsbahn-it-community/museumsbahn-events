@@ -12,7 +12,9 @@ const items: MenuItem[] = [
   {label: 'Locations', route: '/locations'},
   {label: 'Map', route: '/locationMap', visible: () => viewport.isLessThan('tablet')},
   {label: 'Events', route: '/events'},
-  {label: 'About', route: '/about'},
+  {label: 'Über uns', route: '/about'},
+  {label: 'Mitmachen', route: '/participate'},
+  {label: 'Impressum', route: '/impressum'},
 ];
 
 </script>
@@ -21,7 +23,7 @@ const items: MenuItem[] = [
     <div class="flex flex-row align-items-center w-full">
       <div class="flex flex-column">
         <h1 class="m-0">
-          museumsbahn-events.at
+          museumsbahn-events.at (BETA)
         </h1>
         <span class="text-sm">Alle Infos zu Museumsbahnen in Österreich</span>
       </div>

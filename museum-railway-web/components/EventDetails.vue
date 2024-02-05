@@ -6,17 +6,17 @@ defineProps<{
 
 </script>
 <template>
-  <div>
+  <div class="bg-verkehrsrot rounded-corners-big p-5">
     <card v-if="museumEvent != undefined" class="p-5">
       <template #header>
         <h2>{{ museumEvent.name }}</h2>
       </template>
       <template #content>
-        <div class="flex align-items-center text-sm">
-          <i class="pi pi-clock m-1"/> {{ formatDate(museumEvent?.date) }}
+        <div class="flex align-items-center text-sm my-3">
+          <i class="pi pi-clock mr-2"/> {{ formatDate(museumEvent?.date) }}
         </div>
-        <div class="flex align-items-center">
-          <span class="material-icons-outlined">location_on</span> {{ museumEvent.location.name }} -
+        <div class="flex align-items-center text-sm my-3">
+          <i class="pi pi-map-marker mr-2"/> {{ museumEvent.location.name }} -
           {{ museumEvent.location.location.city }}
         </div>
 

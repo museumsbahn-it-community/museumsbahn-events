@@ -5,7 +5,7 @@ import SiteHeader from './components/SiteHeader.vue';
 <template>
   <div>
     <SiteHeader></SiteHeader>
-    <main class="content w-full">
+    <main class="content w-full sticky-content">
 
       <!-- route outlet -->
       <!-- component matched by the route will render here -->

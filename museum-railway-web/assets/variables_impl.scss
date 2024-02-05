@@ -1,0 +1,10 @@
+$border-radius-big: 30px;
+$border-radius-small: 10px;
+$navbar-height: 6rem;
+$footer-height: 2rem;
+$navbar-padding: 2rem;
+$navbar-total: calc($navbar-height);
+$min-content-height: calc(100vh - $navbar-total - $footer-height);
+$no-scroll-page-height: calc($min-content-height);
+
+$scrollbar-width: 8px;

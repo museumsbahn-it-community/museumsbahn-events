@@ -1,26 +1,7 @@
-$navbar-height: 6rem;
-$footer-height: 2rem;
-$navbar-padding: 2rem;
-$navbar-total: calc($navbar-height);
-$content-padding: 32px; // TODO: use primeng defined value and do use 0 on mobile
-$min-content-height: calc(100vh - $navbar-total - $footer-height);
-$no-scroll-page-height: calc($min-content-height - 2 * $content-padding);
+@use "./colors_impl" as colors;
+@use "./variables_impl" as variables;
 
-$color-blutorange: #ff4d2e;
-$color-elfenbein: #ffe3b3;
-$color-umbragrau: #4d4d4d;
-$color-verkehrsrot: #de2514;
-$color-achatgrau: #cccccc;
-$color-grauweiß: #f6f6f6;
-$color-ultramarinblau: #00387b;
-$color-mariazellerbraun: #5a3826;
-
-$text-color-light: $color-achatgrau;
-$text-color-dark: $color-umbragrau;
-$scrollbar-width: 8px;
-
-
-@import 'primevue/resources/themes/mdc-light-deeppurple/theme.css';
+@import './_theme.scss';
 
 .p-button {
   color: white;
@@ -29,23 +10,26 @@ $scrollbar-width: 8px;
 body {
   display: flex;
   flex-direction: column;
-  color: $color-umbragrau;
-  background: $color-verkehrsrot;
+  color: colors.$color-umbragrau;
   margin: 0;
 }
 
+a {
+  color: colors.$color-umbragrau;
+}
+
 *::-webkit-scrollbar {
-  width: $scrollbar-width;
+  width: variables.$scrollbar-width;
   background-color: #F5F5F5;
 }
 
 *::-webkit-scrollbar-thumb {
-  background-color: $color-ultramarinblau;
+  background-color: colors.$color-ultramarinblau;
 }
 
 *::-webkit-scrollbar-track {
-  -webkit-box-shadow: inset 0 0 $scrollbar-width $color-grauweiß;
-  background-color: $color-grauweiß;
+  -webkit-box-shadow: inset 0 0 variables.$scrollbar-width colors.$color-grauweiß;
+  background-color: colors.$color-grauweiß;
 }
 
 .navbar {
@@ -54,31 +38,68 @@ body {
   position: sticky;
   top: 0;
   left: 0;
-  height: $navbar-height;
+  height: variables.$navbar-height;
   width: 100%;
-  padding-left: $navbar-padding;
-  padding-right: $navbar-padding;
+  padding-left: variables.$navbar-padding;
+  padding-right: variables.$navbar-padding;
   align-items: center;
-  background: $color-grauweiß;
+  color: colors.$text-color-light;
+  background: colors.$color-umbragrau;
+}
+
+.sticky-content{
+  position: sticky;
+  top: variables.$navbar-height;
+  left: 0;
+}
+
+.foreground {
+  z-index: 1000;
+}
+
+.bg-verkehrsrot {
+  background: colors.$color-verkehrsrot;
+}
+
+.bg-grauweiss {
+  background: colors.$color-grauweiß;
+}
+
+.bg-white {
+  background: white;
+}
+
+.bg-umbragrau {
+  background: colors.$color-umbragrau;
+}
+
+.p-menuitem-link,
+.p-menubar-button {
+  color: colors.$text-color-light;
+}
+
+.p-menubar-root-list {
+  background: colors.$color-umbragrau;
 }
 
 .menubar {
-  height: $navbar-height;
+  height: variables.$navbar-height;
   margin-left: 3rem;
-  background: $color-grauweiß;
+  color: colors.$text-color-light;
+  background: colors.$color-umbragrau;
 }
 
 .light-text {
-  color: $color-grauweiß;
+  color: colors.$color-grauweiß;
 }
 
 .dark-text {
-  color: $color-umbragrau;
+  color: colors.$color-umbragrau;
 }
 
 .text-content {
-  border-radius: 4px;
-  background: $color-grauweiß;
+  border-radius: variables.$border-radius-small;
+  background: colors.$color-verkehrsrot;
 }
 
 .article-content {
@@ -86,7 +107,9 @@ body {
 }
 
 .timeline-heading {
-  color: $color-grauweiß;
+  color: colors.$text-color-dark;
+  background: colors.$color-grauweiß;
+  clip-path: polygon(15% 0, 100% 0, 85% 100%, 0 100%);
   font-weight: bold;
 }
 
@@ -94,31 +117,39 @@ body {
   border: 0;
 }
 
+.rounded-corners-small {
+  border-radius: variables.$border-radius-small;
+}
+
+
+.rounded-corners-big {
+  border-radius: variables.$border-radius-big;
+}
+
 .content {
   left: 0;
-  top: $navbar-total;
-  min-height: $min-content-height;
+  top: variables.$navbar-total;
+  min-height: variables.$min-content-height;
   width: 100%;
-  padding: $content-padding;
-  background: $color-verkehrsrot;
 }
 
 .footer {
-  height: $footer-height;
-  background: $color-umbragrau;
+  z-index: 1000; // lol :D
+  position: sticky;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: variables.$footer-height;
+  background: colors.$color-umbragrau;
 }
 
 .no-scroll-page {
-  height: $no-scroll-page-height;
-}
-
-.map-container {
-  border-radius: 10px;
+  height: variables.$no-scroll-page-height;
 }
 
 .page-heading {
-  color: $color-umbragrau;
-  background: $color-grauweiß;
+  color: colors.$color-umbragrau;
+  background: colors.$color-grauweiß;
   border-radius: 5px;
 }
 
@@ -133,18 +164,18 @@ body {
 
 .p-scrollpanel-wrapper {
   padding-right: 1px;
-  border-right: $scrollbar-width solid var(--surface-ground);
+  border-right: variables.$scrollbar-width solid var(--surface-ground);
   border-radius: 5px;
 }
 
 .p-scrollpanel-bar-y {
-  background: $color-ultramarinblau;
-  width: $scrollbar-width;
+  background: colors.$color-ultramarinblau;
+  width: variables.$scrollbar-width;
 }
 
 .p-scrollpanel-bar-y:hover {
-  background: $color-ultramarinblau;
-  width: $scrollbar-width;
+  background: colors.$color-ultramarinblau;
+  width: variables.$scrollbar-width;
 }
 
 .p-panel-header {
@@ -157,6 +188,6 @@ body {
 
 .p-card.selected > .p-card-body {
   border-radius: 4px;
-  border: 5px $color-umbragrau solid;
+  border: 5px colors.$color-umbragrau solid;
   padding: calc(0.75rem - 5px);
 }

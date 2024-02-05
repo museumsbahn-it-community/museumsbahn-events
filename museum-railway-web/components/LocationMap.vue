@@ -1,3 +1,9 @@
+<style lang="scss">
+@use "../assets/variables_impl" as variables;
+.map-container {
+  border-radius: variables.$border-radius-small;
+}
+</style>
 <template>
   <div
       ref="mapContainer"
