@@ -1,0 +1,75 @@
+version: '3'
+
+services:
+  matomo-db:
+    image: mariadb:10.11
+    command: --max-allowed-packet=64MB
+    restart: always
+    volumes:
+      - matomo-db:/var/lib/mysql:Z
+    environment:
+      - MYSQL_ROOT_PASSWORD=changeme
+      - MARIADB_AUTO_UPGRADE=1
+      - MARIADB_DISABLE_UPGRADE_BACKUP=1
+      - MYSQL_PASSWORD=matomodev
+      - MYSQL_DATABASE=matomo
+      - MYSQL_USER=matomo
+    env_file:
+      - ./dev-data/db.env
+    networks:
+      matomo:
+  matomo-app:
+    image: matomo
+    restart: always
+    volumes:
+      #     - ./config:/var/www/html/config:z
+      #     - ./logs:/var/www/html/logs:z
+      - matomo-app:/var/www/html:z
+    environment:
+      - MATOMO_DATABASE_HOST=matomo-db
+    env_file:
+      - ./dev-data/db.env
+    ports:
+      - 8100:80
+    networks:
+      matomo:
+  boudicca-eventdb:
+    image: git.twatzl.eu/twatzl/boudicca-eventdb
+    ports:
+      - "8081:8080"
+  boudicca-search:
+    image: git.twatzl.eu/twatzl/boudicca-search
+    depends_on:
+      - boudicca-eventdb
+    environment:
+      - BOUDICCA_EVENTDB_URL=http://boudicca-eventdb:8080
+      - BOUDICCA_LOCALMODE=true
+    ports:
+      - "8082:8080"
+  museum-railway-events-backend:
+    image: git.twatzl.eu/twatzl/museum-railway-events-backend
+    ports:
+      - "8080:8080"
+  museum-railway-events-eventcollectors:
+    image: git.twatzl.eu/twatzl/museum-railway-events-eventcollectors
+    depends_on:
+      - boudicca-eventdb
+    ports:
+      - "8083:8083"
+    environment:
+      - BOUDICCA_EVENTDB_URL=http://boudicca-eventdb:8080
+#  museum-railway-events-web:
+#    image: git.twatzl.eu/twatzl/museum-railway-events-web
+#    depends_on:
+#      - boudicca-eventdb
+#      - boudicca-search
+#      - museum-railway-events-backend
+#    ports:
+#      - "3000:3000"
+
+volumes:
+  matomo-db:
+  matomo-app:
+
+networks:
+  matomo:
