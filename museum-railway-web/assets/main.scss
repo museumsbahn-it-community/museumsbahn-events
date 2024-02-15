@@ -1,7 +1,6 @@
 @use "./colors_impl" as colors;
 @use "./variables_impl" as variables;
 
-@import './_theme.scss';
 
 .p-button {
   color: white;

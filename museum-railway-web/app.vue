@@ -16,6 +16,7 @@ import SiteHeader from './components/SiteHeader.vue';
 </template>
 
 <style lang="scss">
+@import 'assets/theme/theme.scss';
 @import 'primeflex/primeflex.css';
 @import 'primeicons/primeicons.css';
 @import 'leaflet/dist/leaflet.css';
