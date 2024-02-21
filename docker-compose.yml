@@ -17,8 +17,9 @@ services:
     env_file:
       - ./dev-data/db.env
     networks:
-      matomo:
+      - matomo
   matomo-app:
+    # matomo locally is only working directly and not via traefik for now
     image: matomo
     restart: always
     volumes:
@@ -30,13 +31,21 @@ services:
     env_file:
       - ./dev-data/db.env
     ports:
-      - 8100:80
+      - "8100:80"
     networks:
-      matomo:
+      - matomo
   boudicca-eventdb:
     image: git.twatzl.eu/twatzl/boudicca-eventdb
     ports:
       - "8081:8080"
+    labels:
+      - "traefik.enable=true"
+      - "traefik.docker.network=traefik-router"
+      - "traefik.http.routers.eventdb.rule=PathPrefix(`/ingest`) || PathPrefix(`/entries`)"
+      - "traefik.http.routers.eventdb.entrypoints=web"
+      - "traefik.http.services.eventdb.loadbalancer.server.port=8080"
+    networks:
+      - traefik-router
   boudicca-search:
     image: git.twatzl.eu/twatzl/boudicca-search
     depends_on:
@@ -46,26 +55,84 @@ services:
       - BOUDICCA_LOCALMODE=true
     ports:
       - "8082:8080"
+    labels:
+      - "traefik.enable=true"
+      - "traefik.docker.network=traefik-router"
+      - "traefik.http.routers.search.rule=PathPrefix(`/searchApi`)"
+      - "traefik.http.routers.search.entrypoints=web"
+      - "traefik.http.routers.search.middlewares=admin-stripprefix"
+      - "traefik.http.middlewares.admin-stripprefix.stripprefix.prefixes=/searchApi"
+      - "traefik.http.services.search.loadbalancer.server.port=8080"
+    networks:
+      - traefik-router
   museum-railway-events-backend:
     image: git.twatzl.eu/twatzl/museum-railway-events-backend
     ports:
       - "8080:8080"
+    labels:
+      - "traefik.enable=true"
+      - "traefik.docker.network=traefik-router"
+      - "traefik.http.routers.backend.rule=PathPrefix(`/api/`)"
+      - "traefik.http.routers.backend.entrypoints=web"
+      - "traefik.http.services.backend.loadbalancer.server.port=8080"
+    networks:
+      - traefik-router
   museum-railway-events-eventcollectors:
     image: git.twatzl.eu/twatzl/museum-railway-events-eventcollectors
     depends_on:
       - boudicca-eventdb
     ports:
       - "8083:8083"
-    environment:
-      - BOUDICCA_EVENTDB_URL=http://boudicca-eventdb:8080
-#  museum-railway-events-web:
-#    image: git.twatzl.eu/twatzl/museum-railway-events-web
-#    depends_on:
-#      - boudicca-eventdb
-#      - boudicca-search
-#      - museum-railway-events-backend
-#    ports:
-#      - "3000:3000"
+    networks:
+      - traefik-router
+  museum-railway-events-web:
+    image: git.twatzl.eu/twatzl/museum-railway-events-web
+    depends_on:
+      - boudicca-eventdb
+      - boudicca-search
+      - museum-railway-events-backend
+    labels:
+      - "traefik.enable=true"
+      - "traefik.docker.network=traefik-router"
+      - "traefik.http.routers.frontend.rule=PathPrefix(`/`)"
+      - "traefik.http.routers.frontend.entrypoints=web"
+      - "traefik.http.services.frontend.loadbalancer.server.port=3000"
+    ports:
+      - "3010:3000"
+    networks:
+      - traefik-router
+  reverse-proxy:
+    # The official v2 Traefik docker image
+    image: traefik:v2.10.7
+    container_name: traefik
+    restart: unless-stopped
+    command:
+      # take config from commandline.
+      - "--configFile=/config/traefik.yml"
+      # Do not expose containers unless explicitly told so
+      - "--providers.docker.exposedbydefault=false"
+    labels:
+      # this is needed as we did the --providers.docker.exposedbydefault=false
+      - "traefik.enable=true"
+      - "traefik.docker.network=traefik-router"
+      - "traefik.http.routers.traefik.rule=PathPrefix(`/dashboard`) || PathPrefix(`/api`) && !PathPrefix(`/api/location`)"
+      - "traefik.http.services.traefik.loadbalancer.server.port=3090"
+      - "traefik.http.routers.traefik.service=api@internal"
+    ports:
+      # 80 is our http port for testing purposes
+      - "3050:80"
+      # 3051 simulates a https port, we don't really use it
+      - "3051:3051"
+      # The Web UI (enabled by --api.insecure=true)
+      - "3090:8080"
+    volumes:
+      # So that Traefik can listen to the Docker events
+      - /var/run/docker.sock:/var/run/docker.sock:Z
+      - ./traefik/config/:/config/
+      - ./traefik/logs/:/logs/
+    networks:
+      - traefik-router
+
 
 volumes:
   matomo-db:
@@ -73,3 +140,4 @@ volumes:
 
 networks:
   matomo:
+  traefik-router:

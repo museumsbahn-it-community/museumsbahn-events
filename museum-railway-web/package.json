@@ -25,9 +25,11 @@
     "pinia": "^2.1.7",
     "primeflex": "^3.3.1",
     "primeicons": "^6.0.1",
-    "primevue": "^3.35.0",
+    "primevue": "^3.48.1",
     "vue": "^3.4.3",
-    "vue-router": "^4.2.5"
+    "vue-matomo": "^4.2.0",
+    "vue-router": "^4.2.5",
+    "nuxt-primevue": "^0.2.2"
   },
   "devDependencies": {
     "@cloudflight/eslint-plugin-typescript": "^0.22.0",
@@ -37,7 +39,6 @@
     "@vitejs/plugin-vue": "^4.5.2",
     "eslint": "^8.56.0",
     "eslint-import-resolver-typescript": "^3.6.1",
-    "nuxt-primevue": "^0.2.2",
     "nuxt-viewport": "^2.1.4",
     "sass": "^1.68.0",
     "sass-loader": "^13.3.2"
