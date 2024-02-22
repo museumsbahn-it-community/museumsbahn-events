@@ -23,9 +23,9 @@
 
 <template>
   <div class="flex flex-row h-full w-full sticky-content">
-    <div class="flex flex-column h-full w-full md:w-7">
+    <div class="flex flex-column h-full w-full lg:w-7" v-if="!hasSelectedEvent() || viewport.isGreaterThan('desktop')">
       <div class="h-2rem"></div>
-      <div class="filter-box w-full h-14rem">
+      <div class="filter-box w-11 h-20rem md:h-14rem">
         <div class="h-full w-full flex align-items-center">
           <div class="w-1"></div>
           <div class="w-9 justify-content-center pr-6">
@@ -35,16 +35,16 @@
                 kontrollieren!
               </InlineMessage>
             </div>
-            <div class="flex flex-column md:flex-row">
+            <div class="flex flex-row">
               <MultiSelect v-model="selectedStates"
                            display="chip"
                            :options="states"
                            optionLabel="name"
                            placeholder="Bundesland"
                            :maxSelectedLabels="3"
-                           class="m-2 md:w-6"
+                           class="m-2 w-5"
               />
-              <Calendar class="m-2 md:w-5" v-model="dates" placeholder="Datum auswählen" selectionMode="range"
+              <Calendar class="m-2 w-5" v-model="dates" placeholder="Datum auswählen" selectionMode="range"
                         :manualInput="false"/>
               <Button text class="justify-content-center"><i class="pi pi-filter-slash" @click="clearFilters()"/>
               </Button>
@@ -54,8 +54,7 @@
       </div>
       <div class="h-2rem"></div>
 
-      <div class="flex flex-column h-full w-full md:w-10"
-           v-if="!hasSelectedEvent() || viewport.isGreaterOrEquals('tablet')">
+      <div class="flex flex-column h-full w-11 lg:w-10">
         <EventList
             :highlighted-event="selectedEvent"
             @eventSelected="selectEvent"
@@ -66,14 +65,14 @@
         ></EventList>
       </div>
     </div>
-    <div class="mx-5 md:w-5 details-box sticky-content">
+    <div class="mx-5 xl:w-5 details-box sticky-content" v-if="hasSelectedEvent()">
       <div class="h-2rem sticky-content"></div>
-      <div class="sticky-event-details" v-if="hasSelectedEvent()">
+      <div class="sticky-event-details">
         <Button
             class="m-3"
             icon="pi pi-arrow-left" rounded outlined aria-label="Zurück"
             @click="navigateToEventList"
-            v-if="viewport.isLessThan('tablet')"/>
+            v-if="viewport.isLessThan('desktop')"/>
         <EventDetails :museum-event="selectedEvent">
           Event Details
         </EventDetails>
@@ -108,6 +107,7 @@ function clearFilters(): void {
 
 const eventKeyParam = route?.params?.eventKey;
 if (eventKeyParam != undefined) {
+  console.log('eventKey', eventKeyParam);
   const eventByKey = eventsStore.getEventByKey(eventKeyParam);
   selectedEvent.value = toRaw(eventByKey);
 }
