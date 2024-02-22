@@ -85,7 +85,13 @@ import { eventKey } from '~/model/util.ts';
 
 const viewport = useViewport();
 const eventsStore = useEventsStore();
-const selectedEvent = ref<MuseumEvent | undefined>(undefined);
+const selectedEventKey = ref<string | undefined>(undefined);
+const selectedEvent = computed(() => {
+  if (selectedEventKey.value != null) {
+    return eventsStore.getEventByKey(eventKeyParam);
+  }
+  return undefined;
+})
 const router = useRouter();
 const route = useRoute();
 const locationsStore = useLocationsStore();
@@ -95,7 +101,6 @@ const selectedStates = ref<{
   code: string
 }[] | undefined>();
 const dates = ref<Date[]>([]);
-
 const states = computed(() => {
   return locationsStore.stateList.map((state) => ({name: state, code: state}));
 });
@@ -108,32 +113,35 @@ function clearFilters(): void {
 const eventKeyParam = route?.params?.eventKey;
 if (eventKeyParam != undefined) {
   console.log('eventKey', eventKeyParam);
-  const eventByKey = eventsStore.getEventByKey(eventKeyParam);
-  selectedEvent.value = toRaw(eventByKey);
+  selectedEventKey.value = eventKeyParam
 }
 
-function selectEvent(value: MuseumEvent) {
+function selectEvent(value: string) {
   router.push({name: 'eventDetails', params: {eventKey: eventKey(value)}});
-  selectedEvent.value = toRaw(value);
+  selectedEventKey.value = value;
 }
 
 function hasSelectedEvent(): boolean {
-  return selectedEvent.value != undefined;
+  return selectedEventKey.value != undefined;
 }
 
 function navigateToEventList(): void {
-  selectedEvent.value = undefined;
-  router.back();
-}
+  selectedEventKey.value = undefined;
 
-function isSelected(value: MuseumEvent) {
-  return value == selectedEvent.value;
+  if (window.history.state.back == null) {
+    // if the user has entered via clicking the url back navigation should lead back to the event list
+    router.push('/events')
+  } else {
+    router.back();
+  }
 }
 
 onMounted(loadData);
 
 async function loadData(): Promise<void> {
   await eventsStore.loadEventsWithLocations();
+
+
 }
 
 </script>
