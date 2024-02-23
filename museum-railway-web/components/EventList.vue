@@ -74,13 +74,15 @@ import type { MuseumEventGroup } from '~/stores/EventsStore.ts';
 
 const EVENT_SELECTED_TOKEN = 'eventSelected';
 const emit = defineEmits([EVENT_SELECTED_TOKEN]);
-const props = defineProps<{
+const props = withDefaults(defineProps<{
   highlightedEvent: MuseumEvent | undefined,
   locationIdFilter?: string | undefined,
   showDetailsButton: boolean,
   dates: Date[],
   selectedStates: StateEntry[] | undefined,
-}>();
+}>(), {
+  dates: [null, null]
+});
 
 const eventsStore = useEventsStore();
 
