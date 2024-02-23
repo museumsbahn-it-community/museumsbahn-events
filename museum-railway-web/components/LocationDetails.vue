@@ -28,7 +28,7 @@
 
     <h2>Künftige Veranstaltungen</h2>
 
-    <div v-if="museumLocation != undefined">
+    <div v-if="museumLocation != undefined" class="mb-4">
       <EventList :location-id-filter="museumLocation.locationId" :show-details-button="false" :show-filters="false">
       </EventList>
     </div>

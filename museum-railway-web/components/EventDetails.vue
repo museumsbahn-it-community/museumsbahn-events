@@ -1,8 +1,11 @@
 <script setup lang="ts">
 
-defineProps<{
-  museumEvent: MuseumEvent | undefined
-}>();
+withDefaults(defineProps<{
+  museumEvent: MuseumEvent | undefined,
+  noEventSelectedPlaceholderText: string | undefined,
+}>(), {
+  noEventSelectedPlaceholderText: 'Keine Veranstaltung ausgewählt!',
+});
 
 </script>
 <template>
@@ -32,6 +35,10 @@ defineProps<{
 
       </template>
     </card>
-    <card v-else>Keine Veranstaltung ausgewählt!</card>
+    <card class="p-5" v-else>
+        <template #header>
+          <h2>{{ noEventSelectedPlaceholderText }}</h2>
+        </template>
+    </card>
   </div>
 </template>

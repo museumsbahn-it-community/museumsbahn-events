@@ -1,34 +1,12 @@
-@use "./colors_impl" as colors;
+@use "./colors" as colors;
 @use "./variables_impl" as variables;
-
-
-.p-button {
-  color: white;
-}
+@import "./colors_impl";
 
 body {
   display: flex;
   flex-direction: column;
   color: colors.$color-umbragrau;
   margin: 0;
-}
-
-a {
-  color: colors.$color-umbragrau;
-}
-
-*::-webkit-scrollbar {
-  width: variables.$scrollbar-width;
-  background-color: #F5F5F5;
-}
-
-*::-webkit-scrollbar-thumb {
-  background-color: colors.$color-ultramarinblau;
-}
-
-*::-webkit-scrollbar-track {
-  -webkit-box-shadow: inset 0 0 variables.$scrollbar-width colors.$color-grauweiß;
-  background-color: colors.$color-grauweiß;
 }
 
 .navbar {
@@ -46,7 +24,7 @@ a {
   background: colors.$color-umbragrau;
 }
 
-.sticky-content{
+.sticky-content {
   position: sticky;
   top: variables.$navbar-height;
   left: 0;
@@ -72,11 +50,6 @@ a {
   background: colors.$color-umbragrau;
 }
 
-.p-menuitem-link,
-.p-menubar-button {
-  color: colors.$text-color-light;
-}
-
 .p-menubar-root-list {
   background: colors.$color-umbragrau;
 }
@@ -84,8 +57,6 @@ a {
 .menubar {
   height: variables.$navbar-height;
   margin-left: 3rem;
-  color: colors.$text-color-light;
-  background: colors.$color-umbragrau;
 }
 
 .light-text {
@@ -152,41 +123,16 @@ a {
   border-radius: 5px;
 }
 
-.p-panel-header {
-  padding: 0.5rem 1rem !important;
-  border-radius: 4px;
-}
-
-.p-scrollpanel-content {
-  padding: 1rem 1.5rem 1rem 1rem;
-}
-
-.p-scrollpanel-wrapper {
-  padding-right: 1px;
-  border-right: variables.$scrollbar-width solid var(--surface-ground);
-  border-radius: 5px;
-}
-
-.p-scrollpanel-bar-y {
-  background: colors.$color-ultramarinblau;
+::-webkit-scrollbar {
   width: variables.$scrollbar-width;
+  background-color: colors.$color-grauweiß;
 }
 
-.p-scrollpanel-bar-y:hover {
-  background: colors.$color-ultramarinblau;
-  width: variables.$scrollbar-width;
+::-webkit-scrollbar-thumb {
+  background-color: colors.$color-ultramarinblau;
 }
 
-.p-panel-header {
-  padding-bottom: 0;
-}
-
-.p-panel-content {
-  padding: 1rem;
-}
-
-.p-card.selected > .p-card-body {
-  border-radius: 4px;
-  border: 5px colors.$color-umbragrau solid;
-  padding: calc(0.75rem - 5px);
+::-webkit-scrollbar-track {
+  -webkit-box-shadow: inset 0 0 variables.$scrollbar-width colors.$color-grauweiß;
+  background-color: colors.$color-grauweiß;
 }

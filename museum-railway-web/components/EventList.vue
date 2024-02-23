@@ -1,5 +1,5 @@
 <style lang="scss">
-@use "../assets/colors_impl" as colors;
+@use "../assets/colors" as colors;
 /* hide the opposite side of the timeline */
 .p-timeline-event-opposite {
   display: none;
@@ -26,13 +26,13 @@
 
 </style>
 <template>
-  <div class="bg-verkehrsrot rounded-corners-big ml-5 px-5">
+  <div class="bg-verkehrsrot rounded-corners-big px-5">
     <div class="flex flex-grow-1 min-h-0 w-full">
       <div v-if="groupedEvents.length > 0" class="w-full">
         <div v-for="eventGroup in groupedEvents" class="mb-4">
           <div class="flex flex-row my-4">
-            <div class="flex h-3rem timeline-heading align-items-center my-2">
-              <h1 class="mx-6">{{ eventGroup.label }}</h1>
+            <div class="flex timeline-heading align-items-center my-2">
+              <h1 class="mx-6 my-2">{{ eventGroup.label }}</h1>
             </div>
             <div></div>
           </div>
@@ -61,7 +61,9 @@
         </div>
       </div>
       <div v-else>
-        Keine Veranstaltungen gefunden!
+        <div class="w-11 flex timeline-heading align-items-center my-2">
+          <h2 class="mx-6 my-2 align-content-center">Keine Veranstaltungen gefunden!</h2>
+        </div>
       </div>
     </div>
   </div>
@@ -101,7 +103,6 @@ function loadFilteredEvents(): MuseumEventGroup[] {
 const groupedEvents = ref<MuseumEventGroup[]>([]);
 
 watch([() => props.selectedStates, () => props.dates, eventsStore.$state], () => {
-  console.log("watch")
   groupedEvents.value = loadFilteredEvents();
 }, {immediate: true});
 

@@ -1,5 +1,5 @@
 <style lang="scss">
-@use "../assets/colors_impl" as colors;
+@use "../assets/colors" as colors;
 @use "../assets/variables_impl" as variables;
 
 .filter-box {
@@ -23,9 +23,9 @@
 
 <template>
   <div class="flex flex-row h-full w-full sticky-content">
-    <div class="flex flex-column h-full w-full lg:w-7" v-if="!hasSelectedEvent() || viewport.isGreaterThan('desktop')">
+    <div class="flex flex-column h-full w-full lg:w-7" v-if="!hasSelectedEvent() || viewport.isGreaterOrEquals('desktop')">
       <div class="h-2rem"></div>
-      <div class="filter-box w-11 h-20rem md:h-14rem">
+      <div class="filter-box w-11 h-26rem sm:h-14rem">
         <div class="h-full w-full flex align-items-center">
           <div class="w-1"></div>
           <div class="w-9 justify-content-center pr-6">
@@ -35,18 +35,18 @@
                 kontrollieren!
               </InlineMessage>
             </div>
-            <div class="flex flex-row">
+            <div class="flex flex-column sm:flex-row">
               <MultiSelect v-model="selectedStates"
                            display="chip"
                            :options="states"
                            optionLabel="name"
                            placeholder="Bundesland"
                            :maxSelectedLabels="3"
-                           class="m-2 w-5"
+                           class="m-2 md:w-5"
               />
-              <Calendar class="m-2 w-5" v-model="dates" placeholder="Datum auswählen" selectionMode="range"
+              <Calendar class="m-2 md:w-5" v-model="dates" placeholder="Datum auswählen" selectionMode="range"
                         :manualInput="false"/>
-              <Button text class="justify-content-center"><i class="pi pi-filter-slash" @click="clearFilters()"/>
+              <Button text class="justify-content-center button-light"><i class="pi pi-filter-slash" @click="clearFilters()"/>
               </Button>
             </div>
           </div>
@@ -54,7 +54,7 @@
       </div>
       <div class="h-2rem"></div>
 
-      <div class="flex flex-column h-full w-11 lg:w-10">
+      <div class="flex flex-column h-full mx-2 mb-6 md:ml-5 md:w-11 lg:w-10">
         <EventList
             :highlighted-event="selectedEvent"
             @eventSelected="selectEvent"
@@ -65,7 +65,7 @@
         ></EventList>
       </div>
     </div>
-    <div class="mx-5 xl:w-5 details-box sticky-content" v-if="hasSelectedEvent()">
+    <div class="mx-2 sm:mx-5 xl:w-5 details-box sticky-content" v-if="hasSelectedEvent() || viewport.isGreaterOrEquals('desktop')">
       <div class="h-2rem sticky-content"></div>
       <div class="sticky-event-details">
         <Button
@@ -73,7 +73,7 @@
             icon="pi pi-arrow-left" rounded outlined aria-label="Zurück"
             @click="navigateToEventList"
             v-if="viewport.isLessThan('desktop')"/>
-        <EventDetails :museum-event="selectedEvent">
+        <EventDetails :museum-event="selectedEvent" :no-event-selected-placeholder-text="noEventSelectedPlaceholderText">
           Event Details
         </EventDetails>
       </div>
@@ -83,6 +83,7 @@
 <script setup lang="ts">
 import { eventKey } from '~/model/util.ts';
 
+const noEventSelectedPlaceholderText = "Bitte eine Veranstaltung auswählen um Details zu sehen."
 const viewport = useViewport();
 const eventsStore = useEventsStore();
 const selectedEventKey = ref<string | undefined>(undefined);
@@ -91,7 +92,7 @@ const selectedEvent = computed(() => {
     return eventsStore.getEventByKey(eventKeyParam);
   }
   return undefined;
-})
+});
 const router = useRouter();
 const route = useRoute();
 const locationsStore = useLocationsStore();
@@ -112,13 +113,12 @@ function clearFilters(): void {
 
 const eventKeyParam = route?.params?.eventKey;
 if (eventKeyParam != undefined) {
-  console.log('eventKey', eventKeyParam);
-  selectedEventKey.value = eventKeyParam
+  selectedEventKey.value = eventKeyParam;
 }
 
 function selectEvent(value: string) {
-  router.push({name: 'eventDetails', params: {eventKey: eventKey(value)}});
   selectedEventKey.value = value;
+  router.push({name: 'eventDetails', params: {eventKey: eventKey(value)}});
 }
 
 function hasSelectedEvent(): boolean {
@@ -127,13 +127,7 @@ function hasSelectedEvent(): boolean {
 
 function navigateToEventList(): void {
   selectedEventKey.value = undefined;
-
-  if (window.history.state.back == null) {
-    // if the user has entered via clicking the url back navigation should lead back to the event list
-    router.push('/events')
-  } else {
-    router.back();
-  }
+  router.push('/events');
 }
 
 onMounted(loadData);

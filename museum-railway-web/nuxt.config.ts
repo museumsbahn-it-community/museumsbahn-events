@@ -43,5 +43,13 @@ export default defineNuxtConfig({
 	},
 	nitro: {
 		preset: 'node-server'
+	},
+	viewport: {
+		breakpoints: {
+			// configure breakpoints, so they match primeflex breakpoints
+			desktop: 992, // matches primeflex $lg
+			tablet: 768, // matches primeflex $md
+			mobile: 320,
+		},
 	}
 });

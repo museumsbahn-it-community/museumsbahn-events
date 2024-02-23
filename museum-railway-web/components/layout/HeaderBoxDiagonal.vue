@@ -1,5 +1,5 @@
 <style lang="scss">
-@use "../../assets/colors_impl" as colors;
+@use "../../assets/colors" as colors;
 
 .container {
   container-type: inline-size;

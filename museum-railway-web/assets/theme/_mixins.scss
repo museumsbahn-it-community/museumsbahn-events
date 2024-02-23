@@ -34,7 +34,7 @@
 }
 
 @mixin menuitem {
-    margin: $inputListItemMargin;
+    padding: $inputListItemMargin;
 
     &:first-child {
         margin-top: 0;

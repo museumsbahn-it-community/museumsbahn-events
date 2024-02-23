@@ -1,3 +1,5 @@
+@use '../../colors' as colors;
+
 /// Font of the theme
 /// @group general
 $fontFamily: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
@@ -12,11 +14,15 @@ $fontWeight: normal;
 
 /// Primary text color
 /// @group general
-$textColor: #495057;
+$textColor: colors.$color-umbragrau;
+
+/// Text color for dark backgrounds
+/// @group general
+$textLightColor: colors.$color-grauweiß;
 
 /// Secondary text color
 /// @group general
-$textSecondaryColor: #6c757d;
+$textSecondaryColor: colors.$color-umbragrau;
 
 /// Background of a highlighted item
 /// @group general
@@ -80,7 +86,7 @@ $errorColor: #e4677e;
 
 /// Outline color of a focused element
 /// @group general
-$focusOutlineColor: #bfd1f6;
+$focusOutlineColor: colors.$color-grauweiß;
 
 /// Outline of a focused element
 /// @group general

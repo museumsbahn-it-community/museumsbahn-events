@@ -1,3 +1,5 @@
+@use '../../colors' as colors;
+
 /// Background of a steps item
 /// @group menu
 $stepsItemBg: #ffffff;
@@ -40,7 +42,7 @@ $menuWidth: 12.5rem;
 
 /// Background of a menu
 /// @group menu
-$menuBg: #ffffff;
+$menuBg: colors.$color-umbragrau;
 
 /// Border of a menu
 /// @group menu
@@ -48,7 +50,7 @@ $menuBorder: 1px solid #dee2e6;
 
 /// Text color of a menu
 /// @group menu
-$menuTextColor: $textColor;
+$menuTextColor: $textSecondaryColor;
 
 /// Padding of a menuitem
 /// @group menu
@@ -60,11 +62,11 @@ $menuitemBorderRadius: 0;
 
 /// Text color of a menuitem
 /// @group menu
-$menuitemTextColor: $textColor;
+$menuitemTextColor: $textLightColor;
 
 /// Icon color of a menuitem
 /// @group menu
-$menuitemIconColor: $textSecondaryColor;
+$menuitemIconColor: $textLightColor;
 
 /// Text color of a menuitem in hover state
 /// @group menu
@@ -72,11 +74,11 @@ $menuitemTextHoverColor: $textColor;
 
 /// Icon color of a menuitem in hover state
 /// @group menu
-$menuitemIconHoverColor: $textSecondaryColor;
+$menuitemIconHoverColor: $textColor;
 
 /// Background of a menuitem in hover state
 /// @group menu
-$menuitemHoverBg: #e9ecef;
+$menuitemHoverBg: colors.$color-ultramarinblau;
 
 /// Text color of a menuitem in focus state
 /// @group menu
@@ -88,7 +90,7 @@ $menuitemIconFocusColor: $textColor;
 
 /// Background of a menuitem in focus state
 /// @group menu
-$menuitemFocusBg: #f8f9fa;
+$menuitemFocusBg: colors.$color-ultramarinblau;
 
 /// Text color of a menuitem in active state
 /// @group menu
@@ -96,15 +98,15 @@ $menuitemTextActiveColor: $textColor;
 
 /// Icon color of a menuitem in active state
 /// @group menu
-$menuitemIconActiveColor: $textSecondaryColor;
+$menuitemIconActiveColor: $textColor;
 
 /// Background of a menuitem in active state
 /// @group menu
-$menuitemActiveBg: #e9ecef;
+$menuitemActiveBg: $textLightColor;
 
 /// Background of a menuitem in active and focus states
 /// @group menu
-$menuitemActiveFocusBg: #e9ecef;
+$menuitemActiveFocusBg: $textLightColor;
 
 /// Font size of an icon indicating the item has a submenu
 /// @group menu
@@ -192,7 +194,7 @@ $horizontalMenuPadding: .5rem;
 
 /// Background of a horizontal menu e.g. menubar
 /// @group menu
-$horizontalMenuBg: #f8f9fa;
+$horizontalMenuBg: colors.$color-umbragrau;
 
 /// Border of a horizontal menu e.g. menubar
 /// @group menu

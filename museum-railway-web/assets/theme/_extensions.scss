@@ -1,1 +1,50 @@
 /* Customizations to the designer theme should be defined here */
+@use '../colors' as colors;
+@use '../variables_impl' as variables;
+
+.button-light {
+  color: colors.$color-grauweiß;
+}
+
+.p-panel-header {
+  padding: 0.5rem 1rem !important;
+  border-radius: 4px;
+}
+
+.p-scrollpanel-content {
+  padding: 1rem 1.5rem 1rem 1rem;
+}
+
+.p-scrollpanel-wrapper {
+  padding-right: 1px;
+  border-right: variables.$scrollbar-width solid var(--surface-ground);
+  border-radius: 5px;
+}
+
+.p-scrollpanel-bar-y {
+  background: colors.$color-ultramarinblau;
+  width: variables.$scrollbar-width;
+}
+
+.p-scrollpanel-bar-y:hover {
+  background: colors.$color-ultramarinblau;
+  width: variables.$scrollbar-width;
+}
+
+.p-panel-header {
+  padding-bottom: 0;
+}
+
+.p-panel-content {
+  padding: 1rem;
+}
+
+.p-card.selected > .p-card-body {
+  border-radius: 4px;
+  border: 5px colors.$color-umbragrau solid;
+  padding: calc(0.75rem - 5px);
+}
+
+.p-card a {
+  color: colors.$color-umbragrau;
+}

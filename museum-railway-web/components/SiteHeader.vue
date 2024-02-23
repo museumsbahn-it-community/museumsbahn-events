@@ -25,12 +25,13 @@ const items: MenuItem[] = [
         <h1 class="m-0">
           museumsbahn-events.at (BETA)
         </h1>
-        <span class="text-sm">Alle Infos zu Museumsbahnen in Österreich</span>
+        <span class="text-sm hidden sm:inline">Alle Infos zu Museumsbahnen in Österreich</span>
       </div>
       <div class="flex-grow-1"></div>
       <Menubar
           class="menubar borderless-menubar"
           :model="items"
+          :breakpoint="'1190px'"
           [style.textAlign]="'right'"
       >
         <template #item="{ item, props, hasSubmenu }">
@@ -46,8 +47,8 @@ const items: MenuItem[] = [
                 v-bind="props.action"
                 @click="navigate"
             >
-              <span :class="item.icon"/>
-              <span class="ml-2">{{ item.label }}</span>
+              <span :class="item.icon" class="mr-2" v-if="item.icon != null"/>
+              <span>{{ item.label }}</span>
             </a>
           </router-link>
           <a
