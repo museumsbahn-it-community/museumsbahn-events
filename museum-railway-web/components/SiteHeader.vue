@@ -32,8 +32,8 @@ const items: MenuItem[] = [
           class="menubar borderless-menubar"
           :model="items"
           :breakpoint="'1190px'"
-          [style.textAlign]="'right'"
       >
+      <!--          [style.textAlign]="'right'"-->
         <template #item="{ item, props, hasSubmenu }">
           <router-link
               v-if="item.route"

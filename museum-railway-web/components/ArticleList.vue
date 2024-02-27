@@ -25,6 +25,7 @@
         </Card>
       </template>
     </ContentList>
+    <slot name="additionalContent"></slot>
   </PageContent>
   <div class="h-3rem"></div>
 </template>
