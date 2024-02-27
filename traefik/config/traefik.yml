@@ -1,0 +1,30 @@
+global:
+  sendAnonymousUsage: false
+
+entryPoints:
+  web:
+    address: ":80"
+  websecure:
+    address: ":3051"
+  dashboard:
+    address: ":3090"
+
+providers:
+  docker:
+    exposedByDefault: false
+
+api:
+  insecure: true
+  dashboard: true
+  debug: true
+
+accessLog:
+  filePath: "/logs/access.log"
+  format: json
+  # Limiting the Logs to Specific Fields
+  fields:
+    defaultMode: keep
+    names:
+      ClientUsername: keep
+    headers:
+      defaultMode: keep
