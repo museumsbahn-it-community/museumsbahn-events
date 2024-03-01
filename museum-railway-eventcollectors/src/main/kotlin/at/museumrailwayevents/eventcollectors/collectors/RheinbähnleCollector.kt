@@ -1,5 +1,6 @@
 package at.museumrailwayevents.eventcollectors.collectors
 
+import at.museumrailwayevents.eventcollectors.service.JsoupCrawler
 import base.boudicca.SemanticKeys
 import base.boudicca.model.Event
 import org.jsoup.Jsoup
@@ -9,7 +10,7 @@ import java.time.OffsetDateTime
 import java.time.ZoneId
 import java.time.format.DateTimeFormatter
 
-class RheinbähnleCollector : MuseumRailwayEventCollector(
+class RheinbähnleCollector(val jsoupCrawler: JsoupCrawler) : MuseumRailwayEventCollector(
     operatorId = "rheinschauen",
     locationId = "rheinschauen",
     url = "https://www.rheinschauen.at/museum-baehnle/fahrplan"

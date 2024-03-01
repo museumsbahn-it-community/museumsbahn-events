@@ -19,7 +19,7 @@ object DateParser {
     val monthWrittenRegex = Regex(monthWrittenRegexString)
     val monthRegexString = "(10|11|12|[1-9])\\."
 
-    val dateRegexString = "[123]\\d{1}\\."
+    val dateRegexString = "([123])?\\d{1}\\."
     val dateRegex = Regex(dateRegexString)
 
     val fullDateRegex = "$dateRegexString$monthWrittenRegexString$yearRegexString|"

@@ -2,6 +2,7 @@ package at.museumrailwayevents.eventcollectors.collectors
 
 import at.museumrailwayevents.eventcollectors.collectors.dateParser.DateParser
 import at.museumrailwayevents.eventcollectors.collectors.dateParser.DateParser.zoneOffset
+import at.museumrailwayevents.eventcollectors.service.JsoupCrawler
 import base.boudicca.model.Event
 import org.jsoup.Jsoup
 import java.time.*
@@ -15,7 +16,7 @@ private val urlSchifffahrtsTermine = "https://www.oegeg.at/termine/termine-schif
 /**
  * Collects entries from ÖGEG shop pages. This includes Normalspur and Schifffahrt, but NOT Schmalspur.
  */
-class OegegShopCollector : MuseumRailwayEventCollector(operatorId, locationId_bahn, urlNormalspurTermine) {
+class OegegShopCollector(val jsoupCrawler: JsoupCrawler) : MuseumRailwayEventCollector(operatorId, locationId_bahn, urlNormalspurTermine) {
     override fun collectEvents(): List<Event> {
 
         val events = mutableListOf<Event>()
@@ -26,7 +27,7 @@ class OegegShopCollector : MuseumRailwayEventCollector(operatorId, locationId_ba
     }
 
     private fun collectShopEvents(url: String, locationId: String): MutableList<Event> {
-        val document = Jsoup.connect(url).get()
+        val document = jsoupCrawler.getDocument(url);
         val eventBoxes = document.select("div.cc-shop-product-desc")
 
         val events = mutableListOf<Event>()

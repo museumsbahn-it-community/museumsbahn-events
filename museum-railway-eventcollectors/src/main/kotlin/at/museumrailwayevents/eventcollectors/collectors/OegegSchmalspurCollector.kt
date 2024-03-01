@@ -6,12 +6,14 @@ import at.museumrailwayevents.eventcollectors.collectors.dateParser.DateParser.d
 import at.museumrailwayevents.eventcollectors.collectors.dateParser.DateParser.monthWrittenRegex
 import at.museumrailwayevents.eventcollectors.collectors.dateParser.DateParser.yearRegex
 import at.museumrailwayevents.eventcollectors.collectors.dateParser.DateParser.zoneOffset
+import at.museumrailwayevents.eventcollectors.service.JsoupCrawler
+import base.boudicca.SemanticKeys
 import base.boudicca.model.Event
 import org.jsoup.Jsoup
 import java.time.*
 import java.util.*
 
-class OegegSchmalspurCollector : MuseumRailwayEventCollector(
+class OegegSchmalspurCollector(val jsoupCrawler: JsoupCrawler) : MuseumRailwayEventCollector(
     operatorId = "oegeg",
     locationId = "oegeg_schmalspur",
     url = "https://www.oegeg.at/termine/termine-schmalspur-steyrtalbahn/"
@@ -20,7 +22,7 @@ class OegegSchmalspurCollector : MuseumRailwayEventCollector(
 
     override fun collectEvents(): List<Event> {
         val document = Jsoup.connect(url).get()
-        val eventBoxes = document.select("div.cc-m-textwithimage-inline-rte")
+        val eventBoxes = document.select("div.j-textWithImage")
 
         // dates on this website can be split having multiple dates in the same line
         // eg. Sonntag, 4., 11., 18. und 25. Juni 2023
@@ -36,13 +38,15 @@ class OegegSchmalspurCollector : MuseumRailwayEventCollector(
             val zuglokString = eventBox.select("span").eachText().firstOrNull {
                 it.contains(zuglokKeyword)
             }
+            val imageElement = document.select("img").first();
+            val pictureUrl = imageElement?.absUrl("src");
+            val description = eventBox.select("p").eachText().joinToString("\n")
 
             if (dateString == null) {
                 // some of the boxes are just used for additional info
                 // if there are no dates, then skip it
                 return@forEach
             }
-
 
             val year = DateParser.findSingleYearOrAssumeDefault(dateString)
             val month = DateParser.findSingleWrittenMonth(dateString)
@@ -64,6 +68,10 @@ class OegegSchmalspurCollector : MuseumRailwayEventCollector(
                 if (parsedZuglok != null) {
                     additionalData["lokomotive"] = parsedZuglok
                 }
+                if (pictureUrl != null) {
+                    additionalData[SemanticKeys.PICTUREURL] = pictureUrl
+                }
+                additionalData[SemanticKeys.DESCRIPTION] = description
 
                 events.add(createEvent(eventTitle, startDate, additionalData))
             }
