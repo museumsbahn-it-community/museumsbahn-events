@@ -4,7 +4,6 @@ import at.museumrailwayevents.eventcollectors.collectors.dateParser.DateParser
 import at.museumrailwayevents.eventcollectors.collectors.dateParser.DateParser.zoneOffset
 import at.museumrailwayevents.eventcollectors.service.JsoupCrawler
 import base.boudicca.model.Event
-import org.jsoup.Jsoup
 import java.time.*
 
 private val operatorId = "oegeg";
@@ -39,7 +38,7 @@ class OegegShopCollector(val jsoupCrawler: JsoupCrawler) : MuseumRailwayEventCol
             val year = DateParser.findSingleYear(title)
             val month = DateParser.findSingleWrittenMonth(title)
             // TODO: this needs to be replaced to properly parse also date ranges
-            val dates = DateParser.findAllDayDates(title)
+            val dates = DateParser.findAllDays(title)
 
             dates.forEach { date ->
 
