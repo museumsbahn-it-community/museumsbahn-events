@@ -1,5 +1,5 @@
 <template>
-  <ArticleList title="Impressum und Datenschutz" :query="query" :show-date="false">
+  <ArticleList title="Impressum und Datenschutz" :path="path" :show-date="false">
     <template #additionalContent>
       <!-- this card is copied from article list, but for now here is the only place we have to use it as well -->
       <!-- if we need further usages we MUST create a new component ArticleCard for this -->
@@ -15,5 +15,6 @@
   </ArticleList>
 </template>
 <script setup lang="ts">
+const path: string = "/imprint"
 const query: QueryBuilderParams = {path: 'imprint'};
 </script>

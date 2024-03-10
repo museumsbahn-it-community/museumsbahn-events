@@ -1,6 +1,4 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
-
-
 export default defineNuxtConfig({
 	$development: {
 		devtools: { enabled: true },
@@ -22,7 +20,6 @@ export default defineNuxtConfig({
 			},
 		},
 	},
-	target: 'static',
 	css: [
 		'~/assets/main.scss',
 	],

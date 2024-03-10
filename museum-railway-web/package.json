@@ -13,7 +13,7 @@
   "dependencies": {
     "@boudicca/search-api-client": "0.1.1",
     "@museumrailwayevents/museum-railway-client": "0.1.1",
-    "@nuxt/content": "^2.10.0",
+    "@nuxt/content": "^2.12.1",
     "@pinia/nuxt": "^0.5.1",
     "@rushstack/eslint-patch": "^1.6.1",
     "@types/leaflet": "^1.9.8",
@@ -36,7 +36,7 @@
     "@cloudflight/eslint-plugin-vue": "^0.22.0",
     "@nuxt/types": "^2.13.2",
     "@nuxtjs/device": "^3.1.1",
-    "@vitejs/plugin-vue": "^4.5.2",
+    "@vitejs/plugin-vue": "^5.0.4",
     "eslint": "^8.56.0",
     "eslint-import-resolver-typescript": "^3.6.1",
     "nuxt-viewport": "^2.1.4",

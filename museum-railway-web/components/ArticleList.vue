@@ -1,7 +1,7 @@
 <template>
   <PageTitle :title="title"></PageTitle>
   <PageContent>
-    <ContentList :query="query">
+    <ContentList :path="path" :query="query">
       <template v-slot="{ list }">
         <div v-for="article in list" :key="article._path">
           <Card class="article-content px-5 py-2 mb-5">
@@ -37,5 +37,6 @@ const props = defineProps<{
   title: string,
   showDate: boolean,
   query: QueryBuilderParams,
+  path: string | undefined,
 }>();
 </script>

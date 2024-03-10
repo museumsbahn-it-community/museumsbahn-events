@@ -1,6 +1,6 @@
 <template>
-  <ArticleList title="Über uns" :query="query"></ArticleList>
+  <ArticleList title="Über uns" :path="path"></ArticleList>
 </template>
 <script setup lang="ts">
-const query: QueryBuilderParams = {path: 'about'};
+const path = "/about"
 </script>
