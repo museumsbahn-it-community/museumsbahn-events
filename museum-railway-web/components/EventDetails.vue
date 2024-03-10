@@ -2,7 +2,7 @@
 
 withDefaults(defineProps<{
   museumEvent: MuseumEvent | undefined,
-  noEventSelectedPlaceholderText: string | undefined,
+  noEventSelectedPlaceholderText?: string | undefined,
 }>(), {
   noEventSelectedPlaceholderText: 'Keine Veranstaltung ausgewählt!',
 });

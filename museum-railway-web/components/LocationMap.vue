@@ -9,8 +9,9 @@
   <LMap
       class="h-full w-full map-container"
       ref="locationMap"
-      :center="[47.609541, 13.784662]"
-      :zoom="7">
+      :center="DEFAULT_CENTER"
+      :zoom="DEFAULT_ZOOM"
+  >
     <LTileLayer
         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
         attribution="&amp;copy; <a href=&quot;https://www.openstreetmap.org/&quot;>OpenStreetMap</a> contributors"
@@ -27,13 +28,16 @@
 <script setup lang="ts">
 import type { MuseumLocation } from '@museumrailwayevents/museum-railway-client';
 
-const props = defineProps<{
+const DEFAULT_CENTER = [47.609541, 13.784662];
+const DEFAULT_ZOOM = 7;
+const props = withDefaults(defineProps<{
   locations: MuseumLocation[],
-  highlightedLocation: MuseumLocation | undefined,
-}>();
+  highlightedLocation?: MuseumLocation | undefined,
+}>(), {
+  highlightedLocation: undefined,
+});
 const locationMap = ref();
 const route = useRoute();
-
 const locationIdParam = route?.params?.locationId;
 
 const locationsWithCoords = computed(() => props.locations.filter((loc: MuseumLocation) => {
@@ -44,6 +48,7 @@ const locationsWithCoords = computed(() => props.locations.filter((loc: MuseumLo
       return isLocation && loc.location.lat != null && loc.location.lon != null;
     }))
 
+watch(() => locationMap?.value?.ready, () => updateMapData());
 watch(() => props.locations, () => updateMapData());
 watch(() => props.highlightedLocation, () => updateMapData());
 
@@ -59,8 +64,8 @@ function updateMapData() {
     if (locationIdParam != undefined) {
       location = props.locations.filter((location) => location.locationId === locationIdParam)[0];
     }
-    if (location != undefined) {
-      // locationMap.setView({lat: location.location.lat, lng: location.location.lon}, 10);
+    if (location != undefined && locationMap?.value?.leafletObject != undefined) {
+      locationMap.value.leafletObject.setView({lat: location.location.lat, lng: location.location.lon}, 10);
     }
   }
 }
