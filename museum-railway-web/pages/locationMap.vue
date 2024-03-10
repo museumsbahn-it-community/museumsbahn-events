@@ -15,7 +15,6 @@ const router = useRouter();
 const route = useRoute();
 const locationIdParam = route?.params?.locationId;
 
-
 onMounted(mounted);
 
 async function mounted(): Promise<void> {

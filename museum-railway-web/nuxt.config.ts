@@ -25,6 +25,7 @@ export default defineNuxtConfig({
 	],
 	modules: [
 		'@nuxt/content',
+		'nuxt3-leaflet',
 		'@pinia/nuxt',
 		'@nuxtjs/device',
 		'nuxt-viewport',

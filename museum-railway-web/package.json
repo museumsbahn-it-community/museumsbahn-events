@@ -17,19 +17,20 @@
     "@pinia/nuxt": "^0.5.1",
     "@rushstack/eslint-patch": "^1.6.1",
     "@types/leaflet": "^1.9.8",
+    "@vue-leaflet/vue-leaflet": "^0.10.1",
     "axios": "^1.6.3",
     "date-fns": "^3.0.6",
     "leaflet": "^1.9.4",
     "material-icons": "^1.13.12",
     "nuxt": "^3.9.0",
+    "nuxt-primevue": "^0.2.2",
     "pinia": "^2.1.7",
     "primeflex": "^3.3.1",
     "primeicons": "^6.0.1",
     "primevue": "^3.48.1",
     "vue": "^3.4.3",
     "vue-matomo": "^4.2.0",
-    "vue-router": "^4.2.5",
-    "nuxt-primevue": "^0.2.2"
+    "vue-router": "^4.2.5"
   },
   "devDependencies": {
     "@cloudflight/eslint-plugin-typescript": "^0.22.0",
@@ -40,6 +41,7 @@
     "eslint": "^8.56.0",
     "eslint-import-resolver-typescript": "^3.6.1",
     "nuxt-viewport": "^2.1.4",
+    "nuxt3-leaflet": "^1.0.12",
     "sass": "^1.68.0",
     "sass-loader": "^13.3.2"
   }
