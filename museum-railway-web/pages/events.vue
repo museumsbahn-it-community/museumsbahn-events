@@ -65,7 +65,7 @@
         ></EventList>
       </div>
     </div>
-    <div class="mx-2 sm:mx-5 xl:w-5 py-5 details-box sticky-content max-page-height" v-if="hasSelectedEvent() || viewport.isGreaterOrEquals('desktop')">
+    <div class="px-2 sm:px-5 xl:w-5 py-5 w-full details-box sticky-content max-page-height" v-if="hasSelectedEvent() || viewport.isGreaterOrEquals('desktop')">
       <div class="sticky-event-details">
         <Button
             class="m-3"

@@ -9,8 +9,8 @@ withDefaults(defineProps<{
 
 </script>
 <template>
-  <div class="bg-verkehrsrot rounded-corners-small p-3 h-full">
-    <div v-if="museumEvent != undefined" class="p-4 h-full bg-white">
+  <div class="bg-verkehrsrot rounded-corners-small p-3 lg:h-full">
+    <div v-if="museumEvent != undefined" class="p-4 lg:h-full bg-white">
         <h2 class="my-1">{{ museumEvent.name }}</h2>
         <div class="my-2 flex flex-column">
           <div class="flex align-items-center text-sm my-2">
