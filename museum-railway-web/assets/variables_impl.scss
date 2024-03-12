@@ -3,6 +3,7 @@ $border-radius-small: 10px;
 $navbar-height: 6rem;
 $footer-height: 2rem;
 $navbar-padding: 2rem;
+$default-margin: 42;
 $navbar-total: calc($navbar-height);
 $min-content-height: calc(100vh - $navbar-total - $footer-height);
 $no-scroll-page-height: calc($min-content-height);

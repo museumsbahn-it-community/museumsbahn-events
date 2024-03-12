@@ -26,7 +26,7 @@
 
 </style>
 <template>
-  <div class="bg-verkehrsrot rounded-corners-big px-5">
+  <div class="bg-verkehrsrot rounded-corners-big px-3 lg:px-5">
     <div class="flex flex-grow-1 min-h-0 w-full">
       <div v-if="groupedEvents.length > 0" class="w-full">
         <div v-for="eventGroup in groupedEvents" class="mb-4">
@@ -38,7 +38,8 @@
           </div>
           <Timeline :value="eventGroup.events" align="left">
             <template #content="slotProps">
-              <Card class="mt-3" :class="{ selected: isHighlighted(slotProps.item)}"
+              <Card class="mt-3 cursor-pointer" @click="selectEvent(slotProps.item)"
+                    :class="{ selected: isHighlighted(slotProps.item)}"
               >
                 <template #title>
                   {{ slotProps.item.name }}
@@ -52,7 +53,7 @@
                 <template #content>
                   <div class="flex align-items-end w-full" v-if="showDetailsButton">
                     <div class="flex-grow-1"></div>
-                    <Button class="dark-text" @click="selectEvent(slotProps.item)" text>Details</Button>
+                    <Button class="dark-text" text>Details</Button>
                   </div>
                 </template>
               </Card>
@@ -62,7 +63,7 @@
       </div>
       <div v-else>
         <div class="w-11 flex timeline-heading align-items-center my-2">
-          <h2 class="mx-6 my-2 align-content-center">Keine Veranstaltungen gefunden!</h2>
+          <h2 class="mx-8 my-2 align-content-center">Keine Veranstaltungen gefunden!</h2>
         </div>
       </div>
     </div>
@@ -83,7 +84,7 @@ const props = withDefaults(defineProps<{
   dates: Date[],
   selectedStates: StateEntry[] | undefined,
 }>(), {
-  dates: [null, null]
+  dates: [null, null],
 });
 
 const eventsStore = useEventsStore();

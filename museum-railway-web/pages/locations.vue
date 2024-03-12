@@ -19,7 +19,7 @@
 
 </style>
 <template>
-  <div class="no-scroll-page p-3">
+  <div class="fill-page-height p-3">
     <div class="flex flex-row h-full bg-verkehrsrot p-3 rounded-corners-small">
       <ScrollPanel class="flex-column h-full lg:w-4 w-full">
         <div v-for="location in locations">

@@ -78,7 +78,7 @@ body {
 
 .timeline-heading {
   color: colors.$text-color-dark;
-  background: colors.$color-grauweiß;
+  background: white;
   clip-path: polygon(15% 0, 100% 0, 85% 100%, 0 100%);
   font-weight: bold;
 }
@@ -90,7 +90,6 @@ body {
 .rounded-corners-small {
   border-radius: variables.$border-radius-small;
 }
-
 
 .rounded-corners-big {
   border-radius: variables.$border-radius-big;
@@ -113,8 +112,16 @@ body {
   background: colors.$color-umbragrau;
 }
 
-.no-scroll-page {
+.text-block {
+  white-space: pre;
+}
+
+.fill-page-height {
   height: variables.$no-scroll-page-height;
+}
+
+.max-page-height {
+  max-height: variables.$no-scroll-page-height;
 }
 
 .page-heading {

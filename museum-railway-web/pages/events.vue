@@ -22,7 +22,7 @@
 </style>
 
 <template>
-  <div class="flex flex-row h-full w-full sticky-content">
+  <div class="flex flex-row w-full sticky-content">
     <div class="flex flex-column h-full w-full lg:w-7" v-if="!hasSelectedEvent() || viewport.isGreaterOrEquals('desktop')">
       <div class="h-2rem"></div>
       <div class="filter-box w-11 h-26rem sm:h-14rem">
@@ -30,7 +30,7 @@
           <div class="w-1"></div>
           <div class="w-9 justify-content-center pr-6">
             <div class="flex flex-column md:flex-row-full p-2">
-              <InlineMessage severity="warn"> Achtung! Die Daten werden automatisch erfasst und nicht manuell geprüft.
+              <InlineMessage severity="info"> Achtung! Die Daten werden automatisch erfasst und nicht manuell geprüft.
                 Abfahrtszeiten und aktuelle Informationen immer auf den Webseiten der jeweiligen Veranstalter
                 kontrollieren!
               </InlineMessage>
@@ -65,8 +65,7 @@
         ></EventList>
       </div>
     </div>
-    <div class="mx-2 sm:mx-5 xl:w-5 details-box sticky-content" v-if="hasSelectedEvent() || viewport.isGreaterOrEquals('desktop')">
-      <div class="h-2rem sticky-content"></div>
+    <div class="mx-2 sm:mx-5 xl:w-5 py-5 details-box sticky-content max-page-height" v-if="hasSelectedEvent() || viewport.isGreaterOrEquals('desktop')">
       <div class="sticky-event-details">
         <Button
             class="m-3"

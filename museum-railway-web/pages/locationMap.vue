@@ -1,5 +1,5 @@
 <template>
-  <div class="no-scroll-page flex flex-column">
+  <div class="fill-page-height flex flex-column">
     <Button
         class="m-3"
         icon="pi pi-arrow-left" rounded outlined aria-label="Zurück"
