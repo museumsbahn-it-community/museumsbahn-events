@@ -8,10 +8,10 @@
 <script setup lang="ts">
 const viewport = useViewport();
 const items: MenuItem[] = [
-  {label: 'News', route: '/'},
-  {label: 'Locations', route: '/locations'},
-  {label: 'Map', route: '/locationMap', visible: () => viewport.isLessThan('tablet')},
-  {label: 'Events', route: '/events'},
+  {label: 'Neuigkeiten', route: '/'},
+  {label: 'Museen und Bahnen', route: '/locations'},
+  {label: 'Karte', route: '/locationMap', visible: () => viewport.isLessThan('tablet')},
+  {label: 'Veranstaltungen', route: '/events'},
   {label: 'Über uns', route: '/about'},
   {label: 'Mitmachen', route: '/participate'},
   {label: 'Impressum', route: '/impressum'},
