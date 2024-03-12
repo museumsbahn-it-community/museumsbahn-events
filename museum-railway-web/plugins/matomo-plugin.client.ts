@@ -5,8 +5,9 @@ import VueMatomo from 'vue-matomo'
 // https://www.npmjs.com/package/vue-matomo
 
 export default defineNuxtPlugin((nuxtApp) => {
+	const runtimeConfig = useRuntimeConfig()
 	nuxtApp.vueApp.use(VueMatomo, {
-		host: 'http://localhost:8100',
+		host: runtimeConfig.public.matomoBase,
 		siteId: 1,
 		// Enables automatically registering pageviews on the router
 		router: nuxtApp.$router,
@@ -16,10 +17,4 @@ export default defineNuxtPlugin((nuxtApp) => {
 		disableCookies: true,
 		requireCookieConsent: false,
 	});
-
-	// return {
-	// 	provide: {
-	// 		L
-	// 	}
-	// }
 })

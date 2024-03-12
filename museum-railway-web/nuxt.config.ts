@@ -20,6 +20,11 @@ export default defineNuxtConfig({
 			},
 		},
 	},
+	runtimeConfig: {
+		public: {
+			matomoBase: 'http://localhost:8100' // can be overridden by NUXT_PUBLIC_API_BASE environment variable
+		}
+	},
 	css: [
 		'~/assets/main.scss',
 	],
