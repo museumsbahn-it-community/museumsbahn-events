@@ -1,5 +1,14 @@
 <script setup lang="ts">
 import SiteHeader from './components/SiteHeader.vue';
+
+useSeoMeta({
+  title: 'museumsbahn-events.at',
+  ogTitle: 'museumsbahn-events.at',
+  description: 'Alle Infos zu Eisenbahnmuseen, Modellbahnen und Sonderfahrten in Österreich und Umgebung.',
+  ogDescription: 'Alle Infos zu Eisenbahnmuseen, Modellbahnen und Sonderfahrten in Österreich und Umgebung.',
+  ogImage: 'https://museumsbahn-events.at/img/social_media_preview.jpg',
+  twitterCard: 'summary_large_image',
+})
 </script>
 
 <template>
