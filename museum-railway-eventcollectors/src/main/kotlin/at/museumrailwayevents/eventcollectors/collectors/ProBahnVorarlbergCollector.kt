@@ -38,9 +38,10 @@ class ProBahnVorarlbergCollector : MuseumRailwayEventCollector(
                     LocalDateTime.parse(vEvent.startDate.value, formatter)
                 }.atZone(ZoneId.of("UTC")).toOffsetDateTime()
 
-                Event(
-                    eventName, eventStartDate,
-                    mapOf(
+                createEvent(
+                    eventName,
+                    eventStartDate,
+                    mutableMapOf(
                         SemanticKeys.LOCATION_NAME to vEvent.location.value,
                         SemanticKeys.TAGS to listOf("Nostalgie", "Sonderfahrt", "Eisenbahn", "Museumsbahn").toString(),
                         SemanticKeys.DESCRIPTION to vEvent.description.value,
