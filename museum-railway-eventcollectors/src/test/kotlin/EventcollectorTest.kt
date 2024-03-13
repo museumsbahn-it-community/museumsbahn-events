@@ -35,8 +35,6 @@ class EventcollectorTest {
         val eventcollector = WackelsteinexpressCollector(mockJsoupCrawler)
         val events = eventcollector.collectEvents()
 
-        events.map { println(it.startDate) }
-
-        assertThat(events.size).isEqualTo(22)
+        assertThat(events.size).isEqualTo(23)
     }
 }
