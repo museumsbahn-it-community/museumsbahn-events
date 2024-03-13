@@ -38,6 +38,7 @@ class JsoupCrawlerTestMockImpl(val contextClass: Class<out Any>) : JsoupCrawler 
             "https://www.wackelsteinexpress.at/fahrplan/" to "wackelsteinexpress/wackelsteinexpress_planzuege.htm",
             "https://reservierung.wackelsteinexpress.at/" to "wackelsteinexpress/wackelsteinexpress_page1.htm",
             "https://reservierung.wackelsteinexpress.at/page/2/" to "wackelsteinexpress/wackelsteinexpress_page2.htm",
+            "https://www.nostalgiebahn.at/termine.html" to "nostalgiebahn_kaernten/nostalgiebahn_kaernten_termine.html"
     ) + wackelsteinexpressDetailsMap
 
 

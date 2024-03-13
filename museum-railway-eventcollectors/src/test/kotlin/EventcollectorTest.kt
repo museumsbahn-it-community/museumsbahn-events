@@ -1,5 +1,6 @@
 import assertk.assertThat
 import assertk.assertions.isEqualTo
+import at.museumrailwayevents.eventcollectors.collectors.NostalgiebahnenKärntenCollector
 import at.museumrailwayevents.eventcollectors.collectors.OegegSchmalspurCollector
 import at.museumrailwayevents.eventcollectors.collectors.OegegShopCollector
 import at.museumrailwayevents.eventcollectors.collectors.WackelsteinexpressCollector
@@ -31,10 +32,17 @@ class EventcollectorTest {
     }
 
     @Test
-    fun `wackelsteinexpress should collect asdf events`() {
+    fun `wackelsteinexpress should collect 23 events`() {
         val eventcollector = WackelsteinexpressCollector(mockJsoupCrawler)
         val events = eventcollector.collectEvents()
 
         assertThat(events.size).isEqualTo(23)
+    }
+
+    @Test
+    fun `nostalgiebahnen in kärnten should collect 18 events`() {
+        val eventcollector = NostalgiebahnenKärntenCollector(mockJsoupCrawler)
+        val events = eventcollector.collectEvents()
+        assertThat(events.size).isEqualTo(18)
     }
 }
