@@ -51,7 +51,7 @@ object DateParser {
         }
     }
 
-    fun MatchResult.toDayValue(): Int = value.trim('.').toInt()
+    fun MatchResult.toDayValue(): Int = value.trim('.').trim().toInt()
 
     fun findSingleYear(text: String): Int {
         val years = yearRegex.findAll(text)

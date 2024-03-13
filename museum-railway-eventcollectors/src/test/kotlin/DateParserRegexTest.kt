@@ -89,7 +89,8 @@ class DateParserRegexTest {
                 "01.05.2024",
                 "So, 5. Mai",
                 "Sonntag, 7., 14., 21., und 28. Juli 2024",
-                "07.06."
+                "07.06.",
+                " 01" // TODO: check if we should really match this or fix the regex
         ).map{it.lowercase()}
         val shouldNotMatch = listOf(
                 "",
