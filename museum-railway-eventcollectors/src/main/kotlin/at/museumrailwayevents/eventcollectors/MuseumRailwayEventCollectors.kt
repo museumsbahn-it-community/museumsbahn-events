@@ -13,6 +13,8 @@ fun main() {
         .addEventCollector(ProBahnVorarlbergCollector())
         .addEventCollector(RheinbähnleCollector(crawler))
         .addEventCollector(WälderbähnleCollector(crawler))
+        .addEventCollector(NostalgiebahnenKärntenCollector(crawler))
+        .addEventCollector(WackelsteinexpressCollector(crawler))
         .startWebUi()
         .run()
 }
