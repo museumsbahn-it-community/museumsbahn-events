@@ -47,6 +47,18 @@ for dry run you can use
 npm publish --dry-run
 ```
 
+# Deployment
+
+## generate signing keys for imgproxy
+
+If you need a random key/salt pair in a hurry, you can quickly generate one using the following snippet:
+
+```
+echo $(xxd -g 2 -l 64 -p /dev/random | tr -d '\n')
+```
+
+for details see: https://docs.imgproxy.net/configuration/options#url-signature
+
 ## GDPR conforming matomo configuration
 
 https://matomo.org/faq/how-to/how-do-i-configure-matomo-without-tracking-consent-for-french-visitors-cnil-exemption/
