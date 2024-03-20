@@ -65,18 +65,22 @@ services:
       - "traefik.http.services.search.loadbalancer.server.port=8080"
     networks:
       - traefik-router
-#  museum-railway-events-backend:
-#    image: git.twatzl.eu/twatzl/museum-railway-events-backend
-#    ports:
-#      - "8080:8080"
-#    labels:
-#      - "traefik.enable=true"
-#      - "traefik.docker.network=traefik-router"
-#      - "traefik.http.routers.backend.rule=PathPrefix(`/api/`)"
-#      - "traefik.http.routers.backend.entrypoints=web"
-#      - "traefik.http.services.backend.loadbalancer.server.port=8080"
-#    networks:
-#      - traefik-router
+  museum-railway-events-backend:
+    image: git.twatzl.eu/twatzl/museum-railway-events-backend
+    ports:
+      - "8080:8080"
+    environment:
+      - "IMAGE_IMG_PROXY_URL=http://imgproxy:8080"
+      - "IMAGE_SIGNING_KEY=c265ea162df50eb1793cfd4547e1c0d8cffa61e3abdaf9e075c3376bdae53ec731bc6a9d0c743e4242071aabf61a9a290799c1bb96c26ba827730f7371f908c9"
+      - "IMAGE_SIGNING_SALT=d531871747288265e6144698350f915a781005ba8dd7ed6fcf28634cec4a8c47744d37e830b5e5942c3c2a3e0758a00a6f2d2f847afb1728e31d1e10beb44d87"
+    labels:
+      - "traefik.enable=true"
+      - "traefik.docker.network=traefik-router"
+      - "traefik.http.routers.backend.rule=PathPrefix(`/api/`) || Path(`/imgcache`)"
+      - "traefik.http.routers.backend.entrypoints=web"
+      - "traefik.http.services.backend.loadbalancer.server.port=8080"
+    networks:
+      - traefik-router
   museum-railway-events-eventcollectors:
     image: git.twatzl.eu/twatzl/museum-railway-events-eventcollectors
     depends_on:
@@ -105,9 +109,9 @@ services:
     image:  darthsim/imgproxy:v3.2
     ports:
       - "8090:8080"
-#    environment:
-#      - IMGPROXY_KEY=fd66e0d832f88767b5c1a971610fa12acb847e939bb19ddc5ba3f2c46a0d2eba
-#      - IMGPROXY_SALT=9218d2ff8f5ee2fa272f0851da76b14b12f276c4135d955f1d0f25fb6ee7165f
+    environment:
+      - IMGPROXY_KEY=c265ea162df50eb1793cfd4547e1c0d8cffa61e3abdaf9e075c3376bdae53ec731bc6a9d0c743e4242071aabf61a9a290799c1bb96c26ba827730f7371f908c9
+      - IMGPROXY_SALT=d531871747288265e6144698350f915a781005ba8dd7ed6fcf28634cec4a8c47744d37e830b5e5942c3c2a3e0758a00a6f2d2f847afb1728e31d1e10beb44d87
     labels:
       - "traefik.enable=true"
       - "traefik.docker.network=traefik-router"

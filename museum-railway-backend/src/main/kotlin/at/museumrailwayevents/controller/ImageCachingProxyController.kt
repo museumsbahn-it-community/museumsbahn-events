@@ -4,7 +4,10 @@ import at.museumrailwayevents.api.ImageCachingProxyApi
 import at.museumrailwayevents.config.ImageCachingConfig
 import at.museumrailwayevents.service.ImgproxyUrlSigningService
 import org.slf4j.LoggerFactory
+import org.springframework.http.MediaType
+import org.springframework.http.ResponseEntity
 import org.springframework.scheduling.annotation.Scheduled
+import org.springframework.stereotype.Controller
 import org.springframework.web.bind.annotation.RestController
 import java.net.URI
 import java.net.http.HttpClient
@@ -15,34 +18,46 @@ import java.time.temporal.ChronoUnit
 import java.util.*
 import java.util.concurrent.ConcurrentHashMap
 import java.util.concurrent.TimeUnit
-import kotlin.math.max
+import kotlin.jvm.optionals.getOrNull
 
-@RestController
-class ImageCachingProxyController(private val imageCachingConfig: ImageCachingConfig,
-        private val signingService: ImgproxyUrlSigningService) : ImageCachingProxyApi {
+@Controller
+class ImageCachingProxyController(
+    private val imageCachingConfig: ImageCachingConfig,
+    private val signingService: ImgproxyUrlSigningService,
+) : ImageCachingProxyApi {
 
     private val LOG = LoggerFactory.getLogger(this::class.java)
 
     private val cache = ConcurrentHashMap<String, CacheEntry>()
 
     private val httpClient = HttpClient.newBuilder()
-            .followRedirects(HttpClient.Redirect.NORMAL)
-            .build()
+        .followRedirects(HttpClient.Redirect.NORMAL)
+        .build()
 
-    override fun getImage(url: String): Optional<ByteArray> {
+    override fun getImage(url: String): ResponseEntity<ByteArray> {
         val cached = cache[url]
         if (cached != null) {
-            return cached.optionalPicture
+            val mediaType = cached.contentType.getOrNull()
+            return if (mediaType != null) {
+                ResponseEntity.ok().contentType(mediaType).body(cached.optionalImage.getOrNull())
+            } else {
+                ResponseEntity.ok().body(cached.optionalImage.getOrNull())
+            }
         }
 
-        val imgproxyUrl = signingService.createSignedImgProxyUrl(url)
+        val imgproxyUrl = signingService.createSignedImgProxyUrlForOperations(
+            imageCachingConfig.width,
+            imageCachingConfig.height,
+            url
+        )
 
         val request = HttpRequest.newBuilder().GET()
-                .uri(URI.create(imgproxyUrl))
-                .build()
+            .uri(URI.create(imgproxyUrl))
+            .build()
         val response = httpClient.send(request, HttpResponse.BodyHandlers.ofByteArray())
 
-        val optional = if (response.statusCode() != 200) {
+        var contentType: Optional<String> = Optional.empty()
+        val optionalImage = if (response.statusCode() != 200) {
             LOG.warn("response code is invalid ${response.statusCode()} for $imgproxyUrl")
             Optional.empty()
         } else {
@@ -51,13 +66,20 @@ class ImageCachingProxyController(private val imageCachingConfig: ImageCachingCo
                 LOG.warn("empty body for $imgproxyUrl")
                 Optional.empty()
             } else {
+                contentType = response.headers().firstValue("content-type")
                 Optional.of(body)
             }
         }
 
-        cache[url] = CacheEntry(optional)
+        val optionalMediaType = contentType.map { MediaType.valueOf(it) }
+        cache[url] = CacheEntry(optionalImage, optionalMediaType)
 
-        return optional
+        val mediaType = optionalMediaType.getOrNull()
+        return if (mediaType != null) {
+            ResponseEntity.ok().contentType(mediaType).body(optionalImage.getOrNull())
+        } else {
+            ResponseEntity.ok().body(optionalImage.getOrNull())
+        }
     }
 
 
@@ -76,10 +98,10 @@ class ImageCachingProxyController(private val imageCachingConfig: ImageCachingCo
         return dateAdded.isBefore(Instant.now().minus(1, ChronoUnit.DAYS))
     }
 
-
     data class CacheEntry(
-            val optionalPicture: Optional<ByteArray>,
-            val dateAdded: Instant = Instant.now(),
+        val optionalImage: Optional<ByteArray>,
+        val contentType: Optional<MediaType>,
+        val dateAdded: Instant = Instant.now(),
     )
 
 }
