@@ -5,6 +5,9 @@ museum-railway-web/api/search-api-client-generated
 .gradle/
 build/
 
+# gradle.properties must be consciously commited
+gradle.properties
+
 # Eclipse
 .project
 .classpath
