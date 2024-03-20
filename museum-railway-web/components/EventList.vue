@@ -58,7 +58,9 @@
 
                 <div v-if="slotProps.item.pictureUrl && viewport.isGreaterOrEquals('tablet')"
                      class="min-h-full event-image">
-                  <Image :src="`/imgcache?url=${slotProps.item.pictureUrl}`" alt="TODO" class="h-full w-full"
+                  <Image :src="`/imgcache?url=${slotProps.item.pictureUrl}`"
+                         alt="kein alt text vorhanden"
+                         class="h-full w-full"
                          image-class="h-full w-full object-fit-cover"/>
                 </div>
               </div>
