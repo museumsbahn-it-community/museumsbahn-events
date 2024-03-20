@@ -54,6 +54,10 @@ body {
   background: colors.$color-umbragrau;
 }
 
+.object-fit-cover {
+  object-fit: cover;
+}
+
 .menubar {
   height: variables.$navbar-height;
   margin-left: 3rem;
@@ -81,6 +85,10 @@ body {
   background: white;
   clip-path: polygon(15% 0, 100% 0, 85% 100%, 0 100%);
   font-weight: bold;
+}
+
+.diagonal-box {
+  clip-path: polygon(15% 0, 100% 0, 85% 100%, 0 100%);
 }
 
 .borderless-menubar {

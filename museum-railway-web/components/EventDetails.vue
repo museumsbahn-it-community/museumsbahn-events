@@ -1,5 +1,8 @@
 <script setup lang="ts">
 
+import EventSummary from '~/components/EventSummary.vue';
+import type { MuseumEvent } from '~/model/museumEvent';
+
 withDefaults(defineProps<{
   museumEvent: MuseumEvent | undefined,
   noEventSelectedPlaceholderText?: string | undefined,
@@ -13,15 +16,9 @@ withDefaults(defineProps<{
     <div v-if="museumEvent != undefined" class="p-4 lg:h-full bg-white">
         <h2 class="my-1">{{ museumEvent.name }}</h2>
         <div class="my-2 flex flex-column">
-          <div class="flex align-items-center text-sm my-2">
-            <i class="pi pi-clock mr-2"/> {{ formatDate(museumEvent?.date) }}
-          </div>
-          <div class="flex align-items-center text-sm my-2">
-            <i class="pi pi-map-marker mr-2"/> {{ museumEvent.location.name }} -
-            {{ museumEvent.location.location.city }}
-          </div>
+          <EventSummary v-if="museumEvent" :museum-event="museumEvent"></EventSummary>
 
-          <ScrollPanel class="flex-shrink-1" style="height:80%">
+          <ScrollPanel class="flex-shrink-1 w-full" style="height:80%">
             <div class="mx-2 my-5 text-block">
               {{ museumEvent.description }}
             </div>

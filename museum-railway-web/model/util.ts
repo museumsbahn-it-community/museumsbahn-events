@@ -25,6 +25,7 @@ export function mapEntriesToEvents(entries: Entry[], locations: LocationMap): Mu
 			name: value[SemanticKeys.NAME],
 			date: new Date(value[SemanticKeys.STARTDATE]),
 			description: value[SemanticKeys.DESCRIPTION],
+			pictureUrl: value[SemanticKeys.PICTUREURL],
 			location: museumLocation,
 			url,
 			locationId,
