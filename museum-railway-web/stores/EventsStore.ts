@@ -128,7 +128,7 @@ export const useEventsStore = defineStore('events', {
 		async loadEventsWithLocations() {
 			const locationStore = useLocationsStore();
 			await locationStore.loadLocations();
-			const eventsResponse: AxiosResponse<ResultDTO> = await apiStore.boudiccaSearchApi.queryEntries({});
+			const eventsResponse: AxiosResponse<ResultDTO> = await apiStore.boudiccaSearchApi.queryEntries({size:200});
 			const rawEntries = eventsResponse.data.result;
 			const locationMap = createLocationMap(toRaw(locationStore.allLocations));
 			this.queriedEvents = mapEntriesToEvents(rawEntries, locationMap);
