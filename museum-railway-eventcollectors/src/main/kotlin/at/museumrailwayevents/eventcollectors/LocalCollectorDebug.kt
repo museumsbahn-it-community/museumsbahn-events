@@ -1,9 +1,10 @@
-package at.museumsbahnevents.eventcollectors
+package at.museumrailwayevents.eventcollectors
 
-import at.museumsbahnevents.eventcollectors.collectors.WälderbähnleCollector
+import at.museumrailwayevents.eventcollectors.collectors.WälderbähnleCollector
+import at.museumrailwayevents.eventcollectors.service.JsoupCrawlerImpl
 import base.boudicca.api.eventcollector.EventCollectorDebugger
 
 fun main() {
     EventCollectorDebugger()
-        .debug(WälderbähnleCollector())
+        .debug(WälderbähnleCollector(JsoupCrawlerImpl()))
 }

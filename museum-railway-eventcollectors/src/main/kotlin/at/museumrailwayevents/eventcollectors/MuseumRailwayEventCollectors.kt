@@ -1,15 +1,20 @@
 package at.museumrailwayevents.eventcollectors
 
 import at.museumrailwayevents.eventcollectors.collectors.*
+import at.museumrailwayevents.eventcollectors.service.JsoupCrawler
+import at.museumrailwayevents.eventcollectors.service.JsoupCrawlerImpl
 import base.boudicca.api.eventcollector.EventCollectorScheduler
 
+val crawler = JsoupCrawlerImpl()
 fun main() {
     EventCollectorScheduler()
-        .addEventCollector(OegegShopCollector())
-        .addEventCollector(OegegSchmalspurCollector())
+        .addEventCollector(OegegShopCollector(crawler))
+        .addEventCollector(OegegSchmalspurCollector(crawler))
         .addEventCollector(ProBahnVorarlbergCollector())
-        .addEventCollector(RheinbähnleCollector())
-        .addEventCollector(WälderbähnleCollector())
+        .addEventCollector(RheinbähnleCollector(crawler))
+        .addEventCollector(WälderbähnleCollector(crawler))
+        .addEventCollector(NostalgiebahnenKärntenCollector(crawler))
+        .addEventCollector(WackelsteinexpressCollector(crawler))
         .startWebUi()
         .run()
 }

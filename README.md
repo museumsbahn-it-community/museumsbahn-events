@@ -1,7 +1,29 @@
-# historic-railway-events
+# museumsbahn-events
 
+This is the code behind the page museumsbahn-events.at which will be launched in the first half of 2024.
 
+## Goal
 
+The goal of the museumsbahn-events plattform is to crawl events from all associations across Austria
+which are involved in preserving and running heritage trains.
+
+The main idea is that this project does not cause any additional work for the associations, but
+gives a single point of entry for people who are planning their next trips and want to know
+which events are happening.
+
+## Architecture
+
+As a central hub we use boudicca.events and the eventdb provided by boudicca.
+We implemented some custom eventcollectors, which are fully compatible with boudicca.
+
+Additionally we use a separate backend to provide additional information like museum 
+locations, opening hours, contact details and so on.
+
+## Current Limitations
+
+The api package needs to be published to a private repo or linked using `npm link`.
+
+## Development
 
 ### Publish artifacts to private repos
 
@@ -24,6 +46,18 @@ for dry run you can use
 ```
 npm publish --dry-run
 ```
+
+# Deployment
+
+## generate signing keys for imgproxy
+
+If you need a random key/salt pair in a hurry, you can quickly generate one using the following snippet:
+
+```
+echo $(xxd -g 2 -l 64 -p /dev/random | tr -d '\n')
+```
+
+for details see: https://docs.imgproxy.net/configuration/options#url-signature
 
 ## GDPR conforming matomo configuration
 

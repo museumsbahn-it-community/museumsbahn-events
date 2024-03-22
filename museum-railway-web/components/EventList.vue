@@ -24,9 +24,13 @@
   width: 4px;
 }
 
+.event-image {
+  width: 200px;
+}
+
 </style>
 <template>
-  <div class="bg-verkehrsrot rounded-corners-big px-3 lg:px-5">
+  <div class="bg-verkehrsrot rounded-corners-small px-3 lg:px-5">
     <div class="flex flex-grow-1 min-h-0 w-full">
       <div v-if="groupedEvents.length > 0" class="w-full">
         <div v-for="eventGroup in groupedEvents" class="mb-4">
@@ -38,25 +42,28 @@
           </div>
           <Timeline :value="eventGroup.events" align="left">
             <template #content="slotProps">
-              <Card class="mt-3 cursor-pointer" @click="selectEvent(slotProps.item)"
-                    :class="{ selected: isHighlighted(slotProps.item)}"
+              <div class="mt-3 bg-grauweiss cursor-pointer flex flex-row"
+                   @click="selectEvent(slotProps.item)"
+                   :class="{ selected: isHighlighted(slotProps.item)}"
               >
-                <template #title>
-                  {{ slotProps.item.name }}
-                </template>
-                <template #subtitle>
-                  <p> {{ formatDate(slotProps.item.date) }}</p>
-                  <p> {{ slotProps.item.location?.location?.city }}, {{
-                      slotProps.item.location?.location?.state
-                    }}</p>
-                </template>
-                <template #content>
-                  <div class="flex align-items-end w-full" v-if="showDetailsButton">
-                    <div class="flex-grow-1"></div>
-                    <Button class="dark-text" text>Details</Button>
-                  </div>
-                </template>
-              </Card>
+                <div class="bg-umbragrau min-h-full light-text p-2 flex flex-column justify-content-center">
+                  <h3 class="m-1">{{ formatDayMon(slotProps.item.date) }}</h3>
+                  <h1 class="m-1">{{ formatYear(slotProps.item.date) }}</h1>
+                </div>
+                <div class="my-2 mx-4 flex-grow-1">
+                  <h2>{{ slotProps.item.name }}</h2>
+                  <EventSummary :museum-event="slotProps.item"></EventSummary>
+                </div>
+
+
+                <div v-if="slotProps.item.pictureUrl && viewport.isGreaterOrEquals('tablet')"
+                     class="min-h-full event-image">
+                  <Image :src="`/imgcache?url=${slotProps.item.pictureUrl}`"
+                         alt="kein alt text vorhanden"
+                         class="h-full w-full"
+                         image-class="h-full w-full object-fit-cover"/>
+                </div>
+              </div>
             </template>
           </Timeline>
         </div>
@@ -74,6 +81,7 @@ import { MuseumEvent } from '~/model/museumEvent.ts';
 import { eventKey } from '~/model/util.ts';
 import type { StateEntry } from '~/model/stateEntry.ts';
 import type { MuseumEventGroup } from '~/stores/EventsStore.ts';
+import { formatDayMon, formatYear } from '../composables/formatDate.ts';
 
 const EVENT_SELECTED_TOKEN = 'eventSelected';
 const emit = defineEmits([EVENT_SELECTED_TOKEN]);
@@ -86,6 +94,7 @@ const props = withDefaults(defineProps<{
 }>(), {
   dates: [null, null],
 });
+const viewport = useViewport();
 
 const eventsStore = useEventsStore();
 

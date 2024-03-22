@@ -69,10 +69,14 @@ services:
     image: git.twatzl.eu/twatzl/museum-railway-events-backend
     ports:
       - "8080:8080"
+    environment:
+      - "IMAGE_IMG_PROXY_URL=http://imgproxy:8080"
+      - "IMAGE_SIGNING_KEY=c265ea162df50eb1793cfd4547e1c0d8cffa61e3abdaf9e075c3376bdae53ec731bc6a9d0c743e4242071aabf61a9a290799c1bb96c26ba827730f7371f908c9"
+      - "IMAGE_SIGNING_SALT=d531871747288265e6144698350f915a781005ba8dd7ed6fcf28634cec4a8c47744d37e830b5e5942c3c2a3e0758a00a6f2d2f847afb1728e31d1e10beb44d87"
     labels:
       - "traefik.enable=true"
       - "traefik.docker.network=traefik-router"
-      - "traefik.http.routers.backend.rule=PathPrefix(`/api/`)"
+      - "traefik.http.routers.backend.rule=PathPrefix(`/api/`) || Path(`/imgcache`)"
       - "traefik.http.routers.backend.entrypoints=web"
       - "traefik.http.services.backend.loadbalancer.server.port=8080"
     networks:
@@ -90,7 +94,7 @@ services:
     depends_on:
       - boudicca-eventdb
       - boudicca-search
-      - museum-railway-events-backend
+      #- museum-railway-events-backend
     labels:
       - "traefik.enable=true"
       - "traefik.docker.network=traefik-router"
@@ -99,6 +103,15 @@ services:
       - "traefik.http.services.frontend.loadbalancer.server.port=3000"
     ports:
       - "3010:3000"
+    networks:
+      - traefik-router
+  imgproxy:
+    image:  darthsim/imgproxy:v3.2
+    ports:
+      - "8090:8080"
+    environment:
+      - IMGPROXY_KEY=c265ea162df50eb1793cfd4547e1c0d8cffa61e3abdaf9e075c3376bdae53ec731bc6a9d0c743e4242071aabf61a9a290799c1bb96c26ba827730f7371f908c9
+      - IMGPROXY_SALT=d531871747288265e6144698350f915a781005ba8dd7ed6fcf28634cec4a8c47744d37e830b5e5942c3c2a3e0758a00a6f2d2f847afb1728e31d1e10beb44d87
     networks:
       - traefik-router
   reverse-proxy:

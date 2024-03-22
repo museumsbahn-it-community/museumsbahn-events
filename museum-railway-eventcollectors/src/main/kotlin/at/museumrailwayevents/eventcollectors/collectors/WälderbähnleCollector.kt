@@ -1,5 +1,6 @@
 package at.museumrailwayevents.eventcollectors.collectors
 
+import at.museumrailwayevents.eventcollectors.service.JsoupCrawler
 import at.museumrailwayevents.model.conventions.CommonKeys
 import base.boudicca.model.Event
 import org.jsoup.Jsoup
@@ -10,7 +11,7 @@ import java.time.format.DateTimeFormatter
 import java.time.format.DateTimeFormatterBuilder
 import java.util.*
 
-class WälderbähnleCollector : MuseumRailwayEventCollector(
+class WälderbähnleCollector(val jsoupCrawler: JsoupCrawler) : MuseumRailwayEventCollector(
     operatorId = "waelderbaehnle",
     locationId = "waelderbaehnle",
     url = "https://waelderbaehnle.at/fahrplanbetrieb-preise-2024",

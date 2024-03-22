@@ -9,18 +9,6 @@ import org.springframework.security.web.SecurityFilterChain
 import org.springframework.web.servlet.config.annotation.CorsRegistry
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer
 
-//@OpenAPIDefinition(
-//    servers = [
-//        Server(url = "/", description = "Default Server URL")
-//    ],
-//    info = Info(
-//        title = "Boudicca EventDB",
-//        version = "0.1",
-//        license = License(
-//            name = "unknown"
-//        )
-//    ),
-//)
 @SpringBootApplication
 class MuseumRailwayBackendApplication : WebMvcConfigurer {
 

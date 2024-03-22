@@ -5,7 +5,8 @@ export class MuseumEvent {
 	description: string;
 	date: Date;
 	url: string
-	locomotiveType: string | undefined; // TODO: migrate to enum
+	pictureUrl: string | undefined;
+	locomotiveType: string | undefined;
 	locationId: string;
 	operatorId: string;
 	location: MuseumLocation | undefined;
