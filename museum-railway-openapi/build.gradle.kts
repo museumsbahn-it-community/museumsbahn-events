@@ -1,13 +1,4 @@
-buildscript {
-    repositories {
-        maven(
-            url = "https://plugins.gradle.org/m2/"
-        )
-    }
-    dependencies {
-        classpath("org.openapitools:openapi-generator-gradle-plugin:7.0.1")
-    }
-}
+import org.openapitools.generator.gradle.plugin.tasks.GenerateTask
 
 plugins {
     id("org.openapi.generator") version "7.2.0"
@@ -17,7 +8,7 @@ repositories {
     mavenCentral()
 }
 
-openApiGenerate {
+tasks.register<GenerateTask>("generateTypescriptClient") {
     inputSpec.set("${project.projectDir}/src/main/resources/museum-railway-backend.yaml")
     outputDir.set("${project.projectDir}/src/main/generated/typescript")
     generatorName.set("typescript-axios")

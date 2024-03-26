@@ -1,7 +1,6 @@
 plugins {
     id("org.springframework.boot")
     id("io.spring.dependency-management")
-    id("io.cloudflight.autoconfigure.swagger-api-configure")
     kotlin("jvm")
     kotlin("plugin.spring")
     kotlin("kapt")
@@ -24,6 +23,7 @@ dependencies {
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
     implementation("org.jetbrains.kotlin:kotlin-reflect")
     implementation("io.swagger:swagger-annotations")
+    implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:2.4.0")
     testImplementation("com.willowtreeapps.assertk:assertk:0.28.0")
     testImplementation("org.junit.jupiter:junit-jupiter-api:5.8.1")
     testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.8.1")

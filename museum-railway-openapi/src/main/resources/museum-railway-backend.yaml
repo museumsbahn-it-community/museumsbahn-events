@@ -1,133 +1,161 @@
----
-swagger: "2.0"
+openapi: 3.0.1
 info:
-  version: "0.1.0"
+  version: "0.2.0"
   title: "museum-railway-backend"
 tags:
 - name: "Museum Railway Events Locations API"
 - name: "Museum Railway Events Operators API"
 paths:
-  /api/location:
-    get:
+  /api/manage/reloadData:
+    post:
       tags:
-      - "Museum Railway Events Locations API"
-      operationId: "allLocations"
-      produces:
-      - "application/json"
-      parameters:
-      - name: "operatorId"
-        in: "query"
-        required: true
-        type: "string"
+        - management-controller
+      operationId: clearCaches
       responses:
         "200":
-          description: "successful operation"
+          description: OK
+  /imgcache:
+    get:
+      tags:
+        - image-caching-proxy-controller
+      operationId: getImage
+      parameters:
+        - name: url
+          in: query
+          required: true
           schema:
-            type: "array"
-            items:
-              $ref: "#/definitions/MuseumLocation"
+            type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            image/jpeg:
+              schema:
+                type: string
+                format: byte
+            image/png:
+              schema:
+                type: string
+                format: byte
   /api/operator:
     get:
       tags:
-      - "Museum Railway Events Operators API"
-      operationId: "allOperators"
-      produces:
-      - "application/json"
-      parameters: []
+        - operators-controller
+      operationId: allOperators
       responses:
         "200":
-          description: "successful operation"
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/MuseumOperator'
+  /api/location:
+    get:
+      tags:
+        - locations-controller
+      operationId: allLocations
+      parameters:
+        - name: operatorId
+          in: query
+          required: false
           schema:
-            type: "array"
-            items:
-              $ref: "#/definitions/MuseumOperator"
-definitions:
-  Location:
-    type: "object"
-    required:
-    - "city"
-    - "country"
-    - "lat"
-    - "lon"
-    - "state"
-    - "street"
-    - "zipCode"
-    properties:
-      lat:
-        type: "number"
-        format: "float"
-      lon:
-        type: "number"
-        format: "float"
-      country:
-        type: "string"
-      state:
-        type: "string"
-      street:
-        type: "string"
-      city:
-        type: "string"
-      zipCode:
-        type: "string"
-  MuseumLocation:
-    type: "object"
-    required:
-    - "description"
-    - "eventCollectionNotPossibleReason"
-    - "eventCollectorType"
-    - "imageName"
-    - "location"
-    - "locationId"
-    - "name"
-    - "operatorId"
-    - "type"
-    - "webUrl"
-    properties:
-      name:
-        type: "string"
-      type:
-        type: "string"
-        enum:
-        - "Museum"
-        - "ModelRailway"
-        - "Station"
-        - "Event"
-        - "RailLine"
-      operatorId:
-        type: "string"
-      locationId:
-        type: "string"
-      webUrl:
-        type: "string"
-      description:
-        type: "string"
-      imageName:
-        type: "string"
-      eventCollectorType:
-        type: "string"
-      eventCollectionNotPossibleReason:
-        type: "string"
-      location:
-        $ref: "#/definitions/Location"
-  MuseumOperator:
-    type: "object"
-    required:
-    - "description"
-    - "identifier"
-    - "imageName"
-    - "location"
-    - "name"
-    - "webUrl"
-    properties:
-      name:
-        type: "string"
-      identifier:
-        type: "string"
-      webUrl:
-        type: "string"
-      description:
-        type: "string"
-      imageName:
-        type: "string"
-      location:
-        $ref: "#/definitions/Location"
+            type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/MuseumLocation'
+components:
+  schemas:
+    Location:
+      required:
+        - country
+        - state
+        - street
+      type: object
+      properties:
+        lat:
+          type: number
+          format: float
+        lon:
+          type: number
+          format: float
+        country:
+          type: string
+        state:
+          type: string
+        street:
+          type: string
+        city:
+          type: string
+        zipCode:
+          type: string
+    MuseumOperator:
+      required:
+        - description
+        - identifier
+        - imageName
+        - location
+        - name
+        - webUrl
+      type: object
+      properties:
+        name:
+          type: string
+        identifier:
+          type: string
+        webUrl:
+          type: string
+        description:
+          type: string
+        imageName:
+          type: string
+        location:
+          $ref: '#/components/schemas/Location'
+    MuseumLocation:
+      required:
+        - description
+        - eventCollectionComment
+        - eventCollectorType
+        - imageName
+        - location
+        - locationId
+        - name
+        - operatorId
+        - type
+        - webUrl
+      type: object
+      properties:
+        name:
+          type: string
+        type:
+          type: string
+          enum:
+            - Museum
+            - Modellbahn
+            - Veranstaltung
+            - Museumsbahn
+            - Sonderfahrten
+            - Station
+        operatorId:
+          type: string
+        locationId:
+          type: string
+        webUrl:
+          type: string
+        description:
+          type: string
+        imageName:
+          type: string
+        eventCollectorType:
+          type: string
+        eventCollectionComment:
+          type: string
+        location:
+          $ref: '#/components/schemas/Location'

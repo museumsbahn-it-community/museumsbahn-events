@@ -2,8 +2,9 @@ package at.museumrailwayevents.model
 
 enum class MuseumType {
     Museum,
-    ModelRailway,
+    Modellbahn,
+    Veranstaltung,
+    Museumsbahn,
+    Sonderfahrten,
     Station,
-    Event,
-    RailLine
 }
