@@ -1,20 +1,42 @@
-name,identifier,webUrl,description,imageName,state,street,zipCode,city,lat,lon
-ProBahn Vorarlberg,pbv ,https://probahn-vlbg.at/,,,Vorarlberg,Bahnhofstraße 48,6911,Lochau,47.52972970736584,9.742351655594586
-Rhein-Schauen | Museum und Rheinbähnle,rheinschauen,https://www.rheinschauen.at/,,,Vorarlberg,Höchster Straße 4,6890,Lustenau,47.44797783715391,9.661144745358817
-ÖGEG Österreichische Gesellschaft für Eisenbahngeschichte,oegeg,https://www.oegeg.at/termine/termine-normalspur-museum-lokpark-ampflwang/,,,Oberösterreich,Seitlingerweg 14,4203,Altenberg bei Linz,0,0
-Österreichische Gesellschaft für Lokalbahnen,oeglb,https://www.lokalbahnen.at/bergstrecke/,,,Wien,Poschgasse 6,1140,Wien,0,0
-Eisenbahnmuseum Strasshof,oesek,https://eisenbahnmuseum-heizhaus.com/,,,Niederösterreich,Siller-Straße 123,2231,Strasshof an der Nordbahn,48.32577495851572,16.67679470493425
-Bregenzerwaldbahn Museumsbahn Verein,waelderbaehnle,https://waelderbaehnle.at/,,,Vorarlberg,Bahnhof 147,6870,Bezau,0,0
-Verein der Eisenbahnfreunde in Lienz,ebfl,https://ebfl.at/,,,Tirol,Bahnhofsplatz 10,9900,Lienz,0,0
-VEF – Verband der Eisenbahnfreunde,vef,https://www.vef.at/,,,Wien,Fruethstraße 11,1030,Wien,0,0
-Eisenbahnclub Mh.6,mh6,http://www.mh6.at/de/,,,Niederösterreich,Werkstättenstraße 18,3200,Ober-Grafendorf,0,0
-SÜDBAHN Museum,sbm,https://www.suedbahnmuseum.at/,,,Steiermark,Heizhausgasse 2,8680,Mürzzuschlag,0,0
-Stainzer Flascherlzug,flascherlzug,https://www.flascherlzug.at/,,,Steiermark,Bahnhofstraße 28,8510,Stainz,0,0
-Club 760 – Verein der Freunde der Murtalbahn,club760,https://www.club760.at/,,,Steiermark,Schillerplatz 4-6,8850,Murau,0,0
-Taurachbahn,taurachbahn,https://www.taurachbahn.eu/,,,Salzburg,Markt 153,5570,Mauterndorf,0,0
-Gurkthalbahn- Kärntner Museumsbahn seit 1974,gurktalbahn,http://www.gurkthalbahn.at/,,,Kärnten,Pöckstein 13,9341,Straßburg,0,0
-Verein Neue Landesbahn,vnlb,https://www.landesbahn.at/,,,Niederösterreich,Georg Göstl-Straße 11/4,2130,Mistelbach,0,0
-Nostalgiebahnen in Kärnten,nbik,https://www.nostalgiebahn.at/,,,Kärnten,Leharstraße 76,9020,Klagenfurt am Wörthersee,0,0
-Steiermarkbahn,stmk,https://www.steiermarkbahn.at/,,,Steiermark,Eggenberger Straße 20,8020,Graz,0,0
-Niederösterreichische Verkehrsorganisationsges.m.b.H. (NÖVOG),noevog,https://www.niederoesterreichbahnen.at,,,Niederösterreich,Werkstättenstraße 13,3100,St. Pölten,0,0
-Wiener Tramwaymuseum,wtm,https://tram.at/,,,Wien,Holochergasse 24,1150,Wien,0,0
+name,identifier,webUrl,description,imageName,state,street,zipCode,city,lat,lon,
+ProBahn Vorarlberg,pbv ,https://probahn-vlbg.at/,,,Vorarlberg,Bahnhofstraße 48,6911,Lochau,47.52972970736584,9.742351655594586,
+Rhein-Schauen | Museum und Rheinbähnle,rheinschauen,https://www.rheinschauen.at/,,,Vorarlberg,Höchster Straße 4,6890,Lustenau,47.44797783715391,9.661144745358817,
+ÖGEG Österreichische Gesellschaft für Eisenbahngeschichte,oegeg,https://www.oegeg.at/termine/termine-normalspur-museum-lokpark-ampflwang/,,,Oberösterreich,Seitlingerweg 14,4203,Altenberg bei Linz,0,0,
+Österreichische Gesellschaft für Lokalbahnen,oeglb,https://www.lokalbahnen.at/bergstrecke/,,,Wien,Poschgasse 6,1140,Wien,0,0,
+Eisenbahnmuseum Strasshof,oesek,https://eisenbahnmuseum-heizhaus.com/,,,Niederösterreich,Siller-Straße 123,2231,Strasshof an der Nordbahn,48.32577495851572,16.67679470493425,
+Bregenzerwaldbahn Museumsbahn Verein,waelderbaehnle,https://waelderbaehnle.at/,,,Vorarlberg,Bahnhof 147,6870,Bezau,0,0,
+Verein der Eisenbahnfreunde in Lienz,ebfl,https://ebfl.at/,,,Tirol,Bahnhofsplatz 10,9900,Lienz,0,0,
+VEF – Verband der Eisenbahnfreunde,vef,https://www.vef.at/,,,Wien,Fruethstraße 11,1030,Wien,0,0,
+Eisenbahnclub Mh.6,mh6,http://www.mh6.at/de/,,,Niederösterreich,Werkstättenstraße 18,3200,Ober-Grafendorf,0,0,
+SÜDBAHN Museum,suedbahnmuseum,https://www.suedbahnmuseum.at/,,,Steiermark,Heizhausgasse 2,8680,Mürzzuschlag,0,0,
+Stainzer Flascherlzug,flascherlzug,https://www.flascherlzug.at/,,,Steiermark,Bahnhofstraße 28,8510,Stainz,0,0,
+Club 760 – Verein der Freunde der Murtalbahn,club760,https://www.club760.at/,,,Steiermark,Schillerplatz 4-6,8850,Murau,0,0,
+Taurachbahn,taurachbahn,https://www.taurachbahn.eu/,,,Salzburg,Markt 153,5570,Mauterndorf,0,0,
+Gurkthalbahn- Kärntner Museumsbahn seit 1974,gurktalbahn,http://www.gurkthalbahn.at/,,,Kärnten,Pöckstein 13,9341,Straßburg,0,0,
+Verein Neue Landesbahn,vnlb,https://www.landesbahn.at/,,,Niederösterreich,Georg Göstl-Straße 11/4,2130,Mistelbach,0,0,
+Nostalgiebahnen in Kärnten,nbik,https://www.nostalgiebahn.at/,,,Kärnten,Leharstraße 76,9020,Klagenfurt am Wörthersee,0,0,
+Steiermarkbahn,stmk,https://www.steiermarkbahn.at/,,,Steiermark,Eggenberger Straße 20,8020,Graz,0,0,
+Niederösterreichische Verkehrsorganisationsges.m.b.H. (NÖVOG),noevog,https://www.niederoesterreichbahnen.at,,,Niederösterreich,Werkstättenstraße 13,3100,St. Pölten,0,0,
+Wiener Linien,wl,https://www.wienerlinien.at/,,,Wien,Erdbergstraße 202,1030,Wien,,,
+Wiener Tramwaymuseum,wtm,https://tram.at/,,,Wien,Holochergasse 24,1150,Wien,0,0,
+Österreichisches Straßenbahn- und Lokalbahnbetriebsmuseum „I.G. Museumstramway“,tramway_mariazell,https://museumstramway.at/,,,Steiermark,An der Museumsbahn 5,8630,St. Sebastian,,,
+Club U44 - Freunde der Feistritztalbahn,feistritztalbahn,https://www.feistritztalbahn.at/,,,Steiermark,Bahnhofstraße 22,8190,Birkfeld,,,
+Club Florianerbahn,florianerbahn,https://www.florianerbahn.at/CFB/index.htm,,,Oberösterreich,Leopold-Kotzmann-Straße 14a,4490,St. Florian,,,
+Tiroler Museumsbahnen,tmb,https://www.tmb.at/home,,,Tirol,Pater-Reinisch-Weg 4,6020,Innsbruck,,,
+Stern und Hafferl,sth,https://www.stern-verkehr.at/,,,Oberösterreich,Kuferzeile 32,4810,Gmunden,,,
+Verein Kaltenleutgebner Bahn,klgb,https://www.kaltenleutgebnerbahn.at/,,,Niederösterreich,Feldgasse 2,2380,Perchtoldsdorf,,,"(alter Bahnhof, keine Vereinsadresse angegeben)"
+Verein zum Erhalt und Betrieb des Dampftriebfahrzeugs 52.4984,lokteam,https://sites.google.com/view/lokteam-52-4984/start,,,Niederösterreich,Mautner-Markhof-Gasse 17/10/22,1110,Wien,,,
+Achenseebahn Infrastruktur- und Betriebs-GmbH,achenseebahn,https://www.achenseebahn.at/,,,Tirol,Austraße 1,6200,Jenbach,,,
+Zillertaler Verkehrsbetriebe AG,zillertalbahn,https://www.zillertalbahn.at/,,,Tirol,Austraße 1,6200,Jenbach,,,
+Neue Landesbahn,landesbahn,https://www.landesbahn.at/sonder-fahrten/,,,Niederösterreich,Georg Göstl-Straße 11/4,2130,Mistelbach,,,
+Waldviertler Schmalspurbahnverein,wackelsteinexpress,https://www.wackelsteinexpress.at/,,,Niederösterreich,Bahnhofstraße 1,3860,Heidenreichstein,,,
+"Museums- und Modellbauverein ""Museum Tauernbahn""",tauernbahnmuseum,https://www.museum-tauernbahn.at/,,,Salzburg,Bahnhofstrasse 14,5620,Schwarzach,,,
+Verein Erzbergbahn,erzbergbahn,https://www.erzbergbahn.at/,,,Steiermark,Hauptstraße 140,8794,Vordernberg,,,
+Verein Gailtalbahn,gailtalbahn,https://www.gailtalbahn.at/,,,Kärnten,Kötschach 122,9640,Kötschach-mauthen,,,
+Freunde der Breitenauerbahn,breitenauerbahn,https://www.breitenauerbahn.at/,,,Steiermark,Übelsteinerstraße 14,8600,Bruck an der Mur,,,
+Steirische Eisenbahnfreunde,stef,https://www.stef.at/,,,Steiermark,Köflacher Gasse 35-41,8020,Graz,,,
+Förderverein Montan- und Werksbahnmuseum Graz,montanmuseum,https://montanmuseum.at/,,,Steiermark,Statteggerstraße 66,8045,Graz,,,
+MLV Zwettl,mlv_zwettl,http://www.lokalbahnverein.at/,,,Niederösterreich,Bahnhofstraße 31,3910,Zwettl,,,
+Waldviertler Eisenbahnmuseum Siegmundsherberg,waldviertler_eisenbahnmuseum,https://www.eisenbahnmuseum-waldviertel.at/,,,Niederösterreich,Museumsstraße 1,3751,Sigmundsherberg,,,
+Verein Tramway Museum Graz,tramwaymuseum_graz,https://www.tramway-museum-graz.at/,,,Steiermark,Steyrergasse 113a,8010,Graz,,,
+Eisenbahn- Museums- und Nostalgieclub Knittelfeld,eisenbahnmuseum_knittelfeld,https://www.eisenbahnmuseum-knittelfeld.at/,,,Steiermark,Ainbachallee 14a,8720,Knittelfeld,,,

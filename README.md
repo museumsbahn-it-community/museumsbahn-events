@@ -25,15 +25,42 @@ The api package needs to be published to a private repo or linked using `npm lin
 
 ## Development
 
+### Requirements
+
+- npm
+- java21
+- gradle
+
+It's recommended to use IntelliJ as IDE.
+
 ### Publish artifacts to private repos
+
+This setup is necessary once in order to be able to publish to private repos
 
 #### npm
 
 add to your ~/.npmrc
+
+for boudicca packages
 ```
 @boudicca:registry=https://<your registry address>/<your registry path>
 //<your registry address>/<your registry path>/:_authToken=<your auth token>
 ```
+
+for museum-railway-events packages
+```
+@museumrailwayevents:registry=https://<your registry address>/<your registry path>
+//<your registry address>/<your registry path>/:_authToken=<your auth token>
+```
+
+### Modifying the API and releasing a new version
+
+1. bump the version in build.gradle.kts
+2. modify the kotlin api in museum-railway-api
+3. adapt and start the backend
+4. find the openapi.yaml at http://localhost:8080/v3/api-docs.yaml
+5. copy the contents to `museum-railway-openapi/src/main/resources/museum-railway-backend.yaml`
+6. run `generateTypescriptClient`
 
 in the generated typescript client follow the README.md, but generally you can run
 ```
@@ -48,6 +75,8 @@ npm publish --dry-run
 ```
 
 # Deployment
+
+The best way to deploy is to use a docker compose
 
 ## generate signing keys for imgproxy
 

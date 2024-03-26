@@ -1,8 +1,8 @@
-import { LocationsResourceApi } from '@museumrailwayevents/museum-railway-client';
+import {LocationsControllerApi} from '@museumrailwayevents/museum-railway-client';
 import { SearchControllerApi } from '@boudicca/search-api-client/api.ts';
 
 export interface ApiStore {
-	locationsApi: LocationsResourceApi;
+	locationsApi: LocationsControllerApi;
 	boudiccaSearchApi: SearchControllerApi;
 }
 
@@ -10,7 +10,7 @@ export interface ApiStore {
 const baseUrl = "";
 
 const apiStore: ApiStore = {
-	locationsApi: new LocationsResourceApi(undefined, baseUrl),
+	locationsApi: new LocationsControllerApi(undefined, baseUrl),
 	boudiccaSearchApi: new SearchControllerApi(undefined, baseUrl + "/searchApi"),
 };
 

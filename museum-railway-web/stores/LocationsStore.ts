@@ -34,7 +34,7 @@ export const useLocationsStore = defineStore('locations', {
 	},
 	actions: {
 		async loadLocations(): Promise<void> {
-			const locationData = await apiStore.locationsApi.apiLocationGet();
+			const locationData = await apiStore.locationsApi.allLocations();
 			this.locations = locationData.data;
 		},
 	},

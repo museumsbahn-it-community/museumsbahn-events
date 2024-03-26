@@ -1,10 +1,7 @@
 [versions]
-clf-platform-spring = "2.2.0"
+clf-platform-spring = "2.3.0"
 
 [libraries]
 cloudflight-platform-spring-bom = { module = "io.cloudflight.platform.spring:platform-spring-bom", version.ref = "clf-platform-spring" }
 cloudflight-platform-spring-test-bom = { module = "io.cloudflight.platform.spring:platform-spring-test-bom", version.ref = "clf-platform-spring" }
 
-# IMPORTANT: do not update, see https://github.com/gigaSproule/swagger-gradle-plugin/issues/186
-swagger-gradle-plugin = { module = "com.benjaminsproule:swagger-gradle-plugin", version = "1.0.8" }
-swagger-codegen-plugin = { module = "gradle.plugin.org.hidetake:gradle-swagger-generator-plugin", version = "2.19.1" }
