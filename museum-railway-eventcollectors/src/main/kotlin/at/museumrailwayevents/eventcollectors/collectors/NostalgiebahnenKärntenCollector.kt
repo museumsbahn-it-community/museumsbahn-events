@@ -12,6 +12,7 @@ private val locationId_museum = "nbik_verkehrsmuseum"
 private val locationId_tram = "nbik_tram"
 
 val operatorIdNbik = "nbik"
+val imageUrlBase = "https://www.nostalgiebahn.at/"
 
 class NostalgiebahnenKärntenCollector(val jsoupCrawler: JsoupCrawler) : MuseumRailwayEventCollector(
         operatorId = operatorIdNbik,
@@ -48,13 +49,13 @@ class NostalgiebahnenKärntenCollector(val jsoupCrawler: JsoupCrawler) : MuseumR
 
             // TODO: check if datestring has one of the blacklisted keywords
 
-            description = description.replace(name, "").replace("Mehr erfahren?", "").trim()
+            description = description.replace(name, "").replace("Mehr erfahren", "").trim()
 
             val additionalData = mutableMapOf<String, String>()
             additionalData[SemanticKeys.DESCRIPTION] = description
 
             if (imageUrl != null) {
-                additionalData[SemanticKeys.PICTUREURL] = imageUrl
+                additionalData[SemanticKeys.PICTUREURL] = "$imageUrlBase$imageUrl"
             }
 
             dates.forEach { date ->
