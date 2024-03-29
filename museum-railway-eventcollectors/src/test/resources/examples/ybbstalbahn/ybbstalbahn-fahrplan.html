@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr"><head id="html-head">
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+		<meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+		<title>regulärer Fahrplan</title>
+		<link rel="stylesheet" type="text/css" href="ybbstalbahn-fahrplan_files/yb.css">
+		<script type="text/javascript" async="" defer="defer" src="ybbstalbahn-fahrplan_files/matomo.js"></script><script src="ybbstalbahn-fahrplan_files/vendor.js"></script><style class="fslightbox-styles">.fslightbox-fade-in{animation:fslightbox-fade-in .3s cubic-bezier(0,0,.7,1)}.fslightbox-fade-out{animation:fslightbox-fade-out .3s ease}.fslightbox-fade-in-strong{animation:fslightbox-fade-in-strong forwards .3s cubic-bezier(0,0,.7,1)}.fslightbox-fade-out-strong{animation:fslightbox-fade-out-strong .3s ease}@keyframes fslightbox-fade-in{from{opacity:.65}to{opacity:1}}@keyframes fslightbox-fade-out{from{opacity:.35}to{opacity:0}}@keyframes fslightbox-fade-in-strong{from{opacity:.3}to{opacity:1}}@keyframes fslightbox-fade-out-strong{from{opacity:1}to{opacity:0}}.fslightbox-absoluted{position:absolute;top:0;left:0}.fslightbox-cursor-grabbing{cursor:grabbing!important}.fslightbox-full-dimension{width:100%;height:100%}.fslightbox-open{overflow:hidden;height:100%}.fslightbox-flex-centered{display:flex;justify-content:center;align-items:center}.fslightbox-opacity-0{opacity:0!important}.fslightbox-opacity-1{opacity:1!important}.fslightbox-scrollbarfix{padding-right:17px}.fslightbox-transform-transition{transition:transform .3s!important}.fslightbox-container{font-family:Arial,sans-serif;position:fixed;top:0;left:0;background:linear-gradient(rgba(30,30,30,.9),#000 1810%);touch-action:none;z-index:1000000000;-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none;-webkit-tap-highlight-color:transparent}.fslightbox-container *{box-sizing:border-box}.fslightbox-svg-path{transition:fill .15s ease;fill:#d1d2d2}.fslightbox-loader{display:block;margin:auto;position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:67px;height:67px}.fslightbox-loader-child{box-sizing:border-box;display:block;position:absolute;width:54px;height:54px;margin:6px;border:5px solid;border-color:#999 transparent transparent transparent;border-radius:50%;animation:fslightbox-loader 1.2s cubic-bezier(.5,0,.5,1) infinite}.fslightbox-loader-child:nth-child(1){animation-delay:-.45s}.fslightbox-loader-child:nth-child(2){animation-delay:-.3s}.fslightbox-loader-child:nth-child(3){animation-delay:-.15s}@keyframes fslightbox-loader{0%{transform:rotate(0)}100%{transform:rotate(360deg)}}.fslightbox-thumbs-loader{width:54px!important;height:54px!important}.fslightbox-thumbs-loader div{border-width:4px!important;width:44px!important;height:44px!important}.fslightbox-nav{height:45px;width:100%;transition:opacity .3s}.fslightbox-slide-number-container{display:flex;justify-content:center;align-items:center;position:relative;height:100%;font-size:15px;color:#d7d7d7;z-index:0;max-width:55px;text-align:left}.fslightbox-slide-number-container .fslightbox-flex-centered{height:100%}.fslightbox-slash{display:block;margin:0 5px;width:1px;height:12px;transform:rotate(15deg);background:#fff}.fslightbox-toolbar{position:absolute;z-index:3;right:0;top:0;height:45px;display:flex;background:rgba(35,35,35,.65)}.fslightbox-toolbar-button{height:100%;width:45px;cursor:pointer}.fslightbox-toolbar-button:hover .fslightbox-svg-path{fill:#fff}.fslightbox-slide-btn-container{display:flex;align-items:center;padding:12px 12px 12px 6px;position:absolute;top:50%;cursor:pointer;z-index:3;transform:translateY(-50%);transition:opacity .3s}@media (min-width:476px){.fslightbox-slide-btn-container{padding:22px 22px 22px 6px}}@media (min-width:768px){.fslightbox-slide-btn-container{padding:30px 30px 30px 6px}}.fslightbox-slide-btn-container:hover .fslightbox-svg-path{fill:#f1f1f1}.fslightbox-slide-btn{padding:9px;font-size:26px;background:rgba(35,35,35,.65)}@media (min-width:768px){.fslightbox-slide-btn{padding:10px}}@media (min-width:1600px){.fslightbox-slide-btn{padding:11px}}.fslightbox-slide-btn-container-previous{left:0}@media (max-width:475.99px){.fslightbox-slide-btn-container-previous{padding-left:3px}}.fslightbox-slide-btn-container-next{right:0;padding-left:12px;padding-right:3px}@media (min-width:476px){.fslightbox-slide-btn-container-next{padding-left:22px}}@media (min-width:768px){.fslightbox-slide-btn-container-next{padding-left:30px}}@media (min-width:476px){.fslightbox-slide-btn-container-next{padding-right:6px}}.fslightbox-down-event-detector{position:absolute;z-index:1}.fslightbox-slide-swiping-hoverer{z-index:4}.fslightbox-slideshow-bar{width:0;height:2px;z-index:4;opacity:0;background:#fff}.fslightbox-invalid-file-wrapper{font-size:24px;color:#eaebeb;margin:auto}.fslightbox-video{object-fit:cover}.fslightbox-youtube-iframe{border:0}.fslightbox-source{position:relative;z-index:2;display:block;opacity:0;margin:auto;cursor:zoom-in}.fslightbox-source-wrappers-container{transition:transform .2s linear;z-index:2}.fslightbox-source-wrappers-container-pinching{transition:none!important}.fslightbox-thumbs{position:absolute;bottom:0;left:0;width:100%;z-index:-1;background:linear-gradient(180deg,rgba(0,0,0,0),#1e1e1e 100%);opacity:0;transition:opacity .2s;padding:0 5px 12px 5px;height:114px}@media (min-width:992px){.fslightbox-thumbs{padding-bottom:13px;height:120px}}@media (min-width:1600px){.fslightbox-thumbs{padding-bottom:14px;height:126px}}.fslightbox-thumbs-active{opacity:1;z-index:3}.fslightbox-thumbs-inner{display:inline-flex;justify-content:flex-start;align-items:center;height:100%}.fslightbox-thumb-wrapper{position:relative;height:100%;margin:0 4px;opacity:0;transition:opacity .3s}.fslightbox-thumb-wrapper svg{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);cursor:pointer;z-index:1}.fslightbox-thumb-wrapper path{fill:#fff}.fslightbox-thumb-wrapper-darkener{position:absolute;top:2px;left:2px;width:calc(100% - 4px);height:calc(100% - 4px);background:rgba(0,0,0,.4);cursor:pointer}.fslightbox-thumb{cursor:pointer;border-radius:1px;height:100%;width:auto!important;border:2px solid transparent;max-width:unset;max-height:unset}.fslightbox-thumb-active{border:2px solid #fff!important}.fslightbox-thumb-invalid{background:linear-gradient(to bottom,#0f0f0f,rgba(15,15,15,.5));display:inline-block;min-width:155px}.fslightbox-thumbs-cursorer{z-index:4;cursor:grabbing}.fslightbox-caption{position:absolute;bottom:0;left:50%;width:100%;background:linear-gradient(180deg,rgba(0,0,0,0),#1e1e1e 100%);transform:translateX(-50%);opacity:0;transition:opacity .2s;z-index:-1}.fslightbox-caption-inner{padding:25px;max-width:1200px;color:#eee;text-align:center;font-size:14px}@media (min-width:768px){.fslightbox-caption-inner{padding:30px 25px}}.fslightbox-caption-active{opacity:1;z-index:3}</style>
+
+		<link rel="apple-touch-icon-precomposed" sizes="57x57" href="https://www.lokalbahnen.at/icons-yb/apple-touch-icon-57x57.png">
+		<link rel="apple-touch-icon-precomposed" sizes="114x114" href="https://www.lokalbahnen.at/icons-yb/apple-touch-icon-114x114.png">
+		<link rel="apple-touch-icon-precomposed" sizes="72x72" href="https://www.lokalbahnen.at/icons-yb/apple-touch-icon-72x72.png">
+		<link rel="apple-touch-icon-precomposed" sizes="144x144" href="https://www.lokalbahnen.at/icons-yb/apple-touch-icon-144x144.png">
+		<link rel="apple-touch-icon-precomposed" sizes="60x60" href="https://www.lokalbahnen.at/icons-yb/apple-touch-icon-60x60.png">
+		<link rel="apple-touch-icon-precomposed" sizes="120x120" href="https://www.lokalbahnen.at/icons-yb/apple-touch-icon-120x120.png">
+		<link rel="apple-touch-icon-precomposed" sizes="76x76" href="https://www.lokalbahnen.at/icons-yb/apple-touch-icon-76x76.png">
+		<link rel="apple-touch-icon-precomposed" sizes="152x152" href="https://www.lokalbahnen.at/icons-yb/apple-touch-icon-152x152.png">
+		<link rel="icon" type="image/png" href="https://www.lokalbahnen.at/icons-yb/favicon-196x196.png" sizes="196x196">
+		<link rel="icon" type="image/png" href="https://www.lokalbahnen.at/icons-yb/favicon-96x96.png" sizes="96x96">
+		<link rel="icon" type="image/png" href="https://www.lokalbahnen.at/icons-yb/favicon-32x32.png" sizes="32x32">
+		<link rel="icon" type="image/png" href="https://www.lokalbahnen.at/icons-yb/favicon-16x16.png" sizes="16x16">
+		<link rel="icon" type="image/png" href="https://www.lokalbahnen.at/icons-yb/favicon-128.png" sizes="128x128">
+		<meta name="application-name" content="regulärer Fahrplan">
+		<meta name="msapplication-TileColor" content="#e8f0cf">
+		<meta name="msapplication-TileImage" content="/icons-yb/mstile-144x144.png">
+		<meta name="msapplication-square70x70logo" content="/icons-yb/mstile-70x70.png">
+		<meta name="msapplication-square150x150logo" content="/icons-yb/mstile-150x150.png">
+		<meta name="msapplication-wide310x150logo" content="/icons-yb/mstile-310x150.png">
+		<meta name="msapplication-square310x310logo" content="/icons-yb/mstile-310x310.png">
+
+    <!-- Matomo -->
+    <script type="text/javascript">
+    	var _paq = window._paq || [];
+    	/* tracker methods like "setCustomDimension" should be called before "trackPageView" */
+		// _paq.push(['disableCookies']);
+    	_paq.push(['trackPageView']);
+    	_paq.push(['enableLinkTracking']);
+    	(function() {
+    	    var u="//analytics.lokalbahnen.at/";
+    	    _paq.push(['setTrackerUrl', u+'matomo.php']);
+      		_paq.push(['setSiteId', '1']);
+      		var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0];
+      		g.type='text/javascript'; g.async=true; g.defer=true; g.src=u+'matomo.js'; s.parentNode.insertBefore(g,s);
+   		})();
+  	</script>
+  	<noscript><p><img src="//analytics.lokalbahnen.at/matomo.php?idsite=1&amp;rec=1" style="border:0;" alt="" /></p></noscript>
+  	<!-- End Matomo Code -->
+
+	<style class="fslightbox-styles">.fslightbox-fade-in{animation:fslightbox-fade-in .3s cubic-bezier(0,0,.7,1)}.fslightbox-fade-out{animation:fslightbox-fade-out .3s ease}.fslightbox-fade-in-strong{animation:fslightbox-fade-in-strong forwards .3s cubic-bezier(0,0,.7,1)}.fslightbox-fade-out-strong{animation:fslightbox-fade-out-strong .3s ease}@keyframes fslightbox-fade-in{from{opacity:.65}to{opacity:1}}@keyframes fslightbox-fade-out{from{opacity:.35}to{opacity:0}}@keyframes fslightbox-fade-in-strong{from{opacity:.3}to{opacity:1}}@keyframes fslightbox-fade-out-strong{from{opacity:1}to{opacity:0}}.fslightbox-absoluted{position:absolute;top:0;left:0}.fslightbox-cursor-grabbing{cursor:grabbing!important}.fslightbox-full-dimension{width:100%;height:100%}.fslightbox-open{overflow:hidden;height:100%}.fslightbox-flex-centered{display:flex;justify-content:center;align-items:center}.fslightbox-opacity-0{opacity:0!important}.fslightbox-opacity-1{opacity:1!important}.fslightbox-scrollbarfix{padding-right:17px}.fslightbox-transform-transition{transition:transform .3s!important}.fslightbox-container{font-family:Arial,sans-serif;position:fixed;top:0;left:0;background:linear-gradient(rgba(30,30,30,.9),#000 1810%);touch-action:none;z-index:1000000000;-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none;-webkit-tap-highlight-color:transparent}.fslightbox-container *{box-sizing:border-box}.fslightbox-svg-path{transition:fill .15s ease;fill:#d1d2d2}.fslightbox-loader{display:block;margin:auto;position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:67px;height:67px}.fslightbox-loader-child{box-sizing:border-box;display:block;position:absolute;width:54px;height:54px;margin:6px;border:5px solid;border-color:#999 transparent transparent transparent;border-radius:50%;animation:fslightbox-loader 1.2s cubic-bezier(.5,0,.5,1) infinite}.fslightbox-loader-child:nth-child(1){animation-delay:-.45s}.fslightbox-loader-child:nth-child(2){animation-delay:-.3s}.fslightbox-loader-child:nth-child(3){animation-delay:-.15s}@keyframes fslightbox-loader{0%{transform:rotate(0)}100%{transform:rotate(360deg)}}.fslightbox-thumbs-loader{width:54px!important;height:54px!important}.fslightbox-thumbs-loader div{border-width:4px!important;width:44px!important;height:44px!important}.fslightbox-nav{height:45px;width:100%;transition:opacity .3s}.fslightbox-slide-number-container{display:flex;justify-content:center;align-items:center;position:relative;height:100%;font-size:15px;color:#d7d7d7;z-index:0;max-width:55px;text-align:left}.fslightbox-slide-number-container .fslightbox-flex-centered{height:100%}.fslightbox-slash{display:block;margin:0 5px;width:1px;height:12px;transform:rotate(15deg);background:#fff}.fslightbox-toolbar{position:absolute;z-index:3;right:0;top:0;height:45px;display:flex;background:rgba(35,35,35,.65)}.fslightbox-toolbar-button{height:100%;width:45px;cursor:pointer}.fslightbox-toolbar-button:hover .fslightbox-svg-path{fill:#fff}.fslightbox-slide-btn-container{display:flex;align-items:center;padding:12px 12px 12px 6px;position:absolute;top:50%;cursor:pointer;z-index:3;transform:translateY(-50%);transition:opacity .3s}@media (min-width:476px){.fslightbox-slide-btn-container{padding:22px 22px 22px 6px}}@media (min-width:768px){.fslightbox-slide-btn-container{padding:30px 30px 30px 6px}}.fslightbox-slide-btn-container:hover .fslightbox-svg-path{fill:#f1f1f1}.fslightbox-slide-btn{padding:9px;font-size:26px;background:rgba(35,35,35,.65)}@media (min-width:768px){.fslightbox-slide-btn{padding:10px}}@media (min-width:1600px){.fslightbox-slide-btn{padding:11px}}.fslightbox-slide-btn-container-previous{left:0}@media (max-width:475.99px){.fslightbox-slide-btn-container-previous{padding-left:3px}}.fslightbox-slide-btn-container-next{right:0;padding-left:12px;padding-right:3px}@media (min-width:476px){.fslightbox-slide-btn-container-next{padding-left:22px}}@media (min-width:768px){.fslightbox-slide-btn-container-next{padding-left:30px}}@media (min-width:476px){.fslightbox-slide-btn-container-next{padding-right:6px}}.fslightbox-down-event-detector{position:absolute;z-index:1}.fslightbox-slide-swiping-hoverer{z-index:4}.fslightbox-slideshow-bar{width:0;height:2px;z-index:4;opacity:0;background:#fff}.fslightbox-invalid-file-wrapper{font-size:24px;color:#eaebeb;margin:auto}.fslightbox-video{object-fit:cover}.fslightbox-youtube-iframe{border:0}.fslightbox-source{position:relative;z-index:2;display:block;opacity:0;margin:auto;cursor:zoom-in}.fslightbox-source-wrappers-container{transition:transform .2s linear;z-index:2}.fslightbox-source-wrappers-container-pinching{transition:none!important}.fslightbox-thumbs{position:absolute;bottom:0;left:0;width:100%;z-index:-1;background:linear-gradient(180deg,rgba(0,0,0,0),#1e1e1e 100%);opacity:0;transition:opacity .2s;padding:0 5px 12px 5px;height:114px}@media (min-width:992px){.fslightbox-thumbs{padding-bottom:13px;height:120px}}@media (min-width:1600px){.fslightbox-thumbs{padding-bottom:14px;height:126px}}.fslightbox-thumbs-active{opacity:1;z-index:3}.fslightbox-thumbs-inner{display:inline-flex;justify-content:flex-start;align-items:center;height:100%}.fslightbox-thumb-wrapper{position:relative;height:100%;margin:0 4px;opacity:0;transition:opacity .3s}.fslightbox-thumb-wrapper svg{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);cursor:pointer;z-index:1}.fslightbox-thumb-wrapper path{fill:#fff}.fslightbox-thumb-wrapper-darkener{position:absolute;top:2px;left:2px;width:calc(100% - 4px);height:calc(100% - 4px);background:rgba(0,0,0,.4);cursor:pointer}.fslightbox-thumb{cursor:pointer;border-radius:1px;height:100%;width:auto!important;border:2px solid transparent;max-width:unset;max-height:unset}.fslightbox-thumb-active{border:2px solid #fff!important}.fslightbox-thumb-invalid{background:linear-gradient(to bottom,#0f0f0f,rgba(15,15,15,.5));display:inline-block;min-width:155px}.fslightbox-thumbs-cursorer{z-index:4;cursor:grabbing}.fslightbox-caption{position:absolute;bottom:0;left:50%;width:100%;background:linear-gradient(180deg,rgba(0,0,0,0),#1e1e1e 100%);transform:translateX(-50%);opacity:0;transition:opacity .2s;z-index:-1}.fslightbox-caption-inner{padding:25px;max-width:1200px;color:#eee;text-align:center;font-size:14px}@media (min-width:768px){.fslightbox-caption-inner{padding:30px 25px}}.fslightbox-caption-active{opacity:1;z-index:3}</style></head>
+	<body>
+
+		<nav class="navbar navbar-expand-lg navbar-header">
+			<!-- <div class="container-fluid flex-nowrap"> -->
+			<div class="container-fluid">
+				<!-- <div class="d-flex"> -->
+					<div class="flex-min">
+						<a class="navbar-brand" href="#">
+							<img class="logo" src="ybbstalbahn-fahrplan_files/logo-yb.svg" alt="Logo Höllentalbahn">
+						</a>
+					</div>
+					<div class="flex-var">
+						<a class="navbar-brand site-name" href="https://www.lokalbahnen.at/bergstrecke/">Bergstrecke Ybbstalbahn</a>
+					</div>
+					<div class="flex-min">
+						<!-- <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"> -->
+						<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent">
+							<span class="navbar-toggler-icon"></span>
+						</button>
+					</div>
+				<!-- </div> -->
+				<!-- </div> -->
+				<div class="collapse navbar-collapse" id="navbarSupportedContent">
+					<ul class="navbar-nav"><li class="nav-item"><a class="nav-link" href="https://www.lokalbahnen.at/bergstrecke/">Home</a></li><li class="nav-item dropdown"><a class="nav-link dropdown-toggle" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false" href="https://www.lokalbahnen.at/bergstrecke/mitfahren/fahrplan/">Mitfahren</a><ul class="dropdown-menu" aria-labelledby="navbarDropdown"><li><a class="dropdown-item" href="https://www.lokalbahnen.at/bergstrecke/mitfahren/fahrplan/">regulärer Fahrplan</a></li><li><a class="dropdown-item" href="https://www.lokalbahnen.at/bergstrecke/mitfahren/fahrpreise-1/">Fahrpreise</a></li><li><a class="dropdown-item" href="https://www.lokalbahnen.at/bergstrecke/mitfahren/angebote/">Angebote</a></li><li><a class="dropdown-item" href="https://www.lokalbahnen.at/bergstrecke/mitfahren/sonderzuege/">Sonderzüge</a></li><li><a class="dropdown-item" href="https://www.lokalbahnen.at/bergstrecke/mitfahren/anreise/">Anreise</a></li><li><a class="dropdown-item" href="https://www.lokalbahnen.at/bergstrecke/mitfahren/sonderveranstaltungen/">Sonderveranstaltungen</a></li></ul></li><li class="nav-item dropdown"><a class="nav-link dropdown-toggle" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false" href="https://www.lokalbahnen.at/bergstrecke/">Mitmachen</a><ul class="dropdown-menu" aria-labelledby="navbarDropdown"><li><a class="dropdown-item" href="https://www.lokalbahnen.at/bergstrecke/mitmachen/moglichkeiten/">Möglichkeiten der Mitarbeit</a></li><li><a class="dropdown-item" href="https://www.lokalbahnen.at/bergstrecke/mitmachen/infos-fur-interessenten/">Infos für Interessenten</a></li></ul></li><li class="nav-item dropdown"><a class="nav-link dropdown-toggle" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false" href="https://www.lokalbahnen.at/bergstrecke/die-bahn/fahrzeuge/">Die Bahn</a><ul class="dropdown-menu" aria-labelledby="navbarDropdown"><li><a class="dropdown-item" href="https://www.lokalbahnen.at/bergstrecke/die-bahn/geschichte/">Geschichte</a></li><li><a class="dropdown-item" href="https://www.lokalbahnen.at/bergstrecke/die-bahn/die-strecke/">Die Strecke</a></li><li><a class="dropdown-item" href="https://www.lokalbahnen.at/bergstrecke/die-bahn/hochbauten-und-bruecken/">Hochbauten und Brücken</a></li><li><a class="dropdown-item" href="https://www.lokalbahnen.at/bergstrecke/die-bahn/fahrzeuge/">Fahrzeuge</a></li></ul></li><li class="nav-item dropdown"><a class="nav-link dropdown-toggle" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false" href="https://www.lokalbahnen.at/oeglb/">Der Verein</a><ul class="dropdown-menu" aria-labelledby="navbarDropdown"><li><a class="dropdown-item" href="https://www.lokalbahnen.at/oeglb/">ÖGLB</a></li><li><a class="dropdown-item" href="https://www.lokalbahnen.at/hoellentalbahn/">Höllentalbahn</a></li></ul></li><li class="nav-item dropdown"><a class="nav-link dropdown-toggle" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false" href="https://www.lokalbahnen.at/bergstrecke/english/take-a-ride/"><img src="ybbstalbahn-fahrplan_files/flag-en.png" alt="Union Jack" class="flag">English</a><ul class="dropdown-menu" aria-labelledby="navbarDropdown"><li><a class="dropdown-item" href="https://www.lokalbahnen.at/bergstrecke/english/take-a-ride/">Take a Ride</a></li><li><a class="dropdown-item" href="https://www.lokalbahnen.at/bergstrecke/english/frequently-asked-questions/">Frequently asked Questions</a></li></ul></li></ul>				</div>
+			</div>
+		</nav>
+		<div id="page-body" class="container-fluid p-1">
+						<div class="row justify-content-sm-center">
+
+				<div class="col-lg col-xl-8">
+						<div class="container-xl"><h1>regulärer Fahrplan</h1><div class="row"><div class="col-lg g-3"><p>Dieser
+ Fahrplan gilt an allen Samstagen von 1. Juni bis 26. Oktober 2024 sowie
+ an allen Sonntagen von 7. Juli bis 29. September 2024.</p> <p><b> Zug 2 und Zug 3 verkehren nur an den Sonntagen im Juli, August und September!</b></p>
+ <table class="fahrplan">
+ <tbody><tr class="anschluss l1_top">
+    <td class="anschl_zeit fp_left">&nbsp;</td>
+    <td class="anschl_zeit fp_right">&nbsp;</td>
+    <td class="anschl_zeit">&nbsp;</td>
+    <td class="fp_right"> </td>
+    <td class="anschl_zeit">&nbsp;</td>
+  </tr>
+  <tr class="anschluss l2_bottom">
+    <td class="fp_left fp_logo"><a href="https://www.oebb.at/"><img src="ybbstalbahn-fahrplan_files/oebb.png" align="middle" alt="ÖBB Logo"></a></td>
+    <td class="fp_right">Zug Wien Hbf.</td>
+    <td class="richtung">ab</td>
+    <td class="anschl_zeit">07&nbsp;28</td>
+      <td class="anschl_zeit fp_right">11&nbsp;28</td>
+  </tr>
+  <tr class="anschluss l2_top">
+    <td rowspan="2" class="fp_left fp_logo"><a href="https://www.vor.at/"><img src="ybbstalbahn-fahrplan_files/vor.png" align="middle" alt="VOR Logo"></a></td>
+    <td class="fp_right">Bus Scheibbs</td>
+    <td class="richtung">ab</td>
+    <td class="anschl_zeit">09&nbsp;36</td>
+      <td class="anschl_zeit fp_right">13&nbsp;30</td>
+  </tr>
+  <tr class="anschluss l2_bottom">
+    <td class="fp_right">Bus Kienberg Museumsbahnhof</td>
+    <td class="richtung">an</td>
+    <td class="anschl_zeit">09&nbsp;53</td>
+    <td class="anschl_zeit fp_right">13&nbsp;47</td>
+  </tr>
+
+  <tr class="zug">
+    <td colspan="2">&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>Zug 1</td>
+    <td colspan="2">Zug 3</td>
+  </tr>
+  <tr>
+    <td colspan="2" class="bf">Kienberg YB</td>
+    <td class="bf richtung">ab</td>
+    <td class="bf zeit">10&nbsp;00</td>
+    <td colspan="2" class="bf zeit">14&nbsp;00</td>
+  </tr>
+  <tr>
+    <td colspan="2">Gaming</td>
+    <td>&nbsp;</td>
+    <td class="zeit">10&nbsp;10</td>
+    <td colspan="2" class="zeit">14&nbsp;10</td>
+  </tr>
+  <tr>
+    <td colspan="2" rowspan="2" class="bf">Pfaffenschlag</td>
+    <td class="richtung">an</td>
+    <td class="zeit">10&nbsp;38</td>
+    <td colspan="2" class="zeit">14&nbsp;38</td>
+  </tr>
+  <tr>
+    <td class="bf richtung">ab</td>
+    <td class="bf zeit">10&nbsp;48</td>
+    <td colspan="2" class="bf zeit">14&nbsp;48</td>
+  </tr>
+  <tr>
+    <td colspan="2">Holzapfel</td>
+    <td>&nbsp;</td>
+    <td class="zeit">11&nbsp;00</td>
+    <td colspan="2" class="zeit">15&nbsp;00</td>
+  </tr>
+  <tr>
+    <td colspan="2">Gasthof zur Paula</td>
+    <td>&nbsp;</td>
+    <td class="zeit">11&nbsp;04</td>
+    <td colspan="2" class="zeit">15&nbsp;04</td>
+  </tr>
+  <tr>
+    <td colspan="2">Lunz Ammonhaus</td>
+    <td>&nbsp;</td>
+    <td class="zeit">11&nbsp;08</td>
+    <td colspan="2" class="zeit">15&nbsp;08</td>
+  </tr>
+  <tr>
+    <td colspan="2" class="bf">Lunz am See</td>
+    <td class="bf richtung">an</td>
+    <td class="bf zeit">11&nbsp;10</td>
+    <td colspan="2" class="bf zeit">15&nbsp;10</td>
+  </tr>
+
+  <tr><td colspan="6" style="background: black"></td></tr>
+
+  <tr class="zug">
+    <td colspan="2">&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>Zug 2</td>
+    <td colspan="2">Zug 4</td>
+  </tr>
+  <tr>
+    <td colspan="2" class="bf">Lunz am See</td>
+    <td class="bf richtung">ab</td>
+    <td class="bf zeit">11&nbsp;35</td>
+    <td colspan="2" class="bf zeit">15&nbsp;35</td>
+  </tr>
+  <tr>
+    <td colspan="2">Lunz Ammonhaus</td>
+    <td>&nbsp;</td>
+    <td class="zeit">11&nbsp;37</td>
+    <td colspan="2" class="zeit">13&nbsp;23</td>
+  </tr>
+  <tr>
+    <td colspan="2">Gasthof zur Paula</td>
+    <td>&nbsp;</td>
+    <td class="zeit">11&nbsp;41</td>
+    <td colspan="2" class="zeit">13&nbsp;41</td>
+  </tr>
+  <tr>
+    <td colspan="2">Holzapfel</td>
+    <td>&nbsp;</td>
+    <td class="zeit">11&nbsp;45</td>
+    <td colspan="2" class="zeit">13&nbsp;45</td>
+  </tr>
+  <tr>
+    <td colspan="2" rowspan="2" class="bf">Pfaffenschlag</td>
+    <td class="richtung">an</td>
+    <td class="zeit">11&nbsp;57</td>
+    <td colspan="2" class="zeit">15&nbsp;57</td>
+  </tr>
+  <tr>
+    <td class="bf richtung">ab</td>
+    <td class="bf zeit">12&nbsp;02</td>
+    <td colspan="2" class="bf zeit">16&nbsp;02</td>
+  </tr>
+  <tr>
+    <td colspan="2">Gaming</td>
+    <td>&nbsp;</td>
+    <td class="zeit">12&nbsp;30</td>
+    <td colspan="2" class="zeit">16&nbsp;30</td>
+  </tr>
+  <tr>
+    <td colspan="2" class="bf">Kienberg YB</td>
+    <td class="bf richtung">an</td>
+    <td class="bf zeit">12&nbsp;40</td>
+    <td colspan="2" class="bf zeit">16&nbsp;40</td>
+  </tr>
+
+  <tr class="anschluss l1_top">
+    <td rowspan="2" class="fp_left fp_logo"><a href="https://www.vor.at/"><img src="ybbstalbahn-fahrplan_files/vor.png" align="middle" alt="VOR Logo"></a></td>
+    <td class="fp_right">Bus Kienberg Museumsbahnhof</td>
+    <td class="richtung">ab</td>
+    <td class="anschl_zeit">13&nbsp;04</td>
+    <td colspan="2" class="anschl_zeit">17&nbsp;04</td>
+  </tr>
+  <tr class="anschluss l2_bottom">
+    <td class="fp_right">Bus Scheibbs</td>
+    <td class="richtung">an</td>
+    <td class="anschl_zeit">13&nbsp;22</td>
+    <td colspan="2" class="anschl_zeit">17&nbsp;22</td>
+  </tr>
+  <tr class="anschluss l2_l1">
+    <td class="fp_left fp_logo"><a href="https://www.oebb.at/"><img src="ybbstalbahn-fahrplan_files/oebb.png" align="middle" alt="ÖBB Logo"></a></td>
+    <td class="fp_right">Zug Scheibbs</td>
+    <td class="richtung">ab</td>
+    <td class="anschl_zeit">13&nbsp;28</td>
+    <td colspan="2" class="anschl_zeit">17&nbsp;28</td>
+  </tr>
+</tbody></table>
+<p><small>Betriebsführung: NÖLB-B Niederösterreichische Lokalbahnen-Betriebsges.m.b.H., 1140&nbsp;Wien, Poschgasse&nbsp;6</small><br>
+<small>Änderungen vorbehalten. Keine Betriebspflicht.</small></p></div><div class="col-lg g-3"><h3>Dieser Fahrplan gilt an folgenden Tagen</h3>
+<div class="container"><div class="row"><div class="col mb-2"><table class="kalender"><tbody><tr><td colspan="2" class="monat">Juni 2024</td></tr><tr class="yb"><td class="tag">Sa,&nbsp;01.</td><td class="info">2093<sup>[1]</sup></td></tr><tr class="yb"><td class="tag">Sa,&nbsp;08.</td><td class="info">2093<sup>[1]</sup></td></tr><tr class="yb"><td class="tag">Sa,&nbsp;15.</td><td class="info">2093<sup>[1]</sup></td></tr><tr class="yb"><td class="tag">Sa,&nbsp;22.</td><td class="info">2093<sup>[1]</sup></td></tr><tr class="yb"><td class="tag">Sa,&nbsp;29.</td><td class="info">2093<sup>[1]</sup></td></tr></tbody></table></div><div class="col mb-2"><table class="kalender"><tbody><tr><td colspan="2" class="monat">Juli 2024</td></tr><tr class="yb"><td class="tag">Sa,&nbsp;06.</td><td class="info">2093<sup>[1]</sup></td></tr><tr class="yb"><td class="tag">So,&nbsp;07.</td><td class="info">2093<sup>[1]</sup></td></tr><tr class="yb"><td class="tag">Sa,&nbsp;13.</td><td class="info">2093<sup>[1]</sup></td></tr><tr class="yb"><td class="tag">So,&nbsp;14.</td><td class="info">2093<sup>[1]</sup></td></tr><tr class="yb"><td class="tag">Sa,&nbsp;20.</td><td class="info">2093<sup>[1]</sup></td></tr><tr class="yb"><td class="tag">So,&nbsp;21.</td><td class="info">2093<sup>[1]</sup></td></tr><tr class="yb"><td class="tag">Sa,&nbsp;27.</td><td class="info">2093<sup>[1]</sup></td></tr><tr class="yb"><td class="tag">So,&nbsp;28.</td><td class="info">2093<sup>[1]</sup></td></tr></tbody></table></div><div class="col mb-2"><table class="kalender"><tbody><tr><td colspan="2" class="monat">August 2024</td></tr><tr class="yb"><td class="tag">Sa,&nbsp;03.</td><td class="info">2093<sup>[1]</sup></td></tr><tr class="yb"><td class="tag">So,&nbsp;04.</td><td class="info">2093<sup>[1]</sup></td></tr><tr class="yb"><td class="tag">Sa,&nbsp;10.</td><td class="info">2093<sup>[1]</sup></td></tr><tr class="yb"><td class="tag">So,&nbsp;11.</td><td class="info">2093<sup>[1]</sup></td></tr><tr class="yb"><td class="tag">Sa,&nbsp;17.</td><td class="info">2093<sup>[1]</sup></td></tr><tr class="yb"><td class="tag">So,&nbsp;18.</td><td class="info">2093<sup>[1]</sup></td></tr><tr class="yb"><td class="tag">Sa,&nbsp;24.</td><td class="info">2093<sup>[1]</sup></td></tr><tr class="yb"><td class="tag">So,&nbsp;25.</td><td class="info">2093<sup>[1]</sup></td></tr><tr class="yb"><td class="tag">Sa,&nbsp;31.</td><td class="info">2093<sup>[1]</sup></td></tr></tbody></table></div><div class="col mb-2"><table class="kalender"><tbody><tr><td colspan="2" class="monat">September 2024</td></tr><tr class="yb"><td class="tag">Sa,&nbsp;07.</td><td class="info">2093<sup>[1]</sup></td></tr><tr class="yb"><td class="tag">So,&nbsp;08.</td><td class="info">2093<sup>[1]</sup></td></tr><tr class="yb"><td class="tag">Sa,&nbsp;14.</td><td class="info">2093<sup>[1]</sup></td></tr><tr class="yb"><td class="tag">So,&nbsp;15.</td><td class="info">2093<sup>[1]</sup></td></tr><tr class="yb"><td class="tag">Sa,&nbsp;21.</td><td class="info">2093<sup>[1]</sup></td></tr><tr class="yb"><td class="tag">So,&nbsp;22.</td><td class="info">2093<sup>[1]</sup></td></tr><tr class="yb"><td class="tag">Sa,&nbsp;28.</td><td class="info">2093<sup>[1]</sup></td></tr><tr class="yb"><td class="tag">So,&nbsp;29.</td><td class="info">2093<sup>[1]</sup></td></tr></tbody></table></div><div class="col mb-2"><table class="kalender"><tbody><tr><td colspan="2" class="monat">Oktober 2024</td></tr><tr class="yb"><td class="tag">Sa,&nbsp;05.</td><td class="info">2093<sup>[1]</sup></td></tr><tr class="yb"><td class="tag">Sa,&nbsp;12.</td><td class="info">2093<sup>[1]</sup></td></tr><tr class="yb"><td class="tag">Sa,&nbsp;19.</td><td class="info">2093<sup>[1]</sup></td></tr><tr class="yb"><td class="tag">Sa,&nbsp;26.</td><td class="info">2093<sup>[1]</sup></td></tr></tbody></table></div></div></div>
+<p><a href="https://www.lokalbahnen.at/bergstrecke/mitfahren/fahrpreise/">Fahrpreise laut gültiger Fahrpreistabelle.</a></p>
+<p>[1] ... Aus betrieblichen Gründen kann der Einsatz von der 
+Diesellokomotive 2099.01 notwendig sein. Informationen zum geplanten 
+Fahrzeugeinsatz werden hier zeitnah veröffentlicht, trotzdem kann nicht 
+ausgeschlossen werden dass der Plan aus technischen Gründen auch sehr 
+kurzfristig noch geändert werden muss und die Angabe daher nicht 
+zutrifft.</p>
+<p>Alle Züge führen einen Barwagen mit.</p>
+
+<h3>Information und Gruppenreservierung</h3>
+<p>Gruppenreservierungen sind ab einer Gruppengröße von 10 Personen erforderlich</p>
+<p><strong>Niederösterreichische Lokalbahnen Betriebsges.m.b.H.</strong><br><em>E-Mail:</em> <a href="mailto:ybbstalbahn@lokalbahnen.at">ybbstalbahn@lokalbahnen.at</a></p>
+<p><strong>Mostviertel Tourismus GmbH</strong><br><em>E-Mail:</em> <a href="mailto:info@mostviertel.at">info@mostviertel.at</a><br><em>Telefon:</em> +43 (0)7482/20444 (Mo-Do 9-16.30 Uhr, Fr 9-12.30 Uhr)<br><em>Fax:</em> +43 (0)7482/20444-87</p></div></div>
+
+<h3>Downloads</h3>
+
+<div class="container">
+  <div class="row">
+    <div class="col">
+      <p>Fahrplanplakat zum herunterladen:</p>
+      <a href="https://www.lokalbahnen.at/site/assets/files/1085/yb2024-infoplakat-1.pdf"><img src="ybbstalbahn-fahrplan_files/yb2024-infoplakat-1.250x352.jpg" alt="Titelblatt"></a>
+ <p>Infofolder zum herunterladen:</p>
+      <a href="https://www.lokalbahnen.at/site/assets/files/1085/bergstrecke_infofolder_2024.pdf"><img src="ybbstalbahn-fahrplan_files/bergstrecke_infofolder_2024.250x107.jpg" alt="Titelblatt"></a>
+    </div>
+  </div>
+</div></div>				</div>
+
+				<div class="col-lg-4 col-xl-3 sidebar">
+					<div class="side-widget"><h2>Die nächsten Betriebstage</h2><table class="kalender"><tbody><tr><td colspan="2" class="monat">Juni 2024</td></tr><tr class="yb"><td rowspan="1" class="tag">Sa,&nbsp;01.</td><td class="info"><a href="https://www.lokalbahnen.at/bergstrecke/mitfahren/fahrplan/">regulärer Fahrplan</a> (2093<sup>[1]</sup>)</td></tr><tr class="yb"><td rowspan="1" class="tag">Sa,&nbsp;08.</td><td class="info"><a href="https://www.lokalbahnen.at/bergstrecke/mitfahren/fahrplan/">regulärer Fahrplan</a> (2093<sup>[1]</sup>)</td></tr><tr class="yb"><td rowspan="1" class="tag">Sa,&nbsp;15.</td><td class="info"><a href="https://www.lokalbahnen.at/bergstrecke/mitfahren/fahrplan/">regulärer Fahrplan</a> (2093<sup>[1]</sup>)</td></tr><tr class="yb"><td rowspan="1" class="tag">Sa,&nbsp;22.</td><td class="info"><a href="https://www.lokalbahnen.at/bergstrecke/mitfahren/fahrplan/">regulärer Fahrplan</a> (2093<sup>[1]</sup>)</td></tr><tr class="yb"><td rowspan="1" class="tag">Sa,&nbsp;29.</td><td class="info"><a href="https://www.lokalbahnen.at/bergstrecke/mitfahren/fahrplan/">regulärer Fahrplan</a> (2093<sup>[1]</sup>)</td></tr></tbody></table><p class="m-2">[1]&nbsp;...&nbsp;geplanter
+ Fahrzeugeinsatz. Aus technischen Gründen kann es gelegentlich notwendig
+ sein kurzfristig ein anderes Triebfahrzeug einzusetzen.</p></div><div class="side-widget"><h2>Lokalbahn-Aktuell</h2><div class="text-center"><h4>Aktuelle Ausgabe</h4><a href="https://www.lokalbahnen.at/site/assets/files/2911/oeglb-lba-2024-01.pdf"><img src="ybbstalbahn-fahrplan_files/oeglb-lba-2024-01.300x422.jpg" class="img-fluid" alt="Titelblatt"><br>1/2024</a><hr><h4><a href="https://www.lokalbahnen.at/oeglb/angebote/lokalbahn-express/">Ältere Ausgaben</a></h4></div></div>				</div>
+
+			</div>
+		</div>
+
+		<div id="footer" class="container-fluid bg-primary text-light p-4">
+			<div class="row">
+				<div class="container text-center p-1">
+					<p>&nbsp;
+												<a href="http://facebook.com/dieSteilsteunterdenSchmalen/"><img class="social-media" src="ybbstalbahn-fahrplan_files/facebook.svg" alt="Facebook Icon"></a>
+												&nbsp;</p>
+					<ul><li><a href="https://www.lokalbahnen.at/oeglb/impressum/">Impressum</a></li><li><a href="https://www.lokalbahnen.at/oeglb/datenschutzerklarung/">Datenschutzerklärung</a></li><li><a href="https://www.lokalbahnen.at/bergstrecke/kontakt/">Kontakt</a></li></ul>					<p>© Österreichische Gesellschaft für Lokalbahnen 2000-2024</p>
+				</div>
+			</div>
+		</div>
+
+		<script src="ybbstalbahn-fahrplan_files/fslightbox.js"></script>
+	
+</body></html>
