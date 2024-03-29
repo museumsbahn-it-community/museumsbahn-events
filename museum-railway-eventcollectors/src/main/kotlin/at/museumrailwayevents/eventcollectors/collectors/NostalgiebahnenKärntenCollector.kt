@@ -15,9 +15,10 @@ val operatorIdNbik = "nbik"
 val imageUrlBase = "https://www.nostalgiebahn.at/"
 
 class NostalgiebahnenKärntenCollector(val jsoupCrawler: JsoupCrawler) : MuseumRailwayEventCollector(
-        operatorId = operatorIdNbik,
-        locationId = locationId_bahn,
-        url = "https://www.nostalgiebahn.at/termine.html"
+    operatorId = operatorIdNbik,
+    locationId = locationId_bahn,
+    locationName = "Nostalgiebahnen in Kärnten",
+    url = "https://www.nostalgiebahn.at/termine.html"
 ) {
     // these indicate durations and need special handling in the future
     val dateStringBlocklist = listOf(

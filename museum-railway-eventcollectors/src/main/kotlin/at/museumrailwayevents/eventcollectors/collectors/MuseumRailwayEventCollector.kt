@@ -10,6 +10,8 @@ abstract class MuseumRailwayEventCollector(
     protected val operatorId: String,
     protected val locationId: String,
     protected val url: String,
+    protected val tags: List<String> = emptyList(),
+    protected val locationName: String
 ) : EventCollector {
 
     protected fun createEvent(
@@ -22,6 +24,15 @@ abstract class MuseumRailwayEventCollector(
         additionalData[CommonKeys.OPERATOR_ID] = operatorId
         additionalData[CommonKeys.LOCATION_ID] = locationId
         additionalData[SemanticKeys.SOURCES] = url
+
+        if (!additionalData.containsKey(SemanticKeys.PICTURE_ALT_TEXT)) {
+            additionalData[SemanticKeys.PICTURE_ALT_TEXT] = "Veranstaltungsbild von $locationName"
+        }
+
+        if (!additionalData.containsKey(SemanticKeys.PICTURE_COPYRIGHT)) {
+            additionalData[SemanticKeys.PICTURE_COPYRIGHT] = "© $locationName"
+        }
+
         return Event(eventName, startDate, additionalData)
     }
 }

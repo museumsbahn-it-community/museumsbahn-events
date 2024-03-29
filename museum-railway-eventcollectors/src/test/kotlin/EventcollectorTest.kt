@@ -12,13 +12,13 @@ class EventcollectorTest {
     val mockJsoupCrawler = JsoupCrawlerTestMockImpl(this::class.java)
 
     @Test
-    fun `oegeg shop collector should collect 10 events`() {
+    fun `oegeg shop collector should collect 12 events`() {
         val eventcollector = OegegShopCollector(mockJsoupCrawler)
         val events = eventcollector.collectEvents()
 
-        assertThat(events.size).isEqualTo(10)
-        assertThat(events.filter { it.data["location_id"] == "oegeg_normalspur"}.size).isEqualTo(6)
-        assertThat(events.filter { it.data["location_id"] == "oegeg_schifffahrt"}.size).isEqualTo(4)
+        assertThat(events.size).isEqualTo(12)
+        assertThat(events.filter { it.data["location_id"] == "oegeg_normalspur"}.size).isEqualTo(7)
+        assertThat(events.filter { it.data["location_id"] == "oegeg_schifffahrt"}.size).isEqualTo(5)
     }
 
     @Test

@@ -13,7 +13,9 @@ private val urlSchifffahrtsTermine = "https://www.oegeg.at/termine/termine-schif
 /**
  * Collects entries from ÖGEG shop pages. This includes Normalspur and Schifffahrt, but NOT Schmalspur.
  */
-class OegegShopCollector(val jsoupCrawler: JsoupCrawler) : MuseumRailwayEventCollector(operatorId, locationId_bahn, urlNormalspurTermine) {
+class OegegShopCollector(val jsoupCrawler: JsoupCrawler) : MuseumRailwayEventCollector(
+    operatorId, locationId_bahn, urlNormalspurTermine, locationName = "ÖGEG"
+) {
     override fun collectEvents(): List<Event> {
 
         val events = mutableListOf<Event>()

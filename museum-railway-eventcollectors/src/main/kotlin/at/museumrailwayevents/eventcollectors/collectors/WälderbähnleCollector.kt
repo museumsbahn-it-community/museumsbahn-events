@@ -14,7 +14,8 @@ import java.util.*
 class WälderbähnleCollector(val jsoupCrawler: JsoupCrawler) : MuseumRailwayEventCollector(
     operatorId = "waelderbaehnle",
     locationId = "waelderbaehnle",
-    url = "https://waelderbaehnle.at/fahrplanbetrieb-preise-2024",
+    locationName = "Bregenzerwaldbahn Museumsbahn",
+    url = "https://waelderbaehnle.at/fahrplanbetrieb-preise-2024"
 ) {
     val locale = Locale.GERMAN
     val dateFormatter = getWaelderbaehnleDateFormatter(locale)

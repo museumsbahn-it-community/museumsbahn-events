@@ -9,9 +9,10 @@ repositories {
 
 dependencies {
     implementation("org.jetbrains.kotlin:kotlin-stdlib")
-    implementation("events.boudicca:eventdb-openapi:0.3.0")
-    implementation("events.boudicca:semantic-conventions:0.3.0")
-    implementation("events.boudicca:eventcollector-client:0.3.0")
+    implementation("events.boudicca:eventdb-openapi:0.5.0-SNAPSHOT")
+    implementation("events.boudicca:semantic-conventions:0.5.0-SNAPSHOT")
+    implementation("events.boudicca:eventcollector-client:0.5.0-SNAPSHOT")
+    implementation("com.github.doyaaaaaken:kotlin-csv-jvm:1.9.3")
     implementation("org.jsoup:jsoup:1.16.1")
     implementation("org.mnode.ical4j:ical4j:3.2.14")
     implementation("com.rometools:rome:2.1.0")

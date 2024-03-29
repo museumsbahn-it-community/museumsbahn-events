@@ -13,6 +13,7 @@ import java.time.format.DateTimeFormatter
 class RheinbähnleCollector(val jsoupCrawler: JsoupCrawler) : MuseumRailwayEventCollector(
     operatorId = "rheinschauen",
     locationId = "rheinschauen",
+    locationName = "Rhein-Schauen | Museum und Rheinbähnle",
     url = "https://www.rheinschauen.at/museum-baehnle/fahrplan"
 ) {
     val beginString = "Beginn der Veranstaltung"
@@ -65,8 +66,6 @@ class RheinbähnleCollector(val jsoupCrawler: JsoupCrawler) : MuseumRailwayEvent
             events.add(createEvent(title, startTime, additionalData))
 
         }
-
-
         return events
     }
 

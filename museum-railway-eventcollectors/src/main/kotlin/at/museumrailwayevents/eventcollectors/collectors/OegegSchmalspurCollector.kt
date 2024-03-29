@@ -15,6 +15,7 @@ import java.time.*
 class OegegSchmalspurCollector(val jsoupCrawler: JsoupCrawler) : MuseumRailwayEventCollector(
     operatorId = "oegeg",
     locationId = "oegeg_schmalspur",
+    locationName = "ÖGEG Steyrtalbahn",
     url = "https://www.oegeg.at/termine/termine-schmalspur-steyrtalbahn/"
 ) {
     private val eventTitle = "Steyrtal Museumsbahn"

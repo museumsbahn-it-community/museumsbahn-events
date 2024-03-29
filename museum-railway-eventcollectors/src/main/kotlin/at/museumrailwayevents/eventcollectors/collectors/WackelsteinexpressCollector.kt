@@ -5,15 +5,13 @@ import at.museumrailwayevents.eventcollectors.service.JsoupCrawler
 import base.boudicca.SemanticKeys
 import base.boudicca.model.Event
 import org.jsoup.nodes.Document
-import java.time.Instant
-import java.time.OffsetDateTime
-import java.time.ZoneId
 import java.util.*
 
 class WackelsteinexpressCollector(val jsoupCrawler: JsoupCrawler) : MuseumRailwayEventCollector(
-        operatorId = "wackelsteinexpress",
-        locationId = "wackelsteinexpress",
-        url = "https://www.wackelsteinexpress.at/",
+    operatorId = "wackelsteinexpress",
+    locationId = "wackelsteinexpress",
+    locationName = "Wackelsteinexpress",
+    url = "https://www.wackelsteinexpress.at/",
 ) {
     val locale = Locale.GERMAN
     val regularEventsUrl = "https://www.wackelsteinexpress.at/fahrplan/"
