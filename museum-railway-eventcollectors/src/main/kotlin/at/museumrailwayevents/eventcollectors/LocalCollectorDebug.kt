@@ -1,7 +1,6 @@
 package at.museumrailwayevents.eventcollectors
 
-import at.museumrailwayevents.eventcollectors.collectors.ProBahnVorarlbergCollector
-import at.museumrailwayevents.eventcollectors.collectors.WälderbähnleCollector
+import at.museumrailwayevents.eventcollectors.collectors.RheinbähnleCollector
 import at.museumrailwayevents.eventcollectors.service.JsoupCrawlerImpl
 import base.boudicca.SemanticKeys
 import base.boudicca.api.eventcollector.debugger.DataShouldContainKey
@@ -10,8 +9,9 @@ import base.boudicca.api.eventcollector.debugger.ValidationSeverity
 
 fun main() {
     EventCollectorDebugger(verboseDebugging = false, keepOpen = false)
-        .debug(ProBahnVorarlbergCollector())
+//        .debug(ProBahnVorarlbergCollector())
 //        .debug(WälderbähnleCollector(JsoupCrawlerImpl()))
+        .debug(RheinbähnleCollector(JsoupCrawlerImpl()))
         .validate(
             validations = listOf(
                 DataShouldContainKey(SemanticKeys.DESCRIPTION, ValidationSeverity.Error),

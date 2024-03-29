@@ -1,6 +1,11 @@
 package at.museumrailwayevents.eventcollectors.collectors
 
+import at.museumrailwayevents.eventcollectors.collectors.util.toTagsValue
 import at.museumrailwayevents.eventcollectors.service.JsoupCrawler
+import at.museumrailwayevents.model.conventions.CATEGORY_MUSEUM_TRAIN
+import at.museumrailwayevents.model.conventions.RecurrenceType
+import at.museumrailwayevents.model.conventions.Registration
+import at.museumrailwayevents.model.conventions.TAGS_NARROW_GAUGE
 import base.boudicca.SemanticKeys
 import base.boudicca.model.Event
 import org.jsoup.Jsoup
@@ -35,36 +40,43 @@ class RheinbähnleCollector(val jsoupCrawler: JsoupCrawler) : MuseumRailwayEvent
         val events = mutableListOf<Event>()
 
         eventEntries.forEach { event ->
-            val title = event.select("h2.eb-event-title").eachText().first()
-            val description = event.select("div.eb-description-details > p").eachText().first()
-            val link = event.select("div.eb-description-details > a").eachAttr("href").first()
+            try {
+                val eventDetailsPath = event.select("a:contains(details)").attr("href")
+                val eventDetailsUrl = baseUrl + eventDetailsPath
+                val eventDetails = Jsoup.connect(eventDetailsUrl).get()
 
-            val startTimeText =
-                event.select("tr:contains($beginString)").select("td.eb-event-property-value").eachText().first()
-            val endTimeText =
-                event.select("tr:contains($endString)").select("td.eb-event-property-value").eachText().first()
+                val title = eventDetails.select("h1.eb-page-heading").eachText().first()
+                val description = try {
+                    eventDetails.select("div.eb-description-details > p").eachText().first()
+                } catch (ex: Exception) {
+                    println("error parsing description for: $title, reason: ${ex.message}")
+                    ""
+                }
+                val link = eventDetails.select("div.eb-description-details > a").eachAttr("href").first()
 
-            val startTime = OffsetDateTime.of(LocalDateTime.from(formatter.parse(startTimeText)), offset)
-            val endTime = OffsetDateTime.of(LocalDateTime.from(formatter.parse(endTimeText)), offset)
+                val startTimeText =
+                    eventDetails.select("tr:contains($beginString)").select("td.eb-event-property-value").eachText()
+                        .first()
+                val endTimeText =
+                    eventDetails.select("tr:contains($endString)").select("td.eb-event-property-value").eachText()
+                        .first()
 
-//            println()
-//            println(title)
-//            println()
-//            println(description)
-//            println(link)
-//            println(startTimeText)
-//            println(endTimeText)
-//            println()
-//            println("------------------------------")
-
-            val additionalData = mutableMapOf<String, String>()
-
-            additionalData[SemanticKeys.DESCRIPTION] = description
-            additionalData[SemanticKeys.ENDDATE] = endTime.format(DateTimeFormatter.ISO_DATE_TIME)
-            additionalData[SemanticKeys.LOCATION_URL] = "$baseUrl$link"
-
-            events.add(createEvent(title, startTime, additionalData))
-
+                val startTime = OffsetDateTime.of(LocalDateTime.from(formatter.parse(startTimeText)), offset)
+                val endTime = OffsetDateTime.of(LocalDateTime.from(formatter.parse(endTimeText)), offset)
+                val additionalData: MutableMap<String, String> = mutableMapOf(
+                    SemanticKeys.DESCRIPTION to description,
+                    SemanticKeys.ENDDATE to endTime.format(DateTimeFormatter.ISO_DATE_TIME),
+                    SemanticKeys.TAGS to TAGS_NARROW_GAUGE.toTagsValue(),
+                    SemanticKeys.REGISTRATION to Registration.PRE_SALES_ONLY,
+                    SemanticKeys.CATEGORY to CATEGORY_MUSEUM_TRAIN,
+                    SemanticKeys.LOCATION_URL to "$baseUrl$link",
+                    SemanticKeys.ADDITIONAL_EVENTS_URL to url,
+                    SemanticKeys.RECURRENCE_TYPE to RecurrenceType.RARELY,
+                )
+                events.add(createEvent(title, startTime, additionalData))
+            } catch (ex: Exception) {
+                ex.printStackTrace()
+            }
         }
         return events
     }
