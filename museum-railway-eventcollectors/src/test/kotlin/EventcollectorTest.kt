@@ -1,9 +1,6 @@
 import assertk.assertThat
 import assertk.assertions.isEqualTo
-import at.museumrailwayevents.eventcollectors.collectors.NostalgiebahnenKärntenCollector
-import at.museumrailwayevents.eventcollectors.collectors.OegegSchmalspurCollector
-import at.museumrailwayevents.eventcollectors.collectors.OegegShopCollector
-import at.museumrailwayevents.eventcollectors.collectors.WackelsteinexpressCollector
+import at.museumrailwayevents.eventcollectors.collectors.*
 import at.museumrailwayevents.eventcollectors.service.JsoupCrawlerTestMockImpl
 import org.junit.jupiter.api.Test
 
@@ -44,5 +41,23 @@ class EventcollectorTest {
         val eventcollector = NostalgiebahnenKärntenCollector(mockJsoupCrawler)
         val events = eventcollector.collectEvents()
         assertThat(events.size).isEqualTo(18)
+    }
+
+
+    @Test
+    fun `ybbstalbahn should collect 39 events`() {
+        val eventcollector = YbbstalbahnCollector(mockJsoupCrawler)
+        val events = eventcollector.collectEvents()
+        assertThat(events.size).isEqualTo(39)
+    }
+
+    @Test
+    fun `hoellentalbahn should collect 27 events`() {
+        val eventcollector = HoellentalbahnCollector(mockJsoupCrawler)
+        val events = eventcollector.collectEvents()
+        assertThat(events.size).isEqualTo(27)
+
+        assertThat(events.filter { it.name.contains("Mondweinfahrt") }.size).isEqualTo(1)
+        assertThat(events.filter { it.name.contains("Lange Nacht der Museen") }.size).isEqualTo(1)
     }
 }

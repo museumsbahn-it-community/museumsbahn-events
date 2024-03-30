@@ -31,14 +31,14 @@ class JsoupCrawlerTestMockImpl(val contextClass: Class<out Any>) : JsoupCrawler 
         "https://reservierung.wackelsteinexpress.at/produkt/christkindlzug-24-dezember-1330-uhr/" to "wackelsteinexpress/wackelsteinexpress_12-24_13_30-Christkindlzug 24. Dezember 13_30 Uhr.html",
     )
 
-    val noelbMap = mapOf(
-        "https://www.lokalbahnen.at/hoellentalbahn/mitfahren/fahrplan/fahrplan-oktober/" to "",
-        "https://www.lokalbahnen.at/hoellentalbahn/mitfahren/fahrplan/fahrplan-sommer/" to "",
-        "https://www.lokalbahnen.at/hoellentalbahn/mitfahren/sonderveranstaltungen/lange-nacht-der-museen/" to "",
-        "https://www.lokalbahnen.at/hoellentalbahn/mitfahren/sonderveranstaltungen/" to "",
-        "https://www.lokalbahnen.at/hoellentalbahn/mitfahren/sonderveranstaltungen/mondweinfahrten/" to "",
-        "https://www.lokalbahnen.at/bergstrecke/mitfahren/fahrplan/" to "",
-        "https://www.lokalbahnen.at/bergstrecke/mitfahren/sonderveranstaltungen/" to "",
+    val oeglbMap = mapOf(
+        "https://www.lokalbahnen.at/hoellentalbahn/mitfahren/fahrplan/fahrplan-oktober/" to "oeglb/hoellentalbahn-fahrplan-oktober.html",
+        "https://www.lokalbahnen.at/hoellentalbahn/mitfahren/fahrplan/fahrplan-sommer/" to "oeglb/hoellentalbahn-fahrplan-sommer.html",
+        "https://www.lokalbahnen.at/hoellentalbahn/mitfahren/sonderveranstaltungen/lange-nacht-der-museen/" to "oeglb/hoellentalbahn-sonderveranstaltung-lange-nacht.html",
+        "https://www.lokalbahnen.at/hoellentalbahn/mitfahren/sonderveranstaltungen/" to "oeglb/hoellentalbahn-sonderveranstaltungen.html",
+        "https://www.lokalbahnen.at/hoellentalbahn/mitfahren/sonderveranstaltungen/mondweinfahrten/" to "oeglb/hoellentalbahn-sonderveranstaltung-mondweinfahrt.html",
+        "https://www.lokalbahnen.at/bergstrecke/mitfahren/fahrplan/" to "oeglb/ybbstalbahn-fahrplan.html",
+        "https://www.lokalbahnen.at/bergstrecke/mitfahren/sonderveranstaltungen/" to "oeglb/ybbstalbahn-sonderveranstaltungen.html",
     )
 
     val pathMap = mapOf(
@@ -57,7 +57,7 @@ class JsoupCrawlerTestMockImpl(val contextClass: Class<out Any>) : JsoupCrawler 
         "https://ebfl.at/index.php/en/suedbahn-enginge-shed/" to "ebfl_museum",
                 "https://ebfl.at/index.php/suedbahn-express/" to "ebfl_fahrten",
 
-    ) + wackelsteinexpressDetailsMap
+    ) + wackelsteinexpressDetailsMap + oeglbMap
 
 
     override fun getDocument(url: String): Document {
@@ -67,7 +67,9 @@ class JsoupCrawlerTestMockImpl(val contextClass: Class<out Any>) : JsoupCrawler 
 
         val path = "examples/${pathMap[url]}"
         val pageData = contextClass.getResource(path)?.readText()
-        requireNotNull(pageData)
+        requireNotNull(pageData) {
+            println("no page found for url: $url")
+        }
         return Jsoup.parse(pageData)
     }
 }
