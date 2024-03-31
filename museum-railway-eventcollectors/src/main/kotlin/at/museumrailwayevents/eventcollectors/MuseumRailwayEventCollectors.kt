@@ -15,6 +15,9 @@ fun main() {
         .addEventCollector(WälderbähnleCollector(crawler))
         .addEventCollector(NostalgiebahnenKärntenCollector(crawler))
         .addEventCollector(WackelsteinexpressCollector(crawler))
+        .addEventCollector(HoellentalbahnCollector(crawler))
+        .addEventCollector(YbbstalbahnCollector(crawler))
+        .addEventCollector(EbflCollector(crawler))
         .startWebUi()
         .run()
 }

@@ -54,9 +54,11 @@ class JsoupCrawlerTestMockImpl(val contextClass: Class<out Any>) : JsoupCrawler 
         "http://www.mh6.at/de/" to "mh6",
         "https://eisenbahnmuseum.at/veranstaltungen/termine/" to "ebm_schwechat",
         "https://www.steiermarkbahn.at/reisen-freizeit/murtalbahn-dampfzug/" to "murtalbahn",
-        "https://ebfl.at/index.php/en/suedbahn-enginge-shed/" to "ebfl_museum",
-                "https://ebfl.at/index.php/suedbahn-express/" to "ebfl_fahrten",
-
+        "https://ebfl.at/index.php/suedbahn-heizhaus/" to "ebfl/ebfl_suedbahn_museum.htm",
+        "https://ebfl.at/index.php/suedbahn-express/" to "ebfl/ebfl_overview.htm",
+        "https://ebfl.at/index.php/tirolfahrt-2024-2/" to "ebfl/ebfl_event1.htm",
+        "https://ebfl.at/index.php/fahrt-an-den-woerthersee/" to "ebfl/ebfl_event2.htm",
+        "https://ebfl.at/index.php/christkindlfahrt-graz-2024/" to "ebfl/ebfl_event3.htm",
     ) + wackelsteinexpressDetailsMap + oeglbMap
 
 

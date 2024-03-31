@@ -25,11 +25,11 @@ abstract class MuseumRailwayEventCollector(
         additionalData[CommonKeys.LOCATION_ID] = locationId
         additionalData[SemanticKeys.SOURCES] = url
 
-        if (!additionalData.containsKey(SemanticKeys.PICTURE_ALT_TEXT)) {
+        if (additionalData.containsKey(SemanticKeys.PICTURE_URL) && !additionalData.containsKey(SemanticKeys.PICTURE_ALT_TEXT)) {
             additionalData[SemanticKeys.PICTURE_ALT_TEXT] = "Veranstaltungsbild von $locationName"
         }
 
-        if (!additionalData.containsKey(SemanticKeys.PICTURE_COPYRIGHT)) {
+        if (additionalData.containsKey(SemanticKeys.PICTURE_URL) && !additionalData.containsKey(SemanticKeys.PICTURE_COPYRIGHT)) {
             additionalData[SemanticKeys.PICTURE_COPYRIGHT] = "© $locationName"
         }
 

@@ -60,4 +60,11 @@ class EventcollectorTest {
         assertThat(events.filter { it.name.contains("Mondweinfahrt") }.size).isEqualTo(1)
         assertThat(events.filter { it.name.contains("Lange Nacht der Museen") }.size).isEqualTo(1)
     }
+
+    @Test
+    fun `ebfl should collect 4 events`() {
+        val eventcollector = EbflCollector(mockJsoupCrawler)
+        val events = eventcollector.collectEvents()
+        assertThat(events.size).isEqualTo(4)
+    }
 }
