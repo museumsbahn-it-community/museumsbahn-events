@@ -24,7 +24,7 @@ object DateParser {
     // we have not yet seen a case where the month is numeric and there is no dot at the end
     // also month usually does not appear alone, hence we put the date in front of it
     // the match then has to be split
-    val monthNumericRegexString = "($dateRegexStringPartial)?(\\s+|^|\\.)(10|11|12|(0)?[1-9])\\."
+    val monthNumericRegexString = "($dateRegexStringPartial)(\\s+|^|\\.)(10|11|12|(0)?[1-9])\\."
     val monthNumericRegex = Regex(monthNumericRegexString)
     val monthRegex = Regex("($monthNumericRegexString)|(${monthWrittenRegexString})")
     val monthRegexStringPartial = "($monthNumericRegexString)|(${monthWrittenRegexString})"
@@ -40,7 +40,7 @@ object DateParser {
 
     fun parseDate(text: String): OffsetDateTime {
         val lowercaseText = text.lowercase()
-        val year = findSingleYearOrAssumeDefault(lowercaseText)
+        val year = findFirstYearOrAssumeDefault(lowercaseText)
         val month = findSingleMonth(lowercaseText)
         val day = findAllDays(lowercaseText).first()
 
@@ -63,9 +63,8 @@ object DateParser {
      * Try to find a year in the given string or default to the current year.
      * Not 100% correct, but good enough.
      */
-    fun findSingleYearOrAssumeDefault(text: String): Int {
+    fun findFirstYearOrAssumeDefault(text: String): Int {
         val years = yearRegex.findAll(text)
-        assert(years.count() == 0 || years.count() == 1)
         return if (years.count() == 0) {
             OffsetDateTime.now().year
             // if no year is given, then default to the current year
@@ -164,7 +163,7 @@ object DateParser {
                 parseDate(match)
             }.toList()
         } else {
-            val year = findSingleYearOrAssumeDefault(lowercaseText)
+            val year = findFirstYearOrAssumeDefault(lowercaseText)
             val month = findSingleMonth(lowercaseText)
             return days.map {
                 createDate(year, month, it)

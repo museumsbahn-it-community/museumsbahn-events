@@ -10,7 +10,6 @@ import at.museumrailwayevents.eventcollectors.service.JsoupCrawler
 import base.boudicca.SemanticKeys
 import base.boudicca.model.Event
 import org.jsoup.Jsoup
-import java.time.*
 
 class OegegSchmalspurCollector(val jsoupCrawler: JsoupCrawler) : MuseumRailwayEventCollector(
     operatorId = "oegeg",
@@ -48,7 +47,7 @@ class OegegSchmalspurCollector(val jsoupCrawler: JsoupCrawler) : MuseumRailwayEv
                 return@forEach
             }
 
-            val year = DateParser.findSingleYearOrAssumeDefault(dateString)
+            val year = DateParser.findFirstYearOrAssumeDefault(dateString)
             val month = DateParser.findSingleWrittenMonth(dateString)
             val dates = findAllDays(dateString)
 
