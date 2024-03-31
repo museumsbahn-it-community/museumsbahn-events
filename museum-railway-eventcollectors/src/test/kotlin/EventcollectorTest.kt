@@ -74,4 +74,10 @@ class EventcollectorTest {
         val events = eventcollector.collectEvents()
         assertThat(events.size).isEqualTo(9)
     }
+    @Test
+    fun `waldviertelbahn should collect 33 events`() {
+        val eventcollector = WaldviertelbahnCollector(mockJsoupCrawler)
+        val events = eventcollector.collectEvents()
+        assertThat(events.size).isEqualTo(33)
+    }
 }

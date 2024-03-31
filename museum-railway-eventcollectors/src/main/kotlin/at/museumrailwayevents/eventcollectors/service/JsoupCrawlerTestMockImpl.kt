@@ -41,6 +41,45 @@ class JsoupCrawlerTestMockImpl(val contextClass: Class<out Any>) : JsoupCrawler 
         "https://www.lokalbahnen.at/bergstrecke/mitfahren/sonderveranstaltungen/" to "oeglb/ybbstalbahn-sonderveranstaltungen.html",
     )
 
+    val waldviertelbahnMap = mapOf(
+        "https://www.waldviertelbahn.at/nostalgie-diesel-1" to "noevog/waldviertelbahn_diesel.htm",
+        "https://www.waldviertelbahn.at/nostalgie-dampf" to "noevog/waldviertelbahn_dampf.htm",
+        // waldviertelbahn dampf
+        "https://www.waldviertelbahn.at/angebote-fuer-fahrgaeste-wvb/o-nostalgie-dampf-gmuend-gross-gerungs" to "noevog/waldviertelbahn-dampf/wvb_dampf_gmünd_groß-gerungs.htm",
+        "https://www.waldviertelbahn.at/angebote-fuer-fahrgaeste-wvb/o-nostalgie-dampf-gmuend-litschau" to "noevog/waldviertelbahn-dampf/wvb_dampf_gmünd_litschau.htm",
+        "https://www.waldviertelbahn.at/angebote-fuer-fahrgaeste-wvb/o-schnitzelexpress" to "noevog/waldviertelbahn-dampf/wvb_dampf_schnitzelexpress.htm",
+        "https://www.waldviertelbahn.at/angebote-fuer-fahrgaeste-wvb/o-bier-hopfenexpress" to "noevog/waldviertelbahn-dampf/wvb_dampf_bier-hopfenexpress.htm",
+        "https://www.waldviertelbahn.at/angebote-fuer-fahrgaeste-wvb/o-ueberfall-westernzug" to "noevog/waldviertelbahn-dampf/wvb_dampf_westernzug.htm",
+        "https://www.waldviertelbahn.at/angebote-fuer-fahrgaeste-wvb/o-dorfwirtexpress" to "noevog/waldviertelbahn-dampf/wvb_dampf_dorfwirtexpress.htm",
+        "https://www.waldviertelbahn.at/angebote-fuer-fahrgaeste-wvb/o-dampf-alpakaexpress" to "noevog/dummy-page.htm",
+        "https://www.waldviertelbahn.at/angebote-fuer-fahrgaeste-wvb/o-schrammelklangexpress" to "noevog/dummy-page.htm",
+        "https://www.waldviertelbahn.at/angebote-fuer-fahrgaeste-wvb/o-kistensau-express?dateFrom=" to "noevog/dummy-page.htm",
+        "https://www.waldviertelbahn.at/angebote-fuer-fahrgaeste-wvb/o-dampfzug-mit-oldtimern-auf-strasse-und-schiene?dateFrom=" to "noevog/dummy-page.htm",
+        "https://www.waldviertelbahn.at/angebote-fuer-fahrgaeste-wvb/o-erdaepfelexpress?dateFrom=" to "noevog/dummy-page.htm",
+        "https://www.waldviertelbahn.at/angebote-fuer-fahrgaeste-wvb/o-karpfenexpress?dateFrom=" to "noevog/dummy-page.htm",
+        "https://www.waldviertelbahn.at/angebote-fuer-fahrgaeste-wvb/o-waldviertler-gulaschzug?dateFrom=" to "noevog/dummy-page.htm",
+        "https://www.waldviertelbahn.at/angebote-fuer-fahrgaeste-wvb/o-silvesterzug-mit-volldampf-ins-jahr-2024" to "noevog/waldviertelbahn-dampf/wvb_dampf_silvesterzug.htm",
+        // waldviertelbahn diesel
+        "https://www.waldviertelbahn.at/angebote-fuer-fahrgaeste-wvb/o-nostalgie-diesel-gmuend-litschau" to "noevog/waldviertelbahn-diesel/wvb_diesel_gmünd_litschau.htm",
+        "https://www.waldviertelbahn.at/angebote-fuer-fahrgaeste-wvb/o-rad-bahn-ueber-den-waldviertler-semmering" to "noevog/waldviertelbahn-diesel/wvb_diesel_rad_bahn.htm",
+        "https://www.waldviertelbahn.at/angebote-fuer-fahrgaeste-wvb/o-huetehundezug" to "noevog/dummy-page.htm",
+        "https://www.waldviertelbahn.at/angebote-fuer-fahrgaeste-wvb/o-nostalgie-diesel-gmuend-gross-gerungs" to "noevog/dummy-page.htm",
+        "https://www.waldviertelbahn.at/angebote-fuer-fahrgaeste-wvb/o-hammerschmiedezug-gopprechts" to "noevog/dummy-page.htm",
+        "https://www.waldviertelbahn.at/angebote-fuer-fahrgaeste-wvb/o-zaubererzug" to "noevog/dummy-page.htm",
+        "https://www.waldviertelbahn.at/angebote-fuer-fahrgaeste-wvb/o-waldviertler-musikantenexpress" to "noevog/dummy-page.htm",
+        "https://www.waldviertelbahn.at/angebote-fuer-fahrgaeste-wvb/o-mohnnudelzug" to "noevog/dummy-page.htm",
+        "https://www.waldviertelbahn.at/angebote-fuer-fahrgaeste-wvb/o-dampfzug-mit-oldtimern-mopdes-und-motorraeder?dateFrom=" to "noevog/dummy-page.htm",
+        "https://www.waldviertelbahn.at/angebote-fuer-fahrgaeste-wvb/o-schloss-litschau-exklusiv?dateFrom=" to "noevog/dummy-page.htm",
+        "https://www.waldviertelbahn.at/angebote-fuer-fahrgaeste-wvb/o-candle-light-train?dateFrom=" to "noevog/dummy-page.htm",
+        "https://www.waldviertelbahn.at/angebote-fuer-fahrgaeste-wvb/o-knoedelexpress?dateFrom=" to "noevog/dummy-page.htm",
+        "https://www.waldviertelbahn.at/angebote-fuer-fahrgaeste-wvb/o-alpakaexpress-zum-sonnseitn-hof?dateFrom=" to "noevog/dummy-page.htm",
+        "https://www.waldviertelbahn.at/angebote-fuer-fahrgaeste-wvb/o-schafkaeseexpress?dateFrom=" to "noevog/dummy-page.htm",
+        "https://www.waldviertelbahn.at/angebote-fuer-fahrgaeste-wvb/o-mit-bahn-und-zu-fuss-ueber-den-waldviertler-semmering?dateFrom=" to "noevog/waldviertelbahn-diesel/wvb_diesel_semmering.htm",
+        "https://www.waldviertelbahn.at/angebote-fuer-fahrgaeste-wvb/o-martiniganslexpress?dateFrom=" to "noevog/dummy-page.htm",
+        "https://www.waldviertelbahn.at/angebote-fuer-fahrgaeste-wvb/o-sonderzuege-zum-weitraer-advent?dateFrom=" to "noevog/dummy-page.htm",
+        "https://www.waldviertelbahn.at/angebote-fuer-fahrgaeste-wvb/o-christkindlzug-1" to "noevog/waldviertelbahn-diesel/wvb_diesel_christkindlzug.htm",
+    )
+
     val pathMap = mapOf(
         "https://www.oegeg.at/termine/termine-normalspur-museum-lokpark-ampflwang/" to "oegeg_normalspur.htm",
         "https://www.oegeg.at/termine/termine-schifffahrt-dampfschiff-sch%C3%B6nbrunn/" to "oegeg_schifffahrt.htm",
@@ -60,7 +99,7 @@ class JsoupCrawlerTestMockImpl(val contextClass: Class<out Any>) : JsoupCrawler 
         "https://ebfl.at/index.php/tirolfahrt-2024-2/" to "ebfl/ebfl_event1.htm",
         "https://ebfl.at/index.php/fahrt-an-den-woerthersee/" to "ebfl/ebfl_event2.htm",
         "https://ebfl.at/index.php/christkindlfahrt-graz-2024/" to "ebfl/ebfl_event3.htm",
-    ) + wackelsteinexpressDetailsMap + oeglbMap
+    ) + wackelsteinexpressDetailsMap + oeglbMap + waldviertelbahnMap
 
 
     override fun getDocument(url: String): Document {
