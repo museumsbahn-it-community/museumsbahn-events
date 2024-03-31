@@ -18,6 +18,8 @@ fun main() {
         .addEventCollector(HoellentalbahnCollector(crawler))
         .addEventCollector(YbbstalbahnCollector(crawler))
         .addEventCollector(EbflCollector(crawler))
+        .addEventCollector(Mh6Collector(crawler))
+        .addEventCollector(WaldviertelbahnCollector(crawler))
         .startWebUi()
         .run()
 }
