@@ -67,4 +67,11 @@ class EventcollectorTest {
         val events = eventcollector.collectEvents()
         assertThat(events.size).isEqualTo(4)
     }
+
+    @Test
+    fun `mh6 should collect 9 events`() {
+        val eventcollector = Mh6Collector(mockJsoupCrawler)
+        val events = eventcollector.collectEvents()
+        assertThat(events.size).isEqualTo(9)
+    }
 }
