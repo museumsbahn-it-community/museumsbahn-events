@@ -13,6 +13,8 @@ class HoellentalbahnCollector(jsoupCrawler: JsoupCrawler) : OeglbCollector(
     url = "https://www.lokalbahnen.at/hoellentalbahn/"
 ) {
 
+    private val baseUrl = "https://www.lokalbahnen.at/"
+
     private val fahrplanUrls = listOf(
         "https://www.lokalbahnen.at/hoellentalbahn/mitfahren/fahrplan/fahrplan-sommer/",
         "https://www.lokalbahnen.at/hoellentalbahn/mitfahren/fahrplan/fahrplan-oktober/"
@@ -22,7 +24,7 @@ class HoellentalbahnCollector(jsoupCrawler: JsoupCrawler) : OeglbCollector(
 
     override fun collectEvents(): List<Event> {
         val regularEvents = fahrplanUrls.flatMap { collectFahrplanPage(it) }
-        val sonderfahrten = collectSonderfahrten(sonderfahrtenUrl)
+        val sonderfahrten = collectSonderfahrten(baseUrl, sonderfahrtenUrl)
         return regularEvents + sonderfahrten
     }
 

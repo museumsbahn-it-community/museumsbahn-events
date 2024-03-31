@@ -13,6 +13,8 @@ class YbbstalbahnCollector(jsoupCrawler: JsoupCrawler) : OeglbCollector(
     url = "https://www.lokalbahnen.at/bergstrecke/"
 ) {
 
+    private val baseUrl = "https://www.lokalbahnen.at/"
+
     private val fahrplanUrls = listOf(
         "https://www.lokalbahnen.at/bergstrecke/mitfahren/fahrplan/"
     )
@@ -21,7 +23,7 @@ class YbbstalbahnCollector(jsoupCrawler: JsoupCrawler) : OeglbCollector(
 
     override fun collectEvents(): List<Event> {
         val regularEvents = fahrplanUrls.flatMap { collectFahrplanPage(it) }
-        val sonderfahrten = collectSonderfahrten(sonderfahrtenUrl)
+        val sonderfahrten = collectSonderfahrten(baseUrl, sonderfahrtenUrl)
         return regularEvents + sonderfahrten
     }
 

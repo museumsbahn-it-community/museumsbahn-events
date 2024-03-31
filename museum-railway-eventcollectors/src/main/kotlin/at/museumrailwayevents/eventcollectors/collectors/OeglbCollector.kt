@@ -6,6 +6,7 @@ import at.museumrailwayevents.eventcollectors.service.JsoupCrawler
 import at.museumrailwayevents.model.conventions.*
 import base.boudicca.SemanticKeys
 import base.boudicca.model.Event
+import java.net.URI
 import java.time.OffsetDateTime
 
 abstract class OeglbCollector(
@@ -19,7 +20,7 @@ abstract class OeglbCollector(
 ) : MuseumRailwayEventCollector(
     operatorId, locationId, url, tags, locationName
 ) {
-    protected fun collectSonderfahrten(sonderfahrtenUrl: String): List<Event> {
+    protected fun collectSonderfahrten(baseUrl: String, sonderfahrtenUrl: String): List<Event> {
         val events = mutableListOf<Event>()
 
         val document = jsoupCrawler.getDocument(sonderfahrtenUrl)
@@ -31,7 +32,8 @@ abstract class OeglbCollector(
 
         val links = document.select("a.card-link").eachAttr("href")
         links.forEach { eventUrl ->
-            val eventDocument = jsoupCrawler.getDocument(eventUrl)
+            val fullEventUrl = URI("$baseUrl$eventUrl").normalize().toString()
+            val eventDocument = jsoupCrawler.getDocument(fullEventUrl)
             val name = eventDocument.select("h1").eachText().first()
             val description = eventDocument.select("h1 ~ p").eachText().filterNot {
                 it.contains("Details zu dieser Veranstaltung") ||
@@ -42,7 +44,7 @@ abstract class OeglbCollector(
             events.add(createOeglbEvent(
                 name,
                 date,
-                eventUrl,
+                fullEventUrl,
                 description,
                 RecurrenceType.ONCE
             ))
