@@ -63,11 +63,10 @@ class Mh6Collector(val jsoupCrawler: JsoupCrawler) : MuseumRailwayEventCollector
 
             events.add(
                 createEvent(
-                    eventEntry.title,
-                    date,
-                    additionalData,
-                    locationId_ebfl_suedbahn_express,
-                    eventUrl
+                    eventName = eventEntry.title,
+                    startDate = date,
+                    additionalData = additionalData,
+                    url = eventUrl
                 )
             )
         }
