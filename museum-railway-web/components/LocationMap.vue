@@ -20,7 +20,17 @@
     />
     <LMarker v-for="location in locationsWithCoords" :lat-lng="getLocationLatLng(location)">
       <LPopup>
-        <b>{{location.name}}</b><br>{{location.type}}<br>
+        <div class="flex flex-column"> 
+        <h3 class="m-1">{{location.name}}</h3>
+        <p class="m-1">
+        {{location.type}}
+        </p>
+        <div class="flex justify-content-end">
+        <Button  @click="openLocationDetails(location.locationId)" text>
+                    Details
+        </Button>
+      </div>
+        </div>
       </LPopup>
     </LMarker>
   </LMap>
@@ -38,6 +48,7 @@ const props = withDefaults(defineProps<{
 });
 const locationMap = ref();
 const route = useRoute();
+const router = useRouter();
 const locationIdParam = route?.params?.locationId;
 
 const locationsWithCoords = computed(() => props.locations.filter((loc: MuseumLocation) => {
@@ -56,6 +67,10 @@ onMounted(initMap);
 
 function initMap() {
   updateMapData();
+}
+
+function openLocationDetails(locationId: string) {
+  router.push({name: 'locationDetails', params: {locationId}});
 }
 
 function updateMapData() {
