@@ -80,6 +80,7 @@
 </template>
 <script setup lang="ts">
 import { eventKey } from '~/model/util.ts';
+import {useGlobalConfigStore} from "~/stores/GlobalConfigStore.ts";
 
 const noEventSelectedPlaceholderText = "Bitte eine Veranstaltung auswählen um Details zu sehen."
 const viewport = useViewport();
@@ -94,6 +95,7 @@ const selectedEvent = computed(() => {
 const router = useRouter();
 const route = useRoute();
 const locationsStore = useLocationsStore();
+const globalConfig = useGlobalConfigStore();
 
 const selectedStates = ref<{
   name: string,
@@ -125,9 +127,11 @@ function hasSelectedEvent(): boolean {
 
 function navigateToEventList(): void {
   selectedEventKey.value = undefined;
-  router.push('/events'); // if history is empty
-  // TODO: go back only if we have history
-  // router.back();
+  if (globalConfig.historyIsEmpty) {
+    router.push('/events'); // if history is empty go back to the events list
+  } else {
+    router.back();
+  }
 }
 
 onMounted(loadData);

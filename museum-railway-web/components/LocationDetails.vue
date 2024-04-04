@@ -33,17 +33,22 @@
     <div v-if="museumLocation != undefined" class="mb-4">
       <EventList :location-id-filter="museumLocation.locationId"
                  :show-details-button="false"
-                 :show-filters="false">
+                 :show-filters="false"
+                 @eventSelected="navigateToEventDetails"
+      >
       </EventList>
     </div>
   </div>
 </template>
 <script setup lang="ts">
-import type { MuseumLocation } from '@museumrailwayevents/museum-railway-client';
+import type {MuseumLocation} from '@museumrailwayevents/museum-railway-client';
+import type {MuseumEvent} from "~/model/museumEvent.ts";
+import {eventKey} from "~/model/util.ts";
 
 const eventsStore = useEventsStore();
 const locationsStore = useLocationsStore();
 const route = useRoute();
+const router = useRouter();
 
 const locationIdParam = route?.params?.locationId;
 const museumLocation = ref<MuseumLocation | undefined>(undefined);
@@ -55,6 +60,10 @@ async function mounted(): Promise<void> {
   // we have to run the locationById getter AFTER loading the data
   await eventsStore.loadEventsWithLocations();
   museumLocation.value = locationsStore.locationById(locationIdParam);
+}
+
+function navigateToEventDetails(value: string) {
+  router.push({name: 'eventDetails', params: {eventKey: eventKey(value)}});
 }
 
 </script>
