@@ -23,7 +23,7 @@
 
 <template>
   <div class="flex flex-row w-full sticky-content">
-    <div class="flex flex-column h-full w-full lg:w-7" v-if="!hasSelectedEvent() || viewport.isGreaterOrEquals('desktop')">
+    <div class="flex flex-column h-full" :class="{ 'w-full': !hasSelectedEvent(), 'w-6': hasSelectedEvent() }" v-if="!hasSelectedEvent() || viewport.isGreaterOrEquals('desktop-xl')">
       <div class="h-2rem"></div>
       <div class="filter-box w-11 h-26rem sm:h-14rem">
         <div class="h-full w-full flex align-items-center">
@@ -54,7 +54,7 @@
       </div>
       <div class="h-2rem"></div>
 
-      <div class="flex flex-column h-full mx-2 mb-6 md:ml-5 md:w-11 lg:w-10">
+      <div class="flex flex-column h-full mx-2 mb-6 md:ml-5">
         <EventList
             :highlighted-event="selectedEvent"
             @eventSelected="selectEvent"
@@ -65,13 +65,12 @@
         ></EventList>
       </div>
     </div>
-    <div class="px-2 sm:px-5 xl:w-5 py-5 w-full details-box sticky-content max-page-height" v-if="hasSelectedEvent() || viewport.isGreaterOrEquals('desktop')">
+    <div class="px-2 sm:px-5 xl:w-6 py-5 mb-3 w-full details-box sticky-content" v-if="hasSelectedEvent()">
       <div class="sticky-event-details">
         <Button
             class="m-3"
             icon="pi pi-arrow-left" rounded outlined aria-label="Zurück"
-            @click="navigateToEventList"
-            v-if="viewport.isLessThan('desktop')"/>
+            @click="navigateToEventList"/>
         <EventDetails :museum-event="selectedEvent" :no-event-selected-placeholder-text="noEventSelectedPlaceholderText">
           Event Details
         </EventDetails>
@@ -126,7 +125,9 @@ function hasSelectedEvent(): boolean {
 
 function navigateToEventList(): void {
   selectedEventKey.value = undefined;
-  router.push('/events');
+  router.push('/events'); // if history is empty
+  // TODO: go back only if we have history
+  // router.back();
 }
 
 onMounted(loadData);

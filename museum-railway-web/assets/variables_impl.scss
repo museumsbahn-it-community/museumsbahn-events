@@ -9,3 +9,17 @@ $min-content-height: calc(100vh - $navbar-total - $footer-height);
 $no-scroll-page-height: calc($min-content-height);
 
 $scrollbar-width: 8px;
+
+$sm:576px;
+$md:768px;
+$lg:992px;
+$xl:1200px;
+$xxl:2000px;
+
+$breakpoints: (
+    'sm': $sm,
+    'md': $md,
+    'lg': $lg,
+    'xl': $xl,
+    'xxl': $xxl
+)

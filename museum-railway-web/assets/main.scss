@@ -1,6 +1,15 @@
 @use "./colors" as colors;
 @use "./variables_impl" as variables;
 @import "./colors_impl";
+@import './theme/theme.scss';
+@import 'primeflex/primeflex.css';
+@import 'primeicons/primeicons.css';
+@import 'material-icons/iconfont/material-icons.css';
+
+html {
+  scrollbar-color: colors.$color-ultramarinblau colors.$color-grauweiß;
+  scrollbar-width: thin;
+}
 
 body {
   display: flex;
@@ -28,6 +37,10 @@ body {
   position: sticky;
   top: variables.$navbar-height;
   left: 0;
+}
+
+.overflow-wrap-anywhere {
+  overflow-wrap: anywhere;
 }
 
 .foreground {

@@ -1,5 +1,7 @@
 <style lang="scss">
 @use "../assets/colors" as colors;
+@use "../assets/variables_impl" as variables;
+
 /* hide the opposite side of the timeline */
 .p-timeline-event-opposite {
   display: none;
@@ -28,6 +30,29 @@
   width: 200px;
 }
 
+.event-title {
+  overflow-wrap: anywhere;
+}
+
+.event-card-no-details {
+  min-height: 200px;
+  @media screen and (min-width: variables.$md) {
+    width: 41.6667%;
+  }
+  @media screen and (min-width: variables.$lg) {
+    max-width: 700px;
+  }
+}
+
+.event-card-with-details {
+  min-height: 200px;
+  @media screen and (min-width: variables.$lg) {
+    width: 41.6667%;
+  }
+  @media screen and (min-width: variables.$xl) {
+    max-width: 700px;
+  }
+}
 </style>
 <template>
   <div class="bg-verkehrsrot rounded-corners-small px-3 lg:px-5">
@@ -38,34 +63,26 @@
             <div class="flex timeline-heading align-items-center my-2">
               <h1 class="mx-6 my-2">{{ eventGroup.label }}</h1>
             </div>
-            <div></div>
           </div>
-          <Timeline :value="eventGroup.events" align="left">
-            <template #content="slotProps">
-              <div class="mt-3 bg-grauweiss cursor-pointer flex flex-row"
-                   @click="selectEvent(slotProps.item)"
-                   :class="{ selected: isHighlighted(slotProps.item)}"
-              >
-                <div class="bg-umbragrau min-h-full light-text p-2 flex flex-column justify-content-center">
-                  <h3 class="m-1">{{ formatDayMon(slotProps.item.date) }}</h3>
-                  <h1 class="m-1">{{ formatYear(slotProps.item.date) }}</h1>
-                </div>
-                <div class="my-2 mx-4 flex-grow-1">
-                  <h2>{{ slotProps.item.name }}</h2>
-                  <EventSummary :museum-event="slotProps.item"></EventSummary>
-                </div>
-
-
-                <div v-if="slotProps.item.pictureUrl && viewport.isGreaterOrEquals('tablet')"
-                     class="min-h-full event-image">
-                  <Image :src="`/imgcache?url=${slotProps.item.pictureUrl}`"
-                         alt="kein alt text vorhanden"
-                         class="h-full w-full"
-                         image-class="h-full w-full object-fit-cover"/>
-                </div>
+          <div class="flex flex-row flex-wrap">
+            <div v-for="event in eventGroup.events"
+              class="event-card-no-details m-4 flex-grow-1 w-full bg-grauweiss cursor-pointer flex flex-row"
+              @click="selectEvent(event)" :class="{ selected: isHighlighted(event) }">
+              <div v-if="viewport.isGreaterOrEquals('tablet')"
+                class="bg-umbragrau min-h-full light-text p-2 flex flex-column justify-content-center">
+                <h3 class="m-1">{{ formatDayMon(event.date) }}</h3>
+                <h1 class="m-1">{{ formatYear(event.date) }}</h1>
               </div>
-            </template>
-          </Timeline>
+              <div class="my-2 mx-4 flex-grow-1">
+                <h2 class="event-title">{{ event.name }}</h2>
+                <EventSummary :museum-event="event"></EventSummary>
+              </div>
+              <div v-if="event.pictureUrl && shouldDisplayEventPicture()" class="min-h-full event-image">
+                <Image :src="`/imgcache?url=${event.pictureUrl}`" alt="kein alt text vorhanden" class="h-full w-full"
+                  image-class="h-full w-full object-fit-cover" />
+              </div>
+            </div>
+          </div>
         </div>
       </div>
       <div v-else>
@@ -103,19 +120,26 @@ function loadFilteredEvents(): MuseumEventGroup[] {
   let startDateFilter = props.dates[0];
   let endDateFilter = props.dates[1];
   return eventsStore.filteredEventsGroupedByMonth(
-      startDateFilter,
-      endDateFilter,
-      stateFilter,
-      props.locationIdFilter,
-      undefined);
+    startDateFilter,
+    endDateFilter,
+    stateFilter,
+    props.locationIdFilter,
+    undefined);
 }
 
 const groupedEvents = ref<MuseumEventGroup[]>([]);
 
 watch([() => props.selectedStates, () => props.dates, eventsStore.$state], () => {
   groupedEvents.value = loadFilteredEvents();
-}, {immediate: true});
+}, { immediate: true });
 
+function shouldDisplayEventPicture(): boolean {
+  return viewport.isGreaterOrEquals('tablet') && !hasSelectedEvent() || viewport.isGreaterOrEquals('desktop-xxl')
+}
+
+function hasSelectedEvent(): boolean {
+  return props.highlightedEvent != undefined;
+}
 
 function isHighlighted(value: MuseumEvent): boolean {
   return props.highlightedEvent != undefined && eventKey(value) == eventKey(props.highlightedEvent);

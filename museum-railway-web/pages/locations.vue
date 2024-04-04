@@ -26,7 +26,7 @@
           <Card>
             <template #title>
               <div class="flex flex-row mx-3 mt-3">
-                <span class="w-8">
+                <span class="w-8 overflow-wrap-anywhere">
                 {{ location.name }}
                 </span>
                 <div class="flex-grow-1"></div>

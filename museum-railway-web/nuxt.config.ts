@@ -55,6 +55,8 @@ export default defineNuxtConfig({
 	viewport: {
 		breakpoints: {
 			// configure breakpoints, so they match primeflex breakpoints
+			'desktop-xxl': 1650, // matches nothing, but is biiiig
+			'desktop-xl': 1200, // matches primeflex $xl
 			desktop: 992, // matches primeflex $lg
 			tablet: 768, // matches primeflex $md
 			mobile: 320,

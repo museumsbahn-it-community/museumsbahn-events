@@ -23,10 +23,3 @@ useSeoMeta({
     <div class="footer"></div>
   </div>
 </template>
-
-<style lang="scss">
-@import 'assets/theme/theme.scss';
-@import 'primeflex/primeflex.css';
-@import 'primeicons/primeicons.css';
-@import 'material-icons/iconfont/material-icons.css';
-</style>
