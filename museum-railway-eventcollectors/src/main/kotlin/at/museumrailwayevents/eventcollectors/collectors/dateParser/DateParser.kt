@@ -6,6 +6,7 @@ import java.time.Month
 import java.time.OffsetDateTime
 import java.time.ZoneId
 import java.time.format.DateTimeFormatterBuilder
+import java.time.temporal.ChronoUnit
 import java.util.*
 
 object DateParser {
@@ -182,4 +183,15 @@ object DateParser {
 
     fun createDate(year: Int, month: Month, day: Int): OffsetDateTime =
             createDate(year, month.value, day)
+
+    fun generateDateListBetween(startDate: OffsetDateTime, endDate: OffsetDateTime): List<OffsetDateTime> {
+        val daysBetween = ChronoUnit.DAYS.between(startDate, endDate)
+        val dates = mutableListOf(startDate, endDate)
+        var currDate = startDate.plusDays(1)
+        repeat(daysBetween.toInt()) {
+            dates.add(currDate)
+            currDate = currDate.plusDays(1)
+        }
+        return dates
+    }
 }
