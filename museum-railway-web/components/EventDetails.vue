@@ -1,5 +1,5 @@
 <style>
-.event-image {
+.event-details-image {
   height: 200px;
 }
 </style>
@@ -17,7 +17,7 @@
             v-if="museumEvent.pictureUrl"
             :src="`/imgcache?url=${museumEvent.pictureUrl}`"
             alt="kein alt text vorhanden"
-            class="w-full md:w-6 p-3 md:p-0 event-image diagonal-box"
+            class="w-full md:w-6 p-3 md:p-0 event-details-image diagonal-box"
             image-class="h-full w-full object-fit-cover"/>
       </div>
       <div class="my-2 flex flex-column" style="height:80%">

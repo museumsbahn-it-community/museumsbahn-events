@@ -26,7 +26,7 @@
   width: 4px;
 }
 
-.event-image {
+.event-list-image {
   width: 200px;
 }
 
@@ -77,7 +77,7 @@
                 <h2 class="event-title">{{ event.name }}</h2>
                 <EventSummary :museum-event="event"></EventSummary>
               </div>
-              <div v-if="event.pictureUrl && shouldDisplayEventPicture()" class="min-h-full event-image">
+              <div v-if="event.pictureUrl && shouldDisplayEventPicture()" class="min-h-full event-list-image flex-shrink-0">
                 <Image :src="`/imgcache?url=${event.pictureUrl}`" alt="kein alt text vorhanden" class="h-full w-full"
                   image-class="h-full w-full object-fit-cover" />
               </div>
