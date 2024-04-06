@@ -2,6 +2,8 @@ package at.museumrailwayevents.eventcollectors.collectors
 
 import at.museumrailwayevents.eventcollectors.collectors.dateParser.DateParser
 import at.museumrailwayevents.eventcollectors.service.JsoupCrawler
+import at.museumrailwayevents.model.conventions.CommonKeys
+import base.boudicca.SemanticKeys
 import base.boudicca.model.Event
 
 private val operatorId = "oegeg";
@@ -27,7 +29,7 @@ class OegegShopCollector(val jsoupCrawler: JsoupCrawler) : MuseumRailwayEventCol
 
     private fun collectShopEvents(url: String, locationId: String): MutableList<Event> {
         val document = jsoupCrawler.getDocument(url);
-        val eventBoxes = document.select("div.cc-shop-product-desc")
+        val eventBoxes = document.select("div.hproduct")
 
         val events = mutableListOf<Event>()
 
@@ -36,11 +38,16 @@ class OegegShopCollector(val jsoupCrawler: JsoupCrawler) : MuseumRailwayEventCol
             val description = eventBox.select("div.description > p").eachText().filter { it.length > 100 }.firstOrNull()
 
             val dates = DateParser.parseAllDatesFrom(title)
+            val pictureUrl = eventBox.select("div.cc-shop-product-img").select("a").attr("href")
 
             dates.forEach { date ->
                 val additionalData = mutableMapOf<String, String>()
                 if (!description.isNullOrBlank()) {
-                    additionalData["description"] = description
+                    additionalData[SemanticKeys.DESCRIPTION] = description
+                }
+
+                if (!pictureUrl.isNullOrBlank()) {
+                    additionalData[SemanticKeys.PICTURE_URL] = pictureUrl
                 }
 
                 events.add(createEvent(title, date, additionalData, locationId, url))
