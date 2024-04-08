@@ -40,6 +40,7 @@ export default defineNuxtConfig({
 		'@nuxtjs/device',
 		'nuxt-viewport',
 		'nuxt-primevue',
+		'nuxt-open-fetch',
 	],
 	content: {
 		api: {
@@ -51,6 +52,16 @@ export default defineNuxtConfig({
 	},
 	nitro: {
 		preset: 'node-server'
+	},
+	openFetch: {
+		clients: {
+			'boudiccaSearchApi': {
+				schema: './openapi/boudiccaSearchApi/openapi.json'
+			},
+			'museumRailwayBackendApi': {
+				schema: './openapi/museumRailwayBackendApi/openapi.yaml'
+			}
+		}
 	},
 	viewport: {
 		breakpoints: {
