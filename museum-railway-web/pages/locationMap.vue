@@ -9,8 +9,8 @@
   </div>
 </template>
 <script setup lang="ts">
-const locationsStore = useLocationsStore();
-const locations = ref<MuseumLocation[]>([]);
+const locationsData = useLocationsData()
+const locations = locationsData.allLocations();
 const router = useRouter();
 const route = useRoute();
 const locationIdParam = route?.params?.locationId;
@@ -18,7 +18,6 @@ const locationIdParam = route?.params?.locationId;
 onMounted(mounted);
 
 async function mounted(): Promise<void> {
-  await locationsStore.loadLocations();
-  locations.value = locationsStore.allLocations;
+  await locationsData.loadLocations();
 }
 </script>

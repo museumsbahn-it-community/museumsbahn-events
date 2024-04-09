@@ -24,16 +24,16 @@
 <template>
   <div class="flex flex-row w-full sticky-content">
     <div class="flex flex-column h-full" :class="{ 'w-full': !hasSelectedEvent(), 'w-6': hasSelectedEvent() }" v-if="!hasSelectedEvent() || viewport.isGreaterOrEquals('desktop-xl')">
-      <div class="h-2rem"></div>
+      <Message severity="info"> Achtung! Die Daten werden automatisch erfasst und nicht manuell geprüft.
+        Abfahrtszeiten und aktuelle Informationen immer auf den Webseiten der jeweiligen Veranstalter
+        kontrollieren!
+      </Message>
+      <div class="h-1rem"></div>
       <div class="filter-box w-11 h-26rem sm:h-14rem">
         <div class="h-full w-full flex align-items-center">
           <div class="w-1"></div>
           <div class="w-9 justify-content-center pr-6">
             <div class="flex flex-column md:flex-row-full p-2">
-              <InlineMessage severity="info"> Achtung! Die Daten werden automatisch erfasst und nicht manuell geprüft.
-                Abfahrtszeiten und aktuelle Informationen immer auf den Webseiten der jeweiligen Veranstalter
-                kontrollieren!
-              </InlineMessage>
             </div>
             <div class="flex flex-column sm:flex-row">
               <MultiSelect v-model="selectedStates"
@@ -56,12 +56,9 @@
 
       <div class="flex flex-column h-full mx-2 mb-6 md:ml-5">
         <EventList
+            :events="events"
             :highlighted-event="selectedEvent"
             @eventSelected="selectEvent"
-            :show-details-button="true"
-            :dates="dates"
-            :selected-states="selectedStates"
-            :location-id-filter="undefined"
         ></EventList>
       </div>
     </div>
@@ -81,6 +78,7 @@
 <script setup lang="ts">
 import { eventKey } from '~/model/util.ts';
 import {useGlobalConfigStore} from "~/stores/GlobalConfigStore.ts";
+import {EMPTY_EVENT_FILTERS, useEventListData} from "~/composables/eventListData.ts";
 
 const noEventSelectedPlaceholderText = "Bitte eine Veranstaltung auswählen um Details zu sehen."
 const viewport = useViewport();
@@ -105,6 +103,10 @@ const dates = ref<Date[]>([]);
 const states = computed(() => {
   return locationsStore.stateList.map((state) => ({name: state, code: state}));
 });
+const eventListData = useEventListData()
+
+const filterOptions = eventListData.loadFilterOptions(["tags", "locomotive_type", "recurrence.type", "registration"], ["tags"]);
+const events = eventListData.filteredEventsGroupedByMonth
 
 function clearFilters(): void {
   selectedStates.value = [];
@@ -137,9 +139,7 @@ function navigateToEventList(): void {
 onMounted(loadData);
 
 async function loadData(): Promise<void> {
-  await eventsStore.loadEventsWithLocations();
-
-
+  await eventListData.loadEvents(EMPTY_EVENT_FILTERS);
 }
 
 </script>
