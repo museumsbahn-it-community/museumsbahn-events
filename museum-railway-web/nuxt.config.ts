@@ -44,6 +44,7 @@ export default defineNuxtConfig({
 		'nuxt3-leaflet',
 		'@pinia/nuxt',
 		'@nuxtjs/device',
+		'@nuxtjs/i18n',
 		'nuxt-viewport',
 		'nuxt-primevue',
 		'nuxt-open-fetch',

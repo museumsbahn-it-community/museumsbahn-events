@@ -34,6 +34,7 @@
     "@cloudflight/eslint-plugin-vue": "^0.24.0",
     "@nuxt/types": "^2.17.3",
     "@nuxtjs/device": "^3.1.1",
+    "@nuxtjs/i18n": "^8.3.0",
     "@vitejs/plugin-vue": "^5.0.4",
     "eslint": "^8.57.0",
     "eslint-import-resolver-typescript": "^3.6.1",

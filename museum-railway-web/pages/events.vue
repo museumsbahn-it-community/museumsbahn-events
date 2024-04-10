@@ -62,21 +62,22 @@ label {
               <div class="m-2 flex flex-row flex-wrap">
                 <template v-for="key in enabledFilters.keys()">
                   <template v-for="value in enabledFilters.get(key)">
-                    <Chip :label="value" class="m-1" @remove="removeTagFilter(key, value)" removable/>
+                    <Chip :label="$t(value)" class="m-1" @remove="removeTagFilter(key, value)" removable/>
                   </template>
                 </template>
               </div>
-              <Accordion class="m-2" multiple>
+              <label for="tagFilters">Filtern nach:</label>
+              <Accordion id="tagFilters" class="m-2" multiple>
                 <AccordionTab v-for="filterGroup in tagFilterOptionsMapped"
                               class="flex flex-row flex-wrap align-items-center"
-                              :header="filterGroup.key"
+                              :header="$t(filterGroup.key)"
                 >
                   <Button v-for="option in filterGroup.options"
                           class="m-2 light-button"
                           @click="switchTagFilter(filterGroup.key, option.text)"
                           :outlined="!hasTagFilter(filterGroup.key, option.text)"
                           rounded>
-                    {{ option.text }}
+                    {{ $t(option.text) }}
                   </Button>
                 </AccordionTab>
               </Accordion>
@@ -123,6 +124,7 @@ import {useGlobalConfigStore} from "~/stores/GlobalConfigStore.ts";
 import {EMPTY_EVENT_FILTERS, useEventListData} from "~/composables/eventListData.ts";
 import {buildQuery} from "~/composables/queryGenerator.ts";
 
+useI18n()
 const noEventSelectedPlaceholderText = "Bitte eine Veranstaltung auswählen um Details zu sehen."
 const viewport = useViewport();
 const router = useRouter();
