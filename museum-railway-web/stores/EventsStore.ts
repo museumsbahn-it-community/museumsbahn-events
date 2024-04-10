@@ -17,6 +17,7 @@ export interface MuseumEventGroup {
 
 interface EventsState {
     queriedEvents: MuseumEvent[];
+    availableFilters: EventTagFilterOption[];
     eventsLoaded: number;
     totalEvents: number | undefined;
 }
@@ -50,6 +51,7 @@ function groupEventsByMonth(
 export const useEventsStore = defineStore('events', {
     state: (): EventsState => ({
         queriedEvents: [],
+        availableFilters: [],
         eventsLoaded: 0,
         totalEvents: 0,
     }),
@@ -72,6 +74,9 @@ export const useEventsStore = defineStore('events', {
             this.queriedEvents = events;
             this.eventsLoaded = events.length;
             this.totalEvents = totalEvents;
+        },
+        setAvailableEventTagFilters(filters: EventTagFilterOption[]):void {
+            this.availableFilters = filters;
         }
     },
 });

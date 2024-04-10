@@ -4,6 +4,7 @@ import {CommonKeys} from "~/model/commonKeys.ts";
 import {SemanticKeys} from "~/model/semanticKeys.ts";
 import {createLocationMap, type LocationMap} from "~/model/util.ts";
 import {format} from "date-fns";
+import {buildQuery} from "~/composables/queryGenerator.ts";
 
 const EVENT_COUNT_STEP_SIZE = 500;
 
@@ -11,28 +12,6 @@ export const EMPTY_EVENT_FILTERS = {
     fromDate: undefined,
     toDate: undefined,
     tagFilters: [],
-}
-
-function buildQuery(filters: EventFilterSettings): string {
-    let queryParts = []
-    if (filters.fromDate) {
-        const formattedDate = format(filters.fromDate, "yyyy-MM-dd");
-        queryParts.push(`"startDate" AFTER ${formattedDate}`);
-    }
-    if (filters.toDate) {
-        const formattedDate = format(filters.toDate, "yyyy-MM-dd");
-        queryParts.push(`"startDate" BEFORE ${formattedDate}`);
-    }
-    const tagFilterParts: string[] = []
-    filters.tagFilters.forEach((tagFilter) => {
-        const tagOptions = tagFilter.options.map((opt) => `"${tagFilter.key}" CONTAINS "${opt}"`)
-        tagFilterParts.push(tagOptions.join(" OR "))
-    })
-    if (tagFilterParts.length > 0) {
-        queryParts.push(tagFilterParts)
-    }
-
-    return queryParts.join(" AND ")
 }
 
 export function mapEntriesToEvents(entries: Entry[], locations: LocationMap): MuseumEvent[] {
@@ -59,10 +38,11 @@ export function mapEntriesToEvents(entries: Entry[], locations: LocationMap): Mu
 export interface EventListData {
     filteredEvents: ComputedRef<MuseumEvent[]>;
     filteredEventsGroupedByMonth: ComputedRef<MuseumEventGroup[]>;
+    availableEventTagFilters: ComputedRef<EventTagFilterOption[]>;
 
     getEventByKey(id: string): MuseumEvent | undefined;
 
-    loadFilterOptions(keyNames: string[], splitListsForKeys: string[]): Promise<EventTagFilterOption[]>;
+    loadFilterOptions(keyNames: string[], splitListsForKeys: string[]): Promise<void>;
 
     loadEvents(settings: EventFilterSettings): Promise<void>;
 }
@@ -78,12 +58,13 @@ export const useEventListData = (): EventListData => {
     return {
         filteredEvents: computed(() => eventsStore.queriedEvents),
         filteredEventsGroupedByMonth: computed(() => eventsStore.filteredEventsGroupedByMonth),
+        availableEventTagFilters: computed(() => eventsStore.availableFilters),
         getEventByKey(key: string) {
             return eventsStore.getEventByKey(key);
         },
-        async loadFilterOptions(keyNames: string[], splitListsForKeys: string[]): Promise<EventTagFilterOption[]> {
+        async loadFilterOptions(keyNames: string[], splitListsForKeys: string[]): Promise<void> {
             if (keyNames.length === 0) {
-                return []
+                return;
             }
 
             const {$boudiccaSearchApi} = useNuxtApp()
@@ -109,16 +90,16 @@ export const useEventListData = (): EventListData => {
                 if (splitListsForKeys.includes(key)) {
                     // currently we have to do this on the frontend until
                     // https://github.com/boudicca-events/boudicca.events/issues/367 is discussed and implemented
-                    // TODO: remove duplicates
                     value.forEach((entry) => options.push(...entry.split(",")))
                 } else {
                     options.push(...value)
                 }
 
-                eventTagFilters.push({key, options})
+                const uniqueOptions = Array.from(new Set(options));
+                eventTagFilters.push({key, options: uniqueOptions})
             }
 
-            return eventTagFilters;
+            eventsStore.setAvailableEventTagFilters(eventTagFilters)
         },
         async loadEvents(settings: EventFilterSettings): Promise<void> {
             const {$boudiccaSearchApi} = useNuxtApp()

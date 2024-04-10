@@ -11,6 +11,8 @@ interface LocationsData {
 
     eventCountForId(locationId: string): ComputedRef<number | undefined>;
 
+    loationIdsForStates(states: string[]): string[];
+
     loadLocations(): Promise<void>;
 
     loadLocationEventsCount(): Promise<void>;
@@ -28,6 +30,11 @@ export const useLocationsData = (): LocationsData => {
         locationById: (locationId: string) => computed(() => store.locationById(locationId)),
 
         eventCountForId: (locationId: string) => computed(() => store.eventCountForId(locationId)),
+
+        loationIdsForStates(states: string[]): string[] {
+            const locations = store.allLocations;
+            return locations.filter(location => states.includes(location.location.state)).map(location => location.locationId)
+        },
 
         async loadLocations() {
             if (store.allLocations.length > 0) {
