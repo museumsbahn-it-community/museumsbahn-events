@@ -26,7 +26,7 @@
           <Card>
             <template #title>
               <div class="flex flex-row mx-3 mt-3">
-                <span class="w-8">
+                <span class="w-8 overflow-wrap-anywhere">
                 {{ location.name }}
                 </span>
                 <div class="flex-grow-1"></div>
@@ -51,7 +51,7 @@
                   <EventCollectorIndicator :location="location"></EventCollectorIndicator>
                 </div>
                 <div class="my-4">
-                  <span>{{ eventCount(location.locationId) }} Veranstaltungen gefunden</span>
+                  <span>{{ locationsData.eventCountForId(location.locationId) }} Veranstaltungen gefunden</span>
                 </div>
                 <div class="flex align-items-end w-full">
                   <div class="flex-grow-1"></div>
@@ -72,13 +72,12 @@
 </template>
 
 <script setup lang="ts">
-import { Colors } from '~/app/colors.ts';
 import EventCollectorIndicator from '~/components/EventCollectorIndicator.vue';
-
 const viewport = useViewport();
-const locationsStore = useLocationsStore();
-const eventsStore = useEventsStore();
-const locations = ref<MuseumLocation[]>([]);
+
+const locationsData = useLocationsData();
+
+const locations = locationsData.allLocations();
 const highlightedLocation = ref<MuseumLocation | undefined>(undefined);
 const router = useRouter();
 
@@ -94,19 +93,10 @@ function showLocationOnMap(location: MuseumLocation) {
   }
 }
 
-function eventCount(locationId: string): number {
-  return eventsStore.filteredEvents(undefined, undefined, undefined, locationId).length;
-}
-
-
-
-// TODO: add image locations at later date
-// const imageLocation = (locationId: string): string => `/img/locations/${locationId}.jpg`
-
 onMounted(mounted);
 
 async function mounted(): Promise<void> {
-  await eventsStore.loadEventsWithLocations();
-  locations.value = locationsStore.allLocations;
+  await locationsData.loadLocations();
+  await locationsData.loadLocationEventsCount();
 }
 </script>

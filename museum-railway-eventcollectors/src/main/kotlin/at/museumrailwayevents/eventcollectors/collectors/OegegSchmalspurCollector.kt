@@ -37,7 +37,7 @@ class OegegSchmalspurCollector(val jsoupCrawler: JsoupCrawler) : MuseumRailwayEv
             val zuglokString = eventBox.select("span").eachText().firstOrNull {
                 it.contains(zuglokKeyword)
             }
-            val imageElement = document.select("img").first();
+            val imageElement = eventBox.select("img").firstOrNull();
             val pictureUrl = imageElement?.absUrl("src");
             val description = eventBox.select("p").eachText().joinToString("\n")
 
@@ -61,7 +61,7 @@ class OegegSchmalspurCollector(val jsoupCrawler: JsoupCrawler) : MuseumRailwayEv
                     additionalData["lokomotive"] = parsedZuglok
                 }
                 if (pictureUrl != null) {
-                    additionalData[SemanticKeys.PICTUREURL] = pictureUrl
+                    additionalData[SemanticKeys.PICTURE_URL] = pictureUrl
                 }
                 additionalData[SemanticKeys.DESCRIPTION] = description
 

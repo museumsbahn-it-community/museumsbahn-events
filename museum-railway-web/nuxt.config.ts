@@ -11,6 +11,12 @@ export default defineNuxtConfig({
 						changeOrigin: true,
 						rewrite: (path) => path.replace(/^\/searchApi/, ''),
 					},
+					'/filtersFor': {
+						target: 'http://127.0.0.1:8082',
+						secure: false,
+						changeOrigin: true,
+						rewrite: (path) => path.replace(/^\/filtersFor/, ''),
+					},
 					'/api': {
 						target: 'http://127.0.0.1:8080',
 						secure: false,
@@ -38,8 +44,10 @@ export default defineNuxtConfig({
 		'nuxt3-leaflet',
 		'@pinia/nuxt',
 		'@nuxtjs/device',
+		'@nuxtjs/i18n',
 		'nuxt-viewport',
 		'nuxt-primevue',
+		'nuxt-open-fetch',
 	],
 	content: {
 		api: {
@@ -52,9 +60,21 @@ export default defineNuxtConfig({
 	nitro: {
 		preset: 'node-server'
 	},
+	openFetch: {
+		clients: {
+			'boudiccaSearchApi': {
+				schema: './openapi/boudiccaSearchApi/openapi.json'
+			},
+			'museumRailwayBackendApi': {
+				schema: './openapi/museumRailwayBackendApi/openapi.yaml'
+			}
+		}
+	},
 	viewport: {
 		breakpoints: {
 			// configure breakpoints, so they match primeflex breakpoints
+			'desktop-xxl': 1650, // matches nothing, but is biiiig
+			'desktop-xl': 1200, // matches primeflex $xl
 			desktop: 992, // matches primeflex $lg
 			tablet: 768, // matches primeflex $md
 			mobile: 320,

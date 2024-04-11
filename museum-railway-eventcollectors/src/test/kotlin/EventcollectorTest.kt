@@ -1,8 +1,11 @@
 import assertk.assertThat
+import assertk.assertions.isEmpty
 import assertk.assertions.isEqualTo
+import assertk.assertions.isNull
 import at.museumrailwayevents.eventcollectors.collectors.*
 import at.museumrailwayevents.eventcollectors.service.JsoupCrawlerTestMockImpl
 import org.junit.jupiter.api.Test
+import kotlin.math.exp
 
 class EventcollectorTest {
 
@@ -79,5 +82,23 @@ class EventcollectorTest {
         val eventcollector = WaldviertelbahnCollector(mockJsoupCrawler)
         val events = eventcollector.collectEvents()
         assertThat(events.size).isEqualTo(33)
+    }
+
+    @Test
+    fun `reblausexpress should collect 55 events`() {
+        val eventcollector = ReblausexpressCollector(mockJsoupCrawler)
+        val expectedNumberOfEvents = 55
+        val events = eventcollector.collectEvents()
+        assertThat(events.size).isEqualTo(expectedNumberOfEvents)
+
+        // some events should be filtered out to not spam the site
+        assertThat(events.filter { it.name.contains("Saisonkarte")}).isEmpty()
+        assertThat(events.filter { it.name.contains("Wunschlauf")}).isEmpty()
+        assertThat(events.filter { it.name.contains("Erdäpfelfest")}).isEmpty()
+
+        // "Ticket" should be removed from title
+        assertThat(events.filter { it.name.contains("Ticket")}).isEmpty()
+        assertThat(events.filter { it.name.contains("Reblaus Express")}.size).isEqualTo(expectedNumberOfEvents - 1)
+
     }
 }

@@ -1,6 +1,6 @@
 **/dist/
 node_modules/
-.eslintrc.js
+.eslintrc.mjs
 .eslintrc.format.js
 package.json
 .git/

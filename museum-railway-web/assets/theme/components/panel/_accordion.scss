@@ -21,7 +21,8 @@
     .p-accordion-header {
         .p-accordion-header-link {
             padding: $accordionHeaderPadding;
-            border: $accordionHeaderBorder;
+            border-bottom: $accordionHeaderBorder;
+            border-color: $accordionHeaderBorderColor;
             color: $accordionHeaderTextColor;
             background: $accordionHeaderBg;
             font-weight: $accordionHeaderFontWeight;

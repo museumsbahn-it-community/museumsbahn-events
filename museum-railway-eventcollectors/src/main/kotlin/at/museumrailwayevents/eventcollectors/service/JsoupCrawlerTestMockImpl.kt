@@ -80,6 +80,18 @@ class JsoupCrawlerTestMockImpl(val contextClass: Class<out Any>) : JsoupCrawler 
         "https://www.waldviertelbahn.at/angebote-fuer-fahrgaeste-wvb/o-christkindlzug-1" to "noevog/waldviertelbahn-diesel/wvb_diesel_christkindlzug.htm",
     )
 
+    val reblausexpressMap = mapOf(
+        "https://www.reblausexpress.at/tickets-angebote-reb" to "noevog/reblausexpress/reblausexpress_angebote.html",
+        "https://www.reblausexpress.at/angebote-reblaus-express-1/o-tickets-reblaus-express" to "noevog/reblausexpress/reblausexpress_ticket.html",
+        "https://www.reblausexpress.at/angebote-reblaus-express-1/o-aktion-saisonkarte-50-reb" to "noevog/reblausexpress/reblausexpress_saisonkarte.html",
+        "https://www.reblausexpress.at/angebote-reblaus-express-1/o-retzer-erlebniskeller-1" to "noevog/reblausexpress/reblausexpress_retzer_erlebniskeller.html",
+        "https://www.reblausexpress.at/angebote-reblaus-express-1/o-stadtfuehrung-drosendorf" to "noevog/reblausexpress/reblausexpress_stadtfuerhung_drosendorf.html",
+        "https://www.reblausexpress.at/angebote-reblaus-express-1/o-muttertag-am-reblaus-express" to "noevog/reblausexpress/reblausexpress_muttertag.html",
+        "https://www.reblausexpress.at/angebote-reblaus-express-1/o-nostalgiekirtag-wie-damals-im-waldviertel" to "noevog/reblausexpress/reblausexpress_nostalgiekirtag.html",
+        "https://www.reblausexpress.at/angebote-reblaus-express-1/o-pleissinger-wunschlauf" to "noevog/reblausexpress/reblausexpress_wunschlauf.html",
+        "https://www.reblausexpress.at/angebote-reblaus-express-1/o-erdaepfelfest-in-geras" to "noevog/reblausexpress/reblausexpress_erdaepfelfest.html",
+    )
+
     val pathMap = mapOf(
         "https://www.oegeg.at/termine/termine-normalspur-museum-lokpark-ampflwang/" to "oegeg_normalspur.htm",
         "https://www.oegeg.at/termine/termine-schifffahrt-dampfschiff-sch%C3%B6nbrunn/" to "oegeg_schifffahrt.htm",
@@ -99,7 +111,7 @@ class JsoupCrawlerTestMockImpl(val contextClass: Class<out Any>) : JsoupCrawler 
         "https://ebfl.at/index.php/tirolfahrt-2024-2/" to "ebfl/ebfl_event1.htm",
         "https://ebfl.at/index.php/fahrt-an-den-woerthersee/" to "ebfl/ebfl_event2.htm",
         "https://ebfl.at/index.php/christkindlfahrt-graz-2024/" to "ebfl/ebfl_event3.htm",
-    ) + wackelsteinexpressDetailsMap + oeglbMap + waldviertelbahnMap
+    ) + wackelsteinexpressDetailsMap + oeglbMap + waldviertelbahnMap + reblausexpressMap
 
 
     override fun getDocument(url: String): Document {

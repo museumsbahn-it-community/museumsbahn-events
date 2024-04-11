@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import SiteHeader from './components/SiteHeader.vue';
+import {useGlobalConfigStore} from "~/stores/GlobalConfigStore.ts";
 
 useSeoMeta({
   title: 'museumsbahn-events.at',
@@ -9,6 +10,10 @@ useSeoMeta({
   ogImage: 'https://museumsbahn-events.at/img/social_media_preview.jpg',
   twitterCard: 'summary_large_image',
 })
+
+const globalConfig = useGlobalConfigStore()
+onMounted(() => globalConfig.initHistoryCount())
+
 </script>
 
 <template>
@@ -23,10 +28,3 @@ useSeoMeta({
     <div class="footer"></div>
   </div>
 </template>
-
-<style lang="scss">
-@import 'assets/theme/theme.scss';
-@import 'primeflex/primeflex.css';
-@import 'primeicons/primeicons.css';
-@import 'material-icons/iconfont/material-icons.css';
-</style>

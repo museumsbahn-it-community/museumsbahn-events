@@ -20,6 +20,7 @@ fun main() {
         .addEventCollector(EbflCollector(crawler))
         .addEventCollector(Mh6Collector(crawler))
         .addEventCollector(WaldviertelbahnCollector(crawler))
+        .addEventCollector(ReblausexpressCollector(crawler))
         .startWebUi()
         .run()
 }

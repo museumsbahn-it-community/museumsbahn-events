@@ -48,7 +48,7 @@ $panelContentBorder: 1px solid #dee2e6;
 
 /// Background for the content section of a panel
 /// @group panel
-$panelContentBg: #ffffff;
+$panelContentBg: $textColor;
 
 /// Background for the striped row.
 /// @group panel
@@ -84,15 +84,19 @@ $accordionSpacing: 0;
 
 /// Border of an accordion panel header
 /// @group panel
-$accordionHeaderBorder: $panelHeaderBorder;
+$accordionHeaderBorder: 0px solid;
+
+/// Border of an accordion panel header
+/// @group panel
+$accordionHeaderBorderColor: $primaryColor;
 
 /// Background of an accordion panel header
 /// @group panel
-$accordionHeaderBg: $panelHeaderBg;
+$accordionHeaderBg: $primaryColor;
 
 /// Text color of an accordion panel header
 /// @group panel
-$accordionHeaderTextColor: $panelHeaderTextColor;
+$accordionHeaderTextColor: $primaryTextColor;
 
 /// Font weight of an accordion panel header
 /// @group panel
@@ -108,7 +112,7 @@ $accordionHeaderHoverBg: #e9ecef;
 
 /// Border of an accordion panel header in hover state
 /// @group panel
-$accordionHeaderHoverBorderColor: $panelHeaderBorder;
+$accordionHeaderHoverBorderColor: $primaryColor;
 
 /// Text color of an accordion panel header in hover state
 /// @group panel
@@ -116,15 +120,15 @@ $accordionHeaderTextHoverColor: $textColor;
 
 /// Background of an accordion panel header in expanded state
 /// @group panel
-$accordionHeaderActiveBg: $panelHeaderBg;
+$accordionHeaderActiveBg: $primaryColor;
 
 /// Border of an accordion panel header in expanded state
 /// @group panel
-$accordionHeaderActiveBorderColor: #dee2e6;
+$accordionHeaderActiveBorderColor: $primaryTextColor;
 
 /// Text color of an accordion panel header in expanded state
 /// @group panel
-$accordionHeaderTextActiveColor: $textColor;
+$accordionHeaderTextActiveColor: $primaryTextColor;
 
 /// Hover background of an accordion panel header in expanded state
 /// @group panel
@@ -140,7 +144,7 @@ $accordionHeaderTextActiveHoverColor: $textColor;
 
 /// Border for a content section of an accordion panel
 /// @group panel
-$accordionContentBorder: $panelContentBorder;
+$accordionContentBorder: 0;
 
 /// Background for a content section of an accordion panel
 /// @group panel

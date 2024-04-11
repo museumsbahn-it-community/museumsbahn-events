@@ -1,6 +1,7 @@
 package at.museumrailwayevents.eventcollectors.collectors
 
 import at.museumrailwayevents.eventcollectors.collectors.dateParser.DateParser
+import at.museumrailwayevents.eventcollectors.collectors.dateParser.DateParser.fullDateRegexString
 import at.museumrailwayevents.eventcollectors.service.JsoupCrawler
 import at.museumrailwayevents.model.conventions.CATEGORY_MUSEUM_TRAIN
 import at.museumrailwayevents.model.conventions.CommonKeys
@@ -20,25 +21,59 @@ abstract class NoevogCollector(
 ) : MuseumRailwayEventCollector(
     operatorId, locationId, url, tags, locationName
 ) {
-    protected fun collectSonderfahrten(sonderfahrtenUrl: String, tags: String, locomotiveType: String): List<Event> {
+    private fun isNoevogDurationString(it: String): Boolean {
+        val regex = Regex("von$fullDateRegexString(\\s)*-$fullDateRegexString")
+        return it.matches(regex)
+    }
+
+    protected fun collectSonderfahrten(
+        sonderfahrtenUrl: String,
+        tags: String,
+        locomotiveType: String,
+        excludeByTitle: List<Regex> = emptyList(),
+        excludeByBody: List<Regex> = emptyList(),
+        removeFromTitle: List<Regex> = emptyList(),
+    ): List<Event> {
         val events = mutableListOf<Event>()
         val document = jsoupCrawler.getDocument(sonderfahrtenUrl)
 
         val links = document.select("article.offer > h3 > a").eachAttr("href")
-        links.forEach { eventUrl ->
+        links.forEach linksLoop@{ eventUrl ->
             val eventDocument = jsoupCrawler.getDocument(eventUrl).select("section.content")
-            val name = eventDocument.select("h1").eachText().first()
+            var title = eventDocument.select("h1").eachText().first().trim()
             val description = eventDocument.select("article.bodycopy > div > p").eachText().joinToString("\n")
             val dateStrings = eventDocument.select("h3:contains(Angebotszeitraum) ~ ul > li").eachText()
 
-            if (dateStrings.size == 0) {
-                println("no 'Angebotszeitraum' for $name found")
-                return@forEach
+            excludeByTitle.forEach { regex ->
+                if (title.contains(regex)) {
+                    return@linksLoop
+                }
             }
 
-            val dates = dateStrings.flatMap { DateParser.parseAllDatesFrom(it) }
+            excludeByBody.forEach { regex ->
+                if (description.contains(regex)) {
+                    return@linksLoop
+                }
+            }
 
-            val recurrence = when(dates.size) {
+            if (dateStrings.size == 0) {
+                println("no 'Angebotszeitraum' for $title found")
+                return@linksLoop
+            }
+
+            removeFromTitle.forEach {
+                title = title.replace(it, "").trim()
+            }
+
+            val dates = dateStrings.flatMap {
+                val dates = DateParser.parseAllDatesFrom(it)
+                if (isNoevogDurationString(it)) {
+                    return@flatMap DateParser.generateDateListBetween(dates[0], dates[1])
+                }
+                return@flatMap dates
+            }
+
+            val recurrence = when (dates.size) {
                 1, 2 -> RecurrenceType.ONCE
                 in 2..5 -> RecurrenceType.RARELY
                 else -> RecurrenceType.REGULARLY
@@ -47,7 +82,7 @@ abstract class NoevogCollector(
             dates.forEach { date ->
                 events.add(
                     createNoevogEvent(
-                        name,
+                        title,
                         date,
                         eventUrl,
                         description,

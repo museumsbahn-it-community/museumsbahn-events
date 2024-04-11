@@ -1,6 +1,7 @@
 /* Customizations to the designer theme should be defined here */
 @use '../colors' as colors;
 @use '../variables_impl' as variables;
+@use './variables' as themeColors;
 
 .button-light {
   color: colors.$color-grauweiß;
@@ -47,4 +48,141 @@
 
 .p-card a {
   color: colors.$color-umbragrau;
+}
+
+/// ---------------
+/// Light Button
+/// ---------------
+
+/// Background of a button
+/// @group button
+$buttonBgLight: themeColors.$primaryColorLight;
+
+/// Text color of a button
+/// @group button
+$buttonTextColorLight: themeColors.$primaryTextColorLight;
+
+/// Border of a button
+/// @group button
+$buttonBorderLight: 1px solid $primaryColorLight;
+
+/// Background of a button in hover state
+/// @group button
+$buttonHoverBgLight: themeColors.$primaryDarkColorLight;
+
+/// Text color of a button in hover state
+/// @group button
+$buttonTextHoverColorLight: themeColors.$primaryTextColorLight;
+
+/// Border color of a button in hover state
+/// @group button
+$buttonHoverBorderColorLight: themeColors.$primaryDarkColorLight;
+
+/// Background of a button in pressed state
+/// @group button
+$buttonActiveBgLight: themeColors.$primaryDarkerColorLight;
+
+/// Color of a button in pressed state
+/// @group button
+$buttonTextActiveColorLight: themeColors.$primaryTextColorLight;
+
+/// Border color of a button in pressed state
+/// @group button
+$buttonActiveBorderColorLight: themeColors.$primaryDarkerColorLight;
+
+/// Text color of a plain text button
+/// @group button
+$plainButtonTextColorLight: themeColors.$primaryColorLight;
+
+/// Background color of a plain text button in hover state
+/// @group button
+$plainButtonHoverBgColorLight:themeColors.$primaryDarkerColorLight;
+
+/// Background color of a plain text button in active state
+/// @group button
+$plainButtonActiveBgColorLight:themeColors.$primaryDarkerColorLight;
+
+.p-button.light-button {
+  color: $buttonTextColorLight;
+  background: $buttonBgLight;
+  border: $buttonBorderLight;
+  outline-color: transparent;
+
+  &:not(:disabled):hover {
+    background: $buttonHoverBgLight;
+    color: $buttonTextHoverColorLight;
+    border-color: $buttonHoverBorderColorLight;
+  }
+
+  &:not(:disabled):active {
+    background: $buttonActiveBgLight;
+    color: $buttonTextActiveColorLight;
+    border-color: $buttonActiveBorderColorLight;
+  }
+
+  &.p-button-outlined {
+    background-color: transparent;
+    color: $buttonBgLight;
+
+    &:not(:disabled):hover {
+      background: rgba($buttonBgLight, $textButtonHoverBgOpacity);
+      color: $buttonBgLight;
+    }
+
+    &:not(:disabled):active {
+      background: rgba($buttonBgLight, $textButtonActiveBgOpacity);
+      color: $buttonBgLight;
+    }
+
+    &.p-button-plain {
+      color: $plainButtonTextColorLight;
+      border-color: $plainButtonTextColorLight;
+
+      &:not(:disabled):hover {
+        background: $plainButtonHoverBgColorLight;
+        color: $plainButtonTextColorLight;
+      }
+
+      &:not(:disabled):active {
+        background: $plainButtonActiveBgColorLight;
+        color: $plainButtonTextColorLight;
+      }
+    }
+  }
+
+  &.p-button-text {
+    background-color: transparent;
+    color: $buttonBgLight;
+    border-color: transparent;
+
+    &:not(:disabled):hover {
+      background: rgba($buttonBgLight, $textButtonHoverBgOpacity);
+      color: $buttonBgLight;
+      border-color: transparent;
+    }
+
+    &:not(:disabled):active {
+      background: rgba($buttonBgLight, $textButtonActiveBgOpacity);
+      color: $buttonBgLight;
+      border-color: transparent;
+    }
+
+    &.p-button-plain {
+      color: $plainButtonTextColorLight;
+
+      &:not(:disabled):hover {
+        background: $plainButtonHoverBgColorLight;
+        color: $plainButtonTextColorLight;
+      }
+
+      &:not(:disabled):active {
+        background: $plainButtonActiveBgColorLight;
+        color: $plainButtonTextColorLight;
+      }
+    }
+  }
+  .p-badge {
+    color: $buttonBgLight;
+    background-color: $buttonTextColorLight;
+  }
 }

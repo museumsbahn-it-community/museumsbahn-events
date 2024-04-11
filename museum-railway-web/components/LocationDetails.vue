@@ -31,28 +31,25 @@
     <h2>Künftige Veranstaltungen</h2>
 
     <div v-if="museumLocation != undefined" class="mb-4">
-      <EventList :location-id-filter="museumLocation.locationId" :show-details-button="false" :show-filters="false">
+      <EventList
+          :events="events"
+          @eventSelected="navigateToEventDetails"
+      >
       </EventList>
     </div>
   </div>
 </template>
 <script setup lang="ts">
-import type { MuseumLocation } from '@museumrailwayevents/museum-railway-client';
+import {eventKey} from "~/model/util.ts";
+import type {MuseumEventGroup} from "~/stores/EventsStore.ts";
 
-const eventsStore = useEventsStore();
-const locationsStore = useLocationsStore();
-const route = useRoute();
+const router = useRouter();
+const props = defineProps<{
+  museumLocation: MuseumLocation,
+  events: MuseumEventGroup[],
+}>();
 
-const locationIdParam = route?.params?.locationId;
-const museumLocation = ref<MuseumLocation | undefined>(undefined);
-
-onMounted(mounted);
-
-async function mounted(): Promise<void> {
-  // unfortunately it is not possible to do this in the outer component reliably, thus we must load the data here, because
-  // we have to run the locationById getter AFTER loading the data
-  await eventsStore.loadEventsWithLocations();
-  museumLocation.value = locationsStore.locationById(locationIdParam);
+function navigateToEventDetails(value: string) {
+  router.push({name: 'eventDetails', params: {eventKey: eventKey(value)}});
 }
-
 </script>

@@ -3,8 +3,13 @@
 // Theme Specific Variables
 $primaryColor: #4d4d4d; // umbragrau
 $primaryDarkColor: #4d4d4d; // umbragrau
-$primaryDarkerColor: #4d4d4d; // umbragrau
-$primaryTextColor: #4d4d4d; // umbragrau
+$primaryDarkerColor: #323232; // umbragrau - dunkler
+$primaryTextColor: #f6f6f6; // grauweiß
+
+$primaryColorLight: #f6f6f6; // grauweiß
+$primaryDarkColorLight: #f6f6f6; // grauweiß
+$primaryDarkerColorLight: #969696; // grauweiß - dunkler
+$primaryTextColorLight: #4d4d4d; // umbragrau
 
 $colors: (
         "blue": #2196F3,
@@ -22,10 +27,10 @@ $colors: (
 );
 
 // Mandatory Designer Variables
-@import './variables/general';
-@import './variables/form';
-@import './variables/button';
-@import './variables/panel';
+@import './variables/_general';
+@import './variables/_form';
+@import './variables/_button';
+@import './variables/_panel';
 @import './variables/_data';
 @import './variables/_overlay';
 @import './variables/_message';

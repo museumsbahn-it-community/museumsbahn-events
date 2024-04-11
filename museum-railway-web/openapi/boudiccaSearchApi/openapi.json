@@ -1,0 +1,141 @@
+{
+  "openapi" : "3.0.1",
+  "info" : {
+    "title" : "",
+    "description" : "",
+    "termsOfService" : "http://swagger.io/terms/",
+    "contact" : {
+      "email" : "team@boudicca.events"
+    },
+    "license" : {
+      "name" : "GPL v3.0",
+      "url" : "https://www.gnu.org/licenses/gpl-3.0.en.html"
+    },
+    "version" : "0.4.0"
+  },
+  "paths" : {
+    "/filtersFor" : {
+      "post" : {
+        "tags" : [ "search" ],
+        "operationId" : "filtersFor",
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/FilterQueryDTO"
+              }
+            }
+          }
+        },
+        "responses" : {
+          "200" : {
+            "description" : "get filtervalues for the specified fields to f.E. use in an selectbox",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "object",
+                  "additionalProperties" : {
+                    "type" : "array",
+                    "items" : {
+                      "type" : "string"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/queryEntries" : {
+      "post" : {
+        "tags" : [ "search" ],
+        "operationId" : "queryEntries",
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/QueryDTO"
+              }
+            }
+          }
+        },
+        "responses" : {
+          "200" : {
+            "description" : "query for entries using the Boudicca Query Language",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ResultDTO"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components" : {
+    "schemas" : {
+      "FilterQueryDTO" : {
+        "type" : "object",
+        "properties" : {
+          "entries" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/FilterQueryEntryDTO"
+            }
+          }
+        }
+      },
+      "FilterQueryEntryDTO" : {
+        "type" : "object",
+        "properties" : {
+          "name" : {
+            "type" : "string"
+          },
+          "multiline" : {
+            "type" : "boolean"
+          }
+        }
+      },
+      "ResultDTO" : {
+        "type" : "object",
+        "properties" : {
+          "result" : {
+            "type" : "array",
+            "items" : {
+              "type" : "object",
+              "additionalProperties" : {
+                "type" : "string"
+              }
+            }
+          },
+          "totalResults" : {
+            "type" : "integer",
+            "format" : "int32"
+          },
+          "error" : {
+            "type" : "string"
+          }
+        }
+      },
+      "QueryDTO" : {
+        "type" : "object",
+        "properties" : {
+          "query" : {
+            "type" : "string"
+          },
+          "offset" : {
+            "type" : "integer",
+            "format" : "int32"
+          },
+          "size" : {
+            "type" : "integer",
+            "format" : "int32"
+          }
+        }
+      }
+    }
+  }
+}

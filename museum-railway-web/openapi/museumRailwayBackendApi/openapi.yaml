@@ -1,15 +1,15 @@
 openapi: 3.0.1
 info:
-  version: "0.2.0"
-  title: "museum-railway-backend"
-tags:
-- name: "Museum Railway Events Locations API"
-- name: "Museum Railway Events Operators API"
+  title: OpenAPI definition
+  version: v0
+servers:
+- url: http://localhost:8080
+  description: Generated server url
 paths:
   /api/manage/reloadData:
     post:
       tags:
-        - management-controller
+      - management-controller
       operationId: clearCaches
       responses:
         "200":
@@ -17,14 +17,14 @@ paths:
   /imgcache:
     get:
       tags:
-        - image-caching-proxy-controller
+      - image-caching-proxy-controller
       operationId: getImage
       parameters:
-        - name: url
-          in: query
-          required: true
-          schema:
-            type: string
+      - name: url
+        in: query
+        required: true
+        schema:
+          type: string
       responses:
         "200":
           description: OK
@@ -40,7 +40,7 @@ paths:
   /api/operator:
     get:
       tags:
-        - operators-controller
+      - operators-controller
       operationId: allOperators
       responses:
         "200":
@@ -54,14 +54,14 @@ paths:
   /api/location:
     get:
       tags:
-        - locations-controller
+      - locations-controller
       operationId: allLocations
       parameters:
-        - name: operatorId
-          in: query
-          required: false
-          schema:
-            type: string
+      - name: operatorId
+        in: query
+        required: false
+        schema:
+          type: string
       responses:
         "200":
           description: OK
@@ -75,9 +75,9 @@ components:
   schemas:
     Location:
       required:
-        - country
-        - state
-        - street
+      - country
+      - state
+      - street
       type: object
       properties:
         lat:
@@ -98,12 +98,12 @@ components:
           type: string
     MuseumOperator:
       required:
-        - description
-        - identifier
-        - imageName
-        - location
-        - name
-        - webUrl
+      - description
+      - identifier
+      - imageName
+      - location
+      - name
+      - webUrl
       type: object
       properties:
         name:
@@ -120,16 +120,16 @@ components:
           $ref: '#/components/schemas/Location'
     MuseumLocation:
       required:
-        - description
-        - eventCollectionComment
-        - eventCollectorType
-        - imageName
-        - location
-        - locationId
-        - name
-        - operatorId
-        - type
-        - webUrl
+      - description
+      - eventCollectionComment
+      - eventCollectorType
+      - imageName
+      - location
+      - locationId
+      - name
+      - operatorId
+      - type
+      - webUrl
       type: object
       properties:
         name:
@@ -137,12 +137,12 @@ components:
         type:
           type: string
           enum:
-            - Museum
-            - Modellbahn
-            - Veranstaltung
-            - Museumsbahn
-            - Sonderfahrten
-            - Station
+          - Museum
+          - Modellbahn
+          - Veranstaltung
+          - Museumsbahn
+          - Sonderfahrten
+          - Station
         operatorId:
           type: string
         locationId:
