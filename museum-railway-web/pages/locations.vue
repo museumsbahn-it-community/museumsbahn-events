@@ -21,7 +21,7 @@
 <template>
   <div class="fill-page-height p-3">
     <div class="flex flex-row h-full bg-verkehrsrot p-3 rounded-corners-small">
-      <ScrollPanel class="flex-column h-full lg:w-4 w-full">
+      <ScrollPanel class="flex-column h-full lg:w-6 xxl:w-4 w-full">
         <div v-for="location in locations">
           <Card>
             <template #title>
@@ -31,7 +31,7 @@
                 </span>
                 <div class="flex-grow-1"></div>
                 <div>
-                  <button class="p-link mx-2 md:mx-3" @click="showLocationOnMap(location)">
+                  <button class="p-link mx-2" @click="showLocationOnMap(location)">
                     <span class="header-icon pi pi-map"></span>
                   </button>
                   <button class="p-link" @click="openLocationDetails(location.locationId)">

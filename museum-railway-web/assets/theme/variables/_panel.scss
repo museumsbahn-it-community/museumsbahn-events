@@ -48,7 +48,7 @@ $panelContentBorder: 1px solid #dee2e6;
 
 /// Background for the content section of a panel
 /// @group panel
-$panelContentBg: $textColor;
+$panelContentBg: $primaryColorLight;
 
 /// Background for the striped row.
 /// @group panel
@@ -148,7 +148,7 @@ $accordionContentBorder: 0;
 
 /// Background for a content section of an accordion panel
 /// @group panel
-$accordionContentBg: $panelContentBg;
+$accordionContentBg: $primaryColor;
 
 /// Text color for a content section of an accordion panel
 /// @group panel
