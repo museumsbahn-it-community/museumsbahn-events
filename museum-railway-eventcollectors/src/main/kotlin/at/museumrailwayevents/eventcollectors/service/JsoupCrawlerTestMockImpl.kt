@@ -111,6 +111,9 @@ class JsoupCrawlerTestMockImpl(val contextClass: Class<out Any>) : JsoupCrawler 
         "https://ebfl.at/index.php/tirolfahrt-2024-2/" to "ebfl/ebfl_event1.htm",
         "https://ebfl.at/index.php/fahrt-an-den-woerthersee/" to "ebfl/ebfl_event2.htm",
         "https://ebfl.at/index.php/christkindlfahrt-graz-2024/" to "ebfl/ebfl_event3.htm",
+        "https://eisenbahnmuseum.at/veranstaltungen/termine/" to "ebm_schwechat.htm",
+        "https://eisenbahnmuseum.at/110-jahre-pressburgerbahn/" to "ebm_110jahre_pressburgerbahn.htm",
+        "https://www.stef.at/program/" to "steirische_eisenbahnfreunde.html"
     ) + wackelsteinexpressDetailsMap + oeglbMap + waldviertelbahnMap + reblausexpressMap
 
 

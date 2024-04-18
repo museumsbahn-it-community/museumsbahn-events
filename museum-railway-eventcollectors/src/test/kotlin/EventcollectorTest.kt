@@ -101,4 +101,11 @@ class EventcollectorTest {
         assertThat(events.filter { it.name.contains("Reblaus Express")}.size).isEqualTo(expectedNumberOfEvents - 1)
 
     }
+
+    @Test
+    fun `stef should collect 10 events`() {
+        val eventcollector = SteirischeEisenbahnfreundeCollector(mockJsoupCrawler)
+        val events = eventcollector.collectEvents()
+        assertThat(events.size).isEqualTo(10)
+    }
 }

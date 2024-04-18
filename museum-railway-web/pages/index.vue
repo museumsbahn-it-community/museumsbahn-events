@@ -42,7 +42,7 @@
 
         <div class="flex-grow-1">
           <NavigationImageCard image-alt-text="Eine Dampflokomotive fährt Tender voraus."
-                               router-link="locationMap"
+                               router-link="events"
                                image-path="img/homepage/events.jpg"
                                text="Veranstaltungen">
           </NavigationImageCard>

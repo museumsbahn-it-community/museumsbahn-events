@@ -65,6 +65,21 @@ services:
       - "traefik.http.services.search.loadbalancer.server.port=8080"
     networks:
       - traefik-router
+  boudicca-ical:
+    # minimal ical query: http://localhost:3050/ical/calendar.ics?query=%22startDate%22%20after%202024-01-01%20and%20%22startDate%22%20after%202025-01-01
+    image: git.twatzl.eu/twatzl/boudicca-ical
+    depends_on:
+      - boudicca-search
+    environment:
+      - BOUDICCA_SEARCH_URL=http://boudicca-search:8080
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.boudicca-ical.rule=PathPrefix(`/ical`)"
+      - "traefik.http.routers.boudicca-ical.entrypoints=web"
+      - "traefik.http.routers.boudicca-ical.middlewares=ical-stripprefix"
+      - "traefik.http.middlewares.ical-stripprefix.stripprefix.prefixes=/ical"
+    networks:
+      - traefik-router
   museum-railway-events-backend:
     image: git.twatzl.eu/twatzl/museum-railway-events-backend
     ports:
