@@ -30,7 +30,11 @@ class DateParserRegexTest {
         val shouldNotMatch = listOf(
             "asdf",
             "testmonth",
-            "month"
+            "month",
+            "landschaft und weinverkostung im inneren des schwarza-viaduktes der semmeringbahn am 17. 8. 2024.\n" +
+                    "reservierungen können per e-mail unter hoellentalbahn@lokalbahnen.at vorgenommen werden.\n" +
+                    "\n" +
+                    "zur übersicht über alle sonderveranstaltungen"
         )
         regexTest(DateParser.monthWrittenRegex, shouldMatch, shouldNotMatch)
     }
@@ -107,7 +111,7 @@ class DateParserRegexTest {
 
         val regex = DateParser.monthRegex
         shouldMatch.forEach { testEntry ->
-            val matches = regex.findAll(testEntry.key.lowercase()).toList().map { it.value }
+            val matches = regex.findAll(testEntry.key.lowercase()).toList().map { it.value.trim() }
             val expectedMatches = testEntry.value
             assertThat(matches.size, name = "$regex should match $testEntry").isEqualTo(expectedMatches.size)
             expectedMatches.forEach { expectedMatch ->

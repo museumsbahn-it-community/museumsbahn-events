@@ -66,6 +66,10 @@ class DateParserTest {
             "28.06.2024 ab 19:30 Uhr - KABARETT mit Günther Lainer & BOOGIE WOOGIE mit Axel Zwingenberger" to
                     createDate(2024, 6, 28), // we don't care about time for now, date is painful enough
             "gültig am 11.05.2024" to createDate(2024, 5, 11),
+            "landschaft und weinverkostung im inneren des schwarza-viaduktes der semmeringbahn am 17. 8. 2024.\n" +
+                    "reservierungen können per e-mail unter hoellentalbahn@lokalbahnen.at vorgenommen werden.\n" +
+                    "\n" +
+                    "zur übersicht über alle sonderveranstaltungen" to createDate(2024, 8, 17)
         )
 
         testCases.forEach { (text, expectedDate) ->

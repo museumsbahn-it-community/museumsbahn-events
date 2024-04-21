@@ -63,7 +63,7 @@ abstract class OeglbCollector(
         val information = content.select("h3:contains(Information) ~ p").eachText()
 
         val description = listOf(validity, informationHeading, information.joinToString("\n")).joinToString("\n")
-        val calendars = document.select("table.kalender")
+        val calendars = content.select("table.kalender")
 
         calendars.forEach { calendar ->
             val monthString = calendar.select("td.monat").eachText().first()

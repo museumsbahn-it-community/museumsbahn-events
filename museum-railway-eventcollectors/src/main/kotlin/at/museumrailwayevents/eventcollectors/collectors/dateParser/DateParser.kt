@@ -14,11 +14,12 @@ object DateParser {
     val locale = Locale.GERMAN
     val zoneOffset = ZoneId.of("Europe/Vienna").rules.getOffset(Instant.now())
 
-    val dateRegexString = "(^|\\s|,)([0123])?[1-9](\\.|0\\.|\\s|$)" // if we would make the '.' mandatory I am sure it would break eventually
+    val dateStartRegex = "(^|\\s|,)"
+    val dateRegexString = "$dateStartRegex([0123])?[1-9](\\.|0\\.|\\s|$)" // if we would make the '.' mandatory I am sure it would break eventually
     val dateRegexStringPartial = "([0123])?\\d{1}\\.?"
     val numericDayRegex = Regex(dateRegexString)
     val monthWrittenRegexString =
-            "Jänner|Januar|Februar|März|April|Mai|Juni|Juli|August|September|Oktober|November|Dezember".lowercase()
+            "$dateStartRegex(Jänner|Januar|Februar|März|April|Mai|Juni|Juli|August|September|Oktober|November|Dezember)(\\s|$)".lowercase()
     val monthWrittenRegex = Regex(monthWrittenRegexString)
 
     // numeric month has a . at the end almost always
@@ -97,7 +98,7 @@ object DateParser {
     }
 
     private fun parseNumericMonthFromMatch(match: MatchResult): Month {
-        val monthNumber = match.value.trim().split(".")[1]
+        val monthNumber = match.value.trim().split(".")[1].trim()
         return Month.of(parseInt(monthNumber))
     }
 

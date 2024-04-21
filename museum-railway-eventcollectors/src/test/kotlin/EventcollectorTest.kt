@@ -6,6 +6,7 @@ import at.museumrailwayevents.eventcollectors.collectors.*
 import at.museumrailwayevents.eventcollectors.service.JsoupCrawlerTestMockImpl
 import base.boudicca.SemanticKeys
 import org.junit.jupiter.api.Test
+import java.time.Month
 import kotlin.math.exp
 
 class EventcollectorTest {
@@ -56,10 +57,17 @@ class EventcollectorTest {
     }
 
     @Test
-    fun `hoellentalbahn should collect 27 events`() {
+    fun `hoellentalbahn should collect 17 events`() {
         val eventcollector = HoellentalbahnCollector(mockJsoupCrawler)
         val events = eventcollector.collectEvents()
-        assertThat(events.size).isEqualTo(27)
+        assertThat(events.size).isEqualTo(17)
+
+        assertThat(events.filter { it.startDate.month == Month.MAY }.size).isEqualTo(0)
+        assertThat(events.filter { it.startDate.month == Month.JUNE }.size).isEqualTo(1)
+        assertThat(events.filter { it.startDate.month == Month.JULY }.size).isEqualTo(4)
+        assertThat(events.filter { it.startDate.month == Month.AUGUST }.size).isEqualTo(5)
+        assertThat(events.filter { it.startDate.month == Month.SEPTEMBER }.size).isEqualTo(1)
+        assertThat(events.filter { it.startDate.month == Month.OCTOBER }.size).isEqualTo(6)
 
         assertThat(events.filter { it.name.contains("Mondweinfahrt") }.size).isEqualTo(1)
         assertThat(events.filter { it.name.contains("Lange Nacht der Museen") }.size).isEqualTo(1)
