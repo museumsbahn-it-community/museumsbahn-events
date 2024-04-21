@@ -4,11 +4,11 @@ export function buildQuery(filters: EventFilterSettings): string {
     let queryParts = []
     if (filters.fromDate) {
         const formattedDate = format(filters.fromDate, "yyyy-MM-dd");
-        queryParts.push(`"startDate" AFTER ${formattedDate}`);
+        queryParts.push(`"startDate" AFTER "${formattedDate}"`);
     }
     if (filters.toDate) {
         const formattedDate = format(filters.toDate, "yyyy-MM-dd");
-        queryParts.push(`"startDate" BEFORE ${formattedDate}`);
+        queryParts.push(`"startDate" BEFORE "${formattedDate}"`);
     }
     const tagFilterParts: string[] = []
     filters.tagFilters.forEach((tagFilter) => {

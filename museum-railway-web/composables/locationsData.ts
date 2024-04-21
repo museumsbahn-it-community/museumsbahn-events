@@ -9,7 +9,7 @@ interface LocationsData {
 
     locationById(locationId: string): ComputedRef<MuseumLocation | undefined>;
 
-    eventCountForId(locationId: string): ComputedRef<number | undefined>;
+    eventCountForId(locationId: string): ComputedRef<number>;
 
     loationIdsForStates(states: string[]): string[];
 

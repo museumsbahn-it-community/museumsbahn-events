@@ -28,9 +28,9 @@ export const useLocationsStore = defineStore('locations', {
                 }
             }
         },
-        eventCountForId(state: LocationsState): (locationId: string) => number | undefined {
+        eventCountForId(state: LocationsState): (locationId: string) => number {
             return (locationId: string) => {
-                return state.eventCounts.get(locationId)
+                return state.eventCounts.get(locationId) ?? 0;
             }
         }
     },
