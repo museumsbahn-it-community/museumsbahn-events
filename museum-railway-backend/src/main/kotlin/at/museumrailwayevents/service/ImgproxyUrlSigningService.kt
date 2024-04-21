@@ -1,7 +1,11 @@
 package at.museumrailwayevents.service
 
 import at.museumrailwayevents.config.ImageCachingConfig
+import org.apache.tomcat.util.buf.UriUtil
 import org.springframework.stereotype.Service
+import org.springframework.web.util.UriUtils
+import java.net.URI
+import java.nio.charset.Charset
 import java.util.*
 import javax.crypto.Mac
 import javax.crypto.spec.SecretKeySpec
@@ -9,8 +13,10 @@ import javax.crypto.spec.SecretKeySpec
 @Service
 class ImgproxyUrlSigningService(private val imageCachingConfig: ImageCachingConfig) {
 
-    fun createSignedImgProxyUrlForOperations(width: Int, height: Int, originalUrl: String): String {
-        val path = "/rt:fit/mw:${width}/mh:${height}/plain/${originalUrl}"
+    fun createSignedImgProxyUrlForOperations(width: Int, height: Int, originalUrl: URI): String {
+        val encodedOriginalUrl = UriUtils.encode(originalUrl.toString(), Charset.forName("UTF-8"))
+        val path = "/rt:fit/mw:${width}/mh:${height}/plain/${encodedOriginalUrl}"
+        println(path) // TODO: remove
         return createSignedImgProxyUrl(path)
     }
 
