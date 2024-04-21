@@ -15,7 +15,7 @@ class ImgproxyUrlSigningService(private val imageCachingConfig: ImageCachingConf
 
     fun createSignedImgProxyUrlForOperations(width: Int, height: Int, originalUrl: URI): String {
         val encodedOriginalUrl = UriUtils.encode(originalUrl.toString(), Charset.forName("UTF-8"))
-        val path = "/rt:fit/mw:${width}/mh:${height}/plain/${encodedOriginalUrl}"
+        val path = "/rt:fit/w:${width}/h:${height}/plain/${encodedOriginalUrl}"
         println(path) // TODO: remove
         return createSignedImgProxyUrl(path)
     }

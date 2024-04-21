@@ -10,6 +10,6 @@ class ImageCachingConfig {
     lateinit var imgProxyUrl: String
     lateinit var signingKey: String
     lateinit var signingSalt: String
-    val height = 300
-    val width = 300
+    val height = 500
+    val width = 500
 }
