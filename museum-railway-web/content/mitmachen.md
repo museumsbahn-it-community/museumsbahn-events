@@ -1,12 +1,31 @@
 ## Wie kann man Mitmachen?
 
-Mitmachen ist ganz einfach. 
+Mitmachen ist ganz einfach.
 
-Am besten einfach den [Discord Server](https://discord.gg/3ZZK4BT8GY) beitreten. 
-Dort organisieren wir unsere Community gemeinsam mit der von [boudicca.events](https://boudicca.events/).
+Auf den Discord Servern läuft der technische Austausch. Code wird via GitHub verwaltet und die 
+Liste von Museen und Bahnen ist in einem Google Sheets Dokument.
 
-Wenn ihr dort seid, dann können wir euch helfen euch zurechtzufinden und schauen wie ihr das Projekt am besten unterstützen
-könnt.
+#### Glossar
+
+**museumsbahn-events:** Diese Webseite.  
+
+**boudicca:** Eine Datenbank und Plattform um Eventdaten zu verwalten. museumsbahn-events nutzt Boudicca für die Verwaltung der Veranstaltungen.
+
+**chaosbahn.eu:** Eine Initiative um Museumsbahnen im deutschsprachigen Raum besser zu vernetzen und Wissen zu IT-Themen zwischen 
+Vereinen zu teilen.
+
+#### Links
+
+chaosbahn.eu Discord: [Chaosbahn Discord Server](https://discord.gg/ADJFadsEHB)
+
+boudicca.events Discord: [Boudicca Discord Server](https://discord.gg/3ZZK4BT8GY)
+
+code auf GitHub: https://github.com/museumsbahn-it-community/museumsbahn-events/
+
+Liste der Museen und Bahnen: https://docs.google.com/spreadsheets/d/1EDLDIaiQmhErSBxjAUzmcDwkgEOcsb-x1aZ-DJTvOcU/edit?usp=sharing
+
+> ❗ Wenn ihr auf einen Discord Server beitretet seid doch so nett und stellt euch kurz vor, damit wir wissen wer ihr seid
+> und wie wir euch unterstützen können. :)
 
 ### Stammdaten Verwalten
 
@@ -25,16 +44,9 @@ Neue Eventcollectoren können via Github eingebracht werden.
 
 ### Auf GitHub mitmachen
 
-Unser gesamter Code ist auf GitHub einsehbar und wir freuen uns darüber wenn Pull Requests eröffnet werden:
+Wir denken, dass so ein Projekt langfristig nur erfolgreich sein kann, wenn der Code OpenSource ist.
+Deshalb ist sowohl museumsbahn-events als auch die unterliegende boudicca Plattform als OpenSource Projekt auf GitHub.
+Wir freuen uns darüber, wenn Pull Requests eröffnet werden:
 
 https://github.com/museumsbahn-it-community/museumsbahn-events
 
-### Weitere Ideen
-
-Für die Zukunft gibt es bereits viele Ideen. 
-
-Beispielsweise ein automatisches Instagram Posting mit den Sonderfahrten der Woche bzw. des Monats. Einen 
-Eventkalender via ics und viele weitere Ideen.
-
-Wenn ihr auch Ideen habt, dann kommt doch einfach auf den Discord Server und lasst uns schauen ob und wie wir
-sie am besten umsetzen können.
