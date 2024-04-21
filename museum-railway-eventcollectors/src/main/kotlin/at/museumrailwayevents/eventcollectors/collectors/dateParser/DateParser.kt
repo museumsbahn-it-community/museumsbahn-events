@@ -14,7 +14,7 @@ object DateParser {
     val locale = Locale.GERMAN
     val zoneOffset = ZoneId.of("Europe/Vienna").rules.getOffset(Instant.now())
 
-    val dateRegexString = "(^|\\s)([0123])?[1-9](\\.|0\\.|\\s|$)" // if we would make the '.' mandatory I am sure it would break eventually
+    val dateRegexString = "(^|\\s|,)([0123])?[1-9](\\.|0\\.|\\s|$)" // if we would make the '.' mandatory I am sure it would break eventually
     val dateRegexStringPartial = "([0123])?\\d{1}\\.?"
     val numericDayRegex = Regex(dateRegexString)
     val monthWrittenRegexString =
@@ -56,7 +56,9 @@ object DateParser {
 
     fun findSingleYear(text: String): Int {
         val years = yearRegex.findAll(text)
-        assert(years.count() == 1)
+        if (years.count() != 1) {
+            throw RuntimeException("expected single year in text: $text")
+        }
         return years.first().value.trim().toInt()
     }
 
@@ -193,5 +195,13 @@ object DateParser {
             currDate = currDate.plusDays(1)
         }
         return dates
+    }
+
+    fun findSingleYearOrNull(text: String): Int? {
+        return try {
+            findSingleYear(text)
+        } catch (ex: Exception) {
+            null
+        }
     }
 }

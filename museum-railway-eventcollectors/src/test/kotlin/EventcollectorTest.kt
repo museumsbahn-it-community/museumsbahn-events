@@ -4,6 +4,7 @@ import assertk.assertions.isEqualTo
 import assertk.assertions.isNull
 import at.museumrailwayevents.eventcollectors.collectors.*
 import at.museumrailwayevents.eventcollectors.service.JsoupCrawlerTestMockImpl
+import base.boudicca.SemanticKeys
 import org.junit.jupiter.api.Test
 import kotlin.math.exp
 
@@ -100,6 +101,16 @@ class EventcollectorTest {
         assertThat(events.filter { it.name.contains("Ticket")}).isEmpty()
         assertThat(events.filter { it.name.contains("Reblaus Express")}.size).isEqualTo(expectedNumberOfEvents - 1)
 
+    }
+
+    @Test
+    fun `ebm schwechat should collect 13 events`() {
+        val eventcollector = EbmSchwechatCollector(mockJsoupCrawler)
+        val expectedNumberOfEvents = 13
+        val events = eventcollector.collectEvents()
+        assertThat(events.size).isEqualTo(expectedNumberOfEvents)
+
+        assertThat(events.filter { it.data.containsKey(SemanticKeys.PICTURE_URL) }.size).isEqualTo(5)
     }
 
 }

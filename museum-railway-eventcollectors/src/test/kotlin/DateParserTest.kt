@@ -120,6 +120,12 @@ class DateParserTest {
                 createDate(2024, 7, 21),
                 createDate(2024, 7, 28),
             ),
+            " am 1., 8.,15. und 22. Juni 2024" to listOf(
+                createDate(2024, 6, 1),
+                createDate(2024, 6, 8),
+                createDate(2024, 6, 15),
+                createDate(2024, 6, 22),
+            ),
             "gültig am 11.05.2024" to listOf(
                 createDate(2024, 5, 11),
             ),
