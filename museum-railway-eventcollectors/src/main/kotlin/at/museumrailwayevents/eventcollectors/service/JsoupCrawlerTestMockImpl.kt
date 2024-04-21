@@ -3,7 +3,8 @@ package at.museumrailwayevents.eventcollectors.service
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
 
-class JsoupCrawlerTestMockImpl(val contextClass: Class<out Any>) : JsoupCrawler {
+class JsoupCrawlerTestMockImpl(val overrideMap: Map<String, String>? = null) :
+    JsoupCrawler {
 
     val wackelsteinexpressDetailsMap = mapOf(
         "https://reservierung.wackelsteinexpress.at/produkt/osterhasenzug-30-maerz-1000-uhr/" to "wackelsteinexpress/wackelsteinexpress_03-30_10_00-Osterhasenzug 30. März 10_00 Uhr.html",
@@ -113,17 +114,18 @@ class JsoupCrawlerTestMockImpl(val contextClass: Class<out Any>) : JsoupCrawler 
         "https://ebfl.at/index.php/christkindlfahrt-graz-2024/" to "ebfl/ebfl_event3.htm",
         "https://eisenbahnmuseum.at/veranstaltungen/termine/" to "ebm_schwechat.htm",
         "https://eisenbahnmuseum.at/110-jahre-pressburgerbahn/" to "ebm_110jahre_pressburgerbahn.htm",
-        "https://www.stef.at/program/" to "steirische_eisenbahnfreunde.html"
     ) + wackelsteinexpressDetailsMap + oeglbMap + waldviertelbahnMap + reblausexpressMap
 
 
     override fun getDocument(url: String): Document {
-        if (!pathMap.containsKey(url)) {
+        val usedMap = overrideMap ?: pathMap
+
+        if (!usedMap.containsKey(url)) {
             throw Error("no mock mapping exists for url: $url")
         }
 
-        val path = "examples/${pathMap[url]}"
-        val pageData = contextClass.getResource(path)?.readText()
+        val path = "examples/${usedMap[url]}"
+        val pageData = javaClass.classLoader.getResource(path)?.readText()
         requireNotNull(pageData) {
             println("no page found for url: $url")
         }

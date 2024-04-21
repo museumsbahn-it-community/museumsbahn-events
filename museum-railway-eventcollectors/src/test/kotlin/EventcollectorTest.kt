@@ -9,7 +9,7 @@ import kotlin.math.exp
 
 class EventcollectorTest {
 
-    val mockJsoupCrawler = JsoupCrawlerTestMockImpl(this::class.java)
+    val mockJsoupCrawler = JsoupCrawlerTestMockImpl()
 
     @Test
     fun `oegeg shop collector should collect 12 events`() {
@@ -102,10 +102,4 @@ class EventcollectorTest {
 
     }
 
-    @Test
-    fun `stef should collect 10 events`() {
-        val eventcollector = SteirischeEisenbahnfreundeCollector(mockJsoupCrawler)
-        val events = eventcollector.collectEvents()
-        assertThat(events.size).isEqualTo(10)
-    }
 }
