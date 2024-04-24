@@ -2,8 +2,10 @@ package at.museumrailwayevents.eventcollectors.collectors.dateParser
 
 import java.lang.Integer.parseInt
 import java.time.Instant
+import java.time.LocalTime
 import java.time.Month
 import java.time.OffsetDateTime
+import java.time.OffsetTime
 import java.time.ZoneId
 import java.time.format.DateTimeFormatterBuilder
 import java.time.temporal.ChronoUnit
@@ -39,6 +41,9 @@ object DateParser {
     val fullDateRegex = Regex(fullDateRegexString)
 
     val durationStringRegex = Regex("(${fullDateRegexString}|von|vom).*(bis)")
+
+    val timeRegexString = "((0?[0-9])|([1-2][0-9])):[0-5][0-9]"
+    val timeRegex = Regex(timeRegexString)
 
     fun parseDate(text: String): OffsetDateTime {
         val lowercaseText = text.lowercase()
@@ -152,8 +157,6 @@ object DateParser {
     }
 
     fun getWeekdaysForDuration(text: String): List<String> {
-
-
         return emptyList()
     }
 
@@ -204,5 +207,18 @@ object DateParser {
         } catch (ex: Exception) {
             null
         }
+    }
+
+    fun parseAllTimesFrom(text: String): List<OffsetTime> {
+        val lowercaseText = text.lowercase()
+        val times = timeRegex.findAll(lowercaseText).map { it.value }.toList()
+
+        return times.map { match ->
+            parseTime(match)
+        }.toList()
+    }
+
+    private fun parseTime(match: String): OffsetTime {
+        return LocalTime.parse(match).atOffset(zoneOffset)
     }
 }

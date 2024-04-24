@@ -113,6 +113,7 @@ class JsoupCrawlerTestMockImpl(val overrideMap: Map<String, String>? = null) :
         "https://ebfl.at/index.php/fahrt-an-den-woerthersee/" to "ebfl/ebfl_event2.htm",
         "https://ebfl.at/index.php/christkindlfahrt-graz-2024/" to "ebfl/ebfl_event3.htm",
         "https://eisenbahnmuseum.at/veranstaltungen/termine/" to "ebm_schwechat.htm",
+        "http://www.lokalbahnverein.at/deutsch/event.php" to "mlv_zwettl.htm"
     ) + wackelsteinexpressDetailsMap + oeglbMap + waldviertelbahnMap + reblausexpressMap
 
 

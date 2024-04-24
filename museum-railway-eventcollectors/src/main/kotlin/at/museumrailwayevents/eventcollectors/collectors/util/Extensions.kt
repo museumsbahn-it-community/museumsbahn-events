@@ -1,6 +1,7 @@
 package at.museumrailwayevents.eventcollectors.collectors.util
 
 import base.boudicca.SemanticKeys
+import org.jsoup.nodes.Document
 
 fun String.asTagsList(): MutableList<String> {
     return this.split(",").toMutableList()
@@ -19,4 +20,18 @@ fun MutableMap<String, String>.addTags(tagsToAdd: List<String>) {
 
     tags.addAll(tagsToAdd)
     this[SemanticKeys.TAGS] = tags.toTagsValue()
+}
+
+fun Document.keepLineBreaks(before: List<String> = listOf("p", "br"), after: List<String> = emptyList()): Document {
+    val outputSettings: Document.OutputSettings = Document.OutputSettings()
+    outputSettings.prettyPrint(false)
+    this.outputSettings(outputSettings)
+    val document = this
+    before.forEach{ htmlTag ->
+        document.select(htmlTag).before("\n")
+    }
+    after.forEach{ htmlTag ->
+        document.select(htmlTag).after("\n")
+    }
+    return document
 }
