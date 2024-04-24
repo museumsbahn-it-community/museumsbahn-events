@@ -3,9 +3,12 @@ package at.museumrailwayevents.model.conventions
 // unfortunately these values have to be manually copied to javascript code
 // remember this when editing any values
 object Tags {
+    // TODO: rename to vehicle type
     const val LOCOMOTIVE_TYPE_DIESEL = "diesel"
     const val LOCOMOTIVE_TYPE_STEAM = "steam"
     const val LOCOMOTIVE_TYPE_ELECTRIC = "electric"
+    const val LOCOMOTIVE_TYPE_TRAM = "tram"
+    const val LOCOMOTIVE_TYPE_SHIP = "ship"
     const val NOSTALGIC_EVENT = "nostalgic_event"
     const val HISTORIC_TRAIN = "historic_train"
     const val HISTORY = "history"
@@ -21,9 +24,11 @@ object Tags {
 }
 
 object Registration {
-    const val FREE = "free"
-    const val REGISTRATION = "registration"
+    const val FREE = "free" // free
+    const val REGISTRATION = "registration" // free, but requires registration
     const val PRE_SALES_ONLY = "pre-sales-only"
+    const val RESERVATION_RECOMMENDED = "reservation-recommended"
+    const val PRIVATE_EVENT = "private-event"
     const val TICKET = "ticket"
 }
 
@@ -37,9 +42,9 @@ const val CATEGORY_MUSEUM_TRAIN = "MUSEUM_TRAIN"
 const val CATEGORY_RAILWAY_MUSEUM = "RAILWAY_MUSEUM"
 
 val TAGS_MUSEUM_EVENT =
-    listOf(Tags.HISTORY, Tags.MUSEUM, Tags.MUSEUM_EVENT, Tags.RAILWAY_MUSEUM)
+    setOf(Tags.HISTORY, Tags.MUSEUM, Tags.MUSEUM_EVENT, Tags.RAILWAY_MUSEUM)
 val TAGS_MUSEUM_RAILWAY_SPECIAL_TRIP =
-    listOf(Tags.HISTORY, Tags.HISTORIC_TRAIN, Tags.MUSEUM_TRAIN, Tags.HISTORIC_TRAIN_TRIP)
-val TAGS_MUSEUM_RAILWAY_OPERATING = listOf(Tags.HISTORY, Tags.HISTORIC_TRAIN, Tags.MUSEUM_TRAIN, Tags.MUSEUM_RAILWAY)
+    setOf(Tags.HISTORY, Tags.HISTORIC_TRAIN, Tags.MUSEUM_TRAIN, Tags.HISTORIC_TRAIN_TRIP)
+val TAGS_MUSEUM_RAILWAY_OPERATING = setOf(Tags.HISTORY, Tags.HISTORIC_TRAIN, Tags.MUSEUM_TRAIN, Tags.MUSEUM_RAILWAY)
 val TAGS_NARROW_GAUGE =
-    listOf(Tags.HISTORY, Tags.HISTORIC_TRAIN, Tags.MUSEUM_TRAIN, Tags.MUSEUM_RAILWAY, Tags.NARROW_GAUGE)
+    setOf(Tags.HISTORY, Tags.HISTORIC_TRAIN, Tags.MUSEUM_TRAIN, Tags.MUSEUM_RAILWAY, Tags.NARROW_GAUGE)
