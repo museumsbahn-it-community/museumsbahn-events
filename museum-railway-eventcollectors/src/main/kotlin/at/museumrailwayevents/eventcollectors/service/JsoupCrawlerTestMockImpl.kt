@@ -93,7 +93,15 @@ class JsoupCrawlerTestMockImpl(val overrideMap: Map<String, String>? = null) :
         "https://www.reblausexpress.at/angebote-reblaus-express-1/o-erdaepfelfest-in-geras" to "noevog/reblausexpress/reblausexpress_erdaepfelfest.html",
     )
 
+    val tramwaymuseumGraz = mapOf(
+        "https://www.tramway-museum-graz.at/kalender/" to "tramwaymuseum_graz/tramwaymuseum_graz.html",
+        "https://www.tramway-museum-graz.at/kalender/bierbim-2024" to "tramwaymuseum_graz/tramwaymuseum_graz_bierbim.html",
+        "https://www.tramway-museum-graz.at/kalender/brick-woood-2024" to "tramwaymuseum_graz/tramwaymuseum_graz_brickwoood.html",
+    )
+
     val pathMap = mapOf(
+        "https://waelderbaehnle.at/fahrplanbetrieb-preise-2024" to "bregenzerwaldbahn_fahrplan.html",
+        "https://waelderbaehnle.at/aktuelles/veranstaltungskalender-2024" to "bregenzerwaldbahn_veranstaltungskalender.html",
         "https://www.oegeg.at/termine/termine-normalspur-museum-lokpark-ampflwang/" to "oegeg_normalspur.htm",
         "https://www.oegeg.at/termine/termine-schifffahrt-dampfschiff-sch%C3%B6nbrunn/" to "oegeg_schifffahrt.htm",
         "https://www.oegeg.at/termine/termine-schmalspur-steyrtalbahn/" to "oegeg_schmalspurbahn.htm",
@@ -113,8 +121,8 @@ class JsoupCrawlerTestMockImpl(val overrideMap: Map<String, String>? = null) :
         "https://ebfl.at/index.php/fahrt-an-den-woerthersee/" to "ebfl/ebfl_event2.htm",
         "https://ebfl.at/index.php/christkindlfahrt-graz-2024/" to "ebfl/ebfl_event3.htm",
         "https://eisenbahnmuseum.at/veranstaltungen/termine/" to "ebm_schwechat.htm",
-        "http://www.lokalbahnverein.at/deutsch/event.php" to "mlv_zwettl.htm"
-    ) + wackelsteinexpressDetailsMap + oeglbMap + waldviertelbahnMap + reblausexpressMap
+        "http://www.lokalbahnverein.at/deutsch/event.php" to "mlv_zwettl.htm",
+    ) + wackelsteinexpressDetailsMap + oeglbMap + waldviertelbahnMap + reblausexpressMap + tramwaymuseumGraz
 
 
     override fun getDocument(url: String): Document {

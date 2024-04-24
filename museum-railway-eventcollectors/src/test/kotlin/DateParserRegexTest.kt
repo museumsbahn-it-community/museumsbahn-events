@@ -26,6 +26,7 @@ class DateParserRegexTest {
             "Dezember",
             "23. MÄRZ 2024 \"RATSHERRNEXPRESS zum Freistädter Ostermarkt\"",
             "an Sonntagen vom 2. Juli bis 1. Oktober 2023",
+            "31. märz, osterdampf beim wälderbähnle",
         ).map { it.lowercase() }
         val shouldNotMatch = listOf(
             "asdf",
@@ -174,6 +175,7 @@ class DateParserRegexTest {
             "Sonntag, 7., 14., 21., und 28. Juli 2024" to 1,
             "1. Oktober 2023" to 1,
             "gültig am 11.05.2024" to 1,
+            "31. März, Osterdampf beim Wälderbähnle" to 1,
         ).mapKeys { it.key.lowercase() }
 
         regexCountTest(DateParser.fullDateRegex, expectedMatches)

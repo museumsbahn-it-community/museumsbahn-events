@@ -4,10 +4,7 @@ import assertk.assertions.isEqualTo
 import assertk.assertions.isNull
 import at.museumrailwayevents.eventcollectors.collectors.*
 import at.museumrailwayevents.eventcollectors.service.JsoupCrawlerTestMockImpl
-import at.museumrailwayevents.model.conventions.CATEGORY_MUSEUM_TRAIN
-import at.museumrailwayevents.model.conventions.CATEGORY_RAILWAY_MUSEUM
-import at.museumrailwayevents.model.conventions.CommonKeys
-import at.museumrailwayevents.model.conventions.Tags
+import at.museumrailwayevents.model.conventions.*
 import base.boudicca.SemanticKeys
 import org.junit.jupiter.api.Test
 import java.time.Month
@@ -16,6 +13,13 @@ import kotlin.math.exp
 class EventcollectorTest {
 
     val mockJsoupCrawler = JsoupCrawlerTestMockImpl()
+
+    @Test
+    fun `bregenzerwaldbahn should collect 75 events`() {
+        val eventcollector = WälderbähnleCollector(mockJsoupCrawler)
+        val events = eventcollector.collectEvents()
+        assertThat(events.size).isEqualTo(75)
+    }
 
     @Test
     fun `oegeg shop collector should collect 12 events`() {
@@ -135,6 +139,14 @@ class EventcollectorTest {
         assertThat(events.filter { it.data.containsValue(CATEGORY_MUSEUM_TRAIN) }.size).isEqualTo(6)
         assertThat(events.filter { it.data.containsValue(CATEGORY_RAILWAY_MUSEUM) }.size).isEqualTo(4)
         assertThat(events.filter { it.data.containsValue(Tags.LOCOMOTIVE_TYPE_STEAM) }.size).isEqualTo(5)
+    }
+
+    @Test
+    fun `tramway museum graz should collect xx events`() {
+        val eventcollector = TramwaymuseumGrazCollector(mockJsoupCrawler)
+        val expectedNumberOfEvents = 7
+        val events = eventcollector.collectEvents()
+        assertThat(events.size).isEqualTo(expectedNumberOfEvents)
     }
 
 

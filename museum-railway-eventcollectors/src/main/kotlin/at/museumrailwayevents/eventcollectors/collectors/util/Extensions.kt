@@ -7,7 +7,7 @@ fun String.asTagsList(): MutableList<String> {
     return this.split(",").toMutableList()
 }
 
-fun List<String>.toTagsValue(): String {
+fun Iterable<String>.toTagsValue(): String {
     return this.joinToString(",").lowercase()
 }
 

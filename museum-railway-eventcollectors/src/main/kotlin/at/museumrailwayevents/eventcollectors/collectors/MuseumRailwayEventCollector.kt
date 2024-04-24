@@ -19,7 +19,7 @@ abstract class MuseumRailwayEventCollector(
         startDate: OffsetDateTime,
         additionalData: MutableMap<String, String>,
         locationId: String = this.locationId,
-        url: String = this.url,
+        url: String = this.url, // TODO change to list
     ): Event {
         additionalData[CommonKeys.OPERATOR_ID] = operatorId
         additionalData[CommonKeys.LOCATION_ID] = locationId

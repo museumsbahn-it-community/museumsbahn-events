@@ -20,8 +20,10 @@ object DateParser {
     val dateRegexString = "$dateStartRegex([0123])?[1-9](\\.|0\\.|\\s|$)" // if we would make the '.' mandatory I am sure it would break eventually
     val dateRegexStringPartial = "([0123])?\\d{1}\\.?"
     val numericDayRegex = Regex(dateRegexString)
+    val monthOptions = "Jänner|Januar|Februar|März|April|Mai|Juni|Juli|August|September|Oktober|November|Dezember"
+    val monthOptionsLowercase = monthOptions.lowercase()
     val monthWrittenRegexString =
-            "$dateStartRegex(Jänner|Januar|Februar|März|April|Mai|Juni|Juli|August|September|Oktober|November|Dezember)(\\s|$)".lowercase()
+            "$dateStartRegex($monthOptions|$monthOptionsLowercase)(,|\\s|$)"
     val monthWrittenRegex = Regex(monthWrittenRegexString)
 
     // numeric month has a . at the end almost always
@@ -34,6 +36,9 @@ object DateParser {
     val monthRegexStringPartial = "($monthNumericRegexString)|(${monthWrittenRegexString})"
     val yearRegexString = "202\\d"
     val yearRegex = Regex(yearRegexString)
+
+    val nonAlphanumericAtStartRegex =  Regex("^[^A-Za-z0-9]+")
+    val nonAlphanumericAtEndRegex =  Regex("[^A-Za-z0-9]+$")
 
     val durationRecurrenceRegexString = "Montag|Dienstag|Mittwoch|Donnerstag|Freitag|Samstag|Sonntag|Sonn- und Feiertag|täglich|jeden Tag".lowercase()
 
@@ -132,7 +137,7 @@ object DateParser {
             "Januar";
         } else {
             monthName
-        }
+        }.trimNonAlphanumeric()
 
         val builder = DateTimeFormatterBuilder()
         builder.parseCaseInsensitive()
@@ -177,6 +182,19 @@ object DateParser {
             }
         }
     }
+
+    fun removeDateAndTimeFrom(text: String): String {
+        return text
+            .replace(fullDateRegex, "")
+            .replace(numericDayRegex, "")
+            .replace(timeRegex, "")
+            .trimNonAlphanumeric()
+    }
+
+    fun String.trimNonAlphanumeric() =
+        this.replace(nonAlphanumericAtStartRegex, "")
+            .replace(nonAlphanumericAtEndRegex, "")
+
 
     fun createDate(year: Int, month: Int, day: Int): OffsetDateTime =
             OffsetDateTime.of(

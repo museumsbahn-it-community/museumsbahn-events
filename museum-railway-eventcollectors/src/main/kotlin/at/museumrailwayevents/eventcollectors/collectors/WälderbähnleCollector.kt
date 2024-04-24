@@ -1,9 +1,11 @@
 package at.museumrailwayevents.eventcollectors.collectors
 
+import at.museumrailwayevents.eventcollectors.collectors.dateParser.DateParser
+import at.museumrailwayevents.eventcollectors.collectors.util.toTagsValue
 import at.museumrailwayevents.eventcollectors.service.JsoupCrawler
-import at.museumrailwayevents.model.conventions.CommonKeys
+import at.museumrailwayevents.model.conventions.*
+import base.boudicca.SemanticKeys
 import base.boudicca.model.Event
-import org.jsoup.Jsoup
 import org.jsoup.nodes.Element
 import org.jsoup.select.Elements
 import java.time.*
@@ -11,11 +13,14 @@ import java.time.format.DateTimeFormatter
 import java.time.format.DateTimeFormatterBuilder
 import java.util.*
 
+val fahrplanUrl = "https://waelderbaehnle.at/fahrplanbetrieb-preise-2024"
+val sonderfahrtenUrl = "https://waelderbaehnle.at/aktuelles/veranstaltungskalender-2024"
+
 class WälderbähnleCollector(val jsoupCrawler: JsoupCrawler) : MuseumRailwayEventCollector(
     operatorId = "waelderbaehnle",
     locationId = "waelderbaehnle",
     locationName = "Bregenzerwaldbahn Museumsbahn",
-    url = "https://waelderbaehnle.at/fahrplanbetrieb-preise-2024"
+    url = fahrplanUrl,
 ) {
     val locale = Locale.GERMAN
     val dateFormatter = getWaelderbaehnleDateFormatter(locale)
@@ -25,10 +30,17 @@ class WälderbähnleCollector(val jsoupCrawler: JsoupCrawler) : MuseumRailwayEve
     data class DepartureData(val startTime: OffsetDateTime, val station: String, val traction: String)
 
     override fun collectEvents(): List<Event> {
+        val fahrplan = collectFahrplanEvents()
+        val sonderfahrten = collectSonderfahrten()
+
+        return fahrplan + sonderfahrten
+    }
+
+    private fun collectFahrplanEvents(): MutableList<Event> {
         // page is named 2022, but is actually 2023
         // 2024-01-02: ...and 2024 as well ;)
         // 2024-01-21: oh damn! They renamed it. (╯°□°）╯︵ ┻━┻
-        val document = Jsoup.connect(url).get()
+        val document = jsoupCrawler.getDocument(fahrplanUrl)
 
         val timetables = document.select("div.timetable-wrapper")
         val departures = mutableListOf<DepartureData>()
@@ -46,24 +58,64 @@ class WälderbähnleCollector(val jsoupCrawler: JsoupCrawler) : MuseumRailwayEve
         departures
             .groupBy { it.startTime.toLocalDate() }
             .forEach { operatingDay ->
-            val eventTitle = "Fahrbetrieb Bregenzerwaldbahn"
-            val additionalData = mutableMapOf<String, String>()
-            val departuresOnDay = operatingDay.value.sortedBy { it.startTime }
-            val firstDeparture = departuresOnDay.first
+                val eventTitle = "Bregenzerwaldbahn"
+                val departuresOnDay = operatingDay.value.sortedBy { it.startTime }
+                val firstDeparture = departuresOnDay.first
 
-            var description = """
-                Fahrtag auf der Bregenzerwaldbahn.
-                
-                Fahrplan:
-                             
-            """.trimIndent()
+                var description = """
+                    Fahrtag auf der Bregenzerwaldbahn.
+                    
+                    Fahrplan:
+                                 
+                """.trimIndent()
                 val departureTimeFormat = DateTimeFormatter.ofPattern("HH:mm")
-                val departureList = departuresOnDay.map { "${it.startTime.format(departureTimeFormat)} ab ${it.station}" }.joinToString("\n")
+                val departureList =
+                    departuresOnDay.joinToString("\n") { "${it.startTime.format(departureTimeFormat)} ab ${it.station}" }
 
-            additionalData[CommonKeys.LOCOMOTIVE_TYPE] = departures.first.traction
-            additionalData[CommonKeys.DESCRIPTION] = "${description}${departureList}"
+                val additionalData = mutableMapOf(
+                    CommonKeys.LOCOMOTIVE_TYPE to departures.first().traction,
+                    CommonKeys.DESCRIPTION to "${description}${departureList}",
+                    SemanticKeys.REGISTRATION to Registration.RESERVATION_RECOMMENDED,
+                    SemanticKeys.URL to fahrplanUrl,
+                    SemanticKeys.CATEGORY to CATEGORY_MUSEUM_TRAIN,
+                    SemanticKeys.TAGS to (TAGS_MUSEUM_RAILWAY_OPERATING + TAGS_NARROW_GAUGE).toTagsValue()
+                )
 
-            events.add(createEvent(eventTitle, firstDeparture.startTime, additionalData))
+                events.add(createEvent(eventTitle, firstDeparture.startTime, additionalData))
+            }
+        return events
+    }
+
+    private fun collectSonderfahrten(): List<Event> {
+        val document = jsoupCrawler.getDocument(sonderfahrtenUrl)
+        val events = mutableListOf<Event>()
+
+        val article = document.select("article")
+        val imageUrl = article.select("img").attr("src")
+        val eventBoxes = article.select("p")
+        eventBoxes.forEach { box ->
+            val title = box.select("em").text()
+            // TODO: properly handle durations
+            val dates = DateParser.parseAllDatesFrom(title)
+            val name = DateParser.removeDateAndTimeFrom(title)
+            val description = DateParser.removeDateAndTimeFrom(box.text())
+
+            dates.forEach { date ->
+                events.add(
+                    createEvent(
+                        name,
+                        date,
+                        mutableMapOf(
+                            SemanticKeys.CATEGORY to CATEGORY_MUSEUM_TRAIN,
+                            SemanticKeys.REGISTRATION to Registration.TICKET,
+                            SemanticKeys.PICTURE_URL to imageUrl,
+                            SemanticKeys.DESCRIPTION to description,
+                            SemanticKeys.URL to sonderfahrtenUrl,
+                            SemanticKeys.TAGS to (TAGS_MUSEUM_EVENT + TAGS_NARROW_GAUGE).toTagsValue()
+                        )
+                    )
+                )
+            }
         }
 
         return events
@@ -114,6 +166,7 @@ class WälderbähnleCollector(val jsoupCrawler: JsoupCrawler) : MuseumRailwayEve
     private fun Element.getDate(): List<LocalDate> {
         return this.select("tr.day>th").eachText().map { LocalDate.from(dateFormatter.parse(it.split(" ")[1])) }
     }
+
     private fun Element.getDepartureTime(): LocalTime? {
         val data = this.select("td")
         if (data.size < 2) {
