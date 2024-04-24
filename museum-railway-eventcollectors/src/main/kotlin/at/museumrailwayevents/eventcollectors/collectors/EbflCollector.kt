@@ -53,9 +53,20 @@ class EbflCollector(val jsoupCrawler: JsoupCrawler) : MuseumRailwayEventCollecto
 
         eventUrls.forEach { eventUrls ->
             val eventUrl = eventUrls.first
+
+            if (!eventUrl.startsWith(url)) {
+                // only crawl sites on the same page
+                return@forEach
+            }
+
             val eventPage = jsoupCrawler.getDocument(eventUrl)
             val name = eventPage.select("h1.title").text()
             val paragraphs = eventPage.select("div.content p").eachText()
+            if (paragraphs.size == 0) {
+                println("error: empty paragraphs for eventUrl: $eventUrl, name: $name")
+                return@forEach
+            }
+
             val dateString = paragraphs.first()
             val description = paragraphs.drop(1).joinToString("\n")
 
