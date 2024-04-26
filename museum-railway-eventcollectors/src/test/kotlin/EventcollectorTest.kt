@@ -1,14 +1,14 @@
 import assertk.assertThat
 import assertk.assertions.isEmpty
 import assertk.assertions.isEqualTo
-import assertk.assertions.isNull
 import at.museumrailwayevents.eventcollectors.collectors.*
 import at.museumrailwayevents.eventcollectors.service.JsoupCrawlerTestMockImpl
-import at.museumrailwayevents.model.conventions.*
+import at.museumrailwayevents.model.conventions.CATEGORY_MUSEUM_TRAIN
+import at.museumrailwayevents.model.conventions.CATEGORY_RAILWAY_MUSEUM
+import at.museumrailwayevents.model.conventions.Tags
 import base.boudicca.SemanticKeys
 import org.junit.jupiter.api.Test
 import java.time.Month
-import kotlin.math.exp
 
 class EventcollectorTest {
 
@@ -27,8 +27,8 @@ class EventcollectorTest {
         val events = eventcollector.collectEvents()
 
         assertThat(events.size).isEqualTo(12)
-        assertThat(events.filter { it.data["location_id"] == "oegeg_normalspur"}.size).isEqualTo(7)
-        assertThat(events.filter { it.data["location_id"] == "oegeg_schifffahrt"}.size).isEqualTo(5)
+        assertThat(events.filter { it.data["location_id"] == "oegeg_normalspur" }.size).isEqualTo(7)
+        assertThat(events.filter { it.data["location_id"] == "oegeg_schifffahrt" }.size).isEqualTo(5)
     }
 
     @Test
@@ -94,6 +94,7 @@ class EventcollectorTest {
         val events = eventcollector.collectEvents()
         assertThat(events.size).isEqualTo(9)
     }
+
     @Test
     fun `waldviertelbahn should collect 33 events`() {
         val eventcollector = WaldviertelbahnCollector(mockJsoupCrawler)
@@ -109,14 +110,13 @@ class EventcollectorTest {
         assertThat(events.size).isEqualTo(expectedNumberOfEvents)
 
         // some events should be filtered out to not spam the site
-        assertThat(events.filter { it.name.contains("Saisonkarte")}).isEmpty()
-        assertThat(events.filter { it.name.contains("Wunschlauf")}).isEmpty()
-        assertThat(events.filter { it.name.contains("Erdäpfelfest")}).isEmpty()
+        assertThat(events.filter { it.name.contains("Saisonkarte") }).isEmpty()
+        assertThat(events.filter { it.name.contains("Wunschlauf") }).isEmpty()
+        assertThat(events.filter { it.name.contains("Erdäpfelfest") }).isEmpty()
 
         // "Ticket" should be removed from title
-        assertThat(events.filter { it.name.contains("Ticket")}).isEmpty()
-        assertThat(events.filter { it.name.contains("Reblaus Express")}.size).isEqualTo(expectedNumberOfEvents - 1)
-
+        assertThat(events.filter { it.name.contains("Ticket") }).isEmpty()
+        assertThat(events.filter { it.name.contains("Reblaus Express") }.size).isEqualTo(expectedNumberOfEvents - 1)
     }
 
     @Test
@@ -145,6 +145,14 @@ class EventcollectorTest {
     fun `tramway museum graz should collect xx events`() {
         val eventcollector = TramwaymuseumGrazCollector(mockJsoupCrawler)
         val expectedNumberOfEvents = 7
+        val events = eventcollector.collectEvents()
+        assertThat(events.size).isEqualTo(expectedNumberOfEvents)
+    }
+
+    @Test
+    fun `wtm should collect 5 events`() {
+        val eventcollector = WienerTramwayMuseumCollector(mockJsoupCrawler)
+        val expectedNumberOfEvents = 5
         val events = eventcollector.collectEvents()
         assertThat(events.size).isEqualTo(expectedNumberOfEvents)
     }
