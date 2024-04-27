@@ -106,6 +106,12 @@ class JsoupCrawlerTestMockImpl(val overrideMap: Map<String, String>? = null) :
         "https://tram.at/museumsfruehling-niederoesterreich-2024/" to "wtm/museumsfruehling.html"
     )
 
+    val sternHafferl = mapOf(
+        "https://www.stern-verkehr.at/ausfluege-events/nostalgiefahrt-traunseetram/" to "sh_traunseetram.htm",
+        "https://www.stern-verkehr.at/ausfluege-events/nostalgiefahrt-attersee/" to "sh_atterseebahn.htm",
+        "https://atterseeschifffahrt.at/ausfluege-events/nostalgiezug-schiff/" to "sh_nostalgie_schiff.htm",
+    )
+
     val pathMap = mapOf(
         "https://waelderbaehnle.at/fahrplanbetrieb-preise-2024" to "bregenzerwaldbahn_fahrplan.html",
         "https://waelderbaehnle.at/aktuelles/veranstaltungskalender-2024" to "bregenzerwaldbahn_veranstaltungskalender.html",
@@ -129,7 +135,9 @@ class JsoupCrawlerTestMockImpl(val overrideMap: Map<String, String>? = null) :
         "https://ebfl.at/index.php/christkindlfahrt-graz-2024/" to "ebfl/ebfl_event3.htm",
         "https://eisenbahnmuseum.at/veranstaltungen/termine/" to "ebm_schwechat.htm",
         "http://www.lokalbahnverein.at/deutsch/event.php" to "mlv_zwettl.htm",
-    ) + wackelsteinexpressDetailsMap + oeglbMap + waldviertelbahnMap + reblausexpressMap + tramwaymuseumGraz + wienerTramwayMuseum
+    ) + wackelsteinexpressDetailsMap + oeglbMap + waldviertelbahnMap +
+            reblausexpressMap + tramwaymuseumGraz + wienerTramwayMuseum +
+            sternHafferl
 
 
     override fun getDocument(url: String): Document {

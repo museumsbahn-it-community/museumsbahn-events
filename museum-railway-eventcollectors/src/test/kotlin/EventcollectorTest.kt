@@ -157,5 +157,28 @@ class EventcollectorTest {
         assertThat(events.size).isEqualTo(expectedNumberOfEvents)
     }
 
+    @Test
+    fun `traunseetram should collect 10 events`() {
+        val eventcollector = TraunseetramCollector(mockJsoupCrawler)
+        val expectedNumberOfEvents = 10
+        val events = eventcollector.collectEvents()
+        assertThat(events.size).isEqualTo(expectedNumberOfEvents)
+    }
+
+    @Test
+    fun `atterseebahn should collect 9 events`() {
+        val eventcollector = AtterseebahnCollector(mockJsoupCrawler)
+        val expectedNumberOfEvents = 9
+        val events = eventcollector.collectEvents()
+        assertThat(events.size).isEqualTo(expectedNumberOfEvents)
+    }
+
+    @Test
+    fun `atterseeschifffahrt should collect 9 events`() {
+        val eventcollector = AtterseeSchifffahrtCollector(mockJsoupCrawler)
+        val expectedNumberOfEvents = 9
+        val events = eventcollector.collectEvents()
+        assertThat(events.size).isEqualTo(expectedNumberOfEvents)
+    }
 
 }
