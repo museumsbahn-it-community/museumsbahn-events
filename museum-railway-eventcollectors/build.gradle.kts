@@ -1,5 +1,6 @@
 plugins {
     kotlin("jvm")
+    id("org.jetbrains.kotlin.plugin.serialization") version "1.9.22"
 }
 
 repositories {
@@ -17,6 +18,12 @@ dependencies {
     implementation("org.mnode.ical4j:ical4j:3.2.14")
     implementation("com.rometools:rome:2.1.0")
     implementation("com.beust:klaxon:5.6")
+    implementation(libs.ktor.client.core)
+    implementation(libs.ktor.client.logging)
+    implementation(libs.ktor.client.content.negotiation)
+    implementation(libs.ktor.serialization.kotlinx.json)
+    implementation(libs.ktor.client.engine.java)
+    implementation(libs.logback)
     implementation(project(mapOf("path" to ":museum-railway-api")))
     testImplementation("com.willowtreeapps.assertk:assertk:0.28.0")
     testImplementation("org.junit.jupiter:junit-jupiter-api:5.8.1")

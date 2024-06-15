@@ -7,6 +7,7 @@ import java.time.Month
 import java.time.OffsetDateTime
 import java.time.OffsetTime
 import java.time.ZoneId
+import java.time.format.DateTimeFormatter
 import java.time.format.DateTimeFormatterBuilder
 import java.time.temporal.ChronoUnit
 import java.util.*
@@ -61,6 +62,10 @@ object DateParser {
         } catch (ex: Exception) {
             throw Exception("error parsing $text", ex)
         }
+    }
+
+    fun parseIsoDate(date: String, time: String): OffsetDateTime {
+        return OffsetDateTime.parse("${date}T$time", DateTimeFormatter.ISO_DATE_TIME.withZone(zoneOffset))
     }
 
     fun MatchResult.toDayValue(): Int = value.trim('.').trim().toInt()
