@@ -132,8 +132,9 @@ services:
   reverse-proxy:
     # The official v2 Traefik docker image
     image: traefik:v2.10.7
-    container_name: traefik
     restart: unless-stopped
+    # needed to access docker socket on linux machines
+    privileged: true
     command:
       # take config from commandline.
       - "--configFile=/config/traefik.yml"
@@ -155,9 +156,10 @@ services:
       - "3090:8080"
     volumes:
       # So that Traefik can listen to the Docker events
-      - /var/run/docker.sock:/var/run/docker.sock:Z
-      - ./traefik/config/:/config/
-      - ./traefik/logs/:/logs/
+      #- /var/run/docker.sock:/var/run/docker.sock:Z
+      - /run/user/1000/podman/podman.sock:/var/run/docker.sock:Z
+      - ./traefik/config/:/config/:Z
+      - ./traefik/logs/:/logs/:Z
     networks:
       - traefik-router
 

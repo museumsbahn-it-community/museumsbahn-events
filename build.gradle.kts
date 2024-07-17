@@ -7,6 +7,9 @@ plugins {
     id("io.spring.dependency-management") version "1.1.4" apply false
 }
 
+val containerEngine by extra { "docker" } // or "podman"
+// val containerEngine by extra { "podman" }
+
 buildscript {
     dependencies {
         // can someone just burn openapi?

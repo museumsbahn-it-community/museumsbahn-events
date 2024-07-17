@@ -35,6 +35,8 @@ java {
     targetCompatibility = JavaVersion.VERSION_21
 }
 
+val containerEngine: String by rootProject.extra
+
 tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
     kotlinOptions.jvmTarget = JavaVersion.VERSION_21.toString()
     kotlinOptions.javaParameters = true
@@ -44,7 +46,15 @@ task<Exec>("imageBuild") {
     inputs.file("src/main/docker/Dockerfile")
     inputs.files(tasks.named("jar"))
     dependsOn(tasks.named("assemble"))
-    commandLine("docker", "build", "-t", "localhost/museum-railway-events-eventcollectors", "-f", "src/main/docker/Dockerfile", ".")
+    commandLine(
+        containerEngine,
+        "build",
+        "-t",
+        "localhost/museum-railway-events-eventcollectors",
+        "-f",
+        "src/main/docker/Dockerfile",
+        "."
+    )
 }
 
 tasks.withType<Jar> {
