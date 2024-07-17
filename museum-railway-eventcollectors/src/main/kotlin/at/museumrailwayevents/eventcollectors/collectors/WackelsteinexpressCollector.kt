@@ -52,7 +52,8 @@ class WackelsteinexpressCollector(val jsoupCrawler: JsoupCrawler) : MuseumRailwa
             }
 
             val name = textContent[0]
-            val date = DateParser.parseDate(textContent[1])
+            // TODO: Sommerfahrten (jeden Mittwoch) are causing trouble here. need to fix.
+            val date = DateParser.tryParseDate(textContent[1]) ?: return@forEach
 
             val additionalData = mutableMapOf<String, String>()
 
@@ -63,11 +64,11 @@ class WackelsteinexpressCollector(val jsoupCrawler: JsoupCrawler) : MuseumRailwa
                 additionalData[SemanticKeys.PICTUREURL] = imageUrl
             }
             events.add(
-                    createEvent(
-                            name,
-                            date,
-                            additionalData
-                    )
+                createEvent(
+                    name,
+                    date,
+                    additionalData
+                )
             )
         }
         return events

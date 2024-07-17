@@ -11,6 +11,7 @@ class JsoupCrawlerTestMockImpl(val overrideMap: Map<String, String>? = null) :
         "https://reservierung.wackelsteinexpress.at/produkt/osterhasenzug-30-maerz-1400-uhr/" to "wackelsteinexpress/wackelsteinexpress_03-30_14_00-Osterhasenzug 30. März 14_00 Uhr.html",
         "https://reservierung.wackelsteinexpress.at/produkt/osterhasenzug-30-maerz-1600-uhr/" to "wackelsteinexpress/wackelsteinexpress_03-30_16_00-Osterhasenzug 30. März 16_00 Uhr.html",
         "https://reservierung.wackelsteinexpress.at/produkt/teddybaerzug-15-juni-1500-uhr/" to "wackelsteinexpress/wackelsteinexpress_03-30_16_00-Osterhasenzug 30. März 16_00 Uhr.html",// todo
+        "https://reservierung.wackelsteinexpress.at/produkt/sommerfahrten-jeden-mittwoch-17-juli-28-august/" to "wackelsteinexpress/wackelsteinexpress_07-17_Sommerfahrten.html", // TODO: parsing is not yet working properly
         "https://reservierung.wackelsteinexpress.at/produkt/weinglasblaeserzug-19-juli-1900-uhr/" to "wackelsteinexpress/wackelsteinexpress_07-19_19_00-Weinglasbläserzug 19. Juli 19_00 Uhr.html",
         "https://reservierung.wackelsteinexpress.at/produkt/fruehstuecksfahrt-21-juli-0945-uhr/" to "wackelsteinexpress/wackelsteinexpress_07-21_09_45_Frühstücksfahrt 21. Juli 09_45 Uhr.html",
         "https://reservierung.wackelsteinexpress.at/produkt/radwandern-10-august-1115-uhr/" to "wackelsteinexpress/wackelsteinexpress_08-10_11_15-Radwandern 10. August 11_15 Uhr.html",

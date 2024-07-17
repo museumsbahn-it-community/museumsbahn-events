@@ -18,13 +18,14 @@ object DateParser {
     val zoneOffset = ZoneId.of("Europe/Vienna").rules.getOffset(Instant.now())
 
     val dateStartRegex = "(^|\\s|,)"
-    val dateRegexString = "$dateStartRegex([0123])?[1-9](\\.|0\\.|\\s|$)" // if we would make the '.' mandatory I am sure it would break eventually
+    val dateRegexString =
+        "$dateStartRegex([0123])?[1-9](\\.|0\\.|\\s|$)" // if we would make the '.' mandatory I am sure it would break eventually
     val dateRegexStringPartial = "([0123])?\\d{1}\\.?"
     val numericDayRegex = Regex(dateRegexString)
     val monthOptions = "Jänner|Januar|Februar|März|April|Mai|Juni|Juli|August|September|Oktober|November|Dezember"
     val monthOptionsLowercase = monthOptions.lowercase()
     val monthWrittenRegexString =
-            "$dateStartRegex($monthOptions|$monthOptionsLowercase)(,|\\s|$)"
+        "$dateStartRegex($monthOptions|$monthOptionsLowercase)(,|\\s|$)"
     val monthWrittenRegex = Regex(monthWrittenRegexString)
 
     // numeric month has a . at the end almost always
@@ -38,10 +39,11 @@ object DateParser {
     val yearRegexString = "202\\d"
     val yearRegex = Regex(yearRegexString)
 
-    val nonAlphanumericAtStartRegex =  Regex("^[^A-Za-z0-9]+")
-    val nonAlphanumericAtEndRegex =  Regex("[^A-Za-z0-9]+$")
+    val nonAlphanumericAtStartRegex = Regex("^[^A-Za-z0-9]+")
+    val nonAlphanumericAtEndRegex = Regex("[^A-Za-z0-9]+$")
 
-    val durationRecurrenceRegexString = "Montag|Dienstag|Mittwoch|Donnerstag|Freitag|Samstag|Sonntag|Sonn- und Feiertag|täglich|jeden Tag".lowercase()
+    val durationRecurrenceRegexString =
+        "Montag|Dienstag|Mittwoch|Donnerstag|Freitag|Samstag|Sonntag|Sonn- und Feiertag|täglich|jeden Tag".lowercase()
 
     val fullDateRegexString = "($dateRegexStringPartial)\\s*($monthRegexStringPartial)\\s*($yearRegexString)?"
     val fullDateRegex = Regex(fullDateRegexString)
@@ -61,6 +63,14 @@ object DateParser {
             return createDate(year, month, day)
         } catch (ex: Exception) {
             throw Exception("error parsing $text", ex)
+        }
+    }
+
+    fun tryParseDate(text: String): OffsetDateTime? {
+        return try {
+            parseDate(text)
+        } catch (ex: Exception) {
+            null
         }
     }
 
@@ -202,16 +212,16 @@ object DateParser {
 
 
     fun createDate(year: Int, month: Int, day: Int): OffsetDateTime =
-            OffsetDateTime.of(
-                    year,
-                    month,
-                    day,
-                    0, 0, 0, 0,
-                    zoneOffset,
-            )
+        OffsetDateTime.of(
+            year,
+            month,
+            day,
+            0, 0, 0, 0,
+            zoneOffset,
+        )
 
     fun createDate(year: Int, month: Month, day: Int): OffsetDateTime =
-            createDate(year, month.value, day)
+        createDate(year, month.value, day)
 
     fun generateDateListBetween(startDate: OffsetDateTime, endDate: OffsetDateTime): List<OffsetDateTime> {
         val daysBetween = ChronoUnit.DAYS.between(startDate, endDate)
