@@ -70,28 +70,37 @@ class EbflCollector(val jsoupCrawler: JsoupCrawler) : MuseumRailwayEventCollecto
             val dateString = paragraphs.first()
             val description = paragraphs.drop(1).joinToString("\n")
 
-            val dates = DateParser.parseAllDatesFrom(dateString)
-            val eventPictureUrl = eventUrls.second
-            val additionalData = mutableMapOf(
-                SemanticKeys.CATEGORY to CATEGORY_MUSEUM_TRAIN,
-                SemanticKeys.URL to eventUrl,
-                SemanticKeys.PICTURE_URL to eventPictureUrl,
-                SemanticKeys.RECURRENCE_TYPE to RecurrenceType.ONCE,
-                SemanticKeys.REGISTRATION to Registration.PRE_SALES_ONLY,
-                SemanticKeys.DESCRIPTION to description,
-                CommonKeys.LOCOMOTIVE_TYPE to Tags.LOCOMOTIVE_TYPE_ELECTRIC, // EBFL is only running electric trains, right?
-                SemanticKeys.TAGS to TAGS_MUSEUM_RAILWAY_SPECIAL_TRIP.toTagsValue(),
-                SemanticKeys.ADDITIONAL_EVENTS_URL to suedbahnExpressUrl,
-            )
+            try {
+                val dates = DateParser.parseAllDatesFrom(dateString)
+                val eventPictureUrl = eventUrls.second
+                val additionalData = mutableMapOf(
+                    SemanticKeys.CATEGORY to CATEGORY_MUSEUM_TRAIN,
+                    SemanticKeys.URL to eventUrl,
+                    SemanticKeys.PICTURE_URL to eventPictureUrl,
+                    SemanticKeys.RECURRENCE_TYPE to RecurrenceType.ONCE,
+                    SemanticKeys.REGISTRATION to Registration.PRE_SALES_ONLY,
+                    SemanticKeys.DESCRIPTION to description,
+                    CommonKeys.LOCOMOTIVE_TYPE to Tags.LOCOMOTIVE_TYPE_ELECTRIC, // EBFL is only running electric trains, right?
+                    SemanticKeys.TAGS to TAGS_MUSEUM_RAILWAY_SPECIAL_TRIP.toTagsValue(),
+                    SemanticKeys.ADDITIONAL_EVENTS_URL to suedbahnExpressUrl,
+                )
 
-            dates.forEach { date ->
-                events.add(createEvent(
-                    name,
-                    date,
-                    additionalData,
-                    locationId_ebfl_suedbahn_express,
-                    eventUrl
-                ))
+                dates.forEach { date ->
+                    events.add(
+                        createEvent(
+                            name,
+                            date,
+                            additionalData,
+                            locationId_ebfl_suedbahn_express,
+                            eventUrl
+                        )
+                    )
+                }
+            } catch (ex: Exception) {
+                // sometimes they publish a "Reisebericht" on their page where we cannot parse dates
+                println("[EBFL Collector] could not parse event from url: $eventUrl")
+                println("[EBFL Collector] exception: ${ex.message}")
+                println(ex.stackTrace)
             }
         }
 
