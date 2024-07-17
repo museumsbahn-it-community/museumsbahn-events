@@ -18,6 +18,7 @@ import io.ktor.serialization.kotlinx.json.*
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
+import kotlinx.serialization.json.Json
 
 private const val PLANFAHRTEN = "Planfahrten"
 
@@ -45,7 +46,9 @@ class ErzbergbahnCollector : MuseumRailwayEventCollector(
         val job = GlobalScope.launch {
             val httpClient = HttpClient {
                 install(ContentNegotiation){
-                    json()
+                    json(Json{
+                        ignoreUnknownKeys = true
+                    })
                 }
                 install(Logging) {
 //                    logger = Logger.DEFAULT
@@ -80,11 +83,9 @@ class ErzbergbahnCollector : MuseumRailwayEventCollector(
                 val times = itemsResponse.body<Times>()
 
                 times.days.forEach { day ->
-                    println(day.key)
                     day.value.times.forEach { timeEntry ->
                         try {
-                            println(timeEntry.key)
-                            val title = product.title ?: locationName // TODO: rename Planfahrten to Erzbergbahn Planfahrten
+                            val title = product.title?.replace("Planfahrten", "Erzbergbahn Planfahrten") ?: locationName
                             val date = DateParser.parseIsoDate(day.key, timeEntry.key)
                             val description = requireNotNull(product.description) {"no event description found for ${title}"}
                             val pictureUrl = product.images.first().url
