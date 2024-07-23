@@ -2,6 +2,7 @@ package at.museumrailwayevents.eventcollectors
 
 import AtterseeSchifffahrtCollector
 import at.museumrailwayevents.eventcollectors.collectors.*
+import at.museumrailwayevents.eventcollectors.collectors.erzbergbahn.ErzbergbahnCollector
 import at.museumrailwayevents.eventcollectors.service.JsoupCrawlerImpl
 import base.boudicca.api.eventcollector.EventCollectorCoordinatorBuilder
 
@@ -28,6 +29,7 @@ fun main() {
         .addEventCollector(WienerTramwayMuseumCollector(crawler))
         .addEventCollector(TraunseetramCollector(crawler))
         .addEventCollector(TramwaymuseumGrazCollector(crawler))
+        .addEventCollector(ErzbergbahnCollector())
         .addEventCollector(MLVZwettlCollector(crawler))
         .build()
         .startWebUi()

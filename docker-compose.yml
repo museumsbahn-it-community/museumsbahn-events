@@ -38,12 +38,16 @@ services:
     image: git.twatzl.eu/twatzl/boudicca-eventdb
     ports:
       - "8081:8080"
+    environment:
+      - "BOUDICCA_STORE_PATH=/boudicca.store/boudicca.store"
     labels:
       - "traefik.enable=true"
       - "traefik.docker.network=traefik-router"
       - "traefik.http.routers.eventdb.rule=PathPrefix(`/ingest`) || PathPrefix(`/entries`)"
       - "traefik.http.routers.eventdb.entrypoints=web"
       - "traefik.http.services.eventdb.loadbalancer.server.port=8080"
+    volumes:
+      - ./boudicca.store/:/boudicca.store/:Z
     networks:
       - traefik-router
   boudicca-search:

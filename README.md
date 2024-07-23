@@ -56,6 +56,11 @@ for dry run you can use
 npm publish --dry-run
 ```
 
+### Local Store File
+
+When running EventDB with the supplied docker-compose it saves its data into the file `boudicca.store` in the boudicca.store/ folder of the project. So if you want to
+clean the EventDB, stop it, delete the file and restart it.
+
 # Deployment
 
 The best way to deploy is to use a docker compose
