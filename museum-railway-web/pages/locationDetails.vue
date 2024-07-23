@@ -13,6 +13,8 @@
   </div>
 </template>
 <script setup lang="ts">
+import {subDays} from "date-fns";
+
 const router = useRouter();
 const route = useRoute();
 const globalConfig = useGlobalConfigStore();
@@ -35,6 +37,7 @@ onMounted(mounted);
 async function mounted(): Promise<void> {
   await locationData.loadLocations();
   await eventsData.loadEvents({
+    fromDate: subDays(new Date(), 1),
     tagFilters: [{key: "location_id", options: [locationId]}]
   });
 }

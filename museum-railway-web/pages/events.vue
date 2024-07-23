@@ -123,6 +123,7 @@ import {eventKey} from '~/model/util.ts';
 import {useGlobalConfigStore} from "~/stores/GlobalConfigStore.ts";
 import {EMPTY_EVENT_FILTERS, useEventListData} from "~/composables/eventListData.ts";
 import {buildQuery} from "~/composables/queryGenerator.ts";
+import {subDays} from "date-fns";
 
 useI18n()
 const noEventSelectedPlaceholderText = "Bitte eine Veranstaltung auswählen um Details zu sehen."
@@ -139,7 +140,7 @@ interface StateOption {
 }
 
 const selectedStates = ref<StateOption[]>([]);
-const dates = ref<Date[]>([]);
+const dates = ref<Date[]>([subDays(new Date(), 1)]);
 const eventListData = useEventListData();
 const locationsData = useLocationsData();
 
@@ -234,7 +235,7 @@ function switchTagFilter(key: string, value: string) {
 
 function clearFilters(): void {
   selectedStates.value = [];
-  dates.value = [];
+  dates.value = [subDays(new Date(), 1)];
   enabledFilters.value = new Map<string, string[]>()
 }
 

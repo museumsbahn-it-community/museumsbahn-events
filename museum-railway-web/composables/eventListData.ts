@@ -3,13 +3,13 @@ import {type ComputedRef} from "vue";
 import {CommonKeys} from "~/model/commonKeys.ts";
 import {SemanticKeys} from "~/model/semanticKeys.ts";
 import {createLocationMap, type LocationMap} from "~/model/util.ts";
-import {format} from "date-fns";
+import {format, subDays} from "date-fns";
 import {buildQuery} from "~/composables/queryGenerator.ts";
 
 const EVENT_COUNT_STEP_SIZE = 500;
 
 export const EMPTY_EVENT_FILTERS = {
-    fromDate: undefined,
+    fromDate: subDays(new Date(), 1),
     toDate: undefined,
     tagFilters: [],
 }
