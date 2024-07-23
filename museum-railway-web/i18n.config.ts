@@ -15,6 +15,7 @@ export default defineI18nConfig(() => ({
             'diesel': 'Diesellok',
             'electric': 'Elektrisch',
             'steam': 'Dampfzug',
+            'tram': 'Straßenbahn',
 
             'recurrence.type': 'Häufigkeit',
             'once': 'Einmalig',
@@ -24,6 +25,7 @@ export default defineI18nConfig(() => ({
             'registration': 'Ticketart',
             'pre-sales-only': 'Nur im Vorverkauf',
             'ticket': 'Vor Ort erhältlich',
+            'reservation-recommended': 'Reservierung empfohlen',
         },
     }
 }))
