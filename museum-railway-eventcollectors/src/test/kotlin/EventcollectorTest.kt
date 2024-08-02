@@ -2,6 +2,9 @@ import assertk.assertThat
 import assertk.assertions.isEmpty
 import assertk.assertions.isEqualTo
 import at.museumrailwayevents.eventcollectors.collectors.*
+import at.museumrailwayevents.eventcollectors.collectors.sternundhafferl.AtterseeSchifffahrtCollector
+import at.museumrailwayevents.eventcollectors.collectors.sternundhafferl.AtterseebahnCollector
+import at.museumrailwayevents.eventcollectors.collectors.sternundhafferl.TraunseetramCollector
 import at.museumrailwayevents.eventcollectors.service.JsoupCrawlerTestMockImpl
 import at.museumrailwayevents.model.conventions.CATEGORY_MUSEUM_TRAIN
 import at.museumrailwayevents.model.conventions.CATEGORY_RAILWAY_MUSEUM
@@ -156,36 +159,4 @@ class EventcollectorTest {
         val events = eventcollector.collectEvents()
         assertThat(events.size).isEqualTo(expectedNumberOfEvents)
     }
-
-    @Test
-    fun `traunseetram should collect 10 events`() {
-        val eventcollector = TraunseetramCollector(mockJsoupCrawler)
-        val expectedNumberOfEvents = 10
-        val events = eventcollector.collectEvents()
-        assertThat(events.size).isEqualTo(expectedNumberOfEvents)
-    }
-
-    @Test
-    fun `atterseebahn should collect 9 events`() {
-        val eventcollector = AtterseebahnCollector(mockJsoupCrawler)
-        val expectedNumberOfEvents = 9
-        val events = eventcollector.collectEvents()
-        assertThat(events.size).isEqualTo(expectedNumberOfEvents)
-    }
-
-    @Test
-    fun `atterseeschifffahrt should collect 9 events`() {
-        val eventcollector = AtterseeSchifffahrtCollector(mockJsoupCrawler)
-        val expectedNumberOfEvents = 9
-        val events = eventcollector.collectEvents()
-        assertThat(events.size).isEqualTo(expectedNumberOfEvents)
-    }
-    @Test
-    fun `breitenauerbahn should collect 9 events`() {
-        val eventcollector = BreitenauerbahnCollector(mockJsoupCrawler)
-        val expectedNumberOfEvents = 9
-        val events = eventcollector.collectEvents()
-        assertThat(events.size).isEqualTo(expectedNumberOfEvents)
-    }
-
 }

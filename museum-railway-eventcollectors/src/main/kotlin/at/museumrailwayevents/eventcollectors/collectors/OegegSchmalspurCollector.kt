@@ -20,7 +20,7 @@ class OegegSchmalspurCollector(val jsoupCrawler: JsoupCrawler) : MuseumRailwayEv
     private val eventTitle = "Steyrtal Museumsbahn"
 
     override fun collectEvents(): List<Event> {
-        val document = Jsoup.connect(url).get()
+        val document = jsoupCrawler.getDocument(url)
         val eventBoxes = document.select("div.j-textWithImage")
 
         // dates on this website can be split having multiple dates in the same line
@@ -46,10 +46,13 @@ class OegegSchmalspurCollector(val jsoupCrawler: JsoupCrawler) : MuseumRailwayEv
                 // if there are no dates, then skip it
                 return@forEach
             }
+            println(dateString)
 
             val year = DateParser.findFirstYearOrAssumeDefault(dateString)
             val month = DateParser.findSingleWrittenMonth(dateString)
             val dates = findAllDays(dateString)
+
+            println(dates)
 
             dates.forEach { dateValue ->
                 val startDate =
@@ -65,6 +68,7 @@ class OegegSchmalspurCollector(val jsoupCrawler: JsoupCrawler) : MuseumRailwayEv
                 }
                 additionalData[SemanticKeys.DESCRIPTION] = description
 
+                println("create event: ${eventTitle} - ${startDate}")
                 events.add(createEvent(eventTitle, startDate, additionalData))
             }
         }
