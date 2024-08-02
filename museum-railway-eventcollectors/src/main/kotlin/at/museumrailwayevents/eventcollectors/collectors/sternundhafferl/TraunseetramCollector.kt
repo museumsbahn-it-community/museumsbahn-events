@@ -1,4 +1,4 @@
-package at.museumrailwayevents.eventcollectors.collectors
+package at.museumrailwayevents.eventcollectors.collectors.sternundhafferl
 
 import at.museumrailwayevents.eventcollectors.service.JsoupCrawler
 import at.museumrailwayevents.model.conventions.Tags
@@ -10,7 +10,9 @@ class TraunseetramCollector(jsoupCrawler: JsoupCrawler) : SternHafferlCollector(
     operatorId = "sternhafferl",
     locationId = "traunseetram",
     locationName = "Traunseetram Nostalgie",
-    url = "https://www.stern-verkehr.at/ausfluege-events/nostalgiefahrt-traunseetram/"
+    url = "https://www.stern-verkehr.at/ausfluege-events/nostalgiefahrt-traunseetram/",
+    eventJsonApiUrl = "https://www.stern-verkehr.at/wp-json/ausfluege-events/v1/events",
+    filterIncludeStrings = listOf("traunsee", "traunseetram", "gmunden")
 ) {
     override fun collectEvents(): List<Event> = collectEventsFromPage(url)
 

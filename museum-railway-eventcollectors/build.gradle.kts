@@ -24,6 +24,7 @@ dependencies {
     implementation(libs.ktor.serialization.kotlinx.json)
     implementation(libs.ktor.client.engine.java)
     implementation(libs.logback)
+    implementation("org.apache.commons:commons-text:1.12.0")
     implementation(project(mapOf("path" to ":museum-railway-api")))
     testImplementation("com.willowtreeapps.assertk:assertk:0.28.0")
     testImplementation("org.junit.jupiter:junit-jupiter-api:5.8.1")
