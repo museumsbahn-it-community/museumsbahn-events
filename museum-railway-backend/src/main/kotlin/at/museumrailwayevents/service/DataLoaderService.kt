@@ -92,7 +92,8 @@ class DataLoaderService {
             }
 
             return MuseumLocation(
-                    name = line["name"]!!,
+                    name = line["officialName"]!!,
+                    shortName = line["shortName"]!!,
                     type = type,
                     operatorId = line["operatorId"]!!,
                     locationId = line["locationId"]!!,
