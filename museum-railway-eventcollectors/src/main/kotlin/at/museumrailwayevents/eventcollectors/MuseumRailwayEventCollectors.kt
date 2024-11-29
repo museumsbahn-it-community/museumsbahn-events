@@ -1,8 +1,10 @@
 package at.museumrailwayevents.eventcollectors
 
-import AtterseeSchifffahrtCollector
+import at.museumrailwayevents.eventcollectors.collectors.sternundhafferl.AtterseeSchifffahrtCollector
 import at.museumrailwayevents.eventcollectors.collectors.*
 import at.museumrailwayevents.eventcollectors.collectors.erzbergbahn.ErzbergbahnCollector
+import at.museumrailwayevents.eventcollectors.collectors.sternundhafferl.AtterseebahnCollector
+import at.museumrailwayevents.eventcollectors.collectors.sternundhafferl.TraunseetramCollector
 import at.museumrailwayevents.eventcollectors.service.JsoupCrawlerImpl
 import base.boudicca.api.eventcollector.EventCollectorCoordinatorBuilder
 
