@@ -15,7 +15,13 @@ body {
   display: flex;
   flex-direction: column;
   color: colors.$color-umbragrau;
+  background: colors.$color-grauweiß;
   margin: 0;
+}
+
+a {
+  text-decoration: none; 
+  color: inherit;
 }
 
 .navbar {
@@ -31,6 +37,17 @@ body {
   align-items: center;
   color: colors.$text-color-light;
   background: colors.$color-umbragrau;
+}
+
+.navbar-line {
+  z-index: 1000;
+  display: flex;
+  position: sticky;
+  top: variables.$navbar-height;
+  left: 0;
+  height: variables.$navbar-height;
+  width: 100%;
+  background: colors.$color-verkehrsrot;
 }
 
 .sticky-content {
@@ -51,7 +68,11 @@ body {
   background: colors.$color-verkehrsrot;
 }
 
-.bg-grauweiss {
+.bg-mittelgrau {
+  background: colors.$color-mittelgrau;
+}
+
+.bg-grauweiß {
   background: colors.$color-grauweiß;
 }
 
@@ -108,11 +129,11 @@ body {
   border: 0;
 }
 
-.rounded-corners-small {
+.border-radius-small {
   border-radius: variables.$border-radius-small;
 }
 
-.rounded-corners-big {
+.border-radius-big {
   border-radius: variables.$border-radius-big;
 }
 

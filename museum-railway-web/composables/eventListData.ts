@@ -1,9 +1,9 @@
-import {Entry, type MuseumEventGroup, useEventsStore} from "~/stores/EventsStore.ts";
+import {type Entry, type MuseumEventGroup, useEventsStore} from "~/stores/EventsStore.ts";
 import {type ComputedRef} from "vue";
 import {CommonKeys} from "~/model/commonKeys.ts";
 import {SemanticKeys} from "~/model/semanticKeys.ts";
 import {createLocationMap, type LocationMap} from "~/model/util.ts";
-import {format, subDays} from "date-fns";
+import {subDays} from "date-fns";
 import {buildQuery} from "~/composables/queryGenerator.ts";
 
 const EVENT_COUNT_STEP_SIZE = 500;
@@ -23,6 +23,7 @@ export function mapEntriesToEvents(entries: Entry[], locations: LocationMap): Mu
 
         return {
             name: value[SemanticKeys.NAME],
+            eventCategory: value[SemanticKeys.CATEGORY]?.toLowerCase(),
             date: new Date(value[SemanticKeys.STARTDATE]),
             description: value[SemanticKeys.DESCRIPTION],
             pictureUrl: value[SemanticKeys.PICTUREURL],

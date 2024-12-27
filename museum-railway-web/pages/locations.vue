@@ -20,7 +20,7 @@
 </style>
 <template>
   <div class="fill-page-height p-3">
-    <div class="flex flex-row h-full bg-verkehrsrot p-3 rounded-corners-small">
+    <div class="flex flex-row h-full bg-verkehrsrot p-3 border-radius-small">
       <ScrollPanel class="flex-column h-full lg:w-6 xxl:w-4 w-full">
         <div v-for="location in locations">
           <Card>
@@ -46,9 +46,6 @@
                 <div class="flex align-items-center text-sm my-2">
                   <span class="material-icons-outlined">location_on</span> {{ location.location.city }},
                   {{ location.location.state }}
-                </div>
-                <div class="my-4">
-                  <EventCollectorIndicator :location="location"></EventCollectorIndicator>
                 </div>
                 <div class="my-4">
                   <span>{{ locationsData.eventCountForId(location.locationId) }} Veranstaltungen gefunden</span>

@@ -19,7 +19,8 @@ const items: MenuItem[] = [
 
 </script>
 <template>
-  <header class="navbar">
+  <header>
+    <div class="navbar">
     <div class="flex flex-row align-items-center w-full">
       <div class="flex flex-column">
         <h1 class="m-0">
@@ -67,6 +68,10 @@ const items: MenuItem[] = [
           </a>
         </template>
       </Menubar>
+    </div>
+  </div>
+    <div class="navbar-line" style="height: 8px;">
+      
     </div>
   </header>
 </template>

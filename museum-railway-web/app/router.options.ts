@@ -14,9 +14,9 @@ export default <RouterConfig>{
 		..._routes,
 		{
 			name: 'eventDetails',
-			path: '/events/:eventKey',
+			path: '/eventDetails/:eventKey',
 			component: () => {
-				return import('~/pages/events.vue').then(r => r.default || r);
+				return import('~/pages/eventDetails.vue').then(r => r.default || r);
 			},
 		},
 		{

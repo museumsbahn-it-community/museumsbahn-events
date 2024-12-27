@@ -4,7 +4,7 @@
 }
 </style>
 <template>
-  <div class="bg-verkehrsrot rounded-corners-small p-3 lg:h-full">
+  <div class="bg-verkehrsrot border-radius-small p-3 lg:h-full">
     <div v-if="museumEvent != undefined" class="p-4 lg:h-full bg-white">
       <div class="w-full flex flex-column md:flex-row">
         <div class="w-full" :class="{ 'md:w-6': museumEvent.pictureUrl}">
