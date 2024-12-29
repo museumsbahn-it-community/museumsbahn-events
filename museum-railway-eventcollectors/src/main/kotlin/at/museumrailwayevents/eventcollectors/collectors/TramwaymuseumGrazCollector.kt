@@ -9,8 +9,8 @@ import base.boudicca.model.Event
 import java.net.URI
 
 class TramwaymuseumGrazCollector(private val jsoupCrawler: JsoupCrawler) : MuseumRailwayEventCollector(
-    operatorId = "tramwaymuseumgraz",
-    locationId = "tramwaymuseumgraz",
+    operatorId = "tramwaymuseum_graz",
+    locationId = "tramwaymuseum_graz",
     locationName = "Tramway Museum Graz",
     url = "https://www.tramway-museum-graz.at/kalender/"
 ) {
