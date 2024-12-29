@@ -39,7 +39,7 @@
     "eslint": "^8.57.0",
     "eslint-import-resolver-typescript": "^3.6.1",
     "nuxt-open-fetch": "^0.6.4",
-    "nuxt-viewport": "^2.1.4",
+    "nuxt-viewport": "^2.2.0",
     "nuxt3-leaflet": "^1.0.12",
     "sass": "^1.72.0",
     "sass-loader": "^14.1.1"

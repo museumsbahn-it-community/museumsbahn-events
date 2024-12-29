@@ -13,25 +13,15 @@
   min-height: 4rem;
 }
 
-.sticky-event-details {
-  position: sticky;
-  top: calc(variables.$navbar-height + 2rem);
-  left: 0;
-}
-
 label {
   color: colors.$color-grauweiß;
-}
-
-.center-column {
-  max-width: 1000px;
 }
 
 </style>
 
 <template>
   <div class="flex flex-row w-full sticky-content justify-content-center">
-    <div class="flex flex-column h-full center-column mx-2">
+    <div class="flex flex-column h-full content-center-column mx-2">
       <Message severity="info"> Achtung! Die Daten werden automatisch erfasst und nicht manuell geprüft.
         Abfahrtszeiten und aktuelle Informationen immer auf den Webseiten der jeweiligen Veranstalter
         kontrollieren!

@@ -10,6 +10,8 @@ export const SemanticKeys = {
 	TAGS: 'tags',
 	REGISTRATION: 'registration',
 	PICTUREURL: 'pictureUrl',
+	PICTURE_ALT_TEXT: 'pictureAltText',
+	PICTURE_COPYRIGHT: 'pictureCopyright',
 	COLLECTORNAME: 'collectorName',
 	SOURCES: 'sources',
 };

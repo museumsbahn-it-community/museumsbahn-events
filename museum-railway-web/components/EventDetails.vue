@@ -1,36 +1,64 @@
-<style>
-.event-details-image {
-  height: 200px;
+<style lang="scss">
+.event-details-header {
+  max-height: 350px;
+}
+
+.event-details-header-desktop {
+  min-height: 250px;
+}
+
+.event-summary {
+  @media (min-width: 768px) {
+    min-width: 50%;
+    max-width: 50%;
+  }
 }
 </style>
 <template>
-  <div class="bg-verkehrsrot border-radius-small p-3 lg:h-full">
-    <div v-if="museumEvent != undefined" class="p-4 lg:h-full bg-white">
-      <div class="w-full flex flex-column md:flex-row">
-        <div class="w-full" :class="{ 'md:w-6': museumEvent.pictureUrl}">
-          <h2 class="my-1">{{ museumEvent.name }}</h2>
-          <div class="my-2">
-            <EventSummary v-if="museumEvent" :museum-event="museumEvent"></EventSummary>
+  <div class="bg-mittelgrau border-radius-small overflow-hidden">
+    <div v-if="event != undefined" class="flex flex-column gap-3">
+      <EventImage :event="event" v-if="viewport.isLessThan('tablet')" class="flex justify-content-end max-dimensions" />
+      <div class="p-3 gap-3 flex flex-column">
+        <div class="flex flex-row gap-3 event-details-header">
+          <div class="flex flex-grow-1 flex-column event-summary">
+            <span v-if="event.eventCategory != null">{{ $t(event.eventCategory) }}</span>
+            <span>{{ formatDate(event.date) }}</span>
+            <h2 class="my-1">{{ event.name }}</h2>
           </div>
+          <EventImage v-if="!viewport.isLessThan('tablet')" :event="event" class="border-radius-small overflow-hidden">
+          </EventImage>
         </div>
-        <Image
-            v-if="museumEvent.pictureUrl"
-            :src="`/imgcache?url=${museumEvent.pictureUrl}`"
-            alt="kein alt text vorhanden"
-            class="w-full md:w-6 p-3 md:p-0 event-details-image diagonal-box"
-            image-class="h-full w-full object-fit-cover"/>
-      </div>
-      <div class="my-2 flex flex-column" style="height:80%">
-        <ScrollPanel class="flex-shrink-1 w-full" style="height:80%">
-          <div class="mx-2 my-5 text-block">
-            {{ museumEvent.description }}
+        <div class="flex flex-column">
+          <div class="flex align-items-end w-full">
+            <div class="flex-grow-1"></div>
+            <a :href="event.url" target="_blank" rel="noopener noreferrer"
+              class="p-button p-button-outlined font-bold dark-text">
+              <span><i class="pi pi-link mr-2"></i>Zur Veranstaltungs Webseite</span>
+            </a>
           </div>
-        </ScrollPanel>
+          <h3>Veranstalter</h3>
+          <div>
+            <RouterLink class="p-button p-button-text" v-if="location != null"
+              :to="`/locations/${location.locationId}`">{{ location.name }}
+            </RouterLink>
+            <div class="flex" v-else>
+              <Message severity="warn" :closable="false">Es ist Problem beim Laden der Veranstalterinformation
+                aufgetreten.</Message>
+            </div>
+          </div>
 
-        <div class="flex align-items-end w-full">
-          <div class="flex-grow-1"></div>
-          <a :href="museumEvent.url" target="_blank" rel="noopener noreferrer"
-             class="p-button p-button-text font-bold dark-text">Zur Veranstaltungs Webseite</a>
+          <h3>Beschreibung</h3>
+          <div class="mx-2 my-5 text-block">
+            {{ event.description }}
+          </div>
+
+          <div class="flex align-items-end w-full">
+            <div class="flex-grow-1"></div>
+            <a :href="event.url" target="_blank" rel="noopener noreferrer"
+              class="p-button p-button-outlined font-bold dark-text">
+              <span><i class="pi pi-link mr-2"></i>Zur Veranstaltungs Webseite</span>
+            </a>
+          </div>
         </div>
       </div>
     </div>
@@ -40,14 +68,19 @@
   </div>
 </template>
 <script setup lang="ts">
-import EventSummary from '~/components/EventSummary.vue';
-import type { MuseumEvent } from '~/model/museumEvent';
+import { formatDate } from '~/composables/formatDate';
+import { computed } from 'vue';
+import EventImage from './EventImage.vue';
 
-withDefaults(defineProps<{
-  museumEvent: MuseumEvent | undefined,
+useI18n();
+
+const props = withDefaults(defineProps<{
+  event: MuseumEvent | undefined,
   noEventSelectedPlaceholderText?: string | undefined,
 }>(), {
   noEventSelectedPlaceholderText: 'Keine Veranstaltung ausgewählt!',
 });
+const viewport = useViewport();
 
+const location = computed(() => props.event?.location)
 </script>

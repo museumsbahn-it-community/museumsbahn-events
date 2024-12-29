@@ -19,37 +19,6 @@ body {
   margin: 0;
 }
 
-a {
-  text-decoration: none; 
-  color: inherit;
-}
-
-.navbar {
-  z-index: 1000;
-  display: flex;
-  position: sticky;
-  top: 0;
-  left: 0;
-  height: variables.$navbar-height;
-  width: 100%;
-  padding-left: variables.$navbar-padding;
-  padding-right: variables.$navbar-padding;
-  align-items: center;
-  color: colors.$text-color-light;
-  background: colors.$color-umbragrau;
-}
-
-.navbar-line {
-  z-index: 1000;
-  display: flex;
-  position: sticky;
-  top: variables.$navbar-height;
-  left: 0;
-  height: variables.$navbar-height;
-  width: 100%;
-  background: colors.$color-verkehrsrot;
-}
-
 .sticky-content {
   position: sticky;
   top: variables.$navbar-height;
@@ -91,6 +60,9 @@ a {
 .object-fit-cover {
   object-fit: cover;
 }
+.object-fit-contain {
+  object-fit: contain;
+}
 
 .menubar {
   height: variables.$navbar-height;
@@ -114,17 +86,6 @@ a {
   background: #ffffff;
 }
 
-.timeline-heading {
-  color: colors.$text-color-dark;
-  background: white;
-  clip-path: polygon(15% 0, 100% 0, 85% 100%, 0 100%);
-  font-weight: bold;
-}
-
-.diagonal-box {
-  clip-path: polygon(15% 0, 100% 0, 85% 100%, 0 100%);
-}
-
 .borderless-menubar {
   border: 0;
 }
@@ -142,6 +103,10 @@ a {
   top: variables.$navbar-total;
   min-height: variables.$min-content-height;
   width: 100%;
+}
+
+.content-center-column {
+  max-width: 1000px;
 }
 
 .footer {

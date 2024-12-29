@@ -6,6 +6,11 @@
   overflow: hidden; // needed for border radius clipping
 }
 
+a.event-card {
+  text-decoration: none;
+  color: inherit;
+}
+
 .event-title {
   overflow-wrap: anywhere;
 }
@@ -26,8 +31,7 @@
       </div>
       <!-- image -->
       <div class="flex-shrink-1">
-        <Image :src="imgSource" alt="kein alt text vorhanden" class="h-full w-full"
-          image-class="h-full w-full object-fit-cover" />
+        <EventImage :event="event"></EventImage>
       </div>
       <!-- summary -->
       <div class="my-2 mx-4 flex-grow-1">
@@ -42,14 +46,15 @@
 </template>
 <script setup lang="ts">
 import { eventKey } from '~/model/util.ts';
-import { format } from 'date-fns';
+import { formatDate } from '~/composables/formatDate';
 import { computed } from 'vue';
+import { getImageUrlOrDefault } from '~/composables/eventImage';
+import EventImage from './EventImage.vue';
 
 const props = defineProps<{
   event: MuseumEvent
 }>()
 
 useI18n();
-const imgSource = computed(() => props.event?.pictureUrl != null ? `/imgcache?url=${props.event.pictureUrl}` : 'img/no_image.png')
-const formatDate = (eventDate: Date) => format(eventDate, "dd.MM.yyyy");
+const imgSource = computed(() => getImageUrlOrDefault(props.event?.pictureUrl))
 </script>

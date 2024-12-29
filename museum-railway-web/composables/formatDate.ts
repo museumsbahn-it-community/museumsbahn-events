@@ -5,7 +5,6 @@ export function formatDate(date: Date | undefined): string {
     if (date == undefined) {
         return "";
     }
-    // TODO: add hh:mm once the eventcollectors support fetching also the time
     return format(date, 'dd.MM.yyyy', {locale: de});
 }
 

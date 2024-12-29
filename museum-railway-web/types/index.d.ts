@@ -33,6 +33,8 @@ declare global {
         date: Date;
         url: string
         pictureUrl: string | undefined;
+        pictureAltText: string | undefined;
+        pictureCopyright: string | undefined;
         locomotiveType: string | undefined;
         locationId: string;
         operatorId: string;
