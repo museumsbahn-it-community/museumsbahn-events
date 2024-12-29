@@ -34,16 +34,13 @@ label {
   </div>
 </template>
 <script setup lang="ts">
-import {useGlobalConfigStore} from "~/stores/GlobalConfigStore.ts";
 import {EMPTY_EVENT_FILTERS, useEventListData} from "~/composables/eventListData.ts";
 import {buildQuery} from "~/composables/queryGenerator.ts";
 import {subDays} from "date-fns";
+import { useLocationsData } from "~/composables/locationsData";
+import { computed } from "vue";
 
 useI18n()
-const viewport = useViewport();
-const router = useRouter();
-const route = useRoute();
-const globalConfig = useGlobalConfigStore();
 
 interface StateOption {
 

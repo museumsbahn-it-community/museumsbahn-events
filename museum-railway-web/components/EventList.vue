@@ -13,7 +13,7 @@
       <h1 class="my-2">{{ eventGroup.label }}</h1>
       <div class="flex flex-row flex-wrap w-full justify-content-center">
         <div v-for="event in eventGroup.events"
-          class="m-2 flex flex-grow-1 justify-content-center event-card-flex-basis">
+          class="mb-2 md:m-2 flex flex-grow-1 justify-content-center event-card-flex-basis">
           <EventCard :event="event"></EventCard>
         </div>
       </div>
