@@ -61,7 +61,7 @@ class WackelsteinexpressCollector(val jsoupCrawler: JsoupCrawler) : MuseumRailwa
                 additionalData[SemanticKeys.DESCRIPTION] = description
             }
             if (imageUrl != null) {
-                additionalData[SemanticKeys.PICTUREURL] = imageUrl
+                additionalData[SemanticKeys.PICTURE_URL] = imageUrl
             }
             events.add(
                 createEvent(

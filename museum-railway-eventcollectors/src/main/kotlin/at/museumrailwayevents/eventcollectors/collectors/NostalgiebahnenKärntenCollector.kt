@@ -56,7 +56,7 @@ class NostalgiebahnenKärntenCollector(val jsoupCrawler: JsoupCrawler) : MuseumR
             additionalData[SemanticKeys.DESCRIPTION] = description
 
             if (imageUrl != null) {
-                additionalData[SemanticKeys.PICTUREURL] = "$imageUrlBase$imageUrl"
+                additionalData[SemanticKeys.PICTURE_URL] = "$imageUrlBase$imageUrl"
             }
 
             dates.forEach { date ->
