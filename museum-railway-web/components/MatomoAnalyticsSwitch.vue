@@ -23,8 +23,11 @@
     </p>
     <Button class="light-text" label="Analysedaten aktivieren" @click="forgetOptOut()"/>
   </div>
+  <p class="mt-3 text-xs">Hinweis: Wenn ihr einen Werbeblocker oder Skriptblocker benutzt kann es sein, dass fälschlicherweise "aktiviert" angezeigt wird, weil der Request zum Analysetool blockiert wird.</p>
 </template>
 <script setup lang="ts">
+import { onMounted, ref } from 'vue';
+
 
 const isUserOptedOut = ref(false);
 
