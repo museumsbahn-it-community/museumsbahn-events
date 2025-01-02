@@ -19,6 +19,7 @@ a.event-card {
   position: absolute;
   border-bottom-right-radius: variables.$border-radius-small;
   border-top-left-radius: variables.$border-radius-small;
+  z-index: 1;
 }
 </style>
 <template>
