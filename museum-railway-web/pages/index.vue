@@ -3,68 +3,67 @@
 @use "../assets/variables_impl" as variables;
 
 .image-text {
-  border-radius: 0 0 variables.$border-radius-small  variables.$border-radius-small;
-  background: rgba(0,0,0, 0.4);
+  border-radius: 0 0 variables.$border-radius-small variables.$border-radius-small;
+  background: rgba(0, 0, 0, 0.4);
   color: colors.$color-grauweiß;
 }
 
 .navigation-card-image {
   max-height: 300px;
 }
-
 </style>
 <template>
   <div class="flex flex-column h-full w-full align-items-center">
-    <div class="w-10 lg:w-7 flex flex-column gap-5">
-      <h1>Die Informationsseite für Museumsbahnen und Eisenbahnmuseen in Österreich</h1>
-
-      <p>
-        Auf museumsbahn-events.at findet ihr eine Übersicht über alles was mit historischen Eisenbahnen in Österreich zu
-        tun hat. Aktuelle Veranstaltungen, eine Übersicht über Eisenbahnmuseen in eurer Nähe und vieles mehr.
-      </p>
-
+    <div class="w-10 lg:w-7 flex flex-column mb-6 gap-3">
+      <div>
+        <h1>Die Informationsseite für Museumsbahnen und Eisenbahnmuseen in Österreich</h1>
+        <p>
+          Auf museumsbahn-events.at findet ihr eine Übersicht über alles was mit historischen Eisenbahnen in Österreich
+          zu
+          tun hat. Aktuelle Veranstaltungen, eine Übersicht über Eisenbahnmuseen in eurer Nähe und vieles mehr.
+        </p>
+      </div>
       <div class="flex align-items-center flex-column xl:flex-row gap-5">
         <div class="flex-grow-1">
           <NavigationImageCard image-alt-text="Ein Rundlokschuppen mit mehreren alten Dieselloks."
-                               router-link="locations"
-                               image-path="img/homepage/museums.jpg"
-                               text="Museen und Vereine">
+            router-link="locations" image-path="img/homepage/museums.jpg" text="Museen und Vereine">
           </NavigationImageCard>
         </div>
-
         <div class="flex-grow-1">
-          <NavigationImageCard image-alt-text="Ein Screenshot einer Karte mit Marker Pins."
-                               router-link="locationMap"
-                               image-path="img/homepage/map.jpg"
-                               text="Übersichtskarte">
+          <NavigationImageCard image-alt-text="Ein Screenshot einer Karte mit Marker Pins." router-link="locationMap"
+            image-path="img/homepage/map.jpg" text="Übersichtskarte">
           </NavigationImageCard>
         </div>
-
         <div class="flex-grow-1">
-          <NavigationImageCard image-alt-text="Eine Dampflokomotive fährt Tender voraus."
-                               router-link="events"
-                               image-path="img/homepage/events.jpg"
-                               text="Veranstaltungen">
+          <NavigationImageCard image-alt-text="Eine Dampflokomotive fährt Tender voraus." router-link="events"
+            image-path="img/homepage/events.jpg" text="Veranstaltungen">
           </NavigationImageCard>
         </div>
       </div>
-
-
-      <div>
+      <div class="my-2">
         <InlineMessage severity="info"> Achtung! Die Daten auf dieser Webseite werden automatisch erfasst und nicht
           manuell geprüft.
           Abfahrtszeiten und aktuelle Informationen bitte immer auf den Webseiten der jeweiligen Veranstalter
           kontrollieren!
         </InlineMessage>
       </div>
+      <h2>Veranstaltungen in den nächsten 7 Tagen</h2>
+      <div class="flex flex-row flex-wrap p-2 bg-mittelgrau border-radius-small">
+        <FilteredEventsSmallCardList
+        :date-from="subDays(new Date(), 1)"
+        :date-to="addDays(new Date(), 7)"
+        card-class="w-full lg:w-6 p-1"
+        >
+        </FilteredEventsSmallCardList>
+      </div>
+      <div class="flex w-full align-items-center justify-content-center">
+        <RouterLink class="p-button p-button-outlined" to="/events">Alle Veranstaltungen anzeigen</RouterLink>
+      </div>
     </div>
   </div>
-
-
-  <ArticleList title="Neuigkeiten" :query="query" show-date></ArticleList>
 </template>
 <script setup lang="ts">
+import { subDays, addDays } from "date-fns";
+import FilteredEventsSmallCardList from "~/components/FilteredEventsSmallCardList.vue";
 import NavigationImageCard from "~/components/NavigationImageCard.vue";
-
-const query: QueryBuilderParams = {path: 'news', sort: [{date: -1}]};
 </script>

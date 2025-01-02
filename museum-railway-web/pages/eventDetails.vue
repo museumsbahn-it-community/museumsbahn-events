@@ -24,8 +24,8 @@
             <Sidebar class="mt-2 w-full" v-if="viewport.isLessThan('tablet')"
                 :title="`Weitere Veranstaltungen von ${locationName}`" side="center">
                 <div class="flex flex-column gap-2">
-                    <EventCardShort v-for="eventEntry in eventsForSameLocation" :event="eventEntry">
-                    </EventCardShort>
+                    <EventCardSmall v-for="eventEntry in eventsForSameLocation" :event="eventEntry">
+                    </EventCardSmall>
                 </div>
             </Sidebar>
         </div>
@@ -34,8 +34,8 @@
                 <Sidebar class="w-full lg:w-11" style="height: 80%;"
                     :title="`Weitere Veranstaltungen von ${locationName}`" side="right">
                     <div class="flex flex-column gap-2">
-                        <EventCardShort v-for="eventEntry in eventsForSameLocation" :event="eventEntry">
-                        </EventCardShort>
+                        <EventCardSmall v-for="eventEntry in eventsForSameLocation" :event="eventEntry">
+                        </EventCardSmall>
                     </div>
                 </Sidebar>
             </div>
@@ -48,7 +48,7 @@ import { useAsyncData } from 'nuxt/app';
 import { storeToRefs } from 'pinia';
 import { computed} from 'vue';
 import { useRoute } from 'vue-router';
-import EventCardShort from '~/components/EventCardSmall.vue';
+import EventCardSmall from '~/components/EventCardSmall.vue';
 import EventDetails from '~/components/EventDetails.vue';
 import { useEventsStore } from '~/stores/EventsStore';
 import { useLocationsStore } from '~/stores/LocationsStore';
