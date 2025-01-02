@@ -1,10 +1,6 @@
 <template>
-  <PageTitle title="Mitmachen"></PageTitle>
-  <PageContent>
-    <Card>
-      <template #content>
-        <ContentDoc path="mitmachen"/>
-      </template>
-    </Card>
-  </PageContent>
+  <ArticleList title="Mitmachen" :path="path"></ArticleList>
 </template>
+<script setup lang="ts">
+const path = "/participate"
+</script>

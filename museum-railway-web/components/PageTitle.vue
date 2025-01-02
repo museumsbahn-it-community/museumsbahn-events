@@ -1,5 +1,5 @@
 <template>
-  <div class="bg-white">
+  <div class="bg-achatgrau">
     <div class="h-3rem"></div>
     <LayoutHeaderBoxDiagonal class="w-11 lg:w-9">
       <div class="h-full w-full flex align-items-center">
