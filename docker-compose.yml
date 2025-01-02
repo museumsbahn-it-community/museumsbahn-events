@@ -85,7 +85,7 @@ services:
     networks:
       - traefik-router
   museum-railway-events-backend:
-    image: git.twatzl.eu/twatzl/museum-railway-events-backend
+    image: git.twatzl.eu/twatzl/museum-railway-events-backend:latest
     ports:
       - "8080:8080"
     environment:
@@ -101,7 +101,7 @@ services:
     networks:
       - traefik-router
   museum-railway-events-eventcollectors:
-    image: git.twatzl.eu/twatzl/museum-railway-events-eventcollectors
+    image: git.twatzl.eu/twatzl/museum-railway-events-eventcollectors:latest
     depends_on:
       - boudicca-eventdb
     ports:
@@ -109,11 +109,14 @@ services:
     networks:
       - traefik-router
   museum-railway-events-web:
-    image: git.twatzl.eu/twatzl/museum-railway-events-web
+    image: git.twatzl.eu/twatzl/museum-railway-events-web:latest
     depends_on:
       - boudicca-eventdb
       - boudicca-search
       #- museum-railway-events-backend
+    environment:
+      NUXT_BACKEND_API_PROXY_URL: "http://host.containers.internal:8080/"
+      NUXT_BOUDICCA_SEARCH_API_PROXY_URL: "http://host.containers.internal:8082/"
     labels:
       - "traefik.enable=true"
       - "traefik.docker.network=traefik-router"

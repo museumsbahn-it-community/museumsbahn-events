@@ -1,41 +1,20 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
 	$development: {
-		devtools: { enabled: true },
-		vite: {
-			server: {
-				proxy: {
-					'/searchApi': {
-						target: 'http://127.0.0.1:8082',
-						secure: false,
-						changeOrigin: true,
-						rewrite: (path) => path.replace(/^\/searchApi/, ''),
-					},
-					'/filtersFor': {
-						target: 'http://127.0.0.1:8082',
-						secure: false,
-						changeOrigin: true,
-						rewrite: (path) => path.replace(/^\/filtersFor/, ''),
-					},
-					'/api': {
-						target: 'http://127.0.0.1:8080',
-						secure: false,
-						changeOrigin: true,
-					},
-					'/imgcache': {
-						target: 'http://127.0.0.1:8080',
-						secure: false,
-						changeOrigin: true,
-					},
-				},
-			},
+		devtools: {
+			enabled: true,
+			timeline: {
+				enabled: true
+			}
 		},
+		sourcemap: true,
 	},
-
 	runtimeConfig: {
 		public: {
 			matomoBase: 'http://localhost:8100' // can be overridden by NUXT_PUBLIC_API_BASE environment variable
-		}
+		},
+		backendApiProxyUrl: 'http://127.0.0.1:8080',
+		boudiccaSearchApiProxyUrl: 'http://127.0.0.1:8082'
 	},
 
 	css: [
