@@ -10,6 +10,9 @@ export function buildQuery(filters: EventFilterSettings): string {
         const formattedDate = format(filters.toDate, "yyyy-MM-dd");
         queryParts.push(`"startDate" BEFORE "${formattedDate}"`);
     }
+    if (filters.locationId) {
+        queryParts.push(`"location_id" EQUALS "${filters.locationId}"`);
+    }
     const tagFilterParts: string[] = []
     filters.tagFilters.forEach((tagFilter) => {
         const tagOptions = tagFilter.options.map((opt) => `"${tagFilter.key}" CONTAINS "${opt}"`)

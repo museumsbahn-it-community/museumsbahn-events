@@ -22,7 +22,7 @@
   <div class="fill-page-height p-3">
     <div class="flex flex-row h-full bg-verkehrsrot p-3 border-radius-small">
       <ScrollPanel class="flex-column h-full lg:w-6 xxl:w-4 w-full">
-        <div v-for="location in locations">
+        <div v-for="location in allLocations">
           <Card>
             <template #title>
               <div class="flex flex-row mx-3 mt-3">
@@ -48,7 +48,7 @@
                   {{ location.location.state }}
                 </div>
                 <div class="my-4">
-                  <span>{{ locationsData.eventCountForId(location.locationId) }} Veranstaltungen gefunden</span>
+                  <span>{{ eventCounts[location.locationId] }} Veranstaltungen gefunden</span>
                 </div>
                 <div class="flex align-items-end w-full">
                   <div class="flex-grow-1"></div>
@@ -62,19 +62,36 @@
         </div>
       </ScrollPanel>
       <div class="flex-grow h-full w-full ml-5" v-if="viewport.isGreaterThan('tablet')">
-        <LocationMap :locations="locations" :highlighted-location="highlightedLocation"></LocationMap>
+        <LocationMap :locations="allLocations" :highlighted-location="highlightedLocation"></LocationMap>
       </div>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import EventCollectorIndicator from '~/components/EventCollectorIndicator.vue';
+import { useAsyncData, useLazyAsyncData, useRouter } from 'nuxt/app';
+import { computed, ref } from 'vue';
+import { useEventsStore } from '~/stores/EventsStore';
+import { useLocationsStore } from '~/stores/LocationsStore';
+import { storeToRefs } from 'pinia';
+const locationsStore = useLocationsStore();
+const eventsStore = useEventsStore();
+await useLazyAsyncData('locations', () => locationsStore.fetchLocations());
+await useAsyncData('events', () => eventsStore.fetchAllEvents());
+
 const viewport = useViewport();
+const {allLocations} = storeToRefs(locationsStore);
+const {eventCountForLocationId} = storeToRefs(eventsStore)
+const eventCounts = computed(() => {
+  const eventCountMap: {[key: string]: number} = {};
+  allLocations.value.forEach(location => {
+    const locationId = location.locationId;
+    const eventCount = eventCountForLocationId.value(locationId)
+    eventCountMap[locationId] = eventCount;
+  });
+  return eventCountMap
+})
 
-const locationsData = useLocationsData();
-
-const locations = locationsData.allLocations();
 const highlightedLocation = ref<MuseumLocation | undefined>(undefined);
 const router = useRouter();
 
@@ -88,12 +105,5 @@ function showLocationOnMap(location: MuseumLocation) {
   if (!viewport.isGreaterThan('tablet')) {
     router.push({name: 'locationMapDetails', params: {locationId: location.locationId}});
   }
-}
-
-onMounted(mounted);
-
-async function mounted(): Promise<void> {
-  await locationsData.loadLocations();
-  await locationsData.loadLocationEventsCount();
 }
 </script>

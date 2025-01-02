@@ -9,15 +9,14 @@
   </div>
 </template>
 <script setup lang="ts">
-const locationsData = useLocationsData()
-const locations = locationsData.allLocations();
+import { useAsyncData, useRoute, useRouter } from 'nuxt/app';
+import { useLocationsStore } from '~/stores/LocationsStore';
+
+const locationsStore = useLocationsStore()
+await useAsyncData('locations', () => locationsStore.fetchLocations());
+const locations = locationsStore.allLocations;
+
 const router = useRouter();
 const route = useRoute();
 const locationIdParam = route?.params?.locationId;
-
-onMounted(mounted);
-
-async function mounted(): Promise<void> {
-  await locationsData.loadLocations();
-}
 </script>

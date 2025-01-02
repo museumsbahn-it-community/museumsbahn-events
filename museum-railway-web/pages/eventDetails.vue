@@ -22,12 +22,12 @@
                 Event Details
             </EventDetails>
             <Sidebar class="mt-2 w-full" v-if="viewport.isLessThan('tablet')"
-                    :title="`Weitere Veranstaltungen von ${locationName}`" side="center">
-                    <div class="flex flex-column gap-2">
-                        <EventCardShort v-for="eventEntry in eventsForSameLocation" :event="eventEntry">
-                        </EventCardShort>
-                    </div>
-                </Sidebar>
+                :title="`Weitere Veranstaltungen von ${locationName}`" side="center">
+                <div class="flex flex-column gap-2">
+                    <EventCardShort v-for="eventEntry in eventsForSameLocation" :event="eventEntry">
+                    </EventCardShort>
+                </div>
+            </Sidebar>
         </div>
         <div class="col-2 flex flex-1 content-right-column" v-if="viewport.isGreaterOrEquals('tablet')">
             <div class="w-full flex flex-column justify-content-center align-items-end overflow-hidden">
@@ -44,35 +44,37 @@
 </template>
 
 <script setup lang="ts">
-import { computed, onMounted } from 'vue';
-import { useRoute, useRouter } from 'vue-router';
+import { useAsyncData } from 'nuxt/app';
+import { storeToRefs } from 'pinia';
+import { computed} from 'vue';
+import { useRoute } from 'vue-router';
 import EventCardShort from '~/components/EventCardSmall.vue';
 import EventDetails from '~/components/EventDetails.vue';
-import { EMPTY_EVENT_FILTERS, useEventListData } from '~/composables/eventListData';
-import { useGlobalConfigStore } from '~/stores/GlobalConfigStore';
+import { useEventsStore } from '~/stores/EventsStore';
+import { useLocationsStore } from '~/stores/LocationsStore';
 
+const locationsStore = useLocationsStore();
+const eventsStore = useEventsStore();
+await useAsyncData('locations', () => locationsStore.fetchLocations());
+// we need to fetch all events, because we do not know the location in advance and we cannot just fetch by id :(
+await useAsyncData('events', () => eventsStore.fetchAllEvents());
 
-const router = useRouter();
 const route = useRoute();
 const viewport = useViewport();
 
-const eventKeyParam = route?.params?.eventKey;
-const eventListData = useEventListData();
-const selectedEvent = computed(() => eventListData.getEventByKey(eventKeyParam));
-const globalConfig = useGlobalConfigStore();
+const eventKeyParam = route?.params?.eventKey as string;
+const selectedEvent = computed(() => storeToRefs(eventsStore).getEventByKey.value(eventKeyParam));
 const locationName = computed(() => selectedEvent.value?.location?.name);
 
 const eventsForSameLocation = computed(() => {
     const locationId = selectedEvent.value?.locationId
-    const events = eventListData.filteredEvents.value.filter((event) => event.locationId === locationId)
+    if (locationId == null) {
+        return [];
+    }
+
+    const events = storeToRefs(eventsStore).eventsForLocationId.value(locationId);
     return events;
 })
-
-onMounted(loadData);
-
-async function loadData(): Promise<void> {
-    await eventListData.loadEvents(EMPTY_EVENT_FILTERS);
-}
 
 const noEventSelectedPlaceholderText = "Leider konnte die Veranstaltung nicht gefunden werden."
 </script>

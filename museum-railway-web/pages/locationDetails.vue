@@ -9,24 +9,20 @@
   </div>
 </template>
 <script setup lang="ts">
-import {subDays} from "date-fns";
+import { useAsyncData, useRoute } from "nuxt/app";
+import { storeToRefs } from "pinia";
+import { useEventsStore } from "~/stores/EventsStore";
+import { useLocationsStore } from "~/stores/LocationsStore";
 
-const router = useRouter();
+const locationsStore = useLocationsStore();
+const eventsStore = useEventsStore();
+
 const route = useRoute();
-const globalConfig = useGlobalConfigStore();
-const locationData = useLocationsData();
-const eventsData = useEventListData();
-const locationId = route?.params?.locationId;
-const museumLocation = locationData.locationById(locationId);
-const events = eventsData.filteredEventsGroupedByMonth;
+const locationId = route?.params?.locationId as string;
 
-onMounted(mounted);
+await useAsyncData('locations', () => locationsStore.fetchLocations());
+await useAsyncData('events', () => eventsStore.fetchEventsForLocation(locationId));
 
-async function mounted(): Promise<void> {
-  await locationData.loadLocations();
-  await eventsData.loadEvents({
-    fromDate: subDays(new Date(), 1),
-    tagFilters: [{key: "location_id", options: [locationId]}]
-  });
-}
+const museumLocation = locationsStore.locationById(locationId);
+const events = storeToRefs(eventsStore).filteredEventsGroupedByMonth;
 </script>

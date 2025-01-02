@@ -1,14 +1,15 @@
+import { useNuxtApp } from 'nuxt/app';
 import {defineStore} from 'pinia';
 
 interface LocationsState {
     locations: MuseumLocation[];
-    eventCounts: Map<string, number>,
+    locationsFetched: boolean,
 }
 
 export const useLocationsStore = defineStore('locations', {
     state: (): LocationsState => ({
         locations: [],
-        eventCounts: new Map<string, number>(),
+        locationsFetched: false,
     }),
     getters: {
         allLocations(state): MuseumLocation[] {
@@ -28,18 +29,20 @@ export const useLocationsStore = defineStore('locations', {
                 }
             }
         },
-        eventCountForId(state: LocationsState): (locationId: string) => number {
-            return (locationId: string) => {
-                return state.eventCounts.get(locationId) ?? 0;
-            }
-        }
     },
     actions: {
-        setLocations(locations: MuseumLocation[]) {
-            this.locations = locations
+        async fetchLocations(): Promise<MuseumLocation[]> {
+            if (this.locationsFetched) {
+                // location data changes almost never, so there is no need to
+                // refetch it everytime the user navigates within the app
+                return this.locations;
+            }
+            const {$museumRailwayBackendApi} = useNuxtApp()
+            this.locations =  await $museumRailwayBackendApi('/api/location', {})
+                .catch(e => console.error("error loading locations: ",e));
+                
+            this.locationsFetched = true;
+            return this.locations;
         },
-        setLocationEventCounts(eventCounts: Map<string, number>) {
-            this.eventCounts = eventCounts;
-        }
     },
 });
