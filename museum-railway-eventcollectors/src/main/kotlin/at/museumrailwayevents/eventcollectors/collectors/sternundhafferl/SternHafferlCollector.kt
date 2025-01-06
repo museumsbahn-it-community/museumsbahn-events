@@ -137,6 +137,7 @@ abstract class SternHafferlCollector(
                 SemanticKeys.RECURRENCE_TYPE to RecurrenceType.RARELY,
                 SemanticKeys.TAGS to TAGS_MUSEUM_EVENT.toTagsValue(),
                 SemanticKeys.PICTURE_URL to event.featured_image_url,
+                SemanticKeys.PICTURE_COPYRIGHT to "Stern & Hafferl",
                 SemanticKeys.URL to event.url,
                 SemanticKeys.ADDITIONAL_EVENTS_URL to url,
             ),
