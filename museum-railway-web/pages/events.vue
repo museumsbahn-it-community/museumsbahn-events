@@ -13,12 +13,9 @@
   </div>
 </template>
 <script setup lang="ts">
-import { subDays } from "date-fns";
-import { ref } from "vue";
 import { useEventsStore } from "~/stores/EventsStore";
 import { useLocationsStore } from "~/stores/LocationsStore";
-import { useAsyncData } from "nuxt/app";
-import { storeToRefs } from "pinia";
+import { useAsyncData, useState } from "nuxt/app";
 
 useI18n()
 
@@ -34,9 +31,5 @@ const eventsStore = useEventsStore();
 await useAsyncData('locations', () => locationsStore.fetchLocations());
 await useAsyncData('events', () => eventsStore.fetchAllEvents());
 
-const selectedStates = ref<StateOption[]>([]);
-const dates = ref<Date[]>([subDays(new Date(), 1)]);
-
-const events = storeToRefs(eventsStore).filteredEventsGroupedByMonth;
-
+const events = useState('filtered-events', () => eventsStore.filteredEventsGroupedByMonth);
 </script>

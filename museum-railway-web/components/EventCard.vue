@@ -28,7 +28,7 @@ a.event-card {
       <!-- info corner -->
       <div class="bg-mittelgrau flex flex-column p-2 event-info-corner">
         <span v-if="event.eventCategory != null">{{ $t(event.eventCategory) }}</span>
-        <span>{{ formatDate(event.date) }}</span>
+        <span><NuxtTime :datetime="event.date" year="numeric" month="numeric" day="numeric" locale="de-AT" timeZone="Europe/Vienna"/></span>
       </div>
       <!-- image -->
       <div class="flex-shrink-1">
@@ -47,9 +47,6 @@ a.event-card {
 </template>
 <script setup lang="ts">
 import { eventKey } from '~/model/util.ts';
-import { formatDate } from '~/composables/formatDate';
-import { computed } from 'vue';
-import { getImageUrlOrDefault } from '~/composables/eventImage';
 import EventImage from './EventImage.vue';
 
 const props = defineProps<{
@@ -57,5 +54,4 @@ const props = defineProps<{
 }>()
 
 useI18n();
-const imgSource = computed(() => getImageUrlOrDefault(props.event?.pictureUrl))
 </script>

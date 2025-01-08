@@ -29,11 +29,11 @@ a.event-card-small {
       <!-- image -->
       <div v-if="event.pictureUrl" class="event-card-image">
         <Image :src="imgSource" :alt="imgAltText" class="h-full"
-          image-class="h-full object-fit-cover" />
+          image-class="h-full w-full object-fit-cover" />
       </div>
       <!-- summary -->
       <div class="flex flex-column justify-content-center p-2">
-        <div class="m-1">{{ formatDate(event.date) }}</div>
+        <div class="m-1"><NuxtTime :datetime="event.date" year="numeric" month="numeric" day="numeric" locale="de-AT" timeZone="Europe/Vienna"/></div>
         <h2 class="event-title m-1">{{ event.name }}</h2>
       </div>
     </div>

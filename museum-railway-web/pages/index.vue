@@ -50,8 +50,8 @@
       <h2>Veranstaltungen in den nächsten 7 Tagen</h2>
       <div class="flex flex-row flex-wrap p-2 bg-mittelgrau border-radius-small">
         <FilteredEventsSmallCardList
-        :date-from="subDays(new Date(), 1)"
-        :date-to="addDays(new Date(), 7)"
+        :date-from="yesterday"
+        :date-to="in7Days"
         card-class="w-full lg:w-6 p-1"
         >
         </FilteredEventsSmallCardList>
@@ -64,6 +64,13 @@
 </template>
 <script setup lang="ts">
 import { subDays, addDays } from "date-fns";
+import { callOnce, useState } from "nuxt/app";
+import { computed } from "vue";
 import FilteredEventsSmallCardList from "~/components/FilteredEventsSmallCardList.vue";
 import NavigationImageCard from "~/components/NavigationImageCard.vue";
+
+const currentDate = useState<Date>('current-date', () => new Date())
+
+const yesterday = computed(() => subDays(currentDate.value, 1))
+const in7Days = computed(() => addDays(currentDate.value, 7))
 </script>

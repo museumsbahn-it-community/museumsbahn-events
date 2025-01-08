@@ -1,6 +1,7 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
 	$development: {
+		debug: true,
 		devtools: {
 			enabled: true,
 			timeline: {
@@ -13,8 +14,8 @@ export default defineNuxtConfig({
 		public: {
 			matomoBase: 'http://localhost:8100' // can be overridden by NUXT_PUBLIC_API_BASE environment variable
 		},
-		backendApiProxyUrl: 'http://127.0.0.1:8080',
-		boudiccaSearchApiProxyUrl: 'http://127.0.0.1:8082'
+		backendApiProxyUrl: 'http://localhost:3050',
+		boudiccaSearchApiProxyUrl: 'http://localhost:3050'
 	},
 
 	css: [
@@ -30,6 +31,7 @@ export default defineNuxtConfig({
 		'nuxt-viewport',
 		'nuxt-primevue',
 		'nuxt-open-fetch',
+		'nuxt-time'
 	],
 
 	content: {
@@ -67,5 +69,5 @@ export default defineNuxtConfig({
 		},
 	},
 
-	compatibilityDate: '2024-12-30'
+	compatibilityDate: '2025-01-02'
 });

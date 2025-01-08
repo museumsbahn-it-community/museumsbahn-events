@@ -1,6 +1,6 @@
 import {defineStore} from 'pinia';
 import {createLocationMap, eventKey, type LocationMap} from '../model/util';
-import {format, subDays} from 'date-fns';
+import {compareAsc, format, subDays} from 'date-fns';
 import {de} from 'date-fns/locale/de';
 import { mapBoudiccaEntriesToEvents } from '~/composables/eventListData';
 import { useNuxtApp } from 'nuxt/app';
@@ -117,6 +117,8 @@ export const useEventsStore = defineStore('events', {
                 body.query = query
             }
 
+            console.log("query: ", query)
+
             const queriedEvents = await queryEventsAndUpdateState(this, body);
             return queriedEvents;
         },
@@ -158,8 +160,6 @@ export const useEventsStore = defineStore('events', {
     },
 });
 
-
-
 async function queryEventsAndUpdateState(state: EventsState,body: { query: string | undefined; size: number; }): Promise<MuseumEvent[]> {
     const {$boudiccaSearchApi} = useNuxtApp()
     const locationsStore = useLocationsStore();
@@ -172,7 +172,7 @@ async function queryEventsAndUpdateState(state: EventsState,body: { query: strin
     const queriedEvents = mapBoudiccaEntriesToEvents(eventsResponse.result, locationMap);
     // while we do not yet have it, we should keep track of the total events property to enable pagingation later on
     state.totalEvents = eventsResponse.totalResults;
-    state.queriedEvents = queriedEvents;
+    state.queriedEvents = queriedEvents.sort((a,b) => compareAsc(a.date, b.date));
     state.eventsLoaded = queriedEvents.length;
     state.allEventsFetched = true;
     return queriedEvents;
@@ -186,10 +186,12 @@ function mapBoudiccaEntriesToEvents(entries: Entry[], locations: LocationMap): M
         const museumLocation = locations[locationId];
         const url = value[SemanticKeys.SOURCES];
 
+        const startDateKeys = Object.keys(value).filter(val => val.startsWith(SemanticKeys.STARTDATE));
+
         return {
             name: value[SemanticKeys.NAME],
             eventCategory: value[SemanticKeys.CATEGORY]?.toLowerCase(),
-            date: new Date(value[SemanticKeys.STARTDATE]),
+            date: new Date(value[startDateKeys[0]]),
             description: value[SemanticKeys.DESCRIPTION],
             pictureUrl: value[SemanticKeys.PICTUREURL],
             pictureAltText: value[SemanticKeys.PICTURE_ALT_TEXT],
