@@ -35,7 +35,7 @@ services:
     networks:
       - matomo
   boudicca-eventdb:
-    image: git.twatzl.eu/twatzl/boudicca-eventdb
+    image: docker.io/boudicca/eventdb:latest
     ports:
       - "8081:8080"
     environment:
@@ -51,7 +51,7 @@ services:
     networks:
       - traefik-router
   boudicca-search:
-    image: git.twatzl.eu/twatzl/boudicca-search
+    image: docker.io/boudicca/search:latest
     depends_on:
       - boudicca-eventdb
     environment:
@@ -62,10 +62,11 @@ services:
     labels:
       - "traefik.enable=true"
       - "traefik.docker.network=traefik-router"
-      - "traefik.http.routers.search.rule=PathPrefix(`/searchApi`)"
+      - "traefik.http.routers.search.rule=PathPrefix(`/api/search`)"
+      - "traefik.http.routers.search.priority=30"
       - "traefik.http.routers.search.entrypoints=web"
       - "traefik.http.routers.search.middlewares=admin-stripprefix"
-      - "traefik.http.middlewares.admin-stripprefix.stripprefix.prefixes=/searchApi"
+      - "traefik.http.middlewares.admin-stripprefix.stripprefix.prefixes=/api/search"
       - "traefik.http.services.search.loadbalancer.server.port=8080"
     networks:
       - traefik-router
@@ -96,6 +97,7 @@ services:
       - "traefik.enable=true"
       - "traefik.docker.network=traefik-router"
       - "traefik.http.routers.backend.rule=PathPrefix(`/api/`) || Path(`/imgcache`)"
+      - "traefik.http.routers.backend.priority=20"
       - "traefik.http.routers.backend.entrypoints=web"
       - "traefik.http.services.backend.loadbalancer.server.port=8080"
     networks:
@@ -115,13 +117,14 @@ services:
       - boudicca-search
       #- museum-railway-events-backend
     environment:
-      NUXT_BACKEND_API_PROXY_URL: "http://host.containers.internal:8080/"
-      NUXT_BOUDICCA_SEARCH_API_PROXY_URL: "http://host.containers.internal:8082/"
+      NUXT_BACKEND_API_PROXY_URL: "http://host.containers.internal:3050/"
+      NUXT_BOUDICCA_SEARCH_API_PROXY_URL: "http://host.containers.internal:3050/"
     labels:
       - "traefik.enable=true"
       - "traefik.docker.network=traefik-router"
       - "traefik.http.routers.frontend.rule=PathPrefix(`/`)"
       - "traefik.http.routers.frontend.entrypoints=web"
+      - "traefik.http.routers.frontend.priority=10"
       - "traefik.http.services.frontend.loadbalancer.server.port=3000"
     ports:
       - "3010:3000"
@@ -137,8 +140,8 @@ services:
     networks:
       - traefik-router
   reverse-proxy:
-    # The official v2 Traefik docker image
-    image: traefik:v2.10.7
+    # The official v3 Traefik docker image
+    image: traefik:v3.2.3
     restart: unless-stopped
     # needed to access docker socket on linux machines
     privileged: true
@@ -151,7 +154,8 @@ services:
       # this is needed as we did the --providers.docker.exposedbydefault=false
       - "traefik.enable=true"
       - "traefik.docker.network=traefik-router"
-      - "traefik.http.routers.traefik.rule=PathPrefix(`/dashboard`) || PathPrefix(`/api`) && !PathPrefix(`/api/location`)"
+      - "traefik.http.routers.traefik.rule=PathPrefix(`/dashboard`) || PathPrefix(`/api`)"
+      - "traefik.http.routers.traefik.priority=10"
       - "traefik.http.services.traefik.loadbalancer.server.port=3090"
       - "traefik.http.routers.traefik.service=api@internal"
     ports:
