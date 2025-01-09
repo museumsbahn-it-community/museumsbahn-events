@@ -9,8 +9,7 @@
   </div>
 </template>
 <script setup lang="ts">
-import { useAsyncData, useRoute } from "nuxt/app";
-import { storeToRefs } from "pinia";
+import { useAsyncData, useRoute, useState } from "nuxt/app";
 import { useEventsStore } from "~/stores/EventsStore";
 import { useLocationsStore } from "~/stores/LocationsStore";
 
@@ -24,5 +23,5 @@ await useAsyncData('locations', () => locationsStore.fetchLocations());
 await useAsyncData('events', () => eventsStore.fetchEventsForLocation(locationId));
 
 const museumLocation = locationsStore.locationById(locationId);
-const events = storeToRefs(eventsStore).filteredEventsGroupedByMonth;
+const events = useState(`location-${locationId}-events`, () => eventsStore.eventsForLocationIdGrouped(locationId))
 </script>

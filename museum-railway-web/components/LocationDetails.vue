@@ -1,6 +1,6 @@
 <template>
-  <div class="mx-2">
-    <div class="bg-verkehrsrot p-3 lg:p-5 border-radius-small">
+  <div class="mx-2 mt-2">
+    <div class="bg-mittelgrau p-3 lg:p-5 border-radius-small">
       <card v-if="museumLocation != undefined" class="p-5">
         <template #header>
           <h2>{{ museumLocation.name }}</h2>

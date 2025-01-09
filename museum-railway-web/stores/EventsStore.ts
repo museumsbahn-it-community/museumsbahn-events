@@ -82,6 +82,11 @@ export const useEventsStore = defineStore('events', {
                 return state.queriedEvents.filter((event) => event.locationId === locationId);
             }
         },
+        eventsForLocationIdGrouped(state: EventsState): (locationId: string) => MuseumEventGroup[] {
+            return (locationId: string) => {
+                return groupEventsByMonth(state.queriedEvents.filter((event) => event.locationId === locationId));
+            }
+        },
         eventCountForLocationId(state: EventsState): (locationId: string) => number {
             return (locationId: string) => {
                 return state.queriedEvents.filter((event) => event.locationId === locationId).length;
@@ -120,6 +125,7 @@ export const useEventsStore = defineStore('events', {
             console.log("query: ", query)
 
             const queriedEvents = await queryEventsAndUpdateState(this, body);
+            this.allEventsFetched = true;
             return queriedEvents;
         },
         async fetchEventsForLocation(locationId: string): Promise<MuseumEvent[]> {
@@ -174,7 +180,6 @@ async function queryEventsAndUpdateState(state: EventsState,body: { query: strin
     state.totalEvents = eventsResponse.totalResults;
     state.queriedEvents = queriedEvents.sort((a,b) => compareAsc(a.date, b.date));
     state.eventsLoaded = queriedEvents.length;
-    state.allEventsFetched = true;
     return queriedEvents;
 }
 

@@ -22,7 +22,7 @@
                 Event Details
             </EventDetails>
             <Sidebar class="mt-2 w-full" v-if="viewport.isLessThan('tablet')"
-                :title="`Weitere Veranstaltungen von ${locationName}`" side="center">
+                :title="`Weitere Veranstaltungen von ${location?.name}`" side="center">
                 <div class="flex flex-column gap-2">
                     <EventCardSmall v-for="eventEntry in eventsForSameLocation" :event="eventEntry">
                     </EventCardSmall>
@@ -32,7 +32,7 @@
         <div class="col-2 flex flex-1 content-right-column" v-if="viewport.isGreaterOrEquals('tablet')">
             <div class="w-full flex flex-column justify-content-center align-items-end overflow-hidden">
                 <Sidebar class="w-full lg:w-11" style="height: 80%;"
-                    :title="`Weitere Veranstaltungen von ${locationName}`" side="right">
+                    :title="`Weitere Veranstaltungen von ${location?.name}`" side="right">
                     <div class="flex flex-column gap-2">
                         <EventCardSmall v-for="eventEntry in eventsForSameLocation" :event="eventEntry">
                         </EventCardSmall>
@@ -64,15 +64,16 @@ const viewport = useViewport();
 
 const eventKeyParam = route?.params?.eventKey as string;
 const selectedEvent = computed(() => storeToRefs(eventsStore).getEventByKey.value(eventKeyParam));
-const locationName = computed(() => selectedEvent.value?.location?.name);
+const locationId = computed(() => selectedEvent.value?.locationId)
+const location = computed(() => locationId.value == null ? null : locationsStore.locationById(locationId.value));
 
 const eventsForSameLocation = computed(() => {
-    const locationId = selectedEvent.value?.locationId
-    if (locationId == null) {
+    const locId = locationId.value
+    if (locId == null) {
         return [];
     }
 
-    const events = storeToRefs(eventsStore).eventsForLocationId.value(locationId);
+    const events = storeToRefs(eventsStore).eventsForLocationId.value(locId);
     return events;
 })
 
