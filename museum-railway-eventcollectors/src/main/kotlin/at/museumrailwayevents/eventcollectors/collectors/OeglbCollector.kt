@@ -14,11 +14,11 @@ abstract class OeglbCollector(
     val locomotiveType: String,
     operatorId: String,
     locationId: String,
-    url: String,
+    sourceUrl: String,
     tags: List<String> = emptyList(),
     locationName: String
 ) : MuseumRailwayEventCollector(
-    operatorId, locationId, url, tags, locationName
+    operatorId, locationId, sourceUrl, tags, locationName
 ) {
     protected fun collectSonderfahrten(baseUrl: String, sonderfahrtenUrl: String): List<Event> {
         val events = mutableListOf<Event>()
@@ -91,17 +91,16 @@ abstract class OeglbCollector(
     private fun createOeglbEvent(
         name: String,
         date: OffsetDateTime,
-        url: String,
+        eventUrl: String,
         description: String,
         recurrenceType: String,
     ) = createEvent(
-        name, date, additionalData = mutableMapOf(
-            SemanticKeys.CATEGORY to CATEGORY_MUSEUM_TRAIN,
-            SemanticKeys.URL to url,
+        name, date, eventUrl, additionalData = mutableMapOf(
+            SemanticKeys.CATEGORY to Category.MUSEUM_RAILWAY,
             SemanticKeys.RECURRENCE_TYPE to recurrenceType,
             SemanticKeys.REGISTRATION to Registration.TICKET,
             SemanticKeys.DESCRIPTION to description,
-            CommonKeys.LOCOMOTIVE_TYPE to locomotiveType,
+            CommonKeys.VEHICLE_TYPE to locomotiveType,
             SemanticKeys.TAGS to TAGS_NARROW_GAUGE.toTagsValue(),
         )
     )

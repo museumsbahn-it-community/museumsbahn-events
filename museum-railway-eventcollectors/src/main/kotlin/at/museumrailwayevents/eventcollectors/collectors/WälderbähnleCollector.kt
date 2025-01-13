@@ -13,14 +13,14 @@ import java.time.format.DateTimeFormatter
 import java.time.format.DateTimeFormatterBuilder
 import java.util.*
 
-val fahrplanUrl = "https://waelderbaehnle.at/fahrplanbetrieb-preise-2024"
-val sonderfahrtenUrl = "https://waelderbaehnle.at/aktuelles/veranstaltungskalender-2024"
+val fahrplanUrl = "https://waelderbaehnle.at/fahrplanbetrieb-preise-2025"
+val sonderfahrtenUrl = "https://waelderbaehnle.at/aktuelles/veranstaltungskalender-2025"
 
 class WälderbähnleCollector(val jsoupCrawler: JsoupCrawler) : MuseumRailwayEventCollector(
     operatorId = "waelderbaehnle",
     locationId = "waelderbaehnle",
     locationName = "Bregenzerwaldbahn Museumsbahn",
-    url = fahrplanUrl,
+    sourceUrl = fahrplanUrl,
 ) {
     val locale = Locale.GERMAN
     val dateFormatter = getWaelderbaehnleDateFormatter(locale)
@@ -40,6 +40,8 @@ class WälderbähnleCollector(val jsoupCrawler: JsoupCrawler) : MuseumRailwayEve
         // page is named 2022, but is actually 2023
         // 2024-01-02: ...and 2024 as well ;)
         // 2024-01-21: oh damn! They renamed it. (╯°□°）╯︵ ┻━┻
+        // 2025-01-15: they renamed it again this year, at least they are consistent
+        //             but I hope the Veranstaltungskalender will be published under the right url
         val document = jsoupCrawler.getDocument(fahrplanUrl)
 
         val timetables = document.select("div.timetable-wrapper")
@@ -60,7 +62,7 @@ class WälderbähnleCollector(val jsoupCrawler: JsoupCrawler) : MuseumRailwayEve
             .forEach { operatingDay ->
                 val eventTitle = "Bregenzerwaldbahn"
                 val departuresOnDay = operatingDay.value.sortedBy { it.startTime }
-                val firstDeparture = departuresOnDay.first
+                val firstDeparture = departuresOnDay.first()
 
                 var description = """
                     Fahrtag auf der Bregenzerwaldbahn.
@@ -73,15 +75,15 @@ class WälderbähnleCollector(val jsoupCrawler: JsoupCrawler) : MuseumRailwayEve
                     departuresOnDay.joinToString("\n") { "${it.startTime.format(departureTimeFormat)} ab ${it.station}" }
 
                 val additionalData = mutableMapOf(
-                    CommonKeys.LOCOMOTIVE_TYPE to departures.first().traction,
+                    CommonKeys.VEHICLE_TYPE to departures.first().traction,
                     CommonKeys.DESCRIPTION to "${description}${departureList}",
                     SemanticKeys.REGISTRATION to Registration.RESERVATION_RECOMMENDED,
                     SemanticKeys.URL to fahrplanUrl,
-                    SemanticKeys.CATEGORY to CATEGORY_MUSEUM_TRAIN,
+                    SemanticKeys.CATEGORY to Category.MUSEUM_RAILWAY,
                     SemanticKeys.TAGS to (TAGS_MUSEUM_RAILWAY_OPERATING + TAGS_NARROW_GAUGE).toTagsValue()
                 )
 
-                events.add(createEvent(eventTitle, firstDeparture.startTime, additionalData))
+                events.add(createEvent(eventTitle, firstDeparture.startTime, fahrplanUrl, additionalData))
             }
         return events
     }
@@ -105,8 +107,9 @@ class WälderbähnleCollector(val jsoupCrawler: JsoupCrawler) : MuseumRailwayEve
                     createEvent(
                         name,
                         date,
+                        sonderfahrtenUrl,
                         mutableMapOf(
-                            SemanticKeys.CATEGORY to CATEGORY_MUSEUM_TRAIN,
+                            SemanticKeys.CATEGORY to Category.SPECIAL_TRIP,
                             SemanticKeys.REGISTRATION to Registration.TICKET,
                             SemanticKeys.PICTURE_URL to imageUrl,
                             SemanticKeys.DESCRIPTION to description,

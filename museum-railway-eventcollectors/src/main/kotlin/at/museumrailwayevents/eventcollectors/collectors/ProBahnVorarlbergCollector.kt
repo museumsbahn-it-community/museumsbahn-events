@@ -1,10 +1,7 @@
 package at.museumrailwayevents.eventcollectors.collectors
 
 import at.museumrailwayevents.eventcollectors.collectors.util.toTagsValue
-import at.museumrailwayevents.model.conventions.CATEGORY_MUSEUM_TRAIN
-import at.museumrailwayevents.model.conventions.RecurrenceType
-import at.museumrailwayevents.model.conventions.Registration
-import at.museumrailwayevents.model.conventions.TAGS_MUSEUM_RAILWAY_SPECIAL_TRIP
+import at.museumrailwayevents.model.conventions.*
 import base.boudicca.SemanticKeys
 import base.boudicca.model.Event
 import net.fortuna.ical4j.data.CalendarBuilder
@@ -23,10 +20,10 @@ class ProBahnVorarlbergCollector : MuseumRailwayEventCollector(
     operatorId = "pbv",
     locationId = "pbv",
     locationName = "PROBAHN Vorarlberg",
-    url = "https://probahn-vlbg.at/sonderfahrten/liste/",
+    sourceUrl = "https://probahn-vlbg.at/sonderfahrten/liste/",
 ) {
     override fun collectEvents(): List<Event> {
-        val icsUrl = "$url?ical=1"
+        val icsUrl = "$sourceUrl?ical=1"
         return parseEventFromIcs(URI(icsUrl).toURL())
     }
 
@@ -50,6 +47,7 @@ class ProBahnVorarlbergCollector : MuseumRailwayEventCollector(
                 createEvent(
                     eventName,
                     eventStartDate,
+                    sourceUrl,
                     mutableMapOf
                         (
                         SemanticKeys.LOCATION_NAME to vEvent.location.value,
@@ -57,11 +55,12 @@ class ProBahnVorarlbergCollector : MuseumRailwayEventCollector(
                         SemanticKeys.DESCRIPTION to vEvent.description.value,
                         SemanticKeys.PICTURE_URL to eventImageUrl.toString(),
                         SemanticKeys.REGISTRATION to Registration.PRE_SALES_ONLY,
-                        SemanticKeys.CATEGORY to CATEGORY_MUSEUM_TRAIN,
+                        SemanticKeys.CATEGORY to Category.SPECIAL_TRIP,
+                        CommonKeys.VEHICLE_TYPE to VehicleType.ELECTRIC_TRAIN, // PBV only running electric as well
                         SemanticKeys.RECURRENCE_TYPE to RecurrenceType.ONCE,
                         "url.ics" to icsUrl.toString(),
                         "pbv.uid" to vEvent.uid.value,
-                        SemanticKeys.SOURCES to icsUrl.toString() + "\n" + url
+                        SemanticKeys.SOURCES to icsUrl.toString() + "\n" + sourceUrl
                     )
                 )
             }

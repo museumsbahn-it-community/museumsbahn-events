@@ -4,6 +4,7 @@ import at.museumrailwayevents.eventcollectors.collectors.util.toTagsValue
 import at.museumrailwayevents.eventcollectors.service.JsoupCrawler
 import at.museumrailwayevents.model.conventions.TAGS_MUSEUM_RAILWAY_OPERATING
 import at.museumrailwayevents.model.conventions.Tags
+import at.museumrailwayevents.model.conventions.VehicleType
 import base.boudicca.model.Event
 
 /**
@@ -19,7 +20,7 @@ class ReblausexpressCollector(jsoupCrawler: JsoupCrawler) : NoevogCollector(
 ) {
 
     val eventOverviewPageUrls = listOf(
-        Pair("https://www.reblausexpress.at/tickets-angebote-reb", Tags.LOCOMOTIVE_TYPE_DIESEL)
+        Pair("https://www.reblausexpress.at/tickets-angebote-reb", VehicleType.DIESEL_TRAIN)
     )
 
     override fun collectEvents(): List<Event> {

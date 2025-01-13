@@ -3,10 +3,7 @@ package at.museumrailwayevents.eventcollectors.collectors
 import at.museumrailwayevents.eventcollectors.collectors.dateParser.DateParser
 import at.museumrailwayevents.eventcollectors.collectors.dateParser.DateParser.fullDateRegexString
 import at.museumrailwayevents.eventcollectors.service.JsoupCrawler
-import at.museumrailwayevents.model.conventions.CATEGORY_MUSEUM_TRAIN
-import at.museumrailwayevents.model.conventions.CommonKeys
-import at.museumrailwayevents.model.conventions.RecurrenceType
-import at.museumrailwayevents.model.conventions.Registration
+import at.museumrailwayevents.model.conventions.*
 import base.boudicca.SemanticKeys
 import base.boudicca.model.Event
 import java.time.OffsetDateTime
@@ -100,19 +97,18 @@ abstract class NoevogCollector(
     private fun createNoevogEvent(
         name: String,
         date: OffsetDateTime,
-        url: String,
+        eventUrl: String,
         description: String,
         recurrenceType: String,
         locomotiveType: String,
         tags: String,
     ) = createEvent(
-        name, date, additionalData = mutableMapOf(
-            SemanticKeys.CATEGORY to CATEGORY_MUSEUM_TRAIN,
-            SemanticKeys.URL to url,
+        name, date, eventUrl, additionalData = mutableMapOf(
+            SemanticKeys.CATEGORY to Category.SPECIAL_TRIP,
             SemanticKeys.RECURRENCE_TYPE to recurrenceType,
             SemanticKeys.REGISTRATION to Registration.TICKET,
             SemanticKeys.DESCRIPTION to description,
-            CommonKeys.LOCOMOTIVE_TYPE to locomotiveType,
+            CommonKeys.VEHICLE_TYPE to locomotiveType,
             SemanticKeys.TAGS to tags,
         )
     )

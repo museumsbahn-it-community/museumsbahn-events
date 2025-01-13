@@ -14,7 +14,7 @@ class Mh6Collector(val jsoupCrawler: JsoupCrawler) : MuseumRailwayEventCollector
     operatorId = "mh6",
     locationId = "mh6_heizhaus_krumpe",
     locationName = "Verein Mh.6 Heizhaus Ober-Grafendorf und Krumpe",
-    url = "http://www.mh6.at/"
+    sourceUrl = "http://www.mh6.at/"
 ) {
     private val eventsUrl = "http://www.mh6.at/de/termine/"
 
@@ -45,14 +45,14 @@ class Mh6Collector(val jsoupCrawler: JsoupCrawler) : MuseumRailwayEventCollector
             val description = "$pageTitle\n\n${paragraphs.joinToString("\n")}"
             val imageUrl = eventPage.select("img").attr("src")
 
-            val date = DateParser.parseDate(eventEntry.dateString)
+            val startDate = DateParser.parseDate(eventEntry.dateString)
             val additionalData = mutableMapOf(
-                SemanticKeys.CATEGORY to CATEGORY_MUSEUM_TRAIN,
+                SemanticKeys.CATEGORY to Category.MUSEUM_RAILWAY, // normally for the Anheizen there is something going on at Krumpe
                 SemanticKeys.URL to eventUrl,
                 SemanticKeys.RECURRENCE_TYPE to RecurrenceType.RARELY,
                 SemanticKeys.REGISTRATION to Registration.TICKET,
                 SemanticKeys.DESCRIPTION to description,
-                CommonKeys.LOCOMOTIVE_TYPE to Tags.LOCOMOTIVE_TYPE_DIESEL, // EBFL is only running electric trains, right?
+                CommonKeys.VEHICLE_TYPE to VehicleType.DIESEL_TRAIN, // we filter out the steam trains before
                 SemanticKeys.TAGS to TAGS_NARROW_GAUGE.toTagsValue(),
                 SemanticKeys.ADDITIONAL_EVENTS_URL to eventsUrl,
             )
@@ -61,14 +61,7 @@ class Mh6Collector(val jsoupCrawler: JsoupCrawler) : MuseumRailwayEventCollector
                 additionalData[SemanticKeys.PICTURE_URL] = imageUrl
             }
 
-            events.add(
-                createEvent(
-                    eventName = eventEntry.title,
-                    startDate = date,
-                    additionalData = additionalData,
-                    url = eventUrl
-                )
-            )
+            events.add(createEvent(eventEntry.title, startDate, eventUrl, additionalData))
         }
 
         return events

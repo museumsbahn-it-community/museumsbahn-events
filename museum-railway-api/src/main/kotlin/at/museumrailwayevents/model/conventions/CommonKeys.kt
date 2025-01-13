@@ -6,7 +6,7 @@ object CommonKeys {
     const val LOCATION_ID = "location_id"
     const val OPERATOR_ID = "operator_id"
     const val LOCOMOTIVES = "locomotives"
-    const val LOCOMOTIVE_TYPE = "locomotive_type"
+    const val VEHICLE_TYPE = "locomotive_type"
     const val STATIONS = "stations"
     const val TIMETABLE = "timetable"
     const val DESCRIPTION = "description"

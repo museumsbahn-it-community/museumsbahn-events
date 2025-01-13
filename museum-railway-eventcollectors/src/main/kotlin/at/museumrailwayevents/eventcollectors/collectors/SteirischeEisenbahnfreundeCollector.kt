@@ -17,7 +17,7 @@ class SteirischeEisenbahnfreundeCollector(val jsoupCrawler: JsoupCrawler) : Muse
     private val locationIdSonderfahrten = "stef_sonderfahrten"
 
     override fun collectEvents(): List<Event> {
-        val document = jsoupCrawler.getDocument(url);
+        val document = jsoupCrawler.getDocument(sourceUrl);
         val eventList = document.select("div.q_list")
         val lines = eventList.select("p").eachText()
 
@@ -55,10 +55,11 @@ class SteirischeEisenbahnfreundeCollector(val jsoupCrawler: JsoupCrawler) : Muse
                     createEvent(
                         name,
                         date,
+                        sourceUrl,
                         mutableMapOf(
                             SemanticKeys.TAGS to TAGS_MUSEUM_RAILWAY_SPECIAL_TRIP.toTagsValue(),
                             SemanticKeys.DESCRIPTION to description,
-                            SemanticKeys.CATEGORY to CATEGORY_MUSEUM_TRAIN,
+                            SemanticKeys.CATEGORY to Category.SPECIAL_TRIP,
                             SemanticKeys.REGISTRATION to Registration.TICKET,
                         ),
                         locationIdSonderfahrten
@@ -70,10 +71,11 @@ class SteirischeEisenbahnfreundeCollector(val jsoupCrawler: JsoupCrawler) : Muse
                     createEvent(
                         name,
                         date,
+                        sourceUrl,
                         mutableMapOf(
                             SemanticKeys.TAGS to TAGS_MUSEUM_EVENT.toTagsValue(),
                             SemanticKeys.DESCRIPTION to description,
-                            SemanticKeys.CATEGORY to CATEGORY_RAILWAY_MUSEUM,
+                            SemanticKeys.CATEGORY to Category.RAILWAY_MUSEUM,
                             SemanticKeys.REGISTRATION to Registration.TICKET,
                         ),
                         locationIdSonderfahrten

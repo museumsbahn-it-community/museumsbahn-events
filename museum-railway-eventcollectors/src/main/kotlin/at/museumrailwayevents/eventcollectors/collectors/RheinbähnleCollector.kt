@@ -2,10 +2,7 @@ package at.museumrailwayevents.eventcollectors.collectors
 
 import at.museumrailwayevents.eventcollectors.collectors.util.toTagsValue
 import at.museumrailwayevents.eventcollectors.service.JsoupCrawler
-import at.museumrailwayevents.model.conventions.CATEGORY_MUSEUM_TRAIN
-import at.museumrailwayevents.model.conventions.RecurrenceType
-import at.museumrailwayevents.model.conventions.Registration
-import at.museumrailwayevents.model.conventions.TAGS_NARROW_GAUGE
+import at.museumrailwayevents.model.conventions.*
 import base.boudicca.SemanticKeys
 import base.boudicca.model.Event
 import org.jsoup.Jsoup
@@ -19,7 +16,7 @@ class RheinbähnleCollector(val jsoupCrawler: JsoupCrawler) : MuseumRailwayEvent
     operatorId = "rheinschauen",
     locationId = "rheinschauen",
     locationName = "Rhein-Schauen | Museum und Rheinbähnle",
-    url = "https://www.rheinschauen.at/museum-baehnle/fahrplan"
+    sourceUrl = "https://www.rheinschauen.at/museum-baehnle/fahrplan"
 ) {
     val beginString = "Beginn der Veranstaltung"
     val endString = "Ende der Veranstaltung"
@@ -28,7 +25,7 @@ class RheinbähnleCollector(val jsoupCrawler: JsoupCrawler) : MuseumRailwayEvent
     val baseUrl = "https://www.rheinschauen.at/"
 
     override fun collectEvents(): List<Event> {
-        val document = Jsoup.connect(url)
+        val document = Jsoup.connect(sourceUrl)
             .userAgent("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/114.0.0.0 Safari/537.36")
             .header(
                 "Accept",
@@ -68,12 +65,12 @@ class RheinbähnleCollector(val jsoupCrawler: JsoupCrawler) : MuseumRailwayEvent
                     SemanticKeys.ENDDATE to endTime.format(DateTimeFormatter.ISO_DATE_TIME),
                     SemanticKeys.TAGS to TAGS_NARROW_GAUGE.toTagsValue(),
                     SemanticKeys.REGISTRATION to Registration.PRE_SALES_ONLY,
-                    SemanticKeys.CATEGORY to CATEGORY_MUSEUM_TRAIN,
+                    SemanticKeys.CATEGORY to Category.MUSEUM_RAILWAY,
                     SemanticKeys.LOCATION_URL to "$baseUrl$link",
-                    SemanticKeys.ADDITIONAL_EVENTS_URL to url,
+                    SemanticKeys.ADDITIONAL_EVENTS_URL to sourceUrl,
                     SemanticKeys.RECURRENCE_TYPE to RecurrenceType.RARELY,
                 )
-                events.add(createEvent(title, startTime, additionalData))
+                events.add(createEvent(title, startTime, eventDetailsUrl, additionalData))
             } catch (ex: Exception) {
                 ex.printStackTrace()
             }

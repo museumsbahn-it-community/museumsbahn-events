@@ -19,7 +19,7 @@ class EbflCollector(val jsoupCrawler: JsoupCrawler) : MuseumRailwayEventCollecto
     operatorId = "ebfl",
     locationId = locationId_ebfl_museum,
     locationName = "EBFL",
-    url = "https://ebfl.at/"
+    sourceUrl = "https://ebfl.at/"
 ) {
     private val museumUrl = "https://ebfl.at/index.php/suedbahn-heizhaus/"
     private val suedbahnExpressUrl = "https://ebfl.at/index.php/suedbahn-express/"
@@ -54,7 +54,7 @@ class EbflCollector(val jsoupCrawler: JsoupCrawler) : MuseumRailwayEventCollecto
         eventUrls.forEach { eventUrls ->
             val eventUrl = eventUrls.first
 
-            if (!eventUrl.startsWith(url)) {
+            if (!eventUrl.startsWith(this.sourceUrl)) {
                 // only crawl sites on the same page
                 return@forEach
             }
@@ -74,13 +74,13 @@ class EbflCollector(val jsoupCrawler: JsoupCrawler) : MuseumRailwayEventCollecto
                 val dates = DateParser.parseAllDatesFrom(dateString)
                 val eventPictureUrl = eventUrls.second
                 val additionalData = mutableMapOf(
-                    SemanticKeys.CATEGORY to CATEGORY_MUSEUM_TRAIN,
+                    SemanticKeys.CATEGORY to Category.SPECIAL_TRIP,
                     SemanticKeys.URL to eventUrl,
                     SemanticKeys.PICTURE_URL to eventPictureUrl,
                     SemanticKeys.RECURRENCE_TYPE to RecurrenceType.ONCE,
                     SemanticKeys.REGISTRATION to Registration.PRE_SALES_ONLY,
                     SemanticKeys.DESCRIPTION to description,
-                    CommonKeys.LOCOMOTIVE_TYPE to Tags.LOCOMOTIVE_TYPE_ELECTRIC, // EBFL is only running electric trains, right?
+                    CommonKeys.VEHICLE_TYPE to VehicleType.ELECTRIC_TRAIN, // EBFL is only running electric trains, right?
                     SemanticKeys.TAGS to TAGS_MUSEUM_RAILWAY_SPECIAL_TRIP.toTagsValue(),
                     SemanticKeys.ADDITIONAL_EVENTS_URL to suedbahnExpressUrl,
                 )
@@ -90,6 +90,7 @@ class EbflCollector(val jsoupCrawler: JsoupCrawler) : MuseumRailwayEventCollecto
                         createEvent(
                             name,
                             date,
+                            eventUrl,
                             additionalData,
                             locationId_ebfl_suedbahn_express,
                             eventUrl

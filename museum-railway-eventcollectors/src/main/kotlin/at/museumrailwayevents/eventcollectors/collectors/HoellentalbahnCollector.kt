@@ -1,16 +1,16 @@
 package at.museumrailwayevents.eventcollectors.collectors
 
 import at.museumrailwayevents.eventcollectors.service.JsoupCrawler
-import at.museumrailwayevents.model.conventions.Tags
+import at.museumrailwayevents.model.conventions.VehicleType
 import base.boudicca.model.Event
 
 class HoellentalbahnCollector(jsoupCrawler: JsoupCrawler) : OeglbCollector(
     jsoupCrawler,
-    Tags.LOCOMOTIVE_TYPE_ELECTRIC,
+    VehicleType.ELECTRIC_TRAIN,
     operatorId = "oeglb",
     locationId = "hoellentalbahn",
     locationName = "Höllentalbahn",
-    url = "https://www.lokalbahnen.at/hoellentalbahn/"
+    sourceUrl = "https://www.lokalbahnen.at/hoellentalbahn/"
 ) {
 
     private val baseUrl = "https://www.lokalbahnen.at/"

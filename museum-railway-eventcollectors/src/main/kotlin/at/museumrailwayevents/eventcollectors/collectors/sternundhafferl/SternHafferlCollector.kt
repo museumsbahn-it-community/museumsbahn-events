@@ -18,14 +18,12 @@ import io.ktor.client.call.*
 import io.ktor.client.plugins.contentnegotiation.*
 import io.ktor.client.plugins.logging.*
 import io.ktor.client.request.*
-import io.ktor.events.*
 import io.ktor.http.*
 import io.ktor.serialization.kotlinx.json.*
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import kotlinx.serialization.json.Json
-import org.apache.commons.text.StringEscapeUtils
 import java.lang.Integer.parseInt
 import java.time.DayOfWeek
 import java.time.LocalDateTime
@@ -36,7 +34,7 @@ abstract class SternHafferlCollector(
     val locomotiveType: String,
     operatorId: String,
     locationId: String,
-    url: String,
+    sourceUrl: String,
     tags: List<String> = emptyList(),
     locationName: String,
     val eventJsonApiUrl: String,
@@ -44,7 +42,7 @@ abstract class SternHafferlCollector(
     val filterIncludeStrings: List<String> = emptyList(),
     val filterExcludeStrings: List<String> = emptyList()
 ) : MuseumRailwayEventCollector(
-    operatorId, locationId, url, tags, locationName
+    operatorId, locationId, sourceUrl, tags, locationName
 ) {
 
     protected fun collectEventsFromPage(url: String): List<Event> {
@@ -122,24 +120,25 @@ abstract class SternHafferlCollector(
     private fun createSternUndHafferlEvent(
         event: SternUndHafferlEvent,
         startDate: OffsetDateTime,
-        url: String
+        eventUrl: String
     ): Event {
         val description = getEnhancedDescription(event)
 
         return createEvent(
             event.parsedTitle,
             startDate,
+            eventUrl,
             mutableMapOf(
-                SemanticKeys.CATEGORY to CATEGORY_MUSEUM_TRAIN,
+                SemanticKeys.CATEGORY to Category.SPECIAL_TRIP,
                 SemanticKeys.REGISTRATION to Registration.TICKET,
                 SemanticKeys.DESCRIPTION to description,
-                CommonKeys.LOCOMOTIVE_TYPE to locomotiveType,
+                CommonKeys.VEHICLE_TYPE to locomotiveType,
                 SemanticKeys.RECURRENCE_TYPE to RecurrenceType.RARELY,
                 SemanticKeys.TAGS to TAGS_MUSEUM_EVENT.toTagsValue(),
                 SemanticKeys.PICTURE_URL to event.featured_image_url,
-                SemanticKeys.PICTURE_COPYRIGHT to "Stern & Hafferl",
+                SemanticKeys.PICTURE_COPYRIGHT to "© Stern & Hafferl",
                 SemanticKeys.URL to event.url,
-                SemanticKeys.ADDITIONAL_EVENTS_URL to url,
+                SemanticKeys.ADDITIONAL_EVENTS_URL to eventUrl,
             ),
         )
     }

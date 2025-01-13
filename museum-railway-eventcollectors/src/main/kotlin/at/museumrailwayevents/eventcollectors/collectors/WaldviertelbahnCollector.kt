@@ -4,6 +4,7 @@ import at.museumrailwayevents.eventcollectors.collectors.util.toTagsValue
 import at.museumrailwayevents.eventcollectors.service.JsoupCrawler
 import at.museumrailwayevents.model.conventions.TAGS_NARROW_GAUGE
 import at.museumrailwayevents.model.conventions.Tags
+import at.museumrailwayevents.model.conventions.VehicleType
 import base.boudicca.model.Event
 
 /**
@@ -19,8 +20,8 @@ class WaldviertelbahnCollector(jsoupCrawler: JsoupCrawler) : NoevogCollector(
 ) {
 
     val eventOverviewPageUrls = listOf(
-        Pair("https://www.waldviertelbahn.at/nostalgie-diesel-1",Tags.LOCOMOTIVE_TYPE_DIESEL),
-        Pair("https://www.waldviertelbahn.at/nostalgie-dampf", Tags.LOCOMOTIVE_TYPE_STEAM)
+        Pair("https://www.waldviertelbahn.at/nostalgie-diesel-1", VehicleType.DIESEL_TRAIN),
+        Pair("https://www.waldviertelbahn.at/nostalgie-dampf", VehicleType.STEAM_TRAIN)
     )
 
 

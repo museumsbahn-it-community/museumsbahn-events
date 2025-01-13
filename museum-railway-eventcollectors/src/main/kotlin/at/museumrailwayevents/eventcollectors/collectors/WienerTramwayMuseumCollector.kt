@@ -12,18 +12,18 @@ class WienerTramwayMuseumCollector(private val jsoupCrawler: JsoupCrawler) : Mus
     operatorId = "wtm",
     locationId = "wtm",
     locationName = "Wiener Tramway Museum",
-    url = "https://tram.at/"
+    sourceUrl = "https://tram.at/"
 ) {
     override fun collectEvents(): List<Event> {
-        val document = jsoupCrawler.getDocument(url)
+        val document = jsoupCrawler.getDocument(sourceUrl)
         val events = mutableListOf<Event>()
 
         val newsBlock = document.select("div:has(> div > div > h2:contains(Aktuelles)) + div")
         val eventArticles = newsBlock.select("article")
 
         eventArticles.forEach { eventArticleEntry ->
-            val detailsUrl = eventArticleEntry.select("a").attr("href")
-            val detailsPage = jsoupCrawler.getDocument(detailsUrl)
+            val eventUrl = eventArticleEntry.select("a").attr("href")
+            val detailsPage = jsoupCrawler.getDocument(eventUrl)
             val name = detailsPage.select("h2").text()
             val dateString1 = detailsPage.select("h1").text()
             val dateString2 = detailsPage.select("h2+h3").text()
@@ -34,18 +34,19 @@ class WienerTramwayMuseumCollector(private val jsoupCrawler: JsoupCrawler) : Mus
             val dates = DateParser.parseAllDatesFrom(dateString)
 
             val description = detailsPage.select("h2 ~ p,ul,h3").eachText().joinToString("\n")
-            val imageUrl = URI(url + eventArticleEntry.select("img").attr("src")).toString()
+            val imageUrl = URI(sourceUrl + eventArticleEntry.select("img").attr("src")).toString()
 
             dates.forEach { date ->
                 events.add(
                     createEvent(
                         name,
                         date,
+                        eventUrl,
                         mutableMapOf(
-                            SemanticKeys.CATEGORY to CATEGORY_MUSEUM_TRAIN,
+                            SemanticKeys.CATEGORY to Category.SPECIAL_TRIP,
                             SemanticKeys.REGISTRATION to Registration.TICKET,
                             SemanticKeys.DESCRIPTION to description,
-                            CommonKeys.LOCOMOTIVE_TYPE to Tags.LOCOMOTIVE_TYPE_TRAM,
+                            CommonKeys.VEHICLE_TYPE to VehicleType.TRAM,
                             SemanticKeys.RECURRENCE_TYPE to RecurrenceType.RARELY,
                             SemanticKeys.TAGS to TAGS_MUSEUM_EVENT.toTagsValue(),
                             SemanticKeys.PICTURE_URL to imageUrl,

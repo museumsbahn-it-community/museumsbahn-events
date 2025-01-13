@@ -1,16 +1,16 @@
 package at.museumrailwayevents.eventcollectors.collectors
 
 import at.museumrailwayevents.eventcollectors.service.JsoupCrawler
-import at.museumrailwayevents.model.conventions.Tags
+import at.museumrailwayevents.model.conventions.VehicleType
 import base.boudicca.model.Event
 
 class YbbstalbahnCollector(jsoupCrawler: JsoupCrawler) : OeglbCollector(
     jsoupCrawler,
-    Tags.LOCOMOTIVE_TYPE_DIESEL,
+    VehicleType.DIESEL_TRAIN, // jan 2025: i hope they will ever run the steamer again :D
     operatorId = "oeglb",
     locationId = "ybbstalbahn",
     locationName = "Ybbstalbahn Bergstrecke",
-    url = "https://www.lokalbahnen.at/bergstrecke/"
+    sourceUrl = "https://www.lokalbahnen.at/bergstrecke/"
 ) {
 
     private val baseUrl = "https://www.lokalbahnen.at/"

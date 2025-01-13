@@ -24,10 +24,12 @@ private const val PLANFAHRTEN = "Planfahrten"
 
 class ErzbergbahnCollector : MuseumRailwayEventCollector(
     locationName = "Erzbergbahn",
-    url = "https://www.erzbergbahn.at/",
+    sourceUrl = "https://www.erzbergbahn.at/",
     locationId = "erzbergbahn",
     operatorId = "erzbergbahn"
 ) {
+
+    val eventOverviewUrl = "https://www.erzbergbahn.at/bahnfahrten-angebote/"
 
     // products -> https://shopping-experience-api.prod.regiondo.net/api/v1/products?includeInactive=true&tags=27511
     // times -> https://shopping-experience-api.prod.regiondo.net/api/v1/timeslots/times?productId=216864&numberOfMonths=12
@@ -87,11 +89,9 @@ class ErzbergbahnCollector : MuseumRailwayEventCollector(
                         try {
                             val title = product.title?.replace("Planfahrten", "Erzbergbahn Planfahrten") ?: locationName
                             val date = DateParser.parseIsoDate(day.key, timeEntry.key)
-                            val description = requireNotNull(product.description) {"no event description found for ${title}"}
+                            val description = requireNotNull(product.description) {"no event description found for $title"}
                             val pictureUrl = product.images.first().url
                             val pictureAltText = product.images.first().alt
-                            val registration = Registration.PRE_SALES_ONLY
-                            val category = CATEGORY_MUSEUM_TRAIN
                             val recurrence = if (title.contains(PLANFAHRTEN)) {
                                 RecurrenceType.REGULARLY
                             } else {
@@ -100,9 +100,9 @@ class ErzbergbahnCollector : MuseumRailwayEventCollector(
 
                             val additionalData = mutableMapOf(
                                 CommonKeys.DESCRIPTION to description,
-                                CommonKeys.LOCOMOTIVE_TYPE to Tags.LOCOMOTIVE_TYPE_DIESEL,
-                                SemanticKeys.REGISTRATION to registration,
-                                SemanticKeys.CATEGORY to category,
+                                CommonKeys.VEHICLE_TYPE to VehicleType.DIESEL_TRAIN,
+                                SemanticKeys.REGISTRATION to Registration.PRE_SALES_ONLY,
+                                SemanticKeys.CATEGORY to Category.MUSEUM_RAILWAY,
                                 SemanticKeys.RECURRENCE_TYPE to recurrence,
                                 SemanticKeys.TAGS to TAGS_MUSEUM_RAILWAY_OPERATING.toTagsValue(),
                             )
@@ -116,8 +116,9 @@ class ErzbergbahnCollector : MuseumRailwayEventCollector(
                             }
 
                             events.add(createEvent(
-                                title ?: locationName,
+                                title,
                                 date,
+                                eventOverviewUrl,
                                 additionalData
                             ))
                         } catch (ex: Exception) {

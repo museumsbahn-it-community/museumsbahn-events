@@ -18,16 +18,16 @@ class NostalgiebahnenKärntenCollector(val jsoupCrawler: JsoupCrawler) : MuseumR
     operatorId = operatorIdNbik,
     locationId = locationId_bahn,
     locationName = "Nostalgiebahnen in Kärnten",
-    url = "https://www.nostalgiebahn.at/termine.html"
+    sourceUrl = "https://www.nostalgiebahn.at/termine.html"
 ) {
     // these indicate durations and need special handling in the future
     val dateStringBlocklist = listOf(
-            "ab",
-            "bis"
+        "ab",
+        "bis"
     )
 
     override fun collectEvents(): List<Event> {
-        return collectTerminseite(url)
+        return collectTerminseite(sourceUrl)
     }
 
 
@@ -46,7 +46,8 @@ class NostalgiebahnenKärntenCollector(val jsoupCrawler: JsoupCrawler) : MuseumR
             }
 
             val dates = DateParser.parseAllDatesFrom(dateString)
-            var description = entry.select("div.textcontainer").filter { elem -> elem.children().select("h3").size > 0 }.first.text()
+            var description =
+                entry.select("div.textcontainer").filter { elem -> elem.children().select("h3").size > 0 }.first.text()
 
             // TODO: check if datestring has one of the blacklisted keywords
 
@@ -61,11 +62,12 @@ class NostalgiebahnenKärntenCollector(val jsoupCrawler: JsoupCrawler) : MuseumR
 
             dates.forEach { date ->
                 events.add(
-                        createEvent(
-                                name,
-                                date,
-                                additionalData
-                        )
+                    createEvent(
+                        name,
+                        date,
+                        sourceUrl,
+                        additionalData
+                    )
                 )
             }
         }

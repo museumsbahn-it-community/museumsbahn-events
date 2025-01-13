@@ -12,10 +12,10 @@ class TramwaymuseumGrazCollector(private val jsoupCrawler: JsoupCrawler) : Museu
     operatorId = "tramwaymuseum_graz",
     locationId = "tramwaymuseum_graz",
     locationName = "Tramway Museum Graz",
-    url = "https://www.tramway-museum-graz.at/kalender/"
+    sourceUrl = "https://www.tramway-museum-graz.at/kalender/"
 ) {
     override fun collectEvents(): List<Event> {
-        val document = jsoupCrawler.getDocument(url)
+        val document = jsoupCrawler.getDocument(sourceUrl)
         val events = mutableListOf<Event>()
 
         val eventArticles = document.select("article.event")
@@ -28,29 +28,30 @@ class TramwaymuseumGrazCollector(private val jsoupCrawler: JsoupCrawler) : Museu
             val paymentsString = eventArticle.select("div.row:contains(location_on) div").text()
 
             val detailsUrlRaw = eventArticle.select("a:contains(Details)").attr("href")
-            val detailsUrl = if (detailsUrlRaw.startsWith("http")) {
+            val eventUrl = if (detailsUrlRaw.startsWith("http")) {
                 detailsUrlRaw
             } else {
-                URI(url + detailsUrlRaw).toString()
+                URI(sourceUrl + detailsUrlRaw).toString()
             }
             // TODO add caching
-            val detailsPage = jsoupCrawler.getDocument(detailsUrl)
+            val detailsPage = jsoupCrawler.getDocument(eventUrl)
             val descriptionBlock = detailsPage.select("div.row:contains(Beschreibung)")
             val description = descriptionBlock.select("p,ul,ol").eachText().joinToString("\n")
             val descriptionWithPayment = "$description\n$paymentsString"
-            val imageUrl = URI(url + eventArticle.select("img").attr("src")).toString()
+            val imageUrl = URI(sourceUrl + eventArticle.select("img").attr("src")).toString()
 
             dates.forEach { date ->
                 events.add(
                     createEvent(
                         name,
                         date,
+                        eventUrl,
                         mutableMapOf(
-                            SemanticKeys.CATEGORY to CATEGORY_RAILWAY_MUSEUM, // TODO improve category
+                            SemanticKeys.CATEGORY to Category.SPECIAL_TRIP,
                             SemanticKeys.REGISTRATION to Registration.PRE_SALES_ONLY, // sometimes also tickets on location
                             SemanticKeys.DESCRIPTION to descriptionWithPayment,
                             SemanticKeys.LOCATION_NAME to locationString,
-                            CommonKeys.LOCOMOTIVE_TYPE to Tags.LOCOMOTIVE_TYPE_TRAM,
+                            CommonKeys.VEHICLE_TYPE to VehicleType.TRAM,
                             SemanticKeys.RECURRENCE_TYPE to RecurrenceType.RARELY,
                             SemanticKeys.TAGS to TAGS_MUSEUM_EVENT.toTagsValue(),
                             SemanticKeys.PICTURE_URL to imageUrl,

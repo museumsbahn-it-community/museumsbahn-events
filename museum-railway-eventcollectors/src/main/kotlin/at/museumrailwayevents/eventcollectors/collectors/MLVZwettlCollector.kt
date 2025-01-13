@@ -1,7 +1,6 @@
 package at.museumrailwayevents.eventcollectors.collectors
 
 import at.museumrailwayevents.eventcollectors.collectors.dateParser.DateParser
-import at.museumrailwayevents.eventcollectors.collectors.util.addTags
 import at.museumrailwayevents.eventcollectors.collectors.util.keepLineBreaks
 import at.museumrailwayevents.eventcollectors.collectors.util.toTagsValue
 import at.museumrailwayevents.eventcollectors.service.JsoupCrawler
@@ -17,7 +16,7 @@ class MLVZwettlCollector(val jsoupCrawler: JsoupCrawler) : MuseumRailwayEventCol
     locationName = "Museums-Lokalbahnverein Zwettl"
 ) {
     override fun collectEvents(): List<Event> {
-        val document = jsoupCrawler.getDocument(url)
+        val document = jsoupCrawler.getDocument(sourceUrl)
             .keepLineBreaks(
             after = listOf("tr", "h3")
         )
@@ -46,19 +45,19 @@ class MLVZwettlCollector(val jsoupCrawler: JsoupCrawler) : MuseumRailwayEventCol
             val dateText = eventLines.first().text()
             val hasDate = DateParser.fullDateRegex.containsMatchIn(dateText)
             val eventImage = eventLines.first().select("img").attr("src")
-            var category = CATEGORY_MUSEUM_TRAIN
+            var category = Category.MUSEUM_RAILWAY
             var locomotiveType: String? = null
 
             if (eventImage.isMuseum()) {
-                category = CATEGORY_RAILWAY_MUSEUM
+                category = Category.RAILWAY_MUSEUM
             }
 
             if (eventImage.isSteam()) {
-                locomotiveType = Tags.LOCOMOTIVE_TYPE_STEAM
+                locomotiveType = VehicleType.STEAM_TRAIN
             }
 
             if (eventImage.isDiesel()) {
-                locomotiveType = Tags.LOCOMOTIVE_TYPE_DIESEL
+                locomotiveType = VehicleType.DIESEL_TRAIN
             }
 
             if (!hasDate) {
@@ -98,13 +97,14 @@ class MLVZwettlCollector(val jsoupCrawler: JsoupCrawler) : MuseumRailwayEventCol
                 )
 
                 if (locomotiveType != null) {
-                    additionalData.put(CommonKeys.LOCOMOTIVE_TYPE, locomotiveType)
+                    additionalData.put(CommonKeys.VEHICLE_TYPE, locomotiveType)
                 }
 
                 events.add(
                     createEvent(
                         eventName,
                         eventStart,
+                        sourceUrl,
                         additionalData,
                         locationId
                     )

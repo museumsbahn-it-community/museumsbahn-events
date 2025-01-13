@@ -9,18 +9,17 @@ import at.museumrailwayevents.eventcollectors.collectors.dateParser.DateParser.t
 import at.museumrailwayevents.eventcollectors.service.JsoupCrawler
 import base.boudicca.SemanticKeys
 import base.boudicca.model.Event
-import org.jsoup.Jsoup
 
 class OegegSchmalspurCollector(val jsoupCrawler: JsoupCrawler) : MuseumRailwayEventCollector(
     operatorId = "oegeg",
     locationId = "oegeg_schmalspur",
     locationName = "ÖGEG Steyrtalbahn",
-    url = "https://www.oegeg.at/termine/termine-schmalspur-steyrtalbahn/"
+    sourceUrl = "https://www.oegeg.at/termine/termine-schmalspur-steyrtalbahn/"
 ) {
     private val eventTitle = "Steyrtal Museumsbahn"
 
     override fun collectEvents(): List<Event> {
-        val document = jsoupCrawler.getDocument(url)
+        val document = jsoupCrawler.getDocument(sourceUrl)
         val eventBoxes = document.select("div.j-textWithImage")
 
         // dates on this website can be split having multiple dates in the same line
@@ -69,7 +68,7 @@ class OegegSchmalspurCollector(val jsoupCrawler: JsoupCrawler) : MuseumRailwayEv
                 additionalData[SemanticKeys.DESCRIPTION] = description
 
                 println("create event: ${eventTitle} - ${startDate}")
-                events.add(createEvent(eventTitle, startDate, additionalData))
+                events.add(createEvent(eventTitle, startDate, sourceUrl, additionalData))
             }
         }
 

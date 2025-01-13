@@ -3,6 +3,7 @@ package at.museumrailwayevents.eventcollectors.collectors
 import at.museumrailwayevents.eventcollectors.collectors.dateParser.DateParser
 import at.museumrailwayevents.eventcollectors.service.JsoupCrawler
 import at.museumrailwayevents.model.conventions.CommonKeys
+import at.museumrailwayevents.model.conventions.VehicleType
 import base.boudicca.SemanticKeys
 import base.boudicca.model.Event
 
@@ -22,12 +23,12 @@ class OegegShopCollector(val jsoupCrawler: JsoupCrawler) : MuseumRailwayEventCol
 
         val events = mutableListOf<Event>()
 
-        events.addAll(collectShopEvents(urlNormalspurTermine, locationId_bahn))
-        events.addAll(collectShopEvents(urlSchifffahrtsTermine, locationId_schiff))
+        events.addAll(collectShopEvents(urlNormalspurTermine, locationId_bahn, null))
+        events.addAll(collectShopEvents(urlSchifffahrtsTermine, locationId_schiff, VehicleType.SHIP))
         return events
     }
 
-    private fun collectShopEvents(url: String, locationId: String): MutableList<Event> {
+    private fun collectShopEvents(url: String, locationId: String, vehicleType: String?): MutableList<Event> {
         val document = jsoupCrawler.getDocument(url);
         val eventBoxes = document.select("div.hproduct")
 
@@ -50,7 +51,11 @@ class OegegShopCollector(val jsoupCrawler: JsoupCrawler) : MuseumRailwayEventCol
                     additionalData[SemanticKeys.PICTURE_URL] = pictureUrl
                 }
 
-                events.add(createEvent(title, date, additionalData, locationId, url))
+                if (vehicleType != null) {
+                    additionalData[CommonKeys.VEHICLE_TYPE] = vehicleType
+                }
+
+                events.add(createEvent(title, date, url, additionalData, locationId, url))
             }
         }
 

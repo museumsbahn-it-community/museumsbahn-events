@@ -2,6 +2,8 @@ package at.museumrailwayevents.eventcollectors.collectors
 
 import at.museumrailwayevents.eventcollectors.collectors.dateParser.DateParser
 import at.museumrailwayevents.eventcollectors.service.JsoupCrawler
+import at.museumrailwayevents.model.conventions.CommonKeys
+import at.museumrailwayevents.model.conventions.VehicleType
 import base.boudicca.SemanticKeys
 import base.boudicca.model.Event
 import org.jsoup.nodes.Document
@@ -11,11 +13,12 @@ class WackelsteinexpressCollector(val jsoupCrawler: JsoupCrawler) : MuseumRailwa
     operatorId = "wackelsteinexpress",
     locationId = "wackelsteinexpress",
     locationName = "Wackelsteinexpress",
-    url = "https://www.wackelsteinexpress.at/",
+    sourceUrl = "https://www.wackelsteinexpress.at/",
 ) {
     val locale = Locale.GERMAN
     val regularEventsUrl = "https://www.wackelsteinexpress.at/fahrplan/"
     val themenfahrtenUrl = "https://reservierung.wackelsteinexpress.at/"
+    val vehicleType = VehicleType.DIESEL_TRAIN // wackelsteinexpress faehrt nur Diesel
 
     override fun collectEvents(): List<Event> {
         val events = collectThemenfahrten(themenfahrtenUrl)
@@ -41,8 +44,8 @@ class WackelsteinexpressCollector(val jsoupCrawler: JsoupCrawler) : MuseumRailwa
         val events = mutableListOf<Event>()
         val content = document.select("li > a").toList().filter { it.select("h2").size > 0 }
         content.forEach { entry ->
-            val detailsUrl = entry.attr("href")
-            val detailsPage = jsoupCrawler.getDocument(detailsUrl)
+            val eventUrl = entry.attr("href")
+            val detailsPage = jsoupCrawler.getDocument(eventUrl)
             val textContent = detailsPage.selectFirst("h1")?.html()?.split("<br>")?.map { it.trim() }
             val imageUrl = detailsPage.selectFirst("img.wp-post-image")?.attr("src")
             val description = detailsPage.selectFirst("#tab-description")?.text()
@@ -63,10 +66,13 @@ class WackelsteinexpressCollector(val jsoupCrawler: JsoupCrawler) : MuseumRailwa
             if (imageUrl != null) {
                 additionalData[SemanticKeys.PICTURE_URL] = imageUrl
             }
+            additionalData[CommonKeys.VEHICLE_TYPE] = vehicleType
+
             events.add(
                 createEvent(
                     name,
                     date,
+                    eventUrl,
                     additionalData
                 )
             )
