@@ -1,9 +1,9 @@
 package at.museumrailwayevents.eventcollectors.collectors
 
 import at.museumrailwayevents.eventcollectors.collectors.dateParser.DateParser
+import at.museumrailwayevents.eventcollectors.collectors.dateParser.DateParser.parseAllTimesFrom
 import at.museumrailwayevents.eventcollectors.service.JsoupCrawler
-import at.museumrailwayevents.model.conventions.CommonKeys
-import at.museumrailwayevents.model.conventions.VehicleType
+import at.museumrailwayevents.model.conventions.*
 import base.boudicca.SemanticKeys
 import base.boudicca.model.Event
 import org.jsoup.nodes.Document
@@ -46,6 +46,7 @@ class WackelsteinexpressCollector(val jsoupCrawler: JsoupCrawler) : MuseumRailwa
         content.forEach { entry ->
             val eventUrl = entry.attr("href")
             val detailsPage = jsoupCrawler.getDocument(eventUrl)
+            println(eventUrl)
             val textContent = detailsPage.selectFirst("h1")?.html()?.split("<br>")?.map { it.trim() }
             val imageUrl = detailsPage.selectFirst("img.wp-post-image")?.attr("src")
             val description = detailsPage.selectFirst("#tab-description")?.text()
@@ -57,8 +58,21 @@ class WackelsteinexpressCollector(val jsoupCrawler: JsoupCrawler) : MuseumRailwa
             val name = textContent[0]
             // TODO: Sommerfahrten (jeden Mittwoch) are causing trouble here. need to fix.
             val date = DateParser.tryParseDate(textContent[1]) ?: return@forEach
+            val time = parseAllTimesFrom(textContent[2]).firstOrNull()
 
-            val additionalData = mutableMapOf<String, String>()
+            val dateTime = if (time == null) {
+                date
+            } else {
+                time.atDate(date.toLocalDate())
+            }
+
+            val additionalData = mutableMapOf(
+                CommonKeys.VEHICLE_TYPE to vehicleType,
+                SemanticKeys.REGISTRATION to Registration.PRE_SALES_ONLY,
+                SemanticKeys.RECURRENCE_TYPE to RecurrenceType.RARELY,
+                SemanticKeys.CATEGORY to Category.SPECIAL_TRIP,
+                SemanticKeys.TAGS to Tags.NARROW_GAUGE,
+            )
 
             if (description != null) {
                 additionalData[SemanticKeys.DESCRIPTION] = description
@@ -66,12 +80,11 @@ class WackelsteinexpressCollector(val jsoupCrawler: JsoupCrawler) : MuseumRailwa
             if (imageUrl != null) {
                 additionalData[SemanticKeys.PICTURE_URL] = imageUrl
             }
-            additionalData[CommonKeys.VEHICLE_TYPE] = vehicleType
 
             events.add(
                 createEvent(
                     name,
-                    date,
+                    dateTime,
                     eventUrl,
                     additionalData
                 )
