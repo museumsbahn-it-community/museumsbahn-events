@@ -17,7 +17,7 @@ class HoellentalbahnCollector(jsoupCrawler: JsoupCrawler) : OeglbCollector(
 
     private val fahrplanUrls = listOf(
         "https://www.lokalbahnen.at/hoellentalbahn/mitfahren/fahrplan/fahrplan-sommer/",
-        "https://www.lokalbahnen.at/hoellentalbahn/mitfahren/fahrplan/fahrplan-oktober/"
+        "https://www.lokalbahnen.at/hoellentalbahn/mitfahren/fahrplan/fahrplan-herbst/"
     )
 
     private val sonderfahrtenUrl = "https://www.lokalbahnen.at/hoellentalbahn/mitfahren/sonderveranstaltungen/"
