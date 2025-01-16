@@ -30,7 +30,12 @@ class ProBahnVorarlbergCollector : MuseumRailwayEventCollector(
     private fun parseEventFromIcs(icsUrl: URL): List<Event> {
         val formatter = DateTimeFormatter.ofPattern("yyyyMMdd'T'HHmmss")
         val daylongEventFormatter = DateTimeFormatter.ofPattern("yyyyMMdd")
-        icsUrl.openStream().use { inputStream ->
+        val icalStream = icsUrl.openStream()
+        if (icalStream.available() == 0) {
+            println("ProBahn Vorarlberg ics was empty")
+            return emptyList()
+        }
+        icalStream.use { inputStream ->
             val builder = CalendarBuilder()
             val calendar: Calendar = builder.build(inputStream)
             val components = calendar.components.filterIsInstance<VEvent>()

@@ -2,8 +2,7 @@ package at.museumrailwayevents.eventcollectors.collectors
 
 import at.museumrailwayevents.eventcollectors.collectors.dateParser.DateParser
 import at.museumrailwayevents.eventcollectors.service.JsoupCrawler
-import at.museumrailwayevents.model.conventions.CommonKeys
-import at.museumrailwayevents.model.conventions.VehicleType
+import at.museumrailwayevents.model.conventions.*
 import base.boudicca.SemanticKeys
 import base.boudicca.model.Event
 
@@ -54,6 +53,9 @@ class OegegShopCollector(val jsoupCrawler: JsoupCrawler) : MuseumRailwayEventCol
                 if (vehicleType != null) {
                     additionalData[CommonKeys.VEHICLE_TYPE] = vehicleType
                 }
+                additionalData[SemanticKeys.REGISTRATION] = Registration.PRE_SALES_ONLY
+                additionalData[SemanticKeys.CATEGORY] = Category.SPECIAL_TRIP
+                additionalData[SemanticKeys.RECURRENCE_TYPE] = RecurrenceType.ONCE
 
                 events.add(createEvent(title, date, url, additionalData, locationId, url))
             }
