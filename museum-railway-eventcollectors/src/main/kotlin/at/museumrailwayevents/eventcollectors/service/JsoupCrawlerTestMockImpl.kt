@@ -35,6 +35,7 @@ class JsoupCrawlerTestMockImpl(val overrideMap: Map<String, String>? = null) :
 
     val oeglbMap = mapOf(
         "https://www.lokalbahnen.at/hoellentalbahn/mitfahren/fahrplan/fahrplan-oktober/" to "oeglb/hoellentalbahn-fahrplan-oktober.html",
+        "https://www.lokalbahnen.at/hoellentalbahn/mitfahren/fahrplan/fahrplan-herbst/" to "oeglb/hoellentalbahn-fahrplan-oktober.html", // new url as of 2025
         "https://www.lokalbahnen.at/hoellentalbahn/mitfahren/fahrplan/fahrplan-sommer/" to "oeglb/hoellentalbahn-fahrplan-sommer.html",
         "https://www.lokalbahnen.at/hoellentalbahn/mitfahren/sonderveranstaltungen/lange-nacht-der-museen/" to "oeglb/hoellentalbahn-sonderveranstaltung-lange-nacht.html",
         "https://www.lokalbahnen.at/hoellentalbahn/mitfahren/sonderveranstaltungen/" to "oeglb/hoellentalbahn-sonderveranstaltungen.html",
@@ -113,9 +114,13 @@ class JsoupCrawlerTestMockImpl(val overrideMap: Map<String, String>? = null) :
         "https://atterseeschifffahrt.at/ausfluege-events/nostalgiezug-schiff/" to "sh_nostalgie_schiff.htm",
     )
 
+    val oesekMap = mapOf(
+        "https://eisenbahnmuseum-heizhaus.com/de/veranstaltungen" to "oesek_veranstaltungen.html",
+    )
+
     val pathMap = mapOf(
-        "https://waelderbaehnle.at/fahrplanbetrieb-preise-2024" to "bregenzerwaldbahn_fahrplan.html",
-        "https://waelderbaehnle.at/aktuelles/veranstaltungskalender-2024" to "bregenzerwaldbahn_veranstaltungskalender.html",
+        "https://waelderbaehnle.at/fahrplanbetrieb-preise-2025" to "bregenzerwaldbahn_fahrplan.html",
+        "https://waelderbaehnle.at/aktuelles/veranstaltungskalender-2025" to "bregenzerwaldbahn_veranstaltungskalender.html",
         "https://www.oegeg.at/termine/termine-normalspur-museum-lokpark-ampflwang/" to "oegeg_normalspur.htm",
         "https://www.oegeg.at/termine/termine-schifffahrt-dampfschiff-sch%C3%B6nbrunn/" to "oegeg_schifffahrt.htm",
         "https://www.oegeg.at/termine/termine-schmalspur-steyrtalbahn/" to "oegeg_schmalspurbahn.htm",
@@ -138,7 +143,7 @@ class JsoupCrawlerTestMockImpl(val overrideMap: Map<String, String>? = null) :
         "http://www.lokalbahnverein.at/deutsch/event.php" to "mlv_zwettl.htm",
     ) + wackelsteinexpressDetailsMap + oeglbMap + waldviertelbahnMap +
             reblausexpressMap + tramwaymuseumGraz + wienerTramwayMuseum +
-            sternHafferl
+            sternHafferl + oesekMap
 
 
     override fun getDocument(url: String): Document {

@@ -130,7 +130,9 @@ object DateParser {
     fun findSingleMonth(text: String): Month {
         val numericMonths = monthNumericRegex.findAll(text.lowercase())
         val writtenMonths = monthWrittenRegex.findAll(text.lowercase())
-        assert(numericMonths.count() == 1 || writtenMonths.count() == 1) { "there should be either one written month or one numeric month: $text" }
+        if (numericMonths.count() != 1 && writtenMonths.count() != 1) {
+            throw Exception("there should be either one written month or one numeric month: $text")
+        }
         return if (writtenMonths.count() == 1) {
             parseWrittenMonthFromMatch(writtenMonths.first())
         } else {

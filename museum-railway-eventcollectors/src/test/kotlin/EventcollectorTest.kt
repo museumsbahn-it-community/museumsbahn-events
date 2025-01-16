@@ -2,13 +2,10 @@ import assertk.assertThat
 import assertk.assertions.isEmpty
 import assertk.assertions.isEqualTo
 import at.museumrailwayevents.eventcollectors.collectors.*
-import at.museumrailwayevents.eventcollectors.collectors.sternundhafferl.AtterseeSchifffahrtCollector
-import at.museumrailwayevents.eventcollectors.collectors.sternundhafferl.AtterseebahnCollector
-import at.museumrailwayevents.eventcollectors.collectors.sternundhafferl.TraunseetramCollector
 import at.museumrailwayevents.eventcollectors.service.JsoupCrawlerTestMockImpl
-import at.museumrailwayevents.model.conventions.CATEGORY_MUSEUM_TRAIN
-import at.museumrailwayevents.model.conventions.CATEGORY_RAILWAY_MUSEUM
+import at.museumrailwayevents.model.conventions.Category
 import at.museumrailwayevents.model.conventions.Tags
+import at.museumrailwayevents.model.conventions.VehicleType
 import base.boudicca.SemanticKeys
 import org.junit.jupiter.api.Test
 import java.time.Month
@@ -139,13 +136,13 @@ class EventcollectorTest {
         val events = eventcollector.collectEvents()
         assertThat(events.size).isEqualTo(expectedNumberOfEvents)
 
-        assertThat(events.filter { it.data.containsValue(CATEGORY_MUSEUM_TRAIN) }.size).isEqualTo(6)
-        assertThat(events.filter { it.data.containsValue(CATEGORY_RAILWAY_MUSEUM) }.size).isEqualTo(4)
-        assertThat(events.filter { it.data.containsValue(Tags.LOCOMOTIVE_TYPE_STEAM) }.size).isEqualTo(5)
+        assertThat(events.filter { it.data.containsValue(Category.MUSEUM_RAILWAY) }.size).isEqualTo(6)
+        assertThat(events.filter { it.data.containsValue(Category.RAILWAY_MUSEUM) }.size).isEqualTo(4)
+        assertThat(events.filter { it.data.containsValue(VehicleType.STEAM_TRAIN) }.size).isEqualTo(5)
     }
 
     @Test
-    fun `tramway museum graz should collect xx events`() {
+    fun `tramway museum graz should collect 7 events`() {
         val eventcollector = TramwaymuseumGrazCollector(mockJsoupCrawler)
         val expectedNumberOfEvents = 7
         val events = eventcollector.collectEvents()

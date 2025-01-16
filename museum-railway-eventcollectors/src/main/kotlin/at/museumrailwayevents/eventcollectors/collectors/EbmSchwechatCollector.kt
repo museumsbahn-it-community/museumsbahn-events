@@ -23,12 +23,7 @@ class EbmSchwechatCollector(val jsoupCrawler: JsoupCrawler) : MuseumRailwayEvent
 
         boxes.forEach { box ->
             val title = box.select("div.su-box-title").text()
-            val year = DateParser.findSingleYearOrNull(title)
-            val currentYear = OffsetDateTime.now().year
-
-            if (year == null || year != currentYear) {
-                return@forEach
-            }
+            DateParser.findSingleYearOrNull(title) ?: return@forEach
 
             val eventList = box.select("ul")
             if (eventList.isNotEmpty()) {
@@ -50,12 +45,17 @@ class EbmSchwechatCollector(val jsoupCrawler: JsoupCrawler) : MuseumRailwayEvent
     private fun parseEventList(eventListBox: Element): List<Event> {
         val textEntries = eventListBox.select("li").eachText()
         return textEntries.map { entry ->
-            val split = entry.split("–").map { it.trim() }
-            val date = DateParser.parseDate(split.first())
-            val name = split[1]
+            try {
+                val split = entry.split("–").map { it.trim() }
+                val date = DateParser.parseDate(split.first())
+                val name = split[1]
 
-            createEbmEvent(name, date)
-        }
+                createEbmEvent(name, date)
+            } catch (ex: Exception) {
+                println("exception parsing ebm schwechat event line: ${entry}, ex: ${ex.message}")
+                null
+            }
+        }.filterNotNull()
     }
 
     private fun createEbmEvent(
