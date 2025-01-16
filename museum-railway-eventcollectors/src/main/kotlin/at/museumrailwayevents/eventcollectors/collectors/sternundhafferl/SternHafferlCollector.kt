@@ -71,7 +71,6 @@ abstract class SternHafferlCollector(
                         try {
                             for (date in startDate..endDate days weekdays) {
                                 val eventTime = date.atTime(event.fromTime)
-                                println(eventTime)
                                 dates.add(eventTime)
                             }
 
