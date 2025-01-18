@@ -2,6 +2,10 @@
 @use "../assets/colors.scss" as colors;
 @use "../assets/variables_impl.scss" as variables;
 
+.logo {
+  height: calc(variables.$navbar-height - 24px);
+}
+
 .p-menubar-root-list {
   right: 0;
   left: initial !important;
@@ -27,8 +31,6 @@
 
 .navbar-content {
   height: calc(variables.$navbar-height - 8px);
-  padding-left: variables.$navbar-padding;
-  padding-right: variables.$navbar-padding;
 }
 
 .navbar-line {
@@ -40,6 +42,10 @@
   height: 8px;
   width: 100%;
   background: colors.$color-verkehrsrot;
+}
+
+.menubar {
+  height: variables.$navbar-height;
 }
 </style>
 <script setup lang="ts">
@@ -59,15 +65,12 @@ const items: MenuItem[] = [
 <template>
   <header class="sticky-header">
     <div class="navbar flex flex-column">
-      <div class="flex flex-row align-items-center w-full navbar-content">
-        <div class="flex flex-column">
-          <h1 class="m-0">
-            museumsbahn-events.at (BETA)
-          </h1>
-          <span class="text-sm hidden sm:inline">Alle Infos zu Museumsbahnen in Österreich</span>
-        </div>
+      <div class="flex flex-row w-full navbar-content sm:px-5">
+        <h1 class="m-2">
+          <img class="logo" src="/logo-dark-full-transparent.png" alt="museumsbahn-events.at Logo"></img>
+        </h1>
         <div class="flex-grow-1"></div>
-        <Menubar class="menubar borderless-menubar" :model="items" :breakpoint="'1190px'">
+        <Menubar class="menubar sm:ml-6 borderless-menubar" :model="items" :breakpoint="'1190px'">
           <!--          [style.textAlign]="'right'"-->
           <template #item="{ item, props, hasSubmenu }">
             <router-link v-if="item.route" v-slot="{ href, navigate }" :to="item.route" custom>
