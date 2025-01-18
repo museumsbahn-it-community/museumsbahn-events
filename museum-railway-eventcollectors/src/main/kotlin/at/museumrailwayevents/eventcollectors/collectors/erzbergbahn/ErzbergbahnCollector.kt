@@ -99,10 +99,10 @@ class ErzbergbahnCollector : MuseumRailwayEventCollector(
                             }
 
                             val additionalData = mutableMapOf(
-                                CommonKeys.DESCRIPTION to description,
+                                SemanticKeys.DESCRIPTION to description,
                                 CommonKeys.VEHICLE_TYPE to VehicleType.DIESEL_TRAIN,
-                                SemanticKeys.REGISTRATION to Registration.PRE_SALES_ONLY,
-                                SemanticKeys.CATEGORY to Category.MUSEUM_RAILWAY,
+                                SemanticKeys.REGISTRATION to MuseumEventRegistration.PRE_SALES_ONLY.jsonValue,
+                                SemanticKeys.CATEGORY to MuseumEventsCategory.MUSEUM_RAILWAY.jsonValue,
                                 SemanticKeys.RECURRENCE_TYPE to recurrence,
                                 SemanticKeys.TAGS to TAGS_MUSEUM_RAILWAY_OPERATING.toTagsValue(),
                             )

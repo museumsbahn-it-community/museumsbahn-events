@@ -128,8 +128,8 @@ abstract class SternHafferlCollector(
             startDate,
             eventUrl,
             mutableMapOf(
-                SemanticKeys.CATEGORY to Category.SPECIAL_TRIP,
-                SemanticKeys.REGISTRATION to Registration.TICKET,
+                SemanticKeys.CATEGORY to MuseumEventsCategory.SPECIAL_TRIP.jsonValue,
+                SemanticKeys.REGISTRATION to MuseumEventRegistration.TICKET.jsonValue,
                 SemanticKeys.DESCRIPTION to description,
                 CommonKeys.VEHICLE_TYPE to locomotiveType,
                 SemanticKeys.RECURRENCE_TYPE to RecurrenceType.RARELY,

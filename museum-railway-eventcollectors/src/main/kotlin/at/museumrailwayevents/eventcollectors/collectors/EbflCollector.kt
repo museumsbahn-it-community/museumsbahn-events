@@ -74,11 +74,11 @@ class EbflCollector(val jsoupCrawler: JsoupCrawler) : MuseumRailwayEventCollecto
                 val dates = DateParser.parseAllDatesFrom(dateString)
                 val eventPictureUrl = eventUrls.second
                 val additionalData = mutableMapOf(
-                    SemanticKeys.CATEGORY to Category.SPECIAL_TRIP,
+                    SemanticKeys.CATEGORY to MuseumEventsCategory.SPECIAL_TRIP.jsonValue,
                     SemanticKeys.URL to eventUrl,
                     SemanticKeys.PICTURE_URL to eventPictureUrl,
                     SemanticKeys.RECURRENCE_TYPE to RecurrenceType.ONCE,
-                    SemanticKeys.REGISTRATION to Registration.PRE_SALES_ONLY,
+                    SemanticKeys.REGISTRATION to MuseumEventRegistration.PRE_SALES_ONLY.jsonValue,
                     SemanticKeys.DESCRIPTION to description,
                     CommonKeys.VEHICLE_TYPE to VehicleType.ELECTRIC_TRAIN, // EBFL is only running electric trains, right?
                     SemanticKeys.TAGS to TAGS_MUSEUM_RAILWAY_SPECIAL_TRIP.toTagsValue(),

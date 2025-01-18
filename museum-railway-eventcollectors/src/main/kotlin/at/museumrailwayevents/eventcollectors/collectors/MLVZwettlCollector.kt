@@ -45,11 +45,11 @@ class MLVZwettlCollector(val jsoupCrawler: JsoupCrawler) : MuseumRailwayEventCol
             val dateText = eventLines.first().text()
             val hasDate = DateParser.fullDateRegex.containsMatchIn(dateText)
             val eventImage = eventLines.first().select("img").attr("src")
-            var category = Category.MUSEUM_RAILWAY
+            var category = MuseumEventsCategory.MUSEUM_RAILWAY.jsonValue
             var locomotiveType: String? = null
 
             if (eventImage.isMuseum()) {
-                category = Category.RAILWAY_MUSEUM
+                category = MuseumEventsCategory.RAILWAY_MUSEUM.jsonValue
             }
 
             if (eventImage.isSteam()) {
@@ -93,11 +93,11 @@ class MLVZwettlCollector(val jsoupCrawler: JsoupCrawler) : MuseumRailwayEventCol
                     SemanticKeys.TAGS to TAGS_MUSEUM_RAILWAY_SPECIAL_TRIP.toTagsValue(),
                     SemanticKeys.DESCRIPTION to description,
                     SemanticKeys.CATEGORY to category,
-                    SemanticKeys.REGISTRATION to Registration.TICKET,
+                    SemanticKeys.REGISTRATION to MuseumEventRegistration.TICKET.jsonValue,
                 )
 
                 if (locomotiveType != null) {
-                    additionalData.put(CommonKeys.VEHICLE_TYPE, locomotiveType)
+                    additionalData[CommonKeys.VEHICLE_TYPE] = locomotiveType
                 }
 
                 events.add(

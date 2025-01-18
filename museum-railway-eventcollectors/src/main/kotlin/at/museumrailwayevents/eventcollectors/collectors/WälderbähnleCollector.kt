@@ -76,10 +76,10 @@ class WälderbähnleCollector(val jsoupCrawler: JsoupCrawler) : MuseumRailwayEve
 
                 val additionalData = mutableMapOf(
                     CommonKeys.VEHICLE_TYPE to departures.first().traction,
-                    CommonKeys.DESCRIPTION to "${description}${departureList}",
-                    SemanticKeys.REGISTRATION to Registration.RESERVATION_RECOMMENDED,
+                    SemanticKeys.DESCRIPTION to "${description}${departureList}",
+                    SemanticKeys.REGISTRATION to MuseumEventRegistration.RESERVATION_RECOMMENDED.jsonValue,
                     SemanticKeys.URL to fahrplanUrl,
-                    SemanticKeys.CATEGORY to Category.MUSEUM_RAILWAY,
+                    SemanticKeys.CATEGORY to MuseumEventsCategory.MUSEUM_RAILWAY.jsonValue,
                     SemanticKeys.TAGS to (TAGS_MUSEUM_RAILWAY_OPERATING + TAGS_NARROW_GAUGE).toTagsValue()
                 )
 
@@ -109,8 +109,8 @@ class WälderbähnleCollector(val jsoupCrawler: JsoupCrawler) : MuseumRailwayEve
                         date,
                         sonderfahrtenUrl,
                         mutableMapOf(
-                            SemanticKeys.CATEGORY to Category.SPECIAL_TRIP,
-                            SemanticKeys.REGISTRATION to Registration.TICKET,
+                            SemanticKeys.CATEGORY to MuseumEventsCategory.SPECIAL_TRIP.jsonValue,
+                            SemanticKeys.REGISTRATION to MuseumEventRegistration.TICKET.jsonValue,
                             SemanticKeys.PICTURE_URL to imageUrl,
                             SemanticKeys.DESCRIPTION to description,
                             SemanticKeys.URL to sonderfahrtenUrl,

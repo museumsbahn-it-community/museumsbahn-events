@@ -47,8 +47,8 @@ class TramwaymuseumGrazCollector(private val jsoupCrawler: JsoupCrawler) : Museu
                         date,
                         eventUrl,
                         mutableMapOf(
-                            SemanticKeys.CATEGORY to Category.SPECIAL_TRIP,
-                            SemanticKeys.REGISTRATION to Registration.PRE_SALES_ONLY, // sometimes also tickets on location
+                            SemanticKeys.CATEGORY to MuseumEventsCategory.SPECIAL_TRIP.jsonValue,
+                            SemanticKeys.REGISTRATION to MuseumEventRegistration.PRE_SALES_ONLY.jsonValue, // sometimes also tickets on location
                             SemanticKeys.DESCRIPTION to descriptionWithPayment,
                             SemanticKeys.LOCATION_NAME to locationString,
                             CommonKeys.VEHICLE_TYPE to VehicleType.TRAM,

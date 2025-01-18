@@ -68,9 +68,9 @@ class WackelsteinexpressCollector(val jsoupCrawler: JsoupCrawler) : MuseumRailwa
 
             val additionalData = mutableMapOf(
                 CommonKeys.VEHICLE_TYPE to vehicleType,
-                SemanticKeys.REGISTRATION to Registration.PRE_SALES_ONLY,
+                SemanticKeys.REGISTRATION to MuseumEventRegistration.PRE_SALES_ONLY.jsonValue,
                 SemanticKeys.RECURRENCE_TYPE to RecurrenceType.RARELY,
-                SemanticKeys.CATEGORY to Category.SPECIAL_TRIP,
+                SemanticKeys.CATEGORY to MuseumEventsCategory.SPECIAL_TRIP.jsonValue,
                 SemanticKeys.TAGS to Tags.NARROW_GAUGE,
             )
 

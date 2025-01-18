@@ -43,8 +43,8 @@ class WienerTramwayMuseumCollector(private val jsoupCrawler: JsoupCrawler) : Mus
                         date,
                         eventUrl,
                         mutableMapOf(
-                            SemanticKeys.CATEGORY to Category.SPECIAL_TRIP,
-                            SemanticKeys.REGISTRATION to Registration.TICKET,
+                            SemanticKeys.CATEGORY to MuseumEventsCategory.SPECIAL_TRIP.jsonValue,
+                            SemanticKeys.REGISTRATION to MuseumEventRegistration.TICKET.jsonValue,
                             SemanticKeys.DESCRIPTION to description,
                             CommonKeys.VEHICLE_TYPE to VehicleType.TRAM,
                             SemanticKeys.RECURRENCE_TYPE to RecurrenceType.RARELY,

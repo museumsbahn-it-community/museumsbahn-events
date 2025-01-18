@@ -4,7 +4,7 @@ import assertk.assertThat
 import assertk.assertions.isEqualTo
 import at.museumrailwayevents.eventcollectors.collectors.SteirischeEisenbahnfreundeCollector
 import at.museumrailwayevents.eventcollectors.service.JsoupCrawlerTestMockImpl
-import at.museumrailwayevents.model.conventions.Category
+import at.museumrailwayevents.model.conventions.MuseumEventsCategory
 import base.boudicca.SemanticKeys
 import org.junit.jupiter.api.Test
 
@@ -20,8 +20,8 @@ class EventcollectorStefTest {
         val eventcollector = SteirischeEisenbahnfreundeCollector(mockJsoupCrawler)
         val events = eventcollector.collectEvents()
         assertThat(events.size).isEqualTo(5)
-        assertThat(events.filter { it.data[SemanticKeys.CATEGORY] == Category.RAILWAY_MUSEUM}.size).isEqualTo(2)
-        assertThat(events.filter { it.data[SemanticKeys.CATEGORY] == Category.SPECIAL_TRIP}.size).isEqualTo(3)
+        assertThat(events.filter { it.data[SemanticKeys.CATEGORY] == MuseumEventsCategory.RAILWAY_MUSEUM.jsonValue}.size).isEqualTo(2)
+        assertThat(events.filter { it.data[SemanticKeys.CATEGORY] == MuseumEventsCategory.SPECIAL_TRIP.jsonValue}.size).isEqualTo(3)
     }
 
     @Test
@@ -35,8 +35,8 @@ class EventcollectorStefTest {
         val eventcollector = SteirischeEisenbahnfreundeCollector(mockJsoupCrawler)
         val events = eventcollector.collectEvents()
         assertThat(events.size).isEqualTo(2)
-        assertThat(events.filter { it.data[SemanticKeys.CATEGORY] == Category.RAILWAY_MUSEUM}.size).isEqualTo(0)
-        assertThat(events.filter { it.data[SemanticKeys.CATEGORY] == Category.SPECIAL_TRIP}.size).isEqualTo(2)
+        assertThat(events.filter { it.data[SemanticKeys.CATEGORY] == MuseumEventsCategory.RAILWAY_MUSEUM.jsonValue}.size).isEqualTo(0)
+        assertThat(events.filter { it.data[SemanticKeys.CATEGORY] == MuseumEventsCategory.SPECIAL_TRIP.jsonValue}.size).isEqualTo(2)
     }
 
 }

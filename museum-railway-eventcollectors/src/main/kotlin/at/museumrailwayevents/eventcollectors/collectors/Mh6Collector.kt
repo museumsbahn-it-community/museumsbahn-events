@@ -47,10 +47,10 @@ class Mh6Collector(val jsoupCrawler: JsoupCrawler) : MuseumRailwayEventCollector
 
             val startDate = DateParser.parseDate(eventEntry.dateString)
             val additionalData = mutableMapOf(
-                SemanticKeys.CATEGORY to Category.MUSEUM_RAILWAY, // normally for the Anheizen there is something going on at Krumpe
+                SemanticKeys.CATEGORY to MuseumEventsCategory.MUSEUM_RAILWAY.jsonValue, // normally for the Anheizen there is something going on at Krumpe
                 SemanticKeys.URL to eventUrl,
                 SemanticKeys.RECURRENCE_TYPE to RecurrenceType.RARELY,
-                SemanticKeys.REGISTRATION to Registration.TICKET,
+                SemanticKeys.REGISTRATION to MuseumEventRegistration.TICKET.jsonValue,
                 SemanticKeys.DESCRIPTION to description,
                 CommonKeys.VEHICLE_TYPE to VehicleType.DIESEL_TRAIN, // we filter out the steam trains before
                 SemanticKeys.TAGS to TAGS_NARROW_GAUGE.toTagsValue(),

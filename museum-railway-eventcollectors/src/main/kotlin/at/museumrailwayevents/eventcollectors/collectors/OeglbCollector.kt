@@ -96,9 +96,9 @@ abstract class OeglbCollector(
         recurrenceType: String,
     ) = createEvent(
         name, date, eventUrl, additionalData = mutableMapOf(
-            SemanticKeys.CATEGORY to Category.MUSEUM_RAILWAY,
+            SemanticKeys.CATEGORY to MuseumEventsCategory.MUSEUM_RAILWAY.jsonValue,
             SemanticKeys.RECURRENCE_TYPE to recurrenceType,
-            SemanticKeys.REGISTRATION to Registration.TICKET,
+            SemanticKeys.REGISTRATION to MuseumEventRegistration.TICKET.jsonValue,
             SemanticKeys.DESCRIPTION to description,
             CommonKeys.VEHICLE_TYPE to locomotiveType,
             SemanticKeys.TAGS to TAGS_NARROW_GAUGE.toTagsValue(),

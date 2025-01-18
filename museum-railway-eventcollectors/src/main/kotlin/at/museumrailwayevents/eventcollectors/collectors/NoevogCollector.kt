@@ -104,9 +104,9 @@ abstract class NoevogCollector(
         tags: String,
     ) = createEvent(
         name, date, eventUrl, additionalData = mutableMapOf(
-            SemanticKeys.CATEGORY to Category.SPECIAL_TRIP,
+            SemanticKeys.CATEGORY to MuseumEventsCategory.SPECIAL_TRIP.jsonValue,
             SemanticKeys.RECURRENCE_TYPE to recurrenceType,
-            SemanticKeys.REGISTRATION to Registration.TICKET,
+            SemanticKeys.REGISTRATION to MuseumEventRegistration.TICKET.jsonValue,
             SemanticKeys.DESCRIPTION to description,
             CommonKeys.VEHICLE_TYPE to locomotiveType,
             SemanticKeys.TAGS to tags,

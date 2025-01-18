@@ -65,9 +65,9 @@ class EbmSchwechatCollector(val jsoupCrawler: JsoupCrawler) : MuseumRailwayEvent
     ): Event {
         val additionalData = mutableMapOf(
             SemanticKeys.DESCRIPTION to name,
-            SemanticKeys.CATEGORY to if (name.hasTrain()) Category.SPECIAL_TRIP else Category.RAILWAY_MUSEUM,
+            SemanticKeys.CATEGORY to if (name.hasTrain()) MuseumEventsCategory.SPECIAL_TRIP.jsonValue else MuseumEventsCategory.RAILWAY_MUSEUM.jsonValue,
             SemanticKeys.TAGS to if (name.hasTrain()) TAGS_MUSEUM_RAILWAY_SPECIAL_TRIP.toTagsValue() else TAGS_MUSEUM_EVENT.toTagsValue(),
-            SemanticKeys.REGISTRATION to Registration.TICKET,
+            SemanticKeys.REGISTRATION to MuseumEventRegistration.TICKET.jsonValue,
         )
         if (pictureUrl != null) {
             additionalData[SemanticKeys.PICTURE_URL] = pictureUrl

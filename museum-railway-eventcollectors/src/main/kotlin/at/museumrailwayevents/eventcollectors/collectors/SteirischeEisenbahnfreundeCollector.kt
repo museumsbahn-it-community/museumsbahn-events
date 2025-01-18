@@ -59,8 +59,8 @@ class SteirischeEisenbahnfreundeCollector(val jsoupCrawler: JsoupCrawler) : Muse
                         mutableMapOf(
                             SemanticKeys.TAGS to TAGS_MUSEUM_RAILWAY_SPECIAL_TRIP.toTagsValue(),
                             SemanticKeys.DESCRIPTION to description,
-                            SemanticKeys.CATEGORY to Category.SPECIAL_TRIP,
-                            SemanticKeys.REGISTRATION to Registration.TICKET,
+                            SemanticKeys.CATEGORY to MuseumEventsCategory.SPECIAL_TRIP.jsonValue,
+                            SemanticKeys.REGISTRATION to MuseumEventRegistration.TICKET.jsonValue,
                         ),
                         locationIdSonderfahrten
                     )
@@ -75,8 +75,8 @@ class SteirischeEisenbahnfreundeCollector(val jsoupCrawler: JsoupCrawler) : Muse
                         mutableMapOf(
                             SemanticKeys.TAGS to TAGS_MUSEUM_EVENT.toTagsValue(),
                             SemanticKeys.DESCRIPTION to description,
-                            SemanticKeys.CATEGORY to Category.RAILWAY_MUSEUM,
-                            SemanticKeys.REGISTRATION to Registration.TICKET,
+                            SemanticKeys.CATEGORY to MuseumEventsCategory.RAILWAY_MUSEUM.jsonValue,
+                            SemanticKeys.REGISTRATION to MuseumEventRegistration.TICKET.jsonValue,
                         ),
                         locationIdSonderfahrten
                     )

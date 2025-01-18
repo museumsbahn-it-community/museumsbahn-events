@@ -115,7 +115,19 @@ class JsoupCrawlerTestMockImpl(val overrideMap: Map<String, String>? = null) :
     )
 
     val oesekMap = mapOf(
-        "https://eisenbahnmuseum-heizhaus.com/de/veranstaltungen" to "oesek_veranstaltungen.html",
+        "https://eisenbahnmuseum-heizhaus.com/de/veranstaltungen" to "oesek/oesek_veranstaltungen.html",
+        "https://eisenbahnmuseum-heizhaus.com/de/besucher/veranstaltung/andampfen-208?day=20250406&times=1743926400,1743951600" to "oesek/oesek_2025_andampfen.html",
+        "https://eisenbahnmuseum-heizhaus.com/de/besucher/veranstaltung/dampftag-179?day=20250427&times=1745704800,1745791199" to "oesek/oesek_2025_dampftag.html",
+        "https://eisenbahnmuseum-heizhaus.com/de/besucher/veranstaltung/dampftag-216?day=20250504&times=1746345600,1746370800" to "oesek/oesek_2025_dampftag2.html",
+        "https://eisenbahnmuseum-heizhaus.com/de/besucher/veranstaltung/dampftag-217?day=20250518&times=1747555200,1747580400" to "oesek/oesek_2025_dampftag3.html",
+        "https://eisenbahnmuseum-heizhaus.com/de/besucher/veranstaltung/mojo-blues?day=20250524&times=1748037600,1748123999" to "oesek/oesek_2025_konzert_mojo_band.html",
+        "https://eisenbahnmuseum-heizhaus.com/de/besucher/veranstaltung/n-spur-modellbahntage?day=20250531&times=1748642400,1748815199" to "oesek/oesek_2025_H0_modellbahn.html",
+        "https://eisenbahnmuseum-heizhaus.com/de/besucher/veranstaltung/n-spur-modellbahntage?day=20250531&times=1748642400,1748815199" to "oesek/oesek_2025_H0_modellbahn.html",
+        "https://eisenbahnmuseum-heizhaus.com/de/besucher/veranstaltung/kinderfest-hits-f%C3%BCr-kids?day=20250831&times=1756591200,1756677599" to "oesek/oesek_2025_hits_fuer_kids.html",
+        "https://eisenbahnmuseum-heizhaus.com/de/besucher/veranstaltung/loktoberfest-2025-255?day=20250913&times=1757714400,1757800799" to "oesek/oesek_2025_loktoberfest.html",
+        "https://eisenbahnmuseum-heizhaus.com/de/besucher/veranstaltung/lange-nacht-der-museen-256?day=20251004&times=1759528800,1759615199" to "oesek/oesek_2025_lange_nacht_der_museen.html",
+        "https://eisenbahnmuseum-heizhaus.com/de/besucher/veranstaltung/herbstdampf?day=20251005&times=1759615200,1759701599" to "oesek/oesek_2025_herbstdampf.html",
+        "https://eisenbahnmuseum-heizhaus.com/de/besucher/veranstaltung/abdampfen-124?day=20251026&times=1761429600,1761519599" to "oesek/oesek_2025_abdampfen.html",
     )
 
     val pathMap = mapOf(

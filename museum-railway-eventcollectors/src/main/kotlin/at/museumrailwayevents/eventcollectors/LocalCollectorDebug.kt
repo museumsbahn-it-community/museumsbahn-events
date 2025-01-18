@@ -1,6 +1,9 @@
 package at.museumrailwayevents.eventcollectors
 
-import at.museumrailwayevents.eventcollectors.collectors.erzbergbahn.ErzbergbahnCollector
+import at.museumrailwayevents.eventcollectors.collectors.*
+import at.museumrailwayevents.eventcollectors.collectors.sternundhafferl.AtterseeSchifffahrtCollector
+import at.museumrailwayevents.eventcollectors.collectors.sternundhafferl.AtterseebahnCollector
+import at.museumrailwayevents.eventcollectors.collectors.sternundhafferl.TraunseetramCollector
 import base.boudicca.SemanticKeys
 import base.boudicca.api.eventcollector.debugger.DataShouldContainKey
 import base.boudicca.api.eventcollector.debugger.EventCollectorDebugger
@@ -8,9 +11,34 @@ import base.boudicca.api.eventcollector.debugger.ValidationSeverity
 
 fun main() {
     EventCollectorDebugger(verboseDebugging = true, keepOpen = false)
+        // Stern & Hafferl
+//        .debug(AtterseebahnCollector(crawler))
+//        .debug(AtterseeSchifffahrtCollector(crawler))
+//        .debug(TraunseetramCollector(crawler))
+        // mainline
+//        .debug(EbflCollector(crawler)) // error
+//        .debug(OegegShopCollector(crawler))
 //        .debug(ProBahnVorarlbergCollector())
-//        .debug(WälderbähnleCollector(JsoupCrawlerImpl()))
-        .debug(ErzbergbahnCollector())
+//        .debug(NostalgiebahnenKärntenCollector(crawler))
+//        .debug(SteirischeEisenbahnfreundeCollector(crawler))
+//        .debug(EbmSchwechatCollector(crawler))
+        .debug(OesekStrasshofCollector(crawler))
+        // local railways
+//        .debug(ErzbergbahnCollector())
+//        .debug(ReblausexpressCollector(crawler))
+//        .debug(MLVZwettlCollector(crawler))
+        // narrow gauge
+//        .debug(OegegSchmalspurCollector(crawler))
+//        .debug(RheinbähnleCollector(crawler))
+//        .debug(WälderbähnleCollector(crawler))
+//        .debug(WackelsteinexpressCollector(crawler)) // error
+//        .debug(HoellentalbahnCollector(crawler))
+//        .debug(YbbstalbahnCollector(crawler))
+//        .debug(Mh6Collector(crawler))
+//        .debug(WaldviertelbahnCollector(crawler))
+        // tram
+//        .debug(WienerTramwayMuseumCollector(crawler))
+//        .debug(TramwaymuseumGrazCollector(crawler))
         .validate(
             validations = listOf(
                 DataShouldContainKey(SemanticKeys.DESCRIPTION, ValidationSeverity.Error),

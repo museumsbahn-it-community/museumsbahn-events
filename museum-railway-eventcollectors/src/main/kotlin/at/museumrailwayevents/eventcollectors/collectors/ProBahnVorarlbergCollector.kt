@@ -59,8 +59,8 @@ class ProBahnVorarlbergCollector : MuseumRailwayEventCollector(
                         SemanticKeys.TAGS to TAGS_MUSEUM_RAILWAY_SPECIAL_TRIP.toTagsValue(),
                         SemanticKeys.DESCRIPTION to vEvent.description.value,
                         SemanticKeys.PICTURE_URL to eventImageUrl.toString(),
-                        SemanticKeys.REGISTRATION to Registration.PRE_SALES_ONLY,
-                        SemanticKeys.CATEGORY to Category.SPECIAL_TRIP,
+                        SemanticKeys.REGISTRATION to MuseumEventRegistration.PRE_SALES_ONLY.jsonValue,
+                        SemanticKeys.CATEGORY to MuseumEventsCategory.SPECIAL_TRIP.jsonValue,
                         CommonKeys.VEHICLE_TYPE to VehicleType.ELECTRIC_TRAIN, // PBV only running electric as well
                         SemanticKeys.RECURRENCE_TYPE to RecurrenceType.ONCE,
                         "url.ics" to icsUrl.toString(),

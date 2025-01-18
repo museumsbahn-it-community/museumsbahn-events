@@ -56,8 +56,8 @@ class NostalgiebahnenKärntenCollector(val jsoupCrawler: JsoupCrawler) : MuseumR
 
             val additionalData = mutableMapOf<String, String>()
             additionalData[SemanticKeys.DESCRIPTION] = description
-            additionalData[SemanticKeys.REGISTRATION] = Registration.PRE_SALES_ONLY
-            additionalData[SemanticKeys.CATEGORY] = Category.SPECIAL_TRIP
+            additionalData[SemanticKeys.REGISTRATION] = MuseumEventRegistration.PRE_SALES_ONLY.jsonValue
+            additionalData[SemanticKeys.CATEGORY] = MuseumEventsCategory.SPECIAL_TRIP.jsonValue
             additionalData[SemanticKeys.RECURRENCE_TYPE] = RecurrenceType.ONCE
 
             if (imageUrl != null) {
