@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity
 import org.springframework.scheduling.annotation.Scheduled
 import org.springframework.stereotype.Controller
 import java.net.URI
+import java.net.URLEncoder
 import java.net.http.HttpClient
 import java.net.http.HttpRequest
 import java.net.http.HttpResponse
@@ -34,7 +35,9 @@ class ImageCachingProxyController(
         .build()
 
     override fun getImage(url: String): ResponseEntity<ByteArray> {
-        val cached = cache[url]
+        // need to replace spaces, but official java url encoding encodes too much for imgproxy
+        val encodedUrl = url.replace(" ", "%20")
+        val cached = cache[encodedUrl]
         if (cached != null) {
             val mediaType = cached.contentType.getOrNull()
             return if (mediaType != null) {
@@ -47,7 +50,7 @@ class ImageCachingProxyController(
         val imgproxyUrl = signingService.createSignedImgProxyUrlForOperations(
             imageCachingConfig.width,
             imageCachingConfig.height,
-            URI(url)
+            URI(encodedUrl)
         )
 
         val request = HttpRequest.newBuilder().GET()
@@ -57,8 +60,8 @@ class ImageCachingProxyController(
 
         var contentType: Optional<String> = Optional.empty()
         val optionalImage = if (response.statusCode() != 200) {
-            LOG.warn("response code is invalid ${response.statusCode()} for $imgproxyUrl")
-            Optional.empty()
+            LOG.warn("response code is invalid ${response.statusCode()} for $imgproxyUrl\nreason: ${response.body().decodeToString()}")
+            return ResponseEntity.status(response.statusCode()).build()
         } else {
             val body = response.body()
             if (body.isEmpty()) {
@@ -71,7 +74,7 @@ class ImageCachingProxyController(
         }
 
         val optionalMediaType = contentType.map { MediaType.valueOf(it) }
-        cache[url] = CacheEntry(optionalImage, optionalMediaType)
+        cache[encodedUrl] = CacheEntry(optionalImage, optionalMediaType)
 
         val mediaType = optionalMediaType.getOrNull()
         return if (mediaType != null) {
