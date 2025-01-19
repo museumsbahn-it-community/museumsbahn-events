@@ -131,7 +131,7 @@ services:
     networks:
       - traefik-router
   imgproxy:
-    image:  darthsim/imgproxy:v3.2
+    image: darthsim/imgproxy:v3.27.1
     ports:
       - "8090:8080"
     environment:
