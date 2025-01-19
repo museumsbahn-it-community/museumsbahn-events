@@ -7,7 +7,7 @@
       </Message>
       <div class="h-1rem"></div>
       <div class="flex flex-column h-full mx-2 mb-6 md:mx-5 align-items-center">
-        <EventList :events="events"></EventList>
+        <EventList :eventsGroupedByMonth="eventGroups"></EventList>
       </div>
     </div>
   </div>
@@ -31,5 +31,5 @@ const eventsStore = useEventsStore();
 await useAsyncData('locations', () => locationsStore.fetchLocations());
 await useAsyncData('events', () => eventsStore.fetchAllEvents());
 
-const events = useState('filtered-events', () => eventsStore.filteredEventsGroupedByMonth);
+const eventGroups = useState('filtered-events', () => eventsStore.filteredEventsGroupedByMonthAndDepartureTime);
 </script>

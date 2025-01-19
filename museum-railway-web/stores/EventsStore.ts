@@ -1,7 +1,7 @@
-import {defineStore} from 'pinia';
-import {createLocationMap, eventKey, type LocationMap} from '../model/util';
-import {compareAsc, format, subDays} from 'date-fns';
-import {de} from 'date-fns/locale/de';
+import { defineStore } from 'pinia';
+import { createLocationMap, eventKey, type LocationMap } from '../model/util';
+import { compareAsc, format, subDays } from 'date-fns';
+import { de } from 'date-fns/locale/de';
 import { mapBoudiccaEntriesToEvents } from '~/composables/eventListData';
 import { useNuxtApp } from 'nuxt/app';
 import { buildQuery } from '~/composables/queryGenerator';
@@ -28,12 +28,18 @@ export interface MuseumEventGroup {
     events: MuseumEvent[];
 }
 
+export interface MuseumEventGroupGroup {
+    sortKey: number;
+    label: string;
+    eventGroups: MuseumEventGroup[];
+}
+
 function groupEventsByMonth(
     events: MuseumEvent[],
 ): MuseumEventGroup[] {
     const groupedEvents = events.reduce<GroupedMuseumEvents>((prev, event) => {
         const sortKey = parseInt(format(event.date, "yyyyMM"));
-        const label = format(event.date, 'LLLL yyyy', {locale: de});
+        const label = format(event.date, 'LLLL yyyy', { locale: de });
         const entry = prev[sortKey];
         if (entry == undefined) {
             prev[sortKey] = {
@@ -52,6 +58,36 @@ function groupEventsByMonth(
     }
 
     return eventGroups.sort((a, b) => (a.sortKey - b.sortKey))
+}
+
+/**
+ * Groups events together that have the same date and title, but different departure time.
+ * @param events 
+ */
+function groupEventsByDepartureTime(events: MuseumEvent[]): MuseumEventGroup[] {
+    const groupedEvents = events.reduce<GroupedMuseumEvents>((prev, event) => {
+        const dateStr = parseInt(format(event.date, "yyyyMMdd"));
+        const groupKey = `${dateStr}_${event.name.replace('\s', '')}`;
+        const label = event.name;
+        const entry = prev[groupKey];
+        if (entry == undefined) {
+            prev[groupKey] = {
+                sortKey: dateStr,
+                label,
+                events: [],
+            };
+        }
+        console.log("adding event: ", event.date)
+        prev[groupKey].events.push(event);
+        return prev;
+    }, {});
+
+    const eventGroups = []
+    for (let key in groupedEvents) {
+        eventGroups.push(groupedEvents[key])
+    }
+
+    return eventGroups;
 }
 
 interface EventsState {
@@ -74,17 +110,36 @@ export const useEventsStore = defineStore('events', {
         filteredEvents: (state: EventsState) => {
             return state.queriedEvents;
         },
-        filteredEventsGroupedByMonth: (state: EventsState) => {
-            return groupEventsByMonth(state.queriedEvents);
+        filteredEventsGroupedByMonthAndDepartureTime: (state: EventsState) => {
+            const groupedByMonth = groupEventsByMonth(state.queriedEvents);
+            const groupedByMonthAndDeparture = groupedByMonth.map<MuseumEventGroupGroup>((eventGroup) => {
+                return {
+                    sortKey: eventGroup.sortKey,
+                    label: eventGroup.label,
+                    eventGroups: groupEventsByDepartureTime(eventGroup.events)
+                }
+            });
+
+            return groupedByMonthAndDeparture;
         },
         eventsForLocationId(state: EventsState): (locationId: string) => MuseumEvent[] {
             return (locationId: string) => {
                 return state.queriedEvents.filter((event) => event.locationId === locationId);
             }
         },
-        eventsForLocationIdGrouped(state: EventsState): (locationId: string) => MuseumEventGroup[] {
+        eventsForLocationIdGrouped(state: EventsState): (locationId: string) => MuseumEventGroupGroup[] {
             return (locationId: string) => {
-                return groupEventsByMonth(state.queriedEvents.filter((event) => event.locationId === locationId));
+                // TODO refactor
+                const groupedByMonth = groupEventsByMonth(state.queriedEvents.filter((event) => event.locationId === locationId));
+                const groupedByMonthAndDeparture = groupedByMonth.map<MuseumEventGroupGroup>((eventGroup) => {
+                    return {
+                        sortKey: eventGroup.sortKey,
+                        label: eventGroup.label,
+                        eventGroups: groupEventsByDepartureTime(eventGroup.events)
+                    }
+                });
+    
+                return groupedByMonthAndDeparture;
             }
         },
         eventCountForLocationId(state: EventsState): (locationId: string) => number {
@@ -106,9 +161,6 @@ export const useEventsStore = defineStore('events', {
                 // refetch it everytime the user changes to another page
                 return this.queriedEvents;
             }
-
-            // TODO: keep size and offset when filtering
-            // TODO: in general we lack pagination right now
 
             const query = buildQuery(EMPTY_EVENT_FILTERS);
             const body: {
@@ -135,9 +187,6 @@ export const useEventsStore = defineStore('events', {
                 return this.eventsForLocationId(locationId);
             }
 
-            // TODO: keep size and offset when filtering
-            // TODO: in general we lack pagination right now
-
             const filters = {
                 ...EMPTY_EVENT_FILTERS,
                 locationId
@@ -160,14 +209,14 @@ export const useEventsStore = defineStore('events', {
             this.eventsLoaded = events.length;
             this.totalEvents = totalEvents;
         },
-        setAvailableEventTagFilters(filters: EventTagFilterOption[]):void {
+        setAvailableEventTagFilters(filters: EventTagFilterOption[]): void {
             this.availableFilters = filters;
         }
     },
 });
 
-async function queryEventsAndUpdateState(state: EventsState,body: { query: string | undefined; size: number; }): Promise<MuseumEvent[]> {
-    const {$boudiccaSearchApi} = useNuxtApp()
+async function queryEventsAndUpdateState(state: EventsState, body: { query: string | undefined; size: number; }): Promise<MuseumEvent[]> {
+    const { $boudiccaSearchApi } = useNuxtApp()
     const locationsStore = useLocationsStore();
     const locations = locationsStore.allLocations;
     const eventsResponse = await $boudiccaSearchApi('/api/search/queryEntries', {
@@ -178,7 +227,7 @@ async function queryEventsAndUpdateState(state: EventsState,body: { query: strin
     const queriedEvents = mapBoudiccaEntriesToEvents(eventsResponse.result, locationMap);
     // while we do not yet have it, we should keep track of the total events property to enable pagingation later on
     state.totalEvents = eventsResponse.totalResults;
-    state.queriedEvents = queriedEvents.sort((a,b) => compareAsc(a.date, b.date));
+    state.queriedEvents = queriedEvents.sort((a, b) => compareAsc(a.date, b.date));
     state.eventsLoaded = queriedEvents.length;
     return queriedEvents;
 }
