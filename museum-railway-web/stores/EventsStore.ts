@@ -189,7 +189,7 @@ function mapBoudiccaEntriesToEvents(entries: Entry[], locations: LocationMap): M
         const locationId = value[CommonKeys.LOCATION_ID];
         const operatorId = value[CommonKeys.OPERATOR_ID];
         const museumLocation = locations[locationId];
-        const url = value[SemanticKeys.SOURCES];
+        const url = value[SemanticKeys.URL];
 
         const startDateKeys = Object.keys(value).filter(val => val.startsWith(SemanticKeys.STARTDATE));
 

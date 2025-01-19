@@ -31,7 +31,7 @@ declare global {
         description: string;
         eventCategory: string;
         date: Date;
-        url: string
+        url: string;
         pictureUrl: string | undefined;
         pictureAltText: string | undefined;
         pictureCopyright: string | undefined;

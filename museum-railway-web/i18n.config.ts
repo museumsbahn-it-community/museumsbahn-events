@@ -8,8 +8,10 @@ export default defineI18nConfig(() => ({
             'historic_train': 'Historischer Zug',
             'museum_train': 'Museumszug',
             'historic_train_trip': 'Historische Zugreise',
-            'museum_railway': 'Sonderfahrt',
-            'railway_museum': 'Museum',
+            'museum_railway': 'Musumsbahn',
+            'special_trip': 'Sonderfahrt',
+            'museum_event': 'Veranstaltung im Museum',
+            'railway_museum': 'Eisenbahnmuseum',
             'narrow_gauge': 'Schmalspurbahn',
             'locomotive_type': 'Fahrzeugtyp',
 
