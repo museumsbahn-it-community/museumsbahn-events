@@ -19,7 +19,7 @@ class OesekStrasshofCollector(val jsoupCrawler: JsoupCrawler) : MuseumRailwayEve
         val baseUrl = "https://eisenbahnmuseum-heizhaus.com/"
         val document = jsoupCrawler.getDocument(sourceUrl)
         val eventLinks = document.select("div.content h2 a")
-        val pictureUrls = document.select("div.content img").map { baseUrl + it.attr("src") }
+        val pictureUrls = document.select("div.content figure.image_container img").map { baseUrl + it.attr("src") }
 
         // this currently only collects museum events, but there are no special trips announced
         // so at the moment we do not have the structure to parse
@@ -37,10 +37,10 @@ class OesekStrasshofCollector(val jsoupCrawler: JsoupCrawler) : MuseumRailwayEve
                 LocalDate.parse(time).atTime(0, 0).atOffset(DateParser.zoneOffset)
             }
             val titleElement = eventDocument.select("h1")
-            val title = titleElement.text()
+            val title = titleElement.first()?.text() ?: "Eisenbahnmuseum Strasshof"
             val description = eventDocument.keepLineBreaks().select("div.block").text()
-            val dampftagIcon = titleElement.select("img")
-            val isDampftag = dampftagIcon.isNotEmpty() && dampftagIcon.attr("src").contains("icon-dampflok.svg")
+            val dampftagIcon = titleElement.first()?.select("img")
+            val isDampftag = !dampftagIcon.isNullOrEmpty() && dampftagIcon.attr("src").contains("icon-dampflok.svg")
             val pictureUrl = pictureUrls[index]
 
             val event = createStructuredEvent(
@@ -65,5 +65,5 @@ class OesekStrasshofCollector(val jsoupCrawler: JsoupCrawler) : MuseumRailwayEve
     }
 
 
-    override fun getName(): String = "ÖSEK - Eisenbahnmuseum Strasshof Collector"
+    override fun getName(): String = "Eisenbahnmuseum Strasshof Collector"
 }
