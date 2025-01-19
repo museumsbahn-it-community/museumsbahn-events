@@ -8,9 +8,9 @@ object Tags {
     const val NARROW_GAUGE = "narrow_gauge"
     const val MUSEUM = "museum"
     const val MUSEUM_TRAIN = "museum_train"
-    const val MUSEUM_RAILWAY = Category.MUSEUM_RAILWAY
-    const val RAILWAY_MUSEUM = Category.RAILWAY_MUSEUM
-    const val MUSEUM_EVENT = Category.MUSEUM_EVENT // a special event in a museum, like a concert
+    val MUSEUM_RAILWAY = MuseumEventsCategory.MUSEUM_RAILWAY.jsonValue
+    val RAILWAY_MUSEUM = MuseumEventsCategory.RAILWAY_MUSEUM.jsonValue
+    val MUSEUM_EVENT = MuseumEventsCategory.MUSEUM_EVENT.jsonValue // a special event in a museum, like a concert
     const val HISTORIC_TRAIN_TRIP = "historic_train_trip" // only for trips on regular rail network
     const val HISTORIC_SHIP_TRIP = "historic_ship_trip"
 }
@@ -23,15 +23,16 @@ object VehicleType {
     const val SHIP = "ship"
 }
 
-object Registration {
-    const val FREE = "free" // free
-    const val REGISTRATION = "registration" // free, but requires registration
-    const val PRE_SALES_ONLY = "pre-sales-only"
-    const val RESERVATION_RECOMMENDED = "reservation-recommended"
-    const val PRIVATE_EVENT = "private-event" // not in use at the moment, but could be useful for events like photo trains
-    const val TICKET = "ticket"
+enum class MuseumEventRegistration(val jsonValue: String) {
+    FREE("free"), // free
+    REGISTRATION("registration"), // free, but requires registration
+    PRE_SALES_ONLY("pre-sales-only"),
+    RESERVATION_RECOMMENDED("reservation-recommended"),
+    PRIVATE_EVENT("private-event"), // not in use at the moment, but could be useful for events like photo trains
+    TICKET("ticket"),
 }
 
+@Deprecated("use boudicca recurrence type instead")
 object RecurrenceType {
     const val REGULARLY = "regularly"
     const val RARELY = "rarely"
@@ -41,12 +42,12 @@ object RecurrenceType {
 /**
  * categories of events
  */
-object Category {
-    const val SPECIAL_TRIP = "special_trip" // Sonderfahrt - excursion on public rails or a special event on the museum railway
-    const val RAILWAY_MUSEUM = "railway_museum" // Museum - opening day of a museum, for museums without regular opening days or special events
-    const val MUSEUM_RAILWAY = "museum_railway" // Museumsbahn - running day of a dedicated museum railway
-    const val MUSEUM_EVENT = "museum_event" // Veranstaltung - besondere Veranstaltung, Konzert etc.
-    const val MODEL_RAILWAY = "model_railway" // Modellbahn - not in use at the moment
+enum class MuseumEventsCategory(val jsonValue: String) {
+    SPECIAL_TRIP("special_trip"), // Sonderfahrt - excursion on public rails or a special event on the museum railway
+    RAILWAY_MUSEUM("railway_museum"), // Museum - opening day of a museum, for museums without regular opening days or special events
+    MUSEUM_RAILWAY("museum_railway"), // Museumsbahn - running day of a dedicated museum railway
+    MUSEUM_EVENT("museum_event"), // Veranstaltung - besondere Veranstaltung, Konzert etc.
+    MODEL_RAILWAY("model_railway"), // Modellbahn - not in use at the moment
 }
 
 val TAGS_MUSEUM_EVENT =
