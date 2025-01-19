@@ -17,6 +17,8 @@ fun main() {
         .addEventCollector(OegegShopCollector(crawler))
         .addEventCollector(OegegSchmalspurCollector(crawler))
         .addEventCollector(ProBahnVorarlbergCollector())
+        .addEventCollector(OesekStrasshofCollector(crawler))
+        .addEventCollector(RegiobahnCollector(crawler))
         .addEventCollector(RheinbähnleCollector(crawler))
         .addEventCollector(WälderbähnleCollector(crawler))
         .addEventCollector(NostalgiebahnenKärntenCollector(crawler))
