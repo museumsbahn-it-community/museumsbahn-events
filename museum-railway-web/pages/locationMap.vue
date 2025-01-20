@@ -19,4 +19,13 @@ const locations = locationsStore.allLocations;
 const router = useRouter();
 const route = useRoute();
 const locationIdParam = route?.params?.locationId;
+
+useSeoMeta({
+  title: () => `Übersichtskarte`,
+  ogTitle: `Übersichtskarte über Museumsbahnen in Österreich`,
+  description: 'Übersichtskarte über Eisenbahnmuseen und Museumsbahnen in Österreich',
+  ogDescription: 'Auf dieser Übersichtskarte findest du Eisenbahnmuseen und Museumsbahnen in Österreich.',
+  ogImage: 'https://museumsbahn-events.at/img/social_media_preview.jpg',
+  twitterCard: 'summary_large_image',
+})
 </script>

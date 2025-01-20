@@ -78,4 +78,13 @@ const eventsForSameLocation = computed(() => {
 })
 
 const noEventSelectedPlaceholderText = "Leider konnte die Veranstaltung nicht gefunden werden."
+
+useSeoMeta({
+  title: () => `Veranstaltung | ${selectedEvent.value?.name}`,
+  ogTitle: () => `Details zur Veranstaltung ${selectedEvent.value?.name}`,
+  description: () => `${selectedEvent.value?.description}`,
+  ogDescription: () => `${selectedEvent.value?.description}`,
+  ogImage: () => selectedEvent.value?.pictureUrl != null ? `https://museumsbahn-events.at/imgcache?url=${selectedEvent.value?.pictureUrl}` : `https://museumsbahn-events.at/img/social_media_preview.jpg`,
+  twitterCard: 'summary_large_image',
+})
 </script>

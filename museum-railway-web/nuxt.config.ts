@@ -31,7 +31,12 @@ export default defineNuxtConfig({
 				{ rel: 'icon', type: 'image/png', sizes: '32x32', href: '/favicon-dark/favicon-32x32.png', media: "(prefers-color-scheme: dark)" },
 				{ rel: 'icon', type: 'image/png', sizes: '16x16', href: '/favicon-dark/favicon-16x16.png', media: "(prefers-color-scheme: dark)" },
 				{ rel: 'manifest', href: '/site.webmanifest' }
-			]
+			],
+			titleTemplate: '%s %separator %appName',
+			templateParams: {
+			  separator: '|', // choose a separator
+			  appName: 'MUSEUMSBAHN-events.at' // set a site name
+			}
 		}
 	},
 
@@ -48,7 +53,8 @@ export default defineNuxtConfig({
 		'nuxt-viewport',
 		'nuxt-primevue',
 		'nuxt-open-fetch',
-		'nuxt-time'
+		'nuxt-time',
+		'@nuxtjs/seo'
 	],
 
 	content: {

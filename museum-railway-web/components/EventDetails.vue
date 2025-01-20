@@ -68,7 +68,6 @@
   </div>
 </template>
 <script setup lang="ts">
-import { formatDate } from '~/composables/formatDate';
 import { computed } from 'vue';
 import EventImage from './EventImage.vue';
 

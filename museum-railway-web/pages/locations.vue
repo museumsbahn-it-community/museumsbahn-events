@@ -106,4 +106,13 @@ function showLocationOnMap(location: MuseumLocation) {
     router.push({name: 'locationMapDetails', params: {locationId: location.locationId}});
   }
 }
+
+useSeoMeta({
+  title: 'Museen und Bahnen',
+  ogTitle: 'Museen und Bahnen',
+  description: 'Übersicht über Museumsbahnen und Eisenbahnmuseen in Österreich.',
+  ogDescription: 'Hier findest du eine Übersicht der Museumsbahnen und Eisenbahnmuseen die es in Österreich gibt.',
+  ogImage: 'https://museumsbahn-events.at/img/social_media_preview.jpg',
+  twitterCard: 'summary_large_image',
+})
 </script>

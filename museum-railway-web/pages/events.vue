@@ -32,4 +32,14 @@ await useAsyncData('locations', () => locationsStore.fetchLocations());
 await useAsyncData('events', () => eventsStore.fetchAllEvents());
 
 const eventGroups = useState('filtered-events', () => eventsStore.filteredEventsGroupedByMonthAndDepartureTime);
+
+useSeoMeta({
+  title: 'Veranstaltungsliste',
+  ogTitle: 'Veranstaltungsliste',
+  description: 'Hier finden sich Veranstaltungen und Sonderfahrten von österreichs Museumsbahnen.',
+  ogDescription: 'Finde Veranstaltungen und Sonderfahrten von Museumsbahnen in deiner Nähe.',
+  ogImage: 'https://museumsbahn-events.at/img/social_media_preview.jpg',
+  twitterCard: 'summary_large_image',
+})
+
 </script>

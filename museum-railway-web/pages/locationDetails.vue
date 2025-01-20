@@ -24,4 +24,13 @@ await useAsyncData('events', () => eventsStore.fetchEventsForLocation(locationId
 
 const museumLocation = locationsStore.locationById(locationId);
 const events = useState(`location-${locationId}-events`, () => eventsStore.eventsForLocationIdGrouped(locationId))
+
+useSeoMeta({
+  title: () => `${museumLocation?.name}`,
+  ogTitle: () => `Details und Veranstaltungen zu ${museumLocation?.name}`,
+  description: 'Details zu den Veranstaltungen des Museums.',
+  ogDescription: 'Details zu den Veranstaltungen des Museums.',
+  ogImage: 'https://museumsbahn-events.at/img/social_media_preview.jpg',
+  twitterCard: 'summary_large_image',
+})
 </script>

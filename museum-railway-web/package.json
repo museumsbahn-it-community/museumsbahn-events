@@ -1,5 +1,5 @@
 {
-  "name": "nuxt-app",
+  "name": "museumsbahn-events.at",
   "private": true,
   "type": "module",
   "scripts": {
@@ -13,6 +13,7 @@
   "dependencies": {
     "@nuxt/content": "^2.12.1",
     "@nuxtjs/leaflet": "^1.2.6",
+    "@nuxtjs/seo": "^2.1.0",
     "@pinia/nuxt": "^0.5.1",
     "@rushstack/eslint-patch": "^1.6.1",
     "@types/leaflet": "^1.9.8",
