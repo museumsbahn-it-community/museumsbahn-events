@@ -3,7 +3,7 @@
     <div class="w-full lg:w-10 xl:w-8 xxl:w-6 lg:p-5">
         <LocationDetails
           :museumLocation="museumLocation"
-          :events="events"
+          :eventsGroupedByMonthAndDeparture="events"
         ></LocationDetails>
     </div>
   </div>

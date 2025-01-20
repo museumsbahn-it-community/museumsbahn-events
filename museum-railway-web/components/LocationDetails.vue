@@ -32,7 +32,7 @@
 
     <div v-if="museumLocation != undefined" class="mb-4">
       <EventList
-          :eventsGroupedByMonth="events"
+          :eventsGroupedByMonthAndDeparture="eventsGroupedByMonthAndDeparture"
           @eventSelected="navigateToEventDetails"
       >
       </EventList>
@@ -41,12 +41,12 @@
 </template>
 <script setup lang="ts">
 import {eventKey} from "~/model/util.ts";
-import type {MuseumEventGroup, MuseumEventGroupGroup} from "~/stores/EventsStore.ts";
+import type {MuseumEventGroupGroup} from "~/stores/EventsStore.ts";
 
 const router = useRouter();
 const props = defineProps<{
   museumLocation: MuseumLocation,
-  eventsGroupedByMonth: MuseumEventGroupGroup[],
+  eventsGroupedByMonthAndDeparture: MuseumEventGroupGroup[],
 }>();
 
 function navigateToEventDetails(value: string) {

@@ -77,7 +77,6 @@ function groupEventsByDepartureTime(events: MuseumEvent[]): MuseumEventGroup[] {
                 events: [],
             };
         }
-        console.log("adding event: ", event.date)
         prev[groupKey].events.push(event);
         return prev;
     }, {});
@@ -174,8 +173,6 @@ export const useEventsStore = defineStore('events', {
                 body.query = query
             }
 
-            console.log("query: ", query)
-
             const queriedEvents = await queryEventsAndUpdateState(this, body);
             this.allEventsFetched = true;
             return queriedEvents;
@@ -231,7 +228,6 @@ async function queryEventsAndUpdateState(state: EventsState, body: { query: stri
     state.eventsLoaded = queriedEvents.length;
     return queriedEvents;
 }
-
 
 function mapBoudiccaEntriesToEvents(entries: Entry[], locations: LocationMap): MuseumEvent[] {
     return entries.map((value) => {

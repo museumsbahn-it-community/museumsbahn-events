@@ -7,7 +7,7 @@
       </Message>
       <div class="h-1rem"></div>
       <div class="flex flex-column h-full mx-2 mb-6 md:mx-5 align-items-center">
-        <EventList :eventsGroupedByMonth="eventGroups"></EventList>
+        <EventList :eventsGroupedByMonthAndDeparture="eventGroups"></EventList>
       </div>
     </div>
   </div>
