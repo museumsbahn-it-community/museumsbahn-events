@@ -22,7 +22,7 @@ class EbflCollector(val jsoupCrawler: JsoupCrawler) : MuseumRailwayEventCollecto
     sourceUrl = "https://ebfl.at/"
 ) {
     private val museumUrl = "https://ebfl.at/index.php/suedbahn-heizhaus/"
-    private val suedbahnExpressUrl = "https://ebfl.at/index.php/suedbahn-express/"
+    private val suedbahnExpressUrl = "https://ebfl.at/index.php/termine-ausfahrten/"
 
     private val excludedLinkTexts = listOf(
         "Nostalgiezug Südbahn Express",
@@ -41,18 +41,10 @@ class EbflCollector(val jsoupCrawler: JsoupCrawler) : MuseumRailwayEventCollecto
     private fun collectSuedbahnExpressEvents(): List<Event> {
         val document = jsoupCrawler.getDocument(suedbahnExpressUrl)
         val content = document.select("div#content")
-        val eventUrls = content.select("a")
-            .filterNot { node -> excludedLinkTexts.any { text -> node.text().contains(text) } }
-            .map {
-                val eventImageUrl = it.select("img").attr("src")
-                val eventUrl = it.attr("href")
-
-                Pair(eventUrl, eventImageUrl)
-            }
+        val eventUrls = content.select("a:contains(Mehr dazu erfahren Sie hier)").map { it.attr("href") }
         val events = mutableListOf<Event>()
 
-        eventUrls.forEach { eventUrls ->
-            val eventUrl = eventUrls.first
+        eventUrls.forEach { eventUrl ->
 
             if (!eventUrl.startsWith(this.sourceUrl)) {
                 // only crawl sites on the same page
@@ -61,22 +53,24 @@ class EbflCollector(val jsoupCrawler: JsoupCrawler) : MuseumRailwayEventCollecto
 
             val eventPage = jsoupCrawler.getDocument(eventUrl)
             val name = eventPage.select("h1.title").text()
-            val paragraphs = eventPage.select("div.content p").eachText()
+            val eventContent = eventPage.select("div#content")
+            val paragraphs = eventContent.select("p").eachText()
             if (paragraphs.size == 0) {
                 println("error: empty paragraphs for eventUrl: $eventUrl, name: $name")
                 return@forEach
             }
+
+            val eventPictureUrl = eventContent.select("img").first()?.attr("src")
 
             val dateString = paragraphs.first()
             val description = paragraphs.drop(1).joinToString("\n")
 
             try {
                 val dates = DateParser.parseAllDatesFrom(dateString)
-                val eventPictureUrl = eventUrls.second
+                //val eventPictureUrl = eventUrls.second
                 val additionalData = mutableMapOf(
                     SemanticKeys.CATEGORY to MuseumEventsCategory.SPECIAL_TRIP.jsonValue,
                     SemanticKeys.URL to eventUrl,
-                    SemanticKeys.PICTURE_URL to eventPictureUrl,
                     SemanticKeys.RECURRENCE_TYPE to RecurrenceType.ONCE,
                     SemanticKeys.REGISTRATION to MuseumEventRegistration.PRE_SALES_ONLY.jsonValue,
                     SemanticKeys.DESCRIPTION to description,
@@ -84,6 +78,10 @@ class EbflCollector(val jsoupCrawler: JsoupCrawler) : MuseumRailwayEventCollecto
                     SemanticKeys.TAGS to TAGS_MUSEUM_RAILWAY_SPECIAL_TRIP.toTagsValue(),
                     SemanticKeys.ADDITIONAL_EVENTS_URL to suedbahnExpressUrl,
                 )
+
+                if (eventPictureUrl != null) {
+                    additionalData[SemanticKeys.PICTURE_URL] = eventPictureUrl
+                }
 
                 dates.forEach { date ->
                     events.add(
