@@ -9,11 +9,11 @@ repositories {
 }
 
 dependencies {
-    implementation("org.jetbrains.kotlin:kotlin-stdlib")
-    implementation("events.boudicca:eventdb-openapi:0.5.0")
-    implementation("events.boudicca:common-model:0.5.0")
-    implementation("events.boudicca:eventcollector-client:0.5.0")
-    implementation("com.github.doyaaaaaken:kotlin-csv-jvm:1.9.3")
+    implementation(libs.kotlin.stdlib)
+    implementation(libs.boudicca.eventdb.openapi)
+    implementation(libs.boudicca.commonmodel)
+    implementation(libs.boudicca.eventcollector.client)
+    implementation(libs.kotlin.csv.jvm)
     implementation("org.jsoup:jsoup:1.16.1")
     implementation("org.mnode.ical4j:ical4j:3.2.14")
     implementation("com.rometools:rome:2.1.0")
@@ -27,21 +27,18 @@ dependencies {
     implementation("org.apache.commons:commons-text:1.12.0")
     implementation(project(mapOf("path" to ":museum-railway-api")))
     testImplementation("com.willowtreeapps.assertk:assertk:0.28.0")
-    testImplementation("org.junit.jupiter:junit-jupiter-api:5.8.1")
-    testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.8.1")
+    testImplementation(platform(libs.junit.jupiter.bom))
+    testImplementation(libs.junit.jupiter)
+    testRuntimeOnly(libs.junit.platform.launcher)
 }
 
 java {
-    sourceCompatibility = JavaVersion.VERSION_21
-    targetCompatibility = JavaVersion.VERSION_21
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(21)
+    }
 }
 
 val containerEngine: String by rootProject.extra
-
-tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
-    kotlinOptions.jvmTarget = JavaVersion.VERSION_21.toString()
-    kotlinOptions.javaParameters = true
-}
 
 task<Exec>("imageBuild") {
     inputs.file("src/main/docker/Dockerfile")
