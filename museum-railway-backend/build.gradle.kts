@@ -1,4 +1,5 @@
 plugins {
+    id("org.graalvm.buildtools.native")
     id("org.springframework.boot")
     id("io.spring.dependency-management")
     kotlin("jvm")
