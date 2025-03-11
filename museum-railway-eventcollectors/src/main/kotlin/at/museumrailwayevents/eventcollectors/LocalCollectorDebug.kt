@@ -16,13 +16,15 @@ fun main() {
 //        .debug(AtterseeSchifffahrtCollector(crawler))
 //        .debug(TraunseetramCollector(crawler))
         // mainline
-//        .debug(EbflCollector(crawler)) // error
+//        .debug(EbflRegiondoCollector(crawler)) // error
+        .debug(EbflCollector(crawler)) // error
 //        .debug(OegegShopCollector(crawler))
 //        .debug(ProBahnVorarlbergCollector())
 //        .debug(NostalgiebahnenKärntenCollector(crawler))
 //        .debug(SteirischeEisenbahnfreundeCollector(crawler))
 //        .debug(EbmSchwechatCollector(crawler))
-        .debug(OesekStrasshofCollector(crawler))
+//        .debug(OesekStrasshofCollector(crawler))
+//        .debug(RegiobahnCollector(crawler))
         // local railways
 //        .debug(ErzbergbahnCollector())
 //        .debug(ReblausexpressCollector(crawler))

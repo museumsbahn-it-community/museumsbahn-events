@@ -48,7 +48,7 @@ class NostalgiebahnenKärntenCollector(val jsoupCrawler: JsoupCrawler) : MuseumR
 
             val dates = DateParser.parseAllDatesFrom(dateString)
             var description =
-                entry.select("div.textcontainer").filter { elem -> elem.children().select("h3").size > 0 }.first.text()
+                entry.select("div.textcontainer").filter { elem -> elem.children().select("h3").size > 0 }.first().text()
 
             // TODO: check if datestring has one of the blacklisted keywords
 

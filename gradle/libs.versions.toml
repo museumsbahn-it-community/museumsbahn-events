@@ -1,14 +1,65 @@
 [versions]
-clf-platform-spring = "2.3.0"
-ktor = "2.3.11"
+kotlin = "2.1.0"
+ktor = "3.1.1"
 logback = "1.5.6"
+spring-openapi-starter = "2.8.5"
+spring = "6.4.3"
+spring-boot = "3.4.3"
+org-springframework-boot-gradle-plugin = "3.4.3"
+boudicca = "0.6.0"
+jackson = "2.18.3"
+jackson-databind-nullable = "0.2.6"
+junit-jupiter = "5.12.0"
+assertk = "0.28.1"
+mockk = "1.13.17"
+spring-mockk = "4.0.2"
 
 [libraries]
-cloudflight-platform-spring-bom = { module = "io.cloudflight.platform.spring:platform-spring-bom", version.ref = "clf-platform-spring" }
-cloudflight-platform-spring-test-bom = { module = "io.cloudflight.platform.spring:platform-spring-test-bom", version.ref = "clf-platform-spring" }
+spring-boot-starter-web = { module = "org.springframework.boot:spring-boot-starter-web", version.ref = "spring-boot" }
+spring-boot-starter-security = { module = "org.springframework.boot:spring-boot-starter-security", version.ref = "spring-boot" }
+spring-security-test = { module = "org.springframework.security:spring-security-test", version.ref = "spring" }
+spring-openapi-starter = { module = "org.springdoc:springdoc-openapi-starter-webmvc-ui", version.ref = "spring-openapi-starter" }
+spring-boot-devtools = { module = "org.springframework.boot:spring-boot-devtools", version.ref = "spring-boot" }
+spring-boot-starter-test = { module = "org.springframework.boot:spring-boot-starter-test", version.ref = "spring-boot" }
+
+kotlin-stdlib = {module ="org.jetbrains.kotlin:kotlin-stdlib"}
+kotlin-reflect = {module ="org.jetbrains.kotlin:kotlin-reflect"}
+
+boudicca-eventdb-openapi = {module ="events.boudicca:eventdb-openapi", version.ref = "boudicca"}
+boudicca-commonmodel = {module ="events.boudicca:common-model", version.ref = "boudicca"}
+boudicca-eventcollector-client = {module ="events.boudicca:eventcollector-client", version.ref = "boudicca"}
+
+kotlin-csv-jvm = {module ="com.github.doyaaaaaken:kotlin-csv-jvm", version="1.9.3"}
+
+# todo: kinda wanna get rid of jackson in favor of kotlinx.serialization
+jackson-core = { module = "com.fasterxml.jackson.core:jackson-core", version.ref = "jackson" }
+jackson-annotations = { module = "com.fasterxml.jackson.core:jackson-annotations", version.ref = "jackson" }
+jackson-databind = { module = "com.fasterxml.jackson.core:jackson-databind", version.ref = "jackson" }
+jackson-databind-jsr310 = { module = "com.fasterxml.jackson.datatype:jackson-datatype-jsr310", version.ref = "jackson" }
+jackson-module-kotlin = { module = "com.fasterxml.jackson.module:jackson-module-kotlin", version.ref = "jackson" }
+
+jackson-databind-nullable = { module = "org.openapitools:jackson-databind-nullable", version.ref = "jackson-databind-nullable" }
+
+
 ktor-client-core = { module = "io.ktor:ktor-client-core", version.ref = "ktor" }
 ktor-client-logging = { module = "io.ktor:ktor-client-logging", version.ref = "ktor" }
 ktor-client-engine-java = { module = "io.ktor:ktor-client-java", version.ref = "ktor" }
 ktor-client-content-negotiation = { module = "io.ktor:ktor-client-content-negotiation", version.ref = "ktor" }
 ktor-serialization-kotlinx-json = { module = "io.ktor:ktor-serialization-kotlinx-json", version.ref = "ktor" }
+
 logback = { module = "ch.qos.logback:logback-classic", version.ref = "logback" }
+
+junit-jupiter-bom = { module = "org.junit:junit-bom", version.ref = "junit-jupiter" }
+junit-jupiter = { module = "org.junit.jupiter:junit-jupiter" }
+junit-platform-launcher = { module = "org.junit.platform:junit-platform-launcher" }
+assertk = { module = "com.willowtreeapps.assertk:assertk", version.ref = "assertk" }
+mockk = { module = "io.mockk:mockk", version.ref = "mockk" }
+spring-mockk = { module = "com.ninja-squad:springmockk", version.ref = "spring-mockk" }
+
+org-jetbrains-kotlin-jvm-gradle-plugin = { module = "org.jetbrains.kotlin.jvm:org.jetbrains.kotlin.jvm.gradle.plugin", version.ref = "kotlin" }
+org-jetbrains-kotlin-plugin-spring-gradle-plugin = { module = "org.jetbrains.kotlin.plugin.spring:org.jetbrains.kotlin.plugin.spring.gradle.plugin", version.ref = "kotlin" }
+org-springframework-boot-gradle-plugin = { module = "org.springframework.boot:org.springframework.boot.gradle.plugin", version.ref = "org-springframework-boot-gradle-plugin" }
+
+[bundles]
+
+gradle-plugins = ["org-jetbrains-kotlin-jvm-gradle-plugin", "org-jetbrains-kotlin-plugin-spring-gradle-plugin", "org-springframework-boot-gradle-plugin"]

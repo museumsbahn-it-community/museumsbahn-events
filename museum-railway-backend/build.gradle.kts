@@ -3,7 +3,6 @@ plugins {
     id("io.spring.dependency-management")
     kotlin("jvm")
     kotlin("plugin.spring")
-    kotlin("kapt")
 }
 
 repositories {
@@ -13,32 +12,35 @@ repositories {
 
 dependencies {
     implementation(project(":museum-railway-api"))
-    implementation(platform(libs.cloudflight.platform.spring.bom))
-    annotationProcessor(platform(libs.cloudflight.platform.spring.bom))
-    kapt(platform(libs.cloudflight.platform.spring.bom))
+
+    implementation(libs.kotlin.reflect)
+    implementation(libs.spring.boot.starter.web)
+    implementation(libs.spring.boot.starter.security)
+    developmentOnly(libs.spring.boot.devtools)
+    testImplementation(libs.spring.boot.starter.test)
+    testImplementation(libs.spring.mockk)
+
+    implementation(libs.jackson.core)
+    implementation(libs.jackson.annotations)
+    implementation(libs.jackson.module.kotlin)
+
     implementation("io.github.microutils:kotlin-logging-jvm:2.0.11")
-    implementation("com.github.doyaaaaaken:kotlin-csv-jvm:1.9.3")
-    implementation("org.springframework.boot:spring-boot-starter-security")
-    implementation("org.springframework.boot:spring-boot-starter-web")
-    implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
-    implementation("org.jetbrains.kotlin:kotlin-reflect")
-    implementation("io.swagger:swagger-annotations")
+    implementation(libs.kotlin.csv.jvm)
+    //implementation("io.swagger:swagger-annotations")
     implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:2.4.0")
     testImplementation("com.willowtreeapps.assertk:assertk:0.28.0")
-    testImplementation("org.junit.jupiter:junit-jupiter-api:5.8.1")
-    testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.8.1")
+    testImplementation(platform(libs.junit.jupiter.bom))
+    testImplementation(libs.junit.jupiter)
+    testRuntimeOnly(libs.junit.platform.launcher)
 }
 
-kotlin {
-    jvmToolchain(21)
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(21)
+    }
 }
 
 val containerEngine: String by rootProject.extra
-
-tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
-    kotlinOptions.jvmTarget = JavaVersion.VERSION_21.toString()
-    kotlinOptions.javaParameters = true
-}
 
 task<Exec>("imageBuild") {
     inputs.file("src/main/docker/Dockerfile")

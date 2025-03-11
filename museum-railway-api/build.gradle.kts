@@ -7,9 +7,11 @@ repositories {
 }
 
 dependencies {
-    implementation("events.boudicca:common-model:0.5.0")
+    implementation(libs.boudicca.commonmodel)
 }
 
-kotlin {
-    jvmToolchain(21)
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(21)
+    }
 }
