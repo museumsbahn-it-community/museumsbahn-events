@@ -4,6 +4,7 @@ plugins {
     id("io.spring.dependency-management")
     kotlin("jvm")
     kotlin("plugin.spring")
+    kotlin("plugin.serialization")
 }
 
 repositories {
@@ -21,11 +22,23 @@ dependencies {
     testImplementation(libs.spring.boot.starter.test)
     testImplementation(libs.spring.mockk)
 
+    implementation(libs.kotlinx.serialization.json)
+
     implementation(libs.jackson.core)
     implementation(libs.jackson.annotations)
     implementation(libs.jackson.module.kotlin)
 
-    implementation("io.github.microutils:kotlin-logging-jvm:2.0.11")
+    implementation(libs.google.api.client) {
+        exclude("commons-logging", "commons-logging")
+    }
+    implementation(libs.google.auth.library.oauth2.http) {
+        exclude("commons-logging", "commons-logging")
+    }
+    implementation(libs.google.api.services.sheets) {
+        exclude("commons-logging", "commons-logging")
+    }
+
+    implementation("io.github.oshai:kotlin-logging-jvm:7.0.3")
     implementation(libs.kotlin.csv.jvm)
     //implementation("io.swagger:swagger-annotations")
     implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:2.4.0")
@@ -39,6 +52,10 @@ java {
     toolchain {
         languageVersion = JavaLanguageVersion.of(21)
     }
+}
+
+tasks.withType<Test> {
+    useJUnitPlatform()
 }
 
 val containerEngine: String by rootProject.extra

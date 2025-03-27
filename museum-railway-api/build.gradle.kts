@@ -1,5 +1,6 @@
 plugins {
     kotlin("jvm")
+    kotlin("plugin.serialization")
 }
 
 repositories {
@@ -8,6 +9,7 @@ repositories {
 
 dependencies {
     implementation(libs.boudicca.commonmodel)
+    implementation(libs.kotlinx.serialization.json)
 }
 
 java {
