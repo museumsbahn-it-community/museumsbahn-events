@@ -33,6 +33,7 @@ boudicca-eventcollector-client = {module ="events.boudicca:eventcollector-client
 kotlin-csv-jvm = {module ="com.github.doyaaaaaken:kotlin-csv-jvm", version="1.9.3"}
 
 # todo: kinda wanna get rid of jackson in favor of kotlinx.serialization
+kotlinx-serialization-json = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version = "1.8.0" }
 jackson-core = { module = "com.fasterxml.jackson.core:jackson-core", version.ref = "jackson" }
 jackson-annotations = { module = "com.fasterxml.jackson.core:jackson-annotations", version.ref = "jackson" }
 jackson-databind = { module = "com.fasterxml.jackson.core:jackson-databind", version.ref = "jackson" }
@@ -57,8 +58,13 @@ assertk = { module = "com.willowtreeapps.assertk:assertk", version.ref = "assert
 mockk = { module = "io.mockk:mockk", version.ref = "mockk" }
 spring-mockk = { module = "com.ninja-squad:springmockk", version.ref = "spring-mockk" }
 
+google-api-client = { module = "com.google.api-client:google-api-client", version = "2.7.2" }
+google-auth-library-oauth2-http = { module = "com.google.auth:google-auth-library-oauth2-http", version = "1.33.1" }
+google-api-services-sheets = { module = "com.google.apis:google-api-services-sheets", version = "v4-rev20250211-2.0.0" }
+
 org-jetbrains-kotlin-jvm-gradle-plugin = { module = "org.jetbrains.kotlin.jvm:org.jetbrains.kotlin.jvm.gradle.plugin", version.ref = "kotlin" }
 org-jetbrains-kotlin-plugin-spring-gradle-plugin = { module = "org.jetbrains.kotlin.plugin.spring:org.jetbrains.kotlin.plugin.spring.gradle.plugin", version.ref = "kotlin" }
+org-jetbrains-kotlin-plugin-serialization-plugin = { module = "org.jetbrains.kotlin.plugin.serialization:org.jetbrains.kotlin.plugin.serialization.gradle.plugin", version.ref = "kotlin" }
 org-springframework-boot-gradle-plugin = { module = "org.springframework.boot:org.springframework.boot.gradle.plugin", version.ref = "org-springframework-boot-gradle-plugin" }
 graalvm-native-plugin = { module = "org.graalvm.buildtools:native-gradle-plugin", version.ref="graalvm" }
 
@@ -67,6 +73,7 @@ graalvm-native-plugin = { module = "org.graalvm.buildtools:native-gradle-plugin"
 gradle-plugins = [
     "org-jetbrains-kotlin-jvm-gradle-plugin",
     "org-jetbrains-kotlin-plugin-spring-gradle-plugin",
+    "org-jetbrains-kotlin-plugin-serialization-plugin",
     "org-springframework-boot-gradle-plugin",
     "graalvm-native-plugin"
 ]

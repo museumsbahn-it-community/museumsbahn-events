@@ -3,13 +3,12 @@ package at.museumrailwayevents.controller
 import at.museumrailwayevents.api.ImageCachingProxyApi
 import at.museumrailwayevents.config.ImageCachingConfig
 import at.museumrailwayevents.service.ImgproxyUrlSigningService
-import org.slf4j.LoggerFactory
+import io.github.oshai.kotlinlogging.KotlinLogging
 import org.springframework.http.MediaType
 import org.springframework.http.ResponseEntity
 import org.springframework.scheduling.annotation.Scheduled
 import org.springframework.stereotype.Controller
 import java.net.URI
-import java.net.URLEncoder
 import java.net.http.HttpClient
 import java.net.http.HttpRequest
 import java.net.http.HttpResponse
@@ -25,8 +24,6 @@ class ImageCachingProxyController(
     private val imageCachingConfig: ImageCachingConfig,
     private val signingService: ImgproxyUrlSigningService,
 ) : ImageCachingProxyApi {
-
-    private val LOG = LoggerFactory.getLogger(this::class.java)
 
     private val cache = ConcurrentHashMap<String, CacheEntry>()
 
@@ -53,37 +50,54 @@ class ImageCachingProxyController(
             URI(encodedUrl)
         )
 
-        val request = HttpRequest.newBuilder().GET()
-            .uri(URI.create(imgproxyUrl))
-            .build()
-        val response = httpClient.send(request, HttpResponse.BodyHandlers.ofByteArray())
+        try {
 
-        var contentType: Optional<String> = Optional.empty()
-        val optionalImage = if (response.statusCode() != 200) {
-            LOG.warn("response code is invalid ${response.statusCode()} for $imgproxyUrl\nreason: ${response.body().decodeToString()}")
-            return ResponseEntity.status(response.statusCode()).build()
-        } else {
-            val body = response.body()
-            if (body.isEmpty()) {
-                LOG.warn("empty body for $imgproxyUrl")
-                Optional.empty()
-            } else {
-                contentType = response.headers().firstValue("content-type")
-                Optional.of(body)
+            val request = HttpRequest.newBuilder().GET()
+                .uri(URI.create(imgproxyUrl))
+                .build()
+            val response = httpClient.send(request, HttpResponse.BodyHandlers.ofByteArray())
+
+            // TODO: maybe at some point we should switch to the restclient here as well
+            if (response.statusCode() != 200) {
+                logger.warn { "error requesting image: ${response.body().decodeToString()}" }
+                return ResponseEntity.status(response.statusCode()).build()
             }
-        }
 
-        val optionalMediaType = contentType.map { MediaType.valueOf(it) }
-        cache[encodedUrl] = CacheEntry(optionalImage, optionalMediaType)
+            var contentType: Optional<String> = Optional.empty()
+            val optionalImage = if (response.statusCode() != 200) {
+                logger.warn {
+                    "response code is invalid ${response.statusCode()} for $imgproxyUrl\nreason: ${
+                        response.body().decodeToString()
+                    }"
+                }
+                return ResponseEntity.status(response.statusCode()).build()
+            } else {
+                val body = response.body()
+                if (body.isEmpty()) {
+                    logger.warn { "empty body for $imgproxyUrl" }
+                    Optional.empty()
+                } else {
+                    contentType = response.headers().firstValue("content-type")
+                    Optional.of(body)
+                }
+            }
 
-        val mediaType = optionalMediaType.getOrNull()
-        return if (mediaType != null) {
-            ResponseEntity.ok().contentType(mediaType).body(optionalImage.getOrNull())
-        } else {
-            ResponseEntity.ok().body(optionalImage.getOrNull())
+            val optionalMediaType = contentType.map { MediaType.valueOf(it) }
+            cache[encodedUrl] = CacheEntry(optionalImage, optionalMediaType)
+
+            val mediaType = optionalMediaType.getOrNull()
+            return if (mediaType != null) {
+                ResponseEntity.ok().contentType(mediaType).body(optionalImage.getOrNull())
+            } else {
+                ResponseEntity.ok().body(optionalImage.getOrNull())
+            }
+        } catch (ex: Exception) {
+            logger.warn {
+                "exception when retrieving image: ${ex.message}"
+            }
+            return ResponseEntity.status(500).build()
         }
     }
-
 
     @Scheduled(fixedDelay = 1, timeUnit = TimeUnit.HOURS)
     fun cleanUp() {
@@ -105,5 +119,9 @@ class ImageCachingProxyController(
         val contentType: Optional<MediaType>,
         val dateAdded: Instant = Instant.now(),
     )
+
+    companion object {
+        private val logger = KotlinLogging.logger { }
+    }
 
 }
