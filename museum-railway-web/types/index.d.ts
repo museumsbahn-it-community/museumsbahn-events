@@ -42,9 +42,9 @@ declare global {
     }
 
     interface EventFilterSettings {
-        fromDate: Date | undefined,
-        toDate: Date | undefined,
-        tagFilters: EventTagFilterOption[],
+        fromDate?: Date | undefined,
+        toDate?: Date | undefined,
+        tagFilters?: EventTagFilterOption[] = [],
         locationId?: string | undefined
     }
 

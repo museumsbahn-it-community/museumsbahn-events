@@ -66,9 +66,11 @@ const items: MenuItem[] = [
   <header class="sticky-header">
     <div class="navbar flex flex-column">
       <div class="flex flex-row w-full navbar-content sm:px-5">
-        <h1 class="m-2">
-          <img class="logo" src="/logo-dark-full-transparent.png" alt="museumsbahn-events.at Logo"></img>
-        </h1>
+        <a href="/">
+          <h1 class="m-2">
+            <img class="logo" src="/logo-dark-full-transparent.png" alt="museumsbahn-events.at Logo"></img>
+          </h1>
+        </a>
         <div class="flex-grow-1"></div>
         <Menubar class="menubar sm:ml-6 borderless-menubar" :model="items" :breakpoint="'1190px'">
           <!--          [style.textAlign]="'right'"-->

@@ -14,7 +14,7 @@ export function buildQuery(filters: EventFilterSettings): string {
         queryParts.push(`"location_id" EQUALS "${filters.locationId}"`);
     }
     const tagFilterParts: string[] = []
-    filters.tagFilters.forEach((tagFilter) => {
+    filters?.tagFilters?.forEach((tagFilter) => {
         const tagOptions = tagFilter.options.map((opt) => `"${tagFilter.key}" CONTAINS "${opt}"`)
         tagFilterParts.push(tagOptions.join(" OR "))
     })

@@ -10,6 +10,7 @@
 a.event-card-small {
   text-decoration: none;
   color: inherit;
+  height: 100%;
 }
 
 .event-card-image {
@@ -28,13 +29,17 @@ a.event-card-small {
     <div class="w-full bg-grauweiß flex flex-row event-card-small">
       <!-- image -->
       <div v-if="event.pictureUrl" class="event-card-image">
-        <Image :src="imgSource" :alt="imgAltText" class="h-full"
-          image-class="h-full w-full object-fit-cover" />
+        <Image :src="imgSource" :alt="imgAltText" class="h-full" image-class="h-full w-full object-fit-cover" />
       </div>
       <!-- summary -->
-      <div class="flex flex-column justify-content-center p-2">
-        <div class="m-1"><NuxtTime :datetime="event.date" year="numeric" month="numeric" day="numeric" locale="de-AT" timeZone="Europe/Vienna"/></div>
-        <h2 class="event-title m-1">{{ event.name }}</h2>
+      <div class="flex flex-column justify-content-start p-2">
+        <div class="m-1">
+          <NuxtTime :datetime="event.date" year="numeric" month="numeric" day="numeric" locale="de-AT"
+            timeZone="Europe/Vienna" />
+        </div>
+        <div class="flex flex-grow-1 align-items-center">
+          <h2 class="event-title m-1">{{ event.name }}</h2>
+        </div>
       </div>
     </div>
   </RouterLink>
