@@ -161,7 +161,9 @@ export const useEventsStore = defineStore('events', {
                 return this.queriedEvents;
             }
 
-            const query = buildQuery(EMPTY_EVENT_FILTERS);
+            const query = buildQuery({
+                fromDate: subDays(new Date(), 1), // only show events from yesterday or later
+            });
             const body: {
                 query: string | undefined,
                 size: number,

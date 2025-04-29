@@ -11,7 +11,7 @@
     "start": "nuxt start"
   },
   "dependencies": {
-    "@nuxt/content": "^2.12.1",
+    "@nuxt/content": "^2.13.4",
     "@nuxtjs/leaflet": "^1.2.6",
     "@nuxtjs/seo": "^2.1.0",
     "@pinia/nuxt": "^0.5.1",
