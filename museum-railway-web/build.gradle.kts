@@ -8,8 +8,8 @@ task<Exec>("imageBuild") {
     commandLine(
         containerEngine, "build",
         "-t", "localhost/museum-railway-events-web",
-        "--build-arg=\"NPM_REPO_URL=$museumrailwayEventsNpmRepoUrl\"",
-        "--build-arg=\"NPM_TOKEN=$museumrailwayEventsNpmToken\"",
+        "--build-arg=NPM_REPO_URL=$museumrailwayEventsNpmRepoUrl",
+        "--build-arg=NPM_TOKEN=$museumrailwayEventsNpmToken",
         "-f", "Dockerfile", "."
     )
 }
