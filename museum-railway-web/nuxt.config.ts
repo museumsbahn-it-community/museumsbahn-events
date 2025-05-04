@@ -48,7 +48,6 @@ export default defineNuxtConfig({
 		'@nuxt/content',
 		'@pinia/nuxt',
 		'@nuxtjs/device',
-		'@nuxtjs/i18n',
 		'@nuxtjs/leaflet',
 		'nuxt-viewport',
 		'nuxt-primevue',

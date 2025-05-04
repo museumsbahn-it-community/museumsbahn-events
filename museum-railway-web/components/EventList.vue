@@ -27,7 +27,7 @@
   </div>
 </template>
 <script setup lang="ts">
-import type { MuseumEventGroup, MuseumEventGroupGroup } from "~/stores/EventsStore.ts";
+import type { MuseumEventGroupGroup } from "~/stores/EventsStore.ts";
 const EVENT_SELECTED_TOKEN = 'eventSelected';
 const emit = defineEmits([EVENT_SELECTED_TOKEN]);
 const props = defineProps<{

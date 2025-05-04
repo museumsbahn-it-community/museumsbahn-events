@@ -31,7 +31,7 @@ a.event-card {
     <div class="w-full h-full bg-mittelgrau flex flex-column border-radius-small event-card">
       <!-- info corner -->
       <div class="bg-mittelgrau flex flex-column p-2 event-info-corner">
-        <span v-if="event.eventCategory != null">{{ $t(event.eventCategory) }}</span>
+        <span v-if="event.eventCategory != null">{{ $keyToString(event.eventCategory) }}</span>
         <span>
           <NuxtTime :datetime="event.date" year="numeric" month="numeric" day="numeric" locale="de-AT"
             timeZone="Europe/Vienna" />
@@ -61,6 +61,9 @@ import EventImage from './EventImage.vue';
 import type { MuseumEventGroup } from '~/stores/EventsStore';
 import { computed } from 'vue';
 import { format } from 'date-fns';
+import { useNuxtApp } from 'nuxt/app';
+
+const { $keyToString } = useNuxtApp();
 
 const props = defineProps<{
   eventsGroupedByDeparture: MuseumEventGroup
@@ -70,6 +73,4 @@ const event = computed(() => props.eventsGroupedByDeparture.events[0]);
 const departureTimesRaw = computed(() => props.eventsGroupedByDeparture.events.map((event) => event.date))
 const departureTimes = computed(() => props.eventsGroupedByDeparture.events.map((event) => format(event.date, "HH:mm")))
 const hasMultipleDepartures = computed(() => departureTimes.value.length > 1)
-
-useI18n();
 </script>

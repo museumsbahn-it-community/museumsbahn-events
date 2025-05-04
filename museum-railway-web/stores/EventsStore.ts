@@ -2,7 +2,6 @@ import { defineStore } from 'pinia';
 import { createLocationMap, eventKey, type LocationMap } from '../model/util';
 import { compareAsc, format, subDays } from 'date-fns';
 import { de } from 'date-fns/locale/de';
-import { mapBoudiccaEntriesToEvents } from '~/composables/eventListData';
 import { useNuxtApp } from 'nuxt/app';
 import { buildQuery } from '~/composables/queryGenerator';
 import { useLocationsStore } from './LocationsStore';

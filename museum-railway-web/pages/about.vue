@@ -1,6 +1,3 @@
 <template>
-  <ArticleList title="Über uns" :path="path"></ArticleList>
+  <ArticleList title="Über uns" :content-collection="'about'"></ArticleList>
 </template>
-<script setup lang="ts">
-const path = "/about"
-</script>
