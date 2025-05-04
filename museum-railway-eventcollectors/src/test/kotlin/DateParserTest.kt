@@ -46,6 +46,14 @@ class DateParserTest {
     }
 
     @Test()
+    fun `parsing multi day event 2`() {
+        val data = "15. – 17.8.2025 3-Tagesfahrt"
+        val dates = DateParser.parseAllDatesFrom(data)
+        assertThat(dates.size).isEqualTo(2)
+        // implementation of date ranges is not yet correct, but at least the two dates should be recognized
+    }
+
+    @Test()
     fun `multiple dates in same string`() {
         val data = "Sonntag, 4., 11., 18. und 25. Juni 2023"
         val dates = DateParser.parseAllDatesFrom(data)

@@ -12,7 +12,7 @@ import org.jsoup.nodes.Element
 class MLVZwettlCollector(val jsoupCrawler: JsoupCrawler) : MuseumRailwayEventCollector(
     "mlv_zwettl",
     "mlv_zwettl",
-    "http://www.lokalbahnverein.at/deutsch/event.php",
+    "https://www.lokalbahnverein.at/veranstaltungen/",
     locationName = "Museums-Lokalbahnverein Zwettl"
 ) {
     override fun collectEvents(): List<Event> {
@@ -24,11 +24,16 @@ class MLVZwettlCollector(val jsoupCrawler: JsoupCrawler) : MuseumRailwayEventCol
 
         val individualEventLines = mutableListOf<List<Element>>()
         var currentEventLines = mutableListOf<Element>()
+        // this is sketchy AF, but they do not have anything better to select
         val mainTable =
-            document.select("tr:contains(Veranstaltungen)").filter { node -> node.select("h1").isNotEmpty() }.first()
-        val rows = mainTable.children().select("tr")
+            document.select("div.elementor-widget-container table:has(h2)").first()
+        val rows = mainTable?.children()?.select("tr")
 
-        rows.forEach { row ->
+        if (rows == null) {
+            println("warning: no event rows found")
+        }
+
+        rows?.forEach { row ->
             if (row.select("h2").isNotEmpty()) {
                 if (currentEventLines.isNotEmpty()) {
                     individualEventLines.add(currentEventLines)
@@ -42,7 +47,7 @@ class MLVZwettlCollector(val jsoupCrawler: JsoupCrawler) : MuseumRailwayEventCol
         }
         individualEventLines.forEach { eventLines ->
             val name = eventLines.first().select("h2").text()
-            val dateText = eventLines.first().text()
+            val dateText = eventLines.first().select("h2 + p").text()
             val hasDate = DateParser.fullDateRegex.containsMatchIn(dateText)
             val eventImage = eventLines.first().select("img").attr("src")
             var category = MuseumEventsCategory.MUSEUM_RAILWAY.jsonValue
