@@ -17,8 +17,6 @@ import { useEventsStore } from "~/stores/EventsStore";
 import { useLocationsStore } from "~/stores/LocationsStore";
 import { useAsyncData, useState } from "nuxt/app";
 
-useI18n()
-
 interface StateOption {
 
   name: string,

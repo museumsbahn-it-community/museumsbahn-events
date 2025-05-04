@@ -1,5 +1,4 @@
-import {MuseumEvent} from './museumEvent';
-import {MuseumLocation} from 'museum-railway-api-client';
+import type { MuseumEvent, MuseumLocation } from "~/types";
 
 export type LocationMap = { [key: string]: MuseumLocation; };
 

@@ -1,6 +1,3 @@
 <template>
-  <ArticleList title="Mitmachen" :path="path"></ArticleList>
+  <ArticleList title="Mitmachen" :content-collection="'participate'"></ArticleList>
 </template>
-<script setup lang="ts">
-const path = "/participate"
-</script>
