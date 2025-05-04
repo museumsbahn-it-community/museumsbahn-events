@@ -27,6 +27,7 @@ class DateParserRegexTest {
             "23. MÄRZ 2024 \"RATSHERRNEXPRESS zum Freistädter Ostermarkt\"",
             "an Sonntagen vom 2. Juli bis 1. Oktober 2023",
             "31. märz, osterdampf beim wälderbähnle",
+            "am 1.mai beginnt für uns die saison 2025",
         ).map { it.lowercase() }
         val shouldNotMatch = listOf(
             "asdf",

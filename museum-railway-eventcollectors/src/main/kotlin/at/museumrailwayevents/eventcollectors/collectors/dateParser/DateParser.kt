@@ -25,7 +25,7 @@ object DateParser {
     val monthOptions = "Jänner|Januar|Februar|März|April|Mai|Juni|Juli|August|September|Oktober|November|Dezember"
     val monthOptionsLowercase = monthOptions.lowercase()
     val monthWrittenRegexString =
-        "$dateStartRegex($monthOptions|$monthOptionsLowercase)(,|\\s|$)"
+        "($dateStartRegex|\\.)($monthOptions|$monthOptionsLowercase)(,|\\s|$)"
     val monthWrittenRegex = Regex(monthWrittenRegexString)
 
     // numeric month has a . at the end almost always

@@ -28,14 +28,19 @@ class EbmSchwechatCollector(val jsoupCrawler: JsoupCrawler) : MuseumRailwayEvent
             val eventList = box.select("ul")
             if (eventList.isNotEmpty()) {
                 events.addAll(parseEventList(box))
+                return@forEach
             }
 
-            val dates = DateParser.parseAllDatesFrom(title)
-            dates.forEach { date ->
-                val name = title.split(" am ").first() // currently assume alle events are like this
-                val pictureUrl = box.select("img").attr("src")
+            try {
+                val dates = DateParser.parseAllDatesFrom(title)
+                dates.forEach { date ->
+                    val name = title.split(" am ").first() // currently assume alle events are like this
+                    val pictureUrl = box.select("img").attr("src")
 
-                events.add(createEbmEvent(name, date, pictureUrl))
+                    events.add(createEbmEvent(name, date, pictureUrl))
+                }
+            } catch (ex: Exception) {
+                println("could not parse box: $title")
             }
         }
 
