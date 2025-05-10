@@ -21,7 +21,7 @@
       <div class="p-3 gap-3 flex flex-column">
         <div class="flex flex-row gap-3 event-details-header">
           <div class="flex flex-grow-1 flex-column event-summary">
-            <span v-if="event.eventCategory != null">{{ $t(event.eventCategory) }}</span>
+            <span v-if="event.eventCategory != null">{{ $keyToString(event.eventCategory) }}</span>
             <span><NuxtTime :datetime="event.date" year="numeric" month="numeric" day="numeric" locale="de-AT" timeZone="Europe/Vienna"/></span>
             <h2 class="my-1">{{ event.name }}</h2>
           </div>
@@ -70,8 +70,9 @@
 <script setup lang="ts">
 import { computed } from 'vue';
 import EventImage from './EventImage.vue';
+import { useNuxtApp } from 'nuxt/app';
 
-useI18n();
+const { $keyToString } = useNuxtApp();
 
 const props = withDefaults(defineProps<{
   event: MuseumEvent | undefined,
