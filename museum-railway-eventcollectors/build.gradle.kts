@@ -1,6 +1,10 @@
+import org.springframework.boot.gradle.tasks.bundling.BootJar
+
 plugins {
     kotlin("jvm")
     kotlin("plugin.serialization")
+    id("org.springframework.boot")
+    kotlin("plugin.spring")
 }
 
 repositories {
@@ -23,6 +27,9 @@ dependencies {
     implementation(libs.ktor.client.content.negotiation)
     implementation(libs.ktor.serialization.kotlinx.json)
     implementation(libs.ktor.client.engine.java)
+//    implementation(libs.ktor.client.engine.cio)
+//    implementation("io.github.oshai:kotlin-logging-jvm:7.0.3")
+
     implementation(libs.logback)
     implementation("org.apache.commons:commons-text:1.12.0")
     implementation(project(mapOf("path" to ":museum-railway-api")))
@@ -42,7 +49,7 @@ val containerEngine: String by rootProject.extra
 
 task<Exec>("imageBuild") {
     inputs.file("src/main/docker/Dockerfile")
-    inputs.files(tasks.named("jar"))
+    inputs.files(tasks.named("bootJar"))
     dependsOn(tasks.named("assemble"))
     commandLine(
         containerEngine,
@@ -55,19 +62,15 @@ task<Exec>("imageBuild") {
     )
 }
 
-tasks.withType<Jar> {
-    archiveFileName.set("museum-railway-events-eventcollectors.jar")
-
-    manifest {
-        attributes["Main-Class"] = "at.museumrailwayevents.eventcollectors.MuseumRailwayEventCollectorsKt"
-    }
-
-    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
-
-    inputs.files(configurations.runtimeClasspath)
-    from(configurations.runtimeClasspath.get().files.map { if (it.isDirectory()) it else zipTree(it) })
-}
 
 tasks.withType<Test> {
     useJUnitPlatform()
+}
+
+tasks.withType<BootJar> {
+    archiveFileName = "museum-railway-events-eventcollectors.jar"
+}
+
+springBoot {
+    mainClass.set("at.museumrailwayevents.eventcollectors.MuseumRailwayEventCollectorsKt")
 }
