@@ -66,7 +66,7 @@ abstract class RegiondoCollector(
                 }
             }
             val productsUrl =
-                "https://shopping-experience-api.prod.regiondo.net/api/v1/products?includeInactive=true"
+                "https://shopping-experience-api.prod.regiondo.net/api/v1/products?includeInactive=false"
             val productsResponse =
                 httpClient.request(productsUrl) {
                     headers {
@@ -76,21 +76,31 @@ abstract class RegiondoCollector(
                     }
                 }
 
+            if (productsResponse.status.value >= 400) {
+                println("error loading product list for regiondo")
+                return@launch
+            }
+
             val products: Products = productsResponse.body()
             products.items.forEach { product ->
 
                 val productItemsUrl =
                     "https://shopping-experience-api.prod.regiondo.net/api/v1/timeslots/times?productId=${product.id}&numberOfMonths=12"
-                val itemsResponse = httpClient.request(productItemsUrl) {
+                val timesResponse = httpClient.request(productItemsUrl) {
                     headers {
                         append("x-partner-code", regiondoPartnerCode)
                         append("x-tenant", "REGIONDO")
                         append("x-locale", "de-AT")
-                        //append("x-partner-domain", "https://vereinerzbergbahn.regiondo.at/")
+                        append("x-partner-domain", "https://vereinerzbergbahn.regiondo.at/")
                     }
                 }
 
-                val times = itemsResponse.body<Times>()
+                if (timesResponse.status.value >= 400) {
+                    println("fetching timeslots failed for product id ${product.id}")
+                    return@forEach
+                }
+
+                val times = timesResponse.body<Times>()
 
                 times.days.forEach { day ->
                     day.value.times.forEach { timeEntry ->
