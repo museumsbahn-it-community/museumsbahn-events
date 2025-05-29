@@ -1,7 +1,7 @@
 <template>
   <div class="flex flex-row w-full sticky-content justify-content-center">
     <div class="flex flex-column h-full content-center-column mx-2">
-      <Message severity="info"> Achtung! Die Daten werden automatisch erfasst und nicht manuell geprüft.
+      <Message class="my-2" severity="info" icon="pi pi-info-circle"> Achtung! Die Daten werden automatisch erfasst und nicht manuell geprüft.
         Abfahrtszeiten und aktuelle Informationen immer auf den Webseiten der jeweiligen Veranstalter
         kontrollieren!
       </Message>

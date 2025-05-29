@@ -8,12 +8,12 @@
 </script>
 
 <template>
-    <RouterLink :to="props.routerLink" class="flex flex-column" style="position:relative">
+    <RouterLink :to="props.routerLink" class="" style="position:relative">
       <Image :src="props.imagePath"
              :alt="props.imageAltText"
              image-class="w-full object-fit-cover border-radius-small shadow-5 navigation-card-image">
       </Image>
-      <div class="w-full flex flex-row justify-content-center image-text" style="position: absolute; bottom: 5px">
+      <div class="w-full flex flex-row justify-content-center image-text" style="position: absolute; bottom: 0">
         <h3>{{props.text}}</h3>
       </div>
     </RouterLink>

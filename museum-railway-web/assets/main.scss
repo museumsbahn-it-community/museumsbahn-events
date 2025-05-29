@@ -1,10 +1,14 @@
 @use "./colors" as colors;
 @use "./variables_impl" as variables;
-@import "./colors_impl";
-@import './theme/theme.scss';
-@import 'primeflex/primeflex.css';
-@import 'primeicons/primeicons.css';
-@import 'material-icons/iconfont/material-icons.css';
+@use "./colors_impl";
+@use 'primeflex/primeflex.css';
+@use 'primeicons/primeicons.css';
+@use 'material-icons/iconfont/material-icons.css';
+
+* {
+  font-family: 'Roboto', -apple-system, BlinkMacSystemFont, sans-serif;
+}
+
 
 html {
   scrollbar-color: colors.$color-ultramarinblau colors.$color-grauweiß;
@@ -17,6 +21,11 @@ body {
   color: colors.$color-umbragrau;
   background: colors.$color-grauweiß;
   margin: 0;
+}
+
+a {
+  text-decoration: none;
+  color: colors.$color-umbragrau;
 }
 
 .sticky-content {
@@ -60,6 +69,7 @@ body {
 .object-fit-cover {
   object-fit: cover;
 }
+
 .object-fit-contain {
   object-fit: contain;
 }

@@ -41,11 +41,11 @@
         </div>
       </div>
       <div class="my-2">
-        <InlineMessage severity="info"> Achtung! Die Daten auf dieser Webseite werden automatisch erfasst und nicht
+        <Message severity="info" icon="pi pi-info-circle"> Achtung! Die Daten auf dieser Webseite werden automatisch erfasst und nicht
           manuell geprüft.
           Abfahrtszeiten und aktuelle Informationen bitte immer auf den Webseiten der jeweiligen Veranstalter
           kontrollieren!
-        </InlineMessage>
+        </Message>
       </div>
       <h2>Veranstaltungen in den nächsten 7 Tagen</h2>
       <div class="flex flex-row flex-wrap p-2 bg-mittelgrau border-radius-small">
@@ -57,14 +57,14 @@
         </FilteredEventsSmallCardList>
       </div>
       <div class="flex w-full align-items-center justify-content-center">
-        <RouterLink class="p-button p-button-outlined" to="/events">Alle Veranstaltungen anzeigen</RouterLink>
+        <RouterLink class="p-button p-button-outlined" to="events">Alle Veranstaltungen anzeigen</RouterLink>
       </div>
     </div>
   </div>
 </template>
 <script setup lang="ts">
 import { subDays, addDays } from "date-fns";
-import { callOnce, useState } from "nuxt/app";
+import { useState } from "nuxt/app";
 import { computed } from "vue";
 import FilteredEventsSmallCardList from "~/components/FilteredEventsSmallCardList.vue";
 import NavigationImageCard from "~/components/NavigationImageCard.vue";
