@@ -1,95 +1,142 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
-	$development: {
-		debug: true,
-		devtools: {
-			enabled: true,
-			timeline: {
-				enabled: true
-			}
-		},
-		sourcemap: true,
-		ssr: false,
-	},
-	runtimeConfig: {
-		public: {
-			matomoBase: 'http://localhost:8100' // can be overridden by NUXT_PUBLIC_API_BASE environment variable
-		},
-		backendApiProxyUrl: 'http://localhost:3050',
-		boudiccaSearchApiProxyUrl: 'http://localhost:3050'
-	},
+    $development: {
+        debug: true,
+        devtools: {
+            enabled: true,
+            timeline: {
+                enabled: true
+            }
+        },
+        sourcemap: true,
+        ssr: false,
+    },
+    runtimeConfig: {
+        public: {
+            matomoBase: 'http://localhost:8100' // can be overridden by NUXT_PUBLIC_API_BASE environment variable
+        },
+        backendApiProxyUrl: 'http://localhost:3050',
+        boudiccaSearchApiProxyUrl: 'http://localhost:3050'
+    },
 
-	app: {
-		head: {
-			link: [
-				{ rel: 'icon', type: 'image/x-icon', href: '/favicon-light/favicon.ico', media: "(prefers-color-scheme: light)" },
-				{ rel: 'apple-touch-icon', sizes: '180x180', href: '/favicon-light/apple-touch-icon.png', media: "(prefers-color-scheme: light)" },
-				{ rel: 'icon', type: 'image/png', sizes: '32x32', href: '/favicon-light/favicon-32x32.png', media: "(prefers-color-scheme: light)" },
-				{ rel: 'icon', type: 'image/png', sizes: '16x16', href: '/favicon-light/favicon-16x16.png', media: "(prefers-color-scheme: light)" },
-				{ rel: 'icon', type: 'image/x-icon', href: '/favicon-dark/favicon.ico', media: "(prefers-color-scheme: dark)" },
-				{ rel: 'apple-touch-icon', sizes: '180x180', href: '/favicon-dark/apple-touch-icon.png', media: "(prefers-color-scheme: dark)" },
-				{ rel: 'icon', type: 'image/png', sizes: '32x32', href: '/favicon-dark/favicon-32x32.png', media: "(prefers-color-scheme: dark)" },
-				{ rel: 'icon', type: 'image/png', sizes: '16x16', href: '/favicon-dark/favicon-16x16.png', media: "(prefers-color-scheme: dark)" },
-				{ rel: 'manifest', href: '/site.webmanifest' }
-			],
-			titleTemplate: '%s %separator %appName',
-			templateParams: {
-			  separator: '|', // choose a separator
-			  appName: 'MUSEUMSBAHN-events.at' // set a site name
-			}
-		}
-	},
+    app: {
+        head: {
+            link: [
+                {
+                    rel: 'icon',
+                    type: 'image/x-icon',
+                    href: '/favicon-light/favicon.ico',
+                    media: "(prefers-color-scheme: light)"
+                },
+                {
+                    rel: 'apple-touch-icon',
+                    sizes: '180x180',
+                    href: '/favicon-light/apple-touch-icon.png',
+                    media: "(prefers-color-scheme: light)"
+                },
+                {
+                    rel: 'icon',
+                    type: 'image/png',
+                    sizes: '32x32',
+                    href: '/favicon-light/favicon-32x32.png',
+                    media: "(prefers-color-scheme: light)"
+                },
+                {
+                    rel: 'icon',
+                    type: 'image/png',
+                    sizes: '16x16',
+                    href: '/favicon-light/favicon-16x16.png',
+                    media: "(prefers-color-scheme: light)"
+                },
+                {
+                    rel: 'icon',
+                    type: 'image/x-icon',
+                    href: '/favicon-dark/favicon.ico',
+                    media: "(prefers-color-scheme: dark)"
+                },
+                {
+                    rel: 'apple-touch-icon',
+                    sizes: '180x180',
+                    href: '/favicon-dark/apple-touch-icon.png',
+                    media: "(prefers-color-scheme: dark)"
+                },
+                {
+                    rel: 'icon',
+                    type: 'image/png',
+                    sizes: '32x32',
+                    href: '/favicon-dark/favicon-32x32.png',
+                    media: "(prefers-color-scheme: dark)"
+                },
+                {
+                    rel: 'icon',
+                    type: 'image/png',
+                    sizes: '16x16',
+                    href: '/favicon-dark/favicon-16x16.png',
+                    media: "(prefers-color-scheme: dark)"
+                },
+                {rel: 'manifest', href: '/site.webmanifest'}
+            ],
+            titleTemplate: '%s %separator %appName',
+            templateParams: {
+                separator: '|', // choose a separator
+                appName: 'MUSEUMSBAHN-events.at' // set a site name
+            }
+        }
+    },
 
-	css: [
-		'~/assets/main.scss',
-	],
+    css: [
+        '~/assets/main.scss',
+    ],
 
-	modules: [
-		'@nuxt/content',
-		'@pinia/nuxt',
-		'@nuxtjs/device',
-		'@nuxtjs/leaflet',
-		'nuxt-viewport',
-		'nuxt-primevue',
-		'nuxt-open-fetch',
-		'nuxt-time',
-		'@nuxtjs/seo'
-	],
+    modules: [
+        '@nuxt/content',
+        '@pinia/nuxt',
+        '@nuxtjs/device',
+        '@nuxtjs/leaflet',
+        'nuxt-viewport',
+        '@primevue/nuxt-module',
+        'nuxt-open-fetch',
+        'nuxt-time',
+        '@nuxtjs/seo'
+    ],
 
-	content: {
-		api: {
-			baseURL: '/contentApi/_content',
-		},
-		markdown: {
-			anchorLinks: false,
-		},
-	},
+    content: {
+        api: {
+            baseURL: '/contentApi/_content',
+        },
+        markdown: {
+            anchorLinks: false,
+        },
+    },
 
-	nitro: {
-		preset: 'node-server'
-	},
+    nitro: {
+        preset: 'node-server'
+    },
 
-	openFetch: {
-		clients: {
-			'boudiccaSearchApi': {
-				schema: './openapi/boudiccaSearchApi/openapi.json'
-			},
-			'museumRailwayBackendApi': {
-				schema: './openapi/museumRailwayBackendApi/openapi.yaml'
-			}
-		}
-	},
+    openFetch: {
+        clients: {
+            'boudiccaSearchApi': {
+                schema: './openapi/boudiccaSearchApi/openapi.json'
+            },
+            'museumRailwayBackendApi': {
+                schema: './openapi/museumRailwayBackendApi/openapi.yaml'
+            }
+        }
+    },
 
-	viewport: {
-		breakpoints: {
-			// configure breakpoints, so they match primeflex breakpoints
-			'desktop-xxl': 1650, // matches nothing, but is biiiig
-			'desktop-xl': 1200, // matches primeflex $xl
-			desktop: 992, // matches primeflex $lg
-			tablet: 768, // matches primeflex $md
-			mobile: 320,
-		},
-	},
+    viewport: {
+        breakpoints: {
+            // configure breakpoints, so they match primeflex breakpoints
+            'desktop-xxl': 1650, // matches nothing, but is biiiig
+            'desktop-xl': 1200, // matches primeflex $xl
+            desktop: 992, // matches primeflex $lg
+            tablet: 768, // matches primeflex $md
+            mobile: 320,
+        },
+    },
+    primevue: {
+        importTheme: { from: './assets/theme.ts' },
+    },
 
-	compatibilityDate: '2025-01-02'
+    compatibilityDate: '2025-01-02'
 });

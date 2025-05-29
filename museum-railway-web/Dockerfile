@@ -9,7 +9,7 @@ RUN echo "" >> .npmrc  \
     && printf "@boudicca:registry=https://${NPM_REPO_URL}\n" >> .npmrc \
     && printf "@museumrailwayevents:registry=https://${NPM_REPO_URL}\n" >> .npmrc \
     && printf "//${NPM_REPO_URL}:_authToken=\${NPM_TOKEN}" >> .npmrc
-RUN npm install --omit=dev
+RUN npm ci
 
 # npm install and build are separated so the result of install
 # can be cached as long as package.json does not change
