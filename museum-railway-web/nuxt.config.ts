@@ -96,7 +96,8 @@ export default defineNuxtConfig({
         '@primevue/nuxt-module',
         'nuxt-open-fetch',
         'nuxt-time',
-        '@nuxtjs/seo'
+        '@nuxtjs/seo',
+        '@nuxt/eslint'
     ],
 
     content: {
