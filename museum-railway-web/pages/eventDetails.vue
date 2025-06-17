@@ -44,40 +44,35 @@
 </template>
 
 <script setup lang="ts">
-import { useAsyncData } from 'nuxt/app';
-import { storeToRefs } from 'pinia';
-import { computed} from 'vue';
+import { computed } from 'vue';
 import { useRoute } from 'vue-router';
 import EventCardSmall from '~/components/EventCardSmall.vue';
 import EventDetails from '~/components/EventDetails.vue';
-import { useEventsStore } from '~/stores/EventsStore';
-import { useLocationsStore } from '~/stores/LocationsStore';
+import { useLocations } from '~/composables/useLocations';
+import { useEvents } from '~/composables/useEvents';
 
-const locationsStore = useLocationsStore();
-const eventsStore = useEventsStore();
-await useAsyncData('locations', () => locationsStore.fetchLocations());
-// we need to fetch all events, because we do not know the location in advance and we cannot just fetch by id :(
-await useAsyncData('events', () => eventsStore.fetchAllEvents());
+// Use composables instead of Pinia stores
+const { locationById } = useLocations();
+const { getEventByKey, eventsForLocationId } = useEvents();
 
 const route = useRoute();
 const viewport = useViewport();
 
 const eventKeyParam = route?.params?.eventKey as string;
-const selectedEvent = computed(() => storeToRefs(eventsStore).getEventByKey.value(eventKeyParam));
-const locationId = computed(() => selectedEvent.value?.locationId)
-const location = computed(() => locationId.value == null ? null : locationsStore.locationById(locationId.value));
+const selectedEvent = computed(() => getEventByKey(eventKeyParam));
+const locationId = computed(() => selectedEvent.value?.locationId);
+const location = computed(() => locationId.value == null ? null : locationById(locationId.value));
 
 const eventsForSameLocation = computed(() => {
-    const locId = locationId.value
+    const locId = locationId.value;
     if (locId == null) {
         return [];
     }
 
-    const events = storeToRefs(eventsStore).eventsForLocationId.value(locId);
-    return events;
-})
+    return eventsForLocationId(locId);
+});
 
-const noEventSelectedPlaceholderText = "Leider konnte die Veranstaltung nicht gefunden werden."
+const noEventSelectedPlaceholderText = "Leider konnte die Veranstaltung nicht gefunden werden.";
 
 useSeoMeta({
   title: () => `Veranstaltung | ${selectedEvent.value?.name}`,
@@ -86,5 +81,5 @@ useSeoMeta({
   ogDescription: () => `${selectedEvent.value?.description}`,
   ogImage: () => selectedEvent.value?.pictureUrl != null ? `https://museumsbahn-events.at/imgcache?url=${selectedEvent.value?.pictureUrl}` : `https://museumsbahn-events.at/img/social_media_preview.jpg`,
   twitterCard: 'summary_large_image',
-})
+});
 </script>

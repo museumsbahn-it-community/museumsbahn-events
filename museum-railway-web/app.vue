@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import SiteHeader from './components/SiteHeader.vue';
-import {useGlobalConfigStore} from "~/stores/GlobalConfigStore.ts";
+import { useGlobalConfig } from "~/composables/useGlobalConfig";
 
 useSeoMeta({
   title: 'Startseite',
@@ -11,8 +11,8 @@ useSeoMeta({
   twitterCard: 'summary_large_image',
 })
 
-const globalConfig = useGlobalConfigStore()
-onMounted(() => globalConfig.initHistoryCount())
+const { initHistoryCount } = useGlobalConfig();
+onMounted(() => initHistoryCount());
 
 </script>
 

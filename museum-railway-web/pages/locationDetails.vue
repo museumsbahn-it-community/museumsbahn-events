@@ -9,21 +9,22 @@
   </div>
 </template>
 <script setup lang="ts">
-import { useAsyncData, useRoute, useState } from "nuxt/app";
-import { useEventsStore } from "~/stores/EventsStore";
-import { useLocationsStore } from "~/stores/LocationsStore";
+import { useRoute, useState } from "nuxt/app";
+import { useLocations } from "~/composables/useLocations";
+import { useEvents } from "~/composables/useEvents";
 
-const locationsStore = useLocationsStore();
-const eventsStore = useEventsStore();
+// Use composables instead of Pinia stores
+const { locationById } = useLocations();
+const { eventsForLocationIdGrouped } = useEvents();
 
 const route = useRoute();
 const locationId = route?.params?.locationId as string;
 
-await useAsyncData('locations', () => locationsStore.fetchLocations());
-await useAsyncData('events', () => eventsStore.fetchEventsForLocation(locationId));
+// Get the museum location using the composable
+const museumLocation = locationById(locationId);
 
-const museumLocation = locationsStore.locationById(locationId);
-const events = useState(`location-${locationId}-events`, () => eventsStore.eventsForLocationIdGrouped(locationId))
+// Get events for the location using the composable
+const events = useState(`location-${locationId}-events`, () => eventsForLocationIdGrouped(locationId));
 
 useSeoMeta({
   title: () => `${museumLocation?.name}`,

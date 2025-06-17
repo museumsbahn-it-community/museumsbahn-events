@@ -10,22 +10,18 @@
 
 <script lang="ts" setup>
 import { isBefore } from 'date-fns';
-import { useAsyncData } from 'nuxt/app';
-import { storeToRefs } from 'pinia';
 import { computed } from 'vue';
-import { useEventsStore } from '~/stores/EventsStore';
-import { useLocationsStore } from '~/stores/LocationsStore';
+import { useEvents } from '~/composables/useEvents';
+import { useLocations } from '~/composables/useLocations';
 
-const locationsStore = useLocationsStore();
-const eventsStore = useEventsStore();
-await useAsyncData('locations', () => locationsStore.fetchLocations());
-// we need to fetch all events, because we do not know the location in advance and we cannot just fetch by id :(
-await useAsyncData('events', () => eventsStore.fetchAllEvents());
+// Use composables instead of Pinia stores
+const { allLocations } = useLocations();
+const { filteredEvents: allFilteredEvents } = useEvents();
 
 const props = defineProps<{ dateFrom: Date, dateTo?: Date, cardClass?: string }>()
 
 const filteredEvents = computed(() =>
-  storeToRefs(eventsStore).filteredEvents.value.filter((event) => isBefore(props.dateFrom, event.date) 
+  allFilteredEvents.value.filter((event) => isBefore(props.dateFrom, event.date) 
     && (props.dateTo == null || isBefore(event.date, props.dateTo)))
 )
 </script>
