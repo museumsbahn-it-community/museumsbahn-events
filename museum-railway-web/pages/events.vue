@@ -13,23 +13,21 @@
   </div>
 </template>
 <script setup lang="ts">
-import { useEventsStore } from "~/stores/EventsStore";
-import { useLocationsStore } from "~/stores/LocationsStore";
-import { useAsyncData, useState } from "nuxt/app";
+import { useState } from "nuxt/app";
+import { useLocations } from "~/composables/useLocations";
+import { useEvents } from "~/composables/useEvents";
 
 interface StateOption {
-
   name: string,
   code: string
-
 }
 
-const locationsStore = useLocationsStore();
-const eventsStore = useEventsStore();
-await useAsyncData('locations', () => locationsStore.fetchLocations());
-await useAsyncData('events', () => eventsStore.fetchAllEvents());
+// Use the composables instead of Pinia stores
+const { allLocations } = useLocations();
+const { filteredEventsGroupedByMonthAndDepartureTime, allEventsData, allEventsPending } = useEvents();
 
-const eventGroups = useState('filtered-events', () => eventsStore.filteredEventsGroupedByMonthAndDepartureTime);
+// Create a reactive reference to the grouped events
+const eventGroups = useState('filtered-events', () => filteredEventsGroupedByMonthAndDepartureTime.value);
 
 useSeoMeta({
   title: 'Veranstaltungsliste',

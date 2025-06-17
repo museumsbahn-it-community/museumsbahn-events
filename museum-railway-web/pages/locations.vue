@@ -69,28 +69,26 @@
 </template>
 
 <script setup lang="ts">
-import { useAsyncData, useLazyAsyncData, useRouter } from 'nuxt/app';
+import { useRouter } from 'nuxt/app';
 import { computed, ref } from 'vue';
-import { useEventsStore } from '~/stores/EventsStore';
-import { useLocationsStore } from '~/stores/LocationsStore';
-import { storeToRefs } from 'pinia';
-const locationsStore = useLocationsStore();
-const eventsStore = useEventsStore();
-await useLazyAsyncData('locations', () => locationsStore.fetchLocations());
-await useAsyncData('events', () => eventsStore.fetchAllEvents());
+import { useEvents } from '~/composables/useEvents';
+import { useLocations } from '~/composables/useLocations';
+
+// Use composables instead of Pinia stores
+const { allLocations } = useLocations();
+const { eventCountForLocationId } = useEvents();
 
 const viewport = useViewport();
-const {allLocations} = storeToRefs(locationsStore);
-const {eventCountForLocationId} = storeToRefs(eventsStore)
+
 const eventCounts = computed(() => {
   const eventCountMap: {[key: string]: number} = {};
   allLocations.value.forEach(location => {
     const locationId = location.locationId;
-    const eventCount = eventCountForLocationId.value(locationId)
+    const eventCount = eventCountForLocationId(locationId);
     eventCountMap[locationId] = eventCount;
   });
-  return eventCountMap
-})
+  return eventCountMap;
+});
 
 const highlightedLocation = ref<MuseumLocation | undefined>(undefined);
 const router = useRouter();
@@ -114,5 +112,5 @@ useSeoMeta({
   ogDescription: 'Hier findest du eine Übersicht der Museumsbahnen und Eisenbahnmuseen die es in Österreich gibt.',
   ogImage: 'https://museumsbahn-events.at/img/social_media_preview.jpg',
   twitterCard: 'summary_large_image',
-})
+});
 </script>

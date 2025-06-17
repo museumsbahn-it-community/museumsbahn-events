@@ -9,12 +9,12 @@
   </div>
 </template>
 <script setup lang="ts">
-import { useAsyncData, useRoute, useRouter } from 'nuxt/app';
-import { useLocationsStore } from '~/stores/LocationsStore';
+import { useRoute, useRouter } from 'nuxt/app';
+import { useLocations } from '~/composables/useLocations';
 
-const locationsStore = useLocationsStore()
-await useAsyncData('locations', () => locationsStore.fetchLocations());
-const locations = locationsStore.allLocations;
+// Use composables instead of Pinia stores
+const { allLocations } = useLocations();
+const locations = allLocations;
 
 const router = useRouter();
 const route = useRoute();
@@ -27,5 +27,5 @@ useSeoMeta({
   ogDescription: 'Auf dieser Übersichtskarte findest du Eisenbahnmuseen und Museumsbahnen in Österreich.',
   ogImage: 'https://museumsbahn-events.at/img/social_media_preview.jpg',
   twitterCard: 'summary_large_image',
-})
+});
 </script>
