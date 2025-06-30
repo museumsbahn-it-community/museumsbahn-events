@@ -9,20 +9,17 @@
 </template>
 
 <script lang="ts" setup>
-import { isBefore } from 'date-fns';
-import { computed } from 'vue';
-import { useEvents } from '~/composables/useEvents';
-import { useLocations } from '~/composables/useLocations';
+import {isBefore} from 'date-fns';
+import {computed} from 'vue';
+import { useAllEvents } from '~/composables/eventComposables';
 
-// Use composables instead of Pinia stores
-const { allLocations } = useLocations();
-const { filteredEvents: allFilteredEvents } = useEvents();
+const { data: events } = useAllEvents();
 
 const props = defineProps<{ dateFrom: Date, dateTo?: Date, cardClass?: string }>()
 
 const filteredEvents = computed(() =>
-  allFilteredEvents.value.filter((event) => isBefore(props.dateFrom, event.date) 
-    && (props.dateTo == null || isBefore(event.date, props.dateTo)))
+    events?.value?.filter((event) => isBefore(props.dateFrom, event.date)
+        && (props.dateTo == null || isBefore(event.date, props.dateTo))) ?? []
 )
 </script>
 

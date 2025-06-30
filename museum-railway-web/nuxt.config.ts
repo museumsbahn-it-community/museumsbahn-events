@@ -16,7 +16,6 @@ export default defineNuxtConfig({
             matomoBase: 'http://localhost:8100' // can be overridden by NUXT_PUBLIC_API_BASE environment variable
         },
         backendApiProxyUrl: 'http://localhost:3050',
-        boudiccaSearchApiProxyUrl: 'http://localhost:3050'
     },
 
     app: {

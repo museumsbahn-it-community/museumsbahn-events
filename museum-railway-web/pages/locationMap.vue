@@ -9,12 +9,12 @@
   </div>
 </template>
 <script setup lang="ts">
-import { useRoute, useRouter } from 'nuxt/app';
-import { useLocations } from '~/composables/useLocations';
+import {useRoute, useRouter} from 'nuxt/app';
+import {fetchLocations} from '~/composables/locationDataFunctions';
+import {useAsyncData} from "#app";
 
 // Use composables instead of Pinia stores
-const { allLocations } = useLocations();
-const locations = allLocations;
+const {data: locations} = useAsyncData('locations', async () => fetchLocations())
 
 const router = useRouter();
 const route = useRoute();

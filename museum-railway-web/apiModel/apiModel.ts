@@ -42,7 +42,7 @@ export interface MuseumEvent {
 export interface EventFilterSettings {
     fromDate?: Date | undefined,
     toDate?: Date | undefined,
-    tagFilters?: EventTagFilterOption[] = [],
+    tagFilters?: EventTagFilterOption[],
     locationId?: string | undefined
 }
 
