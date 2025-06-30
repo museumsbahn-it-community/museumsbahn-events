@@ -1,4 +1,4 @@
-import type { MuseumEvent, MuseumLocation } from "~/types";
+import type { MuseumEvent, MuseumLocation } from "~/apiModel/apiModel";
 
 export type LocationMap = { [key: string]: MuseumLocation; };
 

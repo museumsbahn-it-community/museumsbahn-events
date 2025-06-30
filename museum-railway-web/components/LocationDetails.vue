@@ -41,7 +41,7 @@
 </template>
 <script setup lang="ts">
 import {eventKey} from "~/model/util.ts";
-import type {MuseumEventGroupGroup} from "~/stores/EventsStore.ts";
+import type {MuseumEventGroupGroup} from "~/composables/eventDataFunctions";
 
 const router = useRouter();
 const props = defineProps<{

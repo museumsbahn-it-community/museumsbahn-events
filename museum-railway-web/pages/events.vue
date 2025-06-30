@@ -1,7 +1,8 @@
 <template>
   <div class="flex flex-row w-full sticky-content justify-content-center">
     <div class="flex flex-column h-full content-center-column mx-2">
-      <Message class="my-2" severity="info" icon="pi pi-info-circle"> Achtung! Die Daten werden automatisch erfasst und nicht manuell geprüft.
+      <Message class="my-2" severity="info" icon="pi pi-info-circle"> Achtung! Die Daten werden automatisch erfasst und
+        nicht manuell geprüft.
         Abfahrtszeiten und aktuelle Informationen immer auf den Webseiten der jeweiligen Veranstalter
         kontrollieren!
       </Message>
@@ -13,21 +14,14 @@
   </div>
 </template>
 <script setup lang="ts">
-import { useState } from "nuxt/app";
-import { useLocations } from "~/composables/useLocations";
-import { useEvents } from "~/composables/useEvents";
+import { useAllEvents } from "~/composables/eventComposables";
+import { eventsGroupedByMonthAndDepartureTime, type MuseumEventGroupGroup } from "~/composables/eventDataFunctions";
+import type { MuseumEvent } from "~/apiModel/apiModel";
 
-interface StateOption {
-  name: string,
-  code: string
-}
-
-// Use the composables instead of Pinia stores
-const { allLocations } = useLocations();
-const { filteredEventsGroupedByMonthAndDepartureTime, allEventsData, allEventsPending } = useEvents();
-
-// Create a reactive reference to the grouped events
-const eventGroups = useState('filtered-events', () => filteredEventsGroupedByMonthAndDepartureTime.value);
+const { data: events } = useAllEvents();
+const eventGroups = computed<MuseumEventGroupGroup[]>(() => {
+  return events.value != null ? eventsGroupedByMonthAndDepartureTime(events.value as MuseumEvent[]) : []
+})
 
 useSeoMeta({
   title: 'Veranstaltungsliste',

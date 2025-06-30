@@ -48,20 +48,32 @@ import { computed } from 'vue';
 import { useRoute } from 'vue-router';
 import EventCardSmall from '~/components/EventCardSmall.vue';
 import EventDetails from '~/components/EventDetails.vue';
-import { useLocations } from '~/composables/useLocations';
-import { useEvents } from '~/composables/useEvents';
-
-// Use composables instead of Pinia stores
-const { locationById } = useLocations();
-const { getEventByKey, eventsForLocationId } = useEvents();
+import { useAllEvents } from '~/composables/eventComposables';
+import { useAllLocations } from '~/composables/locationComposables';
+import { getLocationById } from '~/composables/locationDataFunctions';
+import { eventKey } from '~/model/util';
+import type {MuseumEvent} from "~/apiModel/apiModel";
 
 const route = useRoute();
 const viewport = useViewport();
+const locations = useAllLocations().data
+const events = useAllEvents().data
 
 const eventKeyParam = route?.params?.eventKey as string;
-const selectedEvent = computed(() => getEventByKey(eventKeyParam));
+const selectedEvent = computed(() => {
+  const event = getEventByKey(eventKeyParam);
+  if(import.meta.server && event == null) {
+    // only throw 404 on server to satisfy crawlers, but on client it can take some time to load the data
+    throw createError({
+      statusCode: 404,
+      statusMessage: 'Kein Event unter dieser Adresse gefunden! Vielleicht liegt die Veranstaltung bereits in der Vergangenheit?'
+    })
+  }
+  return event;
+});
 const locationId = computed(() => selectedEvent.value?.locationId);
-const location = computed(() => locationId.value == null ? null : locationById(locationId.value));
+const location = computed(() => locationId.value == null ? null : getLocationById(locations.value ?? [], locationId.value));
+
 
 const eventsForSameLocation = computed(() => {
     const locId = locationId.value;
@@ -69,7 +81,7 @@ const eventsForSameLocation = computed(() => {
         return [];
     }
 
-    return eventsForLocationId(locId);
+    return eventsForLocationId(events.value ?? [], locId);
 });
 
 const noEventSelectedPlaceholderText = "Leider konnte die Veranstaltung nicht gefunden werden.";
@@ -82,4 +94,12 @@ useSeoMeta({
   ogImage: () => selectedEvent.value?.pictureUrl != null ? `https://museumsbahn-events.at/imgcache?url=${selectedEvent.value?.pictureUrl}` : `https://museumsbahn-events.at/img/social_media_preview.jpg`,
   twitterCard: 'summary_large_image',
 });
+
+function getEventByKey(eventKeyParam: string): MuseumEvent | null {
+    const result = events.value?.filter((it)=> eventKey(it) == eventKeyParam)
+    if (result == null || result?.length === 0) {
+        return null;
+    }
+    return result[0];
+}
 </script>

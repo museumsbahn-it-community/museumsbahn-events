@@ -1,4 +1,4 @@
-import { useState, computed } from '#app';
+import { useState } from '#app';
 
 export function useGlobalConfig() {
   // Create reactive state

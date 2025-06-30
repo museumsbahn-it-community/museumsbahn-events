@@ -3,7 +3,7 @@
   font-size: 1.25rem;
 }
 
-.banner-image > img {
+.banner-image>img {
   height: 7rem;
   width: 100%;
   object-fit: cover;
@@ -16,7 +16,6 @@
 .collectorIndicatorBar {
   width: 8px;
 }
-
 </style>
 <template>
   <div class="fill-page-height p-3">
@@ -27,7 +26,7 @@
             <template #title>
               <div class="flex flex-row mx-3 mt-3">
                 <span class="w-8 overflow-wrap-anywhere">
-                {{ location.name }}
+                  {{ location.name }}
                 </span>
                 <div class="flex-grow-1"></div>
                 <div>
@@ -53,16 +52,16 @@
                 <div class="flex align-items-end w-full">
                   <div class="flex-grow-1"></div>
                   <a :href="location.webUrl" target="_blank" rel="noopener noreferrer"
-                     class="p-button p-button-text font-bold dark-text">Zur Museums Webseite</a>
+                    class="p-button p-button-text font-bold dark-text">Zur Museums Webseite</a>
                 </div>
               </div>
             </template>
           </Card>
-          <div class="h-1rem"/>
+          <div class="h-1rem" />
         </div>
       </ScrollPanel>
       <div class="flex-grow h-full w-full ml-5" v-if="viewport.isGreaterThan('tablet')">
-        <LocationMap :locations="allLocations" :highlighted-location="highlightedLocation"></LocationMap>
+        <LocationMap :locations="allLocations ?? []" :highlighted-location="highlightedLocation"></LocationMap>
       </div>
     </div>
   </div>
@@ -71,20 +70,18 @@
 <script setup lang="ts">
 import { useRouter } from 'nuxt/app';
 import { computed, ref } from 'vue';
-import { useEvents } from '~/composables/useEvents';
-import { useLocations } from '~/composables/useLocations';
+import type { MuseumLocation } from '~/apiModel/apiModel';
 
-// Use composables instead of Pinia stores
-const { allLocations } = useLocations();
-const { eventCountForLocationId } = useEvents();
+const { data: allLocations } = useAllLocations();
+const events = useAllEvents();
 
 const viewport = useViewport();
 
 const eventCounts = computed(() => {
-  const eventCountMap: {[key: string]: number} = {};
-  allLocations.value.forEach(location => {
+  const eventCountMap: { [key: string]: number } = {};
+  allLocations.value?.forEach(location => {
     const locationId = location.locationId;
-    const eventCount = eventCountForLocationId(locationId);
+    const eventCount = events.data.value != null ? eventCountForLocationId(events.data.value, locationId) : 0;
     eventCountMap[locationId] = eventCount;
   });
   return eventCountMap;
@@ -94,14 +91,14 @@ const highlightedLocation = ref<MuseumLocation | undefined>(undefined);
 const router = useRouter();
 
 function openLocationDetails(locationId: string) {
-  router.push({name: 'locationDetails', params: {locationId}});
+  router.push({ name: 'locationDetails', params: { locationId } });
 }
 
 function showLocationOnMap(location: MuseumLocation) {
   highlightedLocation.value = location;
 
   if (!viewport.isGreaterThan('tablet')) {
-    router.push({name: 'locationMapDetails', params: {locationId: location.locationId}});
+    router.push({ name: 'locationMapDetails', params: { locationId: location.locationId } });
   }
 }
 
