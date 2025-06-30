@@ -261,7 +261,7 @@ export default {
             },
             link: {
                 color: '{primary.color}',
-                hoverColor: '{primary.color}',
+                hoverColor: '{blue.800}',
                 activeColor: '{primary.color}'
             }
         },

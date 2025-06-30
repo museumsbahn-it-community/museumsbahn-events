@@ -24,8 +24,26 @@ body {
 }
 
 a {
-  text-decoration: none;
   color: colors.$color-umbragrau;
+}
+
+a:not(.p-menubar-item-link ):hover {
+  color: colors.$color-ultramarinblau;
+}
+
+.invisible-link {
+  text-decoration: none;
+}
+
+.invisible-link:hover {
+  color: colors.$color-umbragrau;
+}
+
+.p-button[variant="link"],
+button[variant="link"],
+.p-button.p-link,
+button.p-link {
+  text-decoration: underline;
 }
 
 .sticky-content {

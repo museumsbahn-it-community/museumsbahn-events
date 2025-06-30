@@ -3,7 +3,7 @@
   font-size: 1.25rem;
 }
 
-.banner-image>img {
+.banner-image > img {
   height: 7rem;
   width: 100%;
   object-fit: cover;
@@ -21,21 +21,26 @@
   <div class="fill-page-height p-3">
     <div class="flex flex-row h-full bg-verkehrsrot p-3 border-radius-small">
       <ScrollPanel class="flex-column h-full lg:w-6 xxl:w-4 w-full">
-        <div v-for="location in allLocations">
+        <div v-for="location in allLocations" :key="location.locationId">
           <Card>
             <template #title>
               <div class="flex flex-row mx-3 mt-3">
+                <NuxtLink class="invisible-link" :to="{name: 'locationDetails', params: {locationId: location.locationId}}">
                 <span class="w-8 overflow-wrap-anywhere">
                   {{ location.name }}
                 </span>
+                </NuxtLink>
                 <div class="flex-grow-1"></div>
                 <div>
-                  <button class="p-link mx-2" @click="showLocationOnMap(location)">
+                  <Button variant="link" class="mx-1 px-2" @click="showLocationOnMap(location)">
                     <span class="header-icon pi pi-map"></span>
-                  </button>
-                  <button class="p-link" @click="openLocationDetails(location.locationId)">
-                    <span class="header-icon pi pi-info-circle"></span>
-                  </button>
+                  </Button>
+
+                  <NuxtLink :to="{name: 'locationDetails', params: {locationId: location.locationId}}">
+                    <Button variant="link" class="pr-0 pl-2">
+                      <span class="header-icon pi pi-info-circle"></span>
+                    </Button>
+                  </NuxtLink>
                 </div>
               </div>
             </template>
@@ -51,13 +56,14 @@
                 </div>
                 <div class="flex align-items-end w-full">
                   <div class="flex-grow-1"></div>
-                  <a :href="location.webUrl" target="_blank" rel="noopener noreferrer"
-                    class="p-button p-button-text font-bold dark-text">Zur Museums Webseite</a>
+                  <a :href="location.webUrl" target="_blank" rel="noopener noreferrer" class="font-bold">
+                    Webseite des Veranstalters
+                  </a>
                 </div>
               </div>
             </template>
           </Card>
-          <div class="h-1rem" />
+          <div class="h-1rem"/>
         </div>
       </ScrollPanel>
       <div class="flex-grow h-full w-full ml-5" v-if="viewport.isGreaterThan('tablet')">
@@ -68,11 +74,11 @@
 </template>
 
 <script setup lang="ts">
-import { useRouter } from 'nuxt/app';
-import { computed, ref } from 'vue';
-import type { MuseumLocation } from '~/apiModel/apiModel';
+import {useRouter} from 'nuxt/app';
+import {computed, ref} from 'vue';
+import type {MuseumLocation} from '~/apiModel/apiModel';
 
-const { data: allLocations } = useAllLocations();
+const {data: allLocations} = useAllLocations();
 const events = useAllEvents();
 
 const viewport = useViewport();
@@ -90,15 +96,11 @@ const eventCounts = computed(() => {
 const highlightedLocation = ref<MuseumLocation | undefined>(undefined);
 const router = useRouter();
 
-function openLocationDetails(locationId: string) {
-  router.push({ name: 'locationDetails', params: { locationId } });
-}
-
 function showLocationOnMap(location: MuseumLocation) {
   highlightedLocation.value = location;
 
   if (!viewport.isGreaterThan('tablet')) {
-    router.push({ name: 'locationMapDetails', params: { locationId: location.locationId } });
+    router.push({name: 'locationMapDetails', params: {locationId: location.locationId}});
   }
 }
 

@@ -11,7 +11,7 @@
           </div>
 
           <div class="my-4">
-            <EventCollectorIndicator :location="museumLocation"></EventCollectorIndicator>
+            <EventCollectorIndicator :location="museumLocation"/>
           </div>
 
           <div class="mx-2 my-4">
@@ -19,9 +19,10 @@
           </div>
 
           <div class="flex align-items-end w-full">
-            <div class="flex-grow-1"></div>
-            <a :href="museumLocation.webUrl" target="_blank" rel="noopener noreferrer"
-               class="p-button p-button-text font-bold dark-text">Zur Museums Webseite</a>
+            <div class="flex-grow-1"/>
+            <a
+:href="museumLocation.webUrl" target="_blank" rel="noopener noreferrer"
+               class="p-button p-button-text font-bold dark-text">Webseite des Veranstalters</a>
           </div>
 
         </template>
@@ -32,16 +33,16 @@
 
     <div v-if="museumLocation != undefined" class="mb-4">
       <EventList
-          :eventsGroupedByMonthAndDeparture="eventsGroupedByMonthAndDeparture"
-          @eventSelected="navigateToEventDetails"
-      >
-      </EventList>
+          :events-grouped-by-month-and-departure="eventsGroupedByMonthAndDeparture"
+          @event-selected="navigateToEventDetails"
+      />
     </div>
   </div>
 </template>
 <script setup lang="ts">
 import {eventKey} from "~/model/util.ts";
 import type {MuseumEventGroupGroup} from "~/composables/eventDataFunctions";
+import type {MuseumLocation} from "~/apiModel/apiModel";
 
 const router = useRouter();
 const props = defineProps<{
