@@ -39,7 +39,7 @@
           </div>
           <h3>Veranstalter</h3>
           <div>
-            <RouterLink class="p-button p-button-text" v-if="location != null"
+            <RouterLink v-if="location != null"
                         :to="`/locations/${location.locationId}`">{{ location.name }}
             </RouterLink>
             <div class="flex" v-else>
