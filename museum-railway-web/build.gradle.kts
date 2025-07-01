@@ -4,6 +4,9 @@ val museumrailwayEventsNpmToken: String by ext
 val containerEngine: String by rootProject.extra
 
 task<Exec>("imageBuild") {
+
+    println(project.projectDir)
+
     inputs.file("Dockerfile")
     commandLine(
         containerEngine, "build",

@@ -4,7 +4,7 @@ ARG NPM_REPO_URL
 ARG NPM_TOKEN
 WORKDIR /app
 COPY package.json .
-#COPY package-lock.json .
+COPY package-lock.json .
 RUN echo "" >> .npmrc  \
     && printf "@boudicca:registry=https://${NPM_REPO_URL}\n" >> .npmrc \
     && printf "@museumrailwayevents:registry=https://${NPM_REPO_URL}\n" >> .npmrc \
