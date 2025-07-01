@@ -23,11 +23,11 @@
         </template>
       </Card>
     </template>
+    <slot name="additionalContent"/>
   </PageContent>
   <div class="h-3rem"></div>
 </template>
 <script setup lang="ts">
-
 import { useAsyncData } from 'nuxt/app';
 import PageTitle from '~/components/PageTitle.vue';
 
