@@ -27,7 +27,7 @@ img {
       <div v-if="imgCopyright != null" class="bg-mittelgrau text-xs px-2 py-1 copyright-overlay">{{ imgCopyright }}
       </div>
       <Image :src="imgSource" :alt="imgAltText" class="w-full h-full flex justify-content-end max-dimensions"
-        image-class="flex-1" />
+        image-class="flex-1" loading="lazy" />
     </div>
   </div>
 </template>
