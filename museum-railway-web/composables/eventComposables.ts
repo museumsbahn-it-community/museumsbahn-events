@@ -1,22 +1,20 @@
-import { useAsyncData } from "#app";
-import { useAllLocations } from "./locationComposables";
-import { fetchEvents } from "./eventDataFunctions";
+import {useAsyncData} from "#app";
+import {useAllLocations} from "./locationComposables";
+import {fetchEvents} from "./eventDataFunctions";
 
 export const useAllEvents = () => {
-    const { data: locationsData } = useAllLocations();
+    const {data: locationsData} = useAllLocations();
 
-    const { data, error, refresh } = useAsyncData(
-        'events', 
+    const {data, error, refresh} = useAsyncData(
+        'events',
         () => {
-            if (locationsData.value) {
-                return fetchEvents(locationsData.value);
-            }
-            return new Promise((resolve) => resolve([]));
+            return fetchEvents(locationsData.value ?? []);
         },
         {
             server: true,
             lazy: false,
-            watch: [locationsData]
+            watch: [locationsData],
+            default: () => []
         }
     );
 
