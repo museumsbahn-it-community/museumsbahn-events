@@ -51,11 +51,21 @@ import {
 import {getStateList, type StateInfo} from "~/composables/locationDataFunctions";
 import type {MuseumEvent} from "~/apiModel/apiModel";
 
+const route = useRoute();
+const router = useRouter();
+
 const {data: events} = useAllEvents();
 const {data: locations} = useAllLocations();
 
-const searchTerm = ref('');
-const selectedStates = ref<string[]>([]);
+// Initialize from query parameters if available
+const searchTerm = ref(route.query.search?.toString() || '');
+const selectedStates = ref<string[]>(
+  route.query.states 
+    ? (Array.isArray(route.query.states) 
+        ? route.query.states.map(s => s.toString()) 
+        : [route.query.states.toString()])
+    : []
+);
 const stateList = computed<StateInfo[]>(() => locations.value ? getStateList(locations.value) : []);
 
 // Toggle state selection
@@ -66,6 +76,25 @@ const toggleState = (stateCode: string) => {
     selectedStates.value.push(stateCode);
   }
 };
+
+// Update query parameters when search term or selected states change
+watch([searchTerm, selectedStates], ([newSearchTerm, newSelectedStates]) => {
+  // Only run on client-side to avoid SSR issues
+  if (import.meta.client) {
+    const query: { search?: string, states?: string[] } = {};
+
+    if (newSearchTerm) {
+      query.search = newSearchTerm;
+    }
+
+    if (newSelectedStates.length > 0) {
+      query.states = newSelectedStates;
+    }
+
+    // Update the URL without reloading the page
+    router.replace({ query });
+  }
+}, { deep: true });
 
 // Filter events by search term and selected states
 const filteredEvents = computed(() => {
