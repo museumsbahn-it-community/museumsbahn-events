@@ -14,7 +14,10 @@ import {fetchLocations} from '~/composables/locationDataFunctions';
 import {useAsyncData} from "#app";
 
 // Use composables instead of Pinia stores
-const {data: locations} = useAsyncData('locations', async () => fetchLocations())
+const {data: locations} = useAsyncData('locations', async () => fetchLocations(), {
+  server: true,
+  lazy: false
+})
 
 const router = useRouter();
 const route = useRoute();

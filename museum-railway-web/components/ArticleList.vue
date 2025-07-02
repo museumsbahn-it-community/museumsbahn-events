@@ -39,9 +39,17 @@ const props = defineProps<{
 
 const { data: posts } = props.showDate ? await useAsyncData(`${props.contentCollection}-content`, () => queryCollection(props.contentCollection)
   .order('date', 'DESC')
-  .all()
+  .all(),
+  {
+    server: true,
+    lazy: false
+  }
 ) :
   await useAsyncData(`${props.contentCollection}-content`, () => queryCollection(props.contentCollection)
-    .all()
+    .all(),
+    {
+      server: true,
+      lazy: false
+    }
   )
 </script>
