@@ -8,16 +8,40 @@ export async function fetchLocations(): Promise<MuseumLocation[]> {
             console.error("error loading locations: ", e);
             return [];
         });
-    
+
 
     return rawLocations as MuseumLocation[];
 }
 
-export function getStateList(locations: MuseumLocation[]): string[] {
+// Map of state codes to full state names
+const stateNameMap: { [key: string]: string } = {
+    'B': 'Burgenland',
+    'K': 'Kärnten',
+    'NÖ': 'Niederösterreich',
+    'OÖ': 'Oberösterreich',
+    'S': 'Salzburg',
+    'ST': 'Steiermark',
+    'T': 'Tirol',
+    'V': 'Vorarlberg',
+    'W': 'Wien'
+};
+
+export interface StateInfo {
+    code: string;
+    name: string;
+}
+
+export function getStateList(locations: MuseumLocation[]): StateInfo[] {
     const mappedStates = locations.map((value) => value.location.state);
-    const states = [...new Set<string>(mappedStates)]
-    states.sort((a, b) => a.localeCompare(b));
-    return states;
+    const uniqueStates = [...new Set<string>(mappedStates)];
+
+    const stateInfoList = uniqueStates.map(stateCode => ({
+        code: stateCode,
+        name: stateNameMap[stateCode] || stateCode // Fallback to code if name not found
+    }));
+
+    stateInfoList.sort((a, b) => a.code.localeCompare(b.code));
+    return stateInfoList;
 };
 
 export function getLocationById(locations: MuseumLocation[], locationId: string): MuseumLocation | undefined {

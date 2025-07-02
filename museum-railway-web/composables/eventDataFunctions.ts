@@ -167,6 +167,48 @@ export function eventCountForLocationId(events: MuseumEvent[], locationId: strin
     return events.filter((event) => event.locationId === locationId).length;
 }
 
+/**
+ * Interface for event filter options
+ */
+export interface EventFilterOptions {
+    events: MuseumEvent[];
+    searchTerm: string;
+    selectedStates: string[];
+    allStates: string[];
+}
+
+/**
+ * Filters events by search term and selected states
+ * @param options The filter options
+ * @returns Filtered events
+ */
+export function filterEvents(options: EventFilterOptions): MuseumEvent[] {
+    const { events, searchTerm, selectedStates, allStates } = options;
+
+    if (!events || events.length === 0) return [];
+
+    let filtered = [...events];
+
+    // Filter by search term
+    if (searchTerm.trim()) {
+        const term = searchTerm.toLowerCase().trim();
+        filtered = filtered.filter(event => 
+            event.name.toLowerCase().includes(term) || 
+            (event.description && event.description.toLowerCase().includes(term)) ||
+            (event.location && event.location.location.city && event.location.location.city.toLowerCase().includes(term))
+        );
+    }
+
+    // Filter by selected states - only if at least one state is selected but not all
+    if (selectedStates.length > 0 && selectedStates.length < allStates.length) {
+        filtered = filtered.filter(event => 
+            event.location && selectedStates.includes(event.location.location.state)
+        );
+    }
+
+    return filtered;
+}
+
 
 // Function to fetch all events
 export async function fetchEvents(locations: MuseumLocation[]): Promise<MuseumEvent[]> {
@@ -204,4 +246,3 @@ export async function fetchEventsForLocation(locationId: string, locations: Muse
 
     return await queryEvents(body, locations);
 }
-
