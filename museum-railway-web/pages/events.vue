@@ -1,7 +1,7 @@
 <style>
-  .top-filters {
-    max-width: 40rem;
-  }
+.top-filters {
+  max-width: 40rem;
+}
 </style>
 <template>
   <div class="flex flex-row w-full sticky-content justify-content-center">
@@ -20,17 +20,18 @@
             <InputGroupAddon>
               <i class="pi pi-search"></i>
             </InputGroupAddon>
-            <InputText v-model="searchTerm" placeholder="Suche nach Veranstaltungen, Orten oder Beschreibungen" class="w-full" />
+            <InputText v-model="searchTerm" placeholder="Suche nach Veranstaltungen, Orten oder Beschreibungen"
+                       class="w-full"/>
           </InputGroup>
 
           <!-- State Filter -->
           <div class="mb-3 flex flex-row flex-wrap justify-content-center">
-            <ToggleButton v-for="state in stateList" :key="state.code" 
-              :modelValue="selectedStates.includes(state.code)"
-              :onLabel="state.name"
-              :offLabel="state.name"
-              class="mx-1 mb-2"
-              @click="toggleState(state.code)" />
+            <ToggleButton v-for="state in stateList" :key="state.code"
+                          :modelValue="selectedStates.includes(state.code)"
+                          :onLabel="state.name"
+                          :offLabel="state.name"
+                          class="mx-1 mb-2"
+                          @click="toggleState(state.code)"/>
           </div>
         </div>
 
@@ -40,14 +41,18 @@
   </div>
 </template>
 <script setup lang="ts">
-import { useAllEvents } from "~/composables/eventComposables";
-import { useAllLocations } from "~/composables/locationComposables";
-import { eventsGroupedByMonthAndDepartureTime, filterEvents, type MuseumEventGroupGroup } from "~/composables/eventDataFunctions";
-import { getStateList, type StateInfo } from "~/composables/locationDataFunctions";
-import type { MuseumEvent } from "~/apiModel/apiModel";
+import {useAllEvents} from "~/composables/eventComposables";
+import {useAllLocations} from "~/composables/locationComposables";
+import {
+  eventsGroupedByMonthAndDepartureTime,
+  filterEvents,
+  type MuseumEventGroupGroup
+} from "~/composables/eventDataFunctions";
+import {getStateList, type StateInfo} from "~/composables/locationDataFunctions";
+import type {MuseumEvent} from "~/apiModel/apiModel";
 
-const { data: events } = useAllEvents();
-const { data: locations } = useAllLocations();
+const {data: events} = useAllEvents();
+const {data: locations} = useAllLocations();
 
 const searchTerm = ref('');
 const selectedStates = ref<string[]>([]);
@@ -65,12 +70,14 @@ const toggleState = (stateCode: string) => {
 // Filter events by search term and selected states
 const filteredEvents = computed(() => {
   if (!events.value) return [];
-  return filterEvents({
-    events: events.value as MuseumEvent[],
-    searchTerm: searchTerm.value,
-    selectedStates: selectedStates.value,
-    allStates: stateList.value.map(state => state.code)
-  });
+  return filterEvents(
+      events.value ?? [],
+      locations.value ?? [],
+      {
+        searchTerm: searchTerm.value,
+        selectedStates: selectedStates.value,
+        allStates: stateList.value.map(state => state.code)
+      });
 });
 
 // Group filtered events
