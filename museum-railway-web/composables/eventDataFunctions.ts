@@ -171,7 +171,6 @@ export function eventCountForLocationId(events: MuseumEvent[], locationId: strin
  * Interface for event filter options
  */
 export interface EventFilterOptions {
-    events: MuseumEvent[];
     searchTerm: string;
     selectedStates: string[];
     allStates: string[];
@@ -179,11 +178,13 @@ export interface EventFilterOptions {
 
 /**
  * Filters events by search term and selected states
+ * @param events
+ * @param locations
  * @param options The filter options
  * @returns Filtered events
  */
-export function filterEvents(options: EventFilterOptions): MuseumEvent[] {
-    const { events, searchTerm, selectedStates, allStates } = options;
+export function filterEvents(events: MuseumEvent[], locations: MuseumLocation[], options: EventFilterOptions): MuseumEvent[] {
+    const {searchTerm, selectedStates, allStates} = options;
 
     if (!events || events.length === 0) return [];
 
@@ -192,8 +193,8 @@ export function filterEvents(options: EventFilterOptions): MuseumEvent[] {
     // Filter by search term
     if (searchTerm.trim()) {
         const term = searchTerm.toLowerCase().trim();
-        filtered = filtered.filter(event => 
-            event.name.toLowerCase().includes(term) || 
+        filtered = filtered.filter(event =>
+            event.name.toLowerCase().includes(term) ||
             (event.description && event.description.toLowerCase().includes(term)) ||
             (event.location && event.location.location.city && event.location.location.city.toLowerCase().includes(term))
         );
@@ -201,8 +202,11 @@ export function filterEvents(options: EventFilterOptions): MuseumEvent[] {
 
     // Filter by selected states - only if at least one state is selected but not all
     if (selectedStates.length > 0 && selectedStates.length < allStates.length) {
-        filtered = filtered.filter(event => 
-            event.location && selectedStates.includes(event.location.location.state)
+        const states = selectedStates.map(state => state.toLowerCase());
+        filtered = filtered.filter(event => {
+                const location = locations.filter(location => location.locationId === event.locationId)[0];
+                return location != null && states.includes(location.location.state.toLowerCase());
+            }
         );
     }
 
