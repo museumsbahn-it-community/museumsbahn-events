@@ -20,6 +20,14 @@ export default defineNuxtConfig({
 
     app: {
         head: {
+            htmlAttrs: {
+                lang: 'de'
+            },
+            meta: [
+                { name: 'viewport', content: 'width=device-width, initial-scale=1' },
+                { name: 'robots', content: 'index, follow' },
+                { name: 'author', content: 'MUSEUMSBAHN-events.at' },
+            ],
             link: [
                 {
                     rel: 'icon',
@@ -98,6 +106,25 @@ export default defineNuxtConfig({
         '@nuxtjs/seo',
         '@nuxt/eslint'
     ],
+
+    site: {
+        url: 'https://museumsbahn-events.at',
+    },
+
+    sitemap: {
+        autoLastmod: true,
+        xsl: false,
+        strictNuxtContentPaths: true,
+    },
+
+    robots: {
+        rules: {
+            UserAgent: '*',
+            Allow: '/',
+            Disallow: ['/admin', '/_nuxt', '/api'],
+            Sitemap: 'https://museumsbahn-events.at/sitemap.xml'
+        }
+    },
 
     content: {
         api: {
