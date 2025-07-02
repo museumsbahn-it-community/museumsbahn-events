@@ -21,23 +21,23 @@
             <EventDetails :event="selectedEvent" :no-event-selected-placeholder-text="noEventSelectedPlaceholderText">
                 Event Details
             </EventDetails>
-            <Sidebar class="mt-2 w-full" v-if="viewport.isLessThan('tablet')"
+            <CustomSidebar class="mt-2 w-full" v-if="viewport.isLessThan('tablet')"
                 :title="`Weitere Veranstaltungen von ${location?.name}`" side="center">
                 <div class="flex flex-column gap-2">
                     <EventCardSmall v-for="eventEntry in eventsForSameLocation" :event="eventEntry">
                     </EventCardSmall>
                 </div>
-            </Sidebar>
+            </CustomSidebar>
         </div>
         <div class="col-2 flex flex-1 content-right-column" v-if="viewport.isGreaterOrEquals('tablet')">
             <div class="w-full flex flex-column justify-content-center align-items-end overflow-hidden">
-                <Sidebar class="w-full lg:w-11" style="height: 80%;"
+                <CustomSidebar class="w-full lg:w-11" style="height: 80%;"
                     :title="`Weitere Veranstaltungen von ${location?.name}`" side="right">
                     <div class="flex flex-column gap-2">
                         <EventCardSmall v-for="eventEntry in eventsForSameLocation" :event="eventEntry">
                         </EventCardSmall>
                     </div>
-                </Sidebar>
+                </CustomSidebar>
             </div>
         </div>
     </div>
@@ -53,6 +53,7 @@ import { useAllLocations } from '~/composables/locationComposables';
 import { getLocationById } from '~/composables/locationDataFunctions';
 import { eventKey } from '~/model/util';
 import type {MuseumEvent} from "~/apiModel/apiModel";
+import CustomSidebar from "~/components/CustomSidebar.vue";
 
 const route = useRoute();
 const viewport = useViewport();
