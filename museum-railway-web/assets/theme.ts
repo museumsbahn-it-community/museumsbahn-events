@@ -4,6 +4,8 @@ import base from "./theme/base.ts";
 import button from "./theme/button.ts";
 import message from "./theme/message.ts";
 import {colors} from "./theme/colors.ts";
+import togglebutton from "assets/theme/togglebutton";
+import inputgroup from "assets/theme/inputgroup";
 
 const MuseumRailwayEventsTheme = definePreset(Lara, {
     ...base,
@@ -24,15 +26,14 @@ const MuseumRailwayEventsTheme = definePreset(Lara, {
         'surface-overlay': colors.colorGrauweiss,
         'surface-border': colors.colorAchatgrau,
         'surface-hover': colors.colorAchatgrau,
-
-        // Color scheme
-        'color-scheme': 'light'
     },
 
     // Component specific styles
     components: {
         button,
         message,
+        togglebutton,
+        inputgroup,
         panel: {
             root: {
                 background: colors.colorUltramarinblau,
@@ -135,8 +136,136 @@ const MuseumRailwayEventsTheme = definePreset(Lara, {
             },
             transitionDuration: '0.2s'
         },
-
-
+    },
+    colorScheme: {
+        light: {
+            surface: {
+                0: '#ffffff',
+                50: '{slate.50}',
+                100: '{slate.100}',
+                200: '{slate.200}',
+                300: '{slate.300}',
+                400: '{slate.400}',
+                500: '{slate.500}',
+                600: '{slate.600}',
+                700: '{slate.700}',
+                800: '{slate.800}',
+                900: '{slate.900}',
+                950: '{slate.950}'
+            },
+            primary: {
+                color: '{primary.500}',
+                contrastColor: '#ffffff',
+                hoverColor: '{primary.600}',
+                activeColor: '{primary.700}'
+            },
+            highlight: {
+                background: '{primary.50}',
+                focusBackground: '{primary.100}',
+                color: '{primary.700}',
+                focusColor: '{primary.800}'
+            },
+            focusRing: {
+                shadow: '0 0 0 0.2rem {primary.200}'
+            },
+            mask: {
+                background: 'rgba(0,0,0,0.4)',
+                color: '{surface.200}'
+            },
+            formField: {
+                background: '{surface.0}',
+                disabledBackground: '{surface.200}',
+                filledBackground: '{surface.50}',
+                filledHoverBackground: '{surface.50}',
+                filledFocusBackground: '{surface.0}',
+                borderColor: '{surface.300}',
+                hoverBorderColor: '{primary.color}',
+                focusBorderColor: '{primary.color}',
+                invalidBorderColor: '{red.400}',
+                color: '{surface.700}',
+                disabledColor: '{surface.500}',
+                placeholderColor: '{surface.500}',
+                invalidPlaceholderColor: '{red.600}',
+                floatLabelColor: '{surface.500}',
+                floatLabelFocusColor: '{primary.600}',
+                floatLabelActiveColor: '{surface.500}',
+                floatLabelInvalidColor: '{form.field.invalid.placeholder.color}',
+                iconColor: '{surface.500}',
+                shadow: 'none'
+            },
+            text: {
+                color: '{surface.700}',
+                hoverColor: '{surface.800}',
+                mutedColor: '{surface.500}',
+                hoverMutedColor: '{surface.600}'
+            },
+            content: {
+                background: '{surface.0}',
+                hoverBackground: '{surface.100}',
+                borderColor: '{surface.200}',
+                color: '{text.color}',
+                hoverColor: '{text.hover.color}'
+            },
+            overlay: {
+                select: {
+                    background: '{surface.0}',
+                    borderColor: '{surface.200}',
+                    color: '{text.color}'
+                },
+                popover: {
+                    background: '{surface.0}',
+                    borderColor: '{surface.200}',
+                    color: '{text.color}'
+                },
+                modal: {
+                    background: '{surface.0}',
+                    borderColor: '{surface.200}',
+                    color: '{text.color}'
+                }
+            },
+            list: {
+                option: {
+                    focusBackground: '{surface.100}',
+                    selectedBackground: '{highlight.background}',
+                    selectedFocusBackground: '{highlight.focus.background}',
+                    color: '{text.color}',
+                    focusColor: '{text.hover.color}',
+                    selectedColor: '{highlight.color}',
+                    selectedFocusColor: '{highlight.focus.color}',
+                    icon: {
+                        color: '{surface.400}',
+                        focusColor: '{surface.500}'
+                    }
+                },
+                optionGroup: {
+                    background: 'transparent',
+                    color: '{text.color}'
+                }
+            },
+            navigation: {
+                item: {
+                    focusBackground: '{surface.100}',
+                    activeBackground: '{surface.100}',
+                    color: '{text.color}',
+                    focusColor: '{text.hover.color}',
+                    activeColor: '{text.hover.color}',
+                    icon: {
+                        color: '{surface.400}',
+                        focusColor: '{surface.500}',
+                        activeColor: '{surface.500}'
+                    }
+                },
+                submenuLabel: {
+                    background: 'transparent',
+                    color: '{text.color}'
+                },
+                submenuIcon: {
+                    color: '{surface.400}',
+                    focusColor: '{surface.500}',
+                    activeColor: '{surface.500}'
+                }
+            }
+        }
     }
 });
 

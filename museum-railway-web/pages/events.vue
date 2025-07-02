@@ -1,3 +1,8 @@
+<style>
+  .top-filters {
+    max-width: 40rem;
+  }
+</style>
 <template>
   <div class="flex flex-row w-full sticky-content justify-content-center">
     <div class="flex flex-column h-full content-center-column mx-2">
@@ -8,20 +13,70 @@
       </Message>
       <div class="h-1rem"></div>
       <div class="flex flex-column h-full mx-2 mb-6 md:mx-5 align-items-center">
-        <EventList :eventsGroupedByMonthAndDeparture="eventGroups"></EventList>
+        <!-- Search and Filter Section -->
+        <div class="top-filters w-full flex flex-column align-items-center mb-4">
+          <!-- Search Bar -->
+          <InputGroup class="w-full flex mb-3">
+            <InputGroupAddon>
+              <i class="pi pi-search"></i>
+            </InputGroupAddon>
+            <InputText v-model="searchTerm" placeholder="Suche nach Veranstaltungen, Orten oder Beschreibungen" class="w-full" />
+          </InputGroup>
+
+          <!-- State Filter -->
+          <div class="mb-3 flex flex-row flex-wrap justify-content-center">
+            <ToggleButton v-for="state in stateList" :key="state.code" 
+              :modelValue="selectedStates.includes(state.code)"
+              :onLabel="state.name"
+              :offLabel="state.name"
+              class="mx-1 mb-2"
+              @click="toggleState(state.code)" />
+          </div>
+        </div>
+
+        <EventList :eventsGroupedByMonthAndDeparture="filteredEventGroups"></EventList>
       </div>
     </div>
   </div>
 </template>
 <script setup lang="ts">
 import { useAllEvents } from "~/composables/eventComposables";
-import { eventsGroupedByMonthAndDepartureTime, type MuseumEventGroupGroup } from "~/composables/eventDataFunctions";
+import { useAllLocations } from "~/composables/locationComposables";
+import { eventsGroupedByMonthAndDepartureTime, filterEvents, type MuseumEventGroupGroup } from "~/composables/eventDataFunctions";
+import { getStateList, type StateInfo } from "~/composables/locationDataFunctions";
 import type { MuseumEvent } from "~/apiModel/apiModel";
 
 const { data: events } = useAllEvents();
-const eventGroups = computed<MuseumEventGroupGroup[]>(() => {
-  return events.value != null ? eventsGroupedByMonthAndDepartureTime(events.value as MuseumEvent[]) : []
-})
+const { data: locations } = useAllLocations();
+
+const searchTerm = ref('');
+const selectedStates = ref<string[]>([]);
+const stateList = computed<StateInfo[]>(() => locations.value ? getStateList(locations.value) : []);
+
+// Toggle state selection
+const toggleState = (stateCode: string) => {
+  if (selectedStates.value.includes(stateCode)) {
+    selectedStates.value = selectedStates.value.filter(s => s !== stateCode);
+  } else {
+    selectedStates.value.push(stateCode);
+  }
+};
+
+// Filter events by search term and selected states
+const filteredEvents = computed(() => {
+  if (!events.value) return [];
+  return filterEvents({
+    events: events.value as MuseumEvent[],
+    searchTerm: searchTerm.value,
+    selectedStates: selectedStates.value,
+    allStates: stateList.value.map(state => state.code)
+  });
+});
+
+// Group filtered events
+const filteredEventGroups = computed<MuseumEventGroupGroup[]>(() => {
+  return filteredEvents.value.length > 0 ? eventsGroupedByMonthAndDepartureTime(filteredEvents.value) : [];
+});
 
 useSeoMeta({
   title: 'Veranstaltungsliste',
