@@ -7,6 +7,7 @@
         @click="router.back()"/>
     <LocationMap :locations="locations"></LocationMap>
   </div>
+  <div class="default-footer"></div>
 </template>
 <script setup lang="ts">
 import {useRoute, useRouter} from 'nuxt/app';

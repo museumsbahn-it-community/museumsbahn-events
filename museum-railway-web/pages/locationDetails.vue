@@ -4,6 +4,7 @@
       <LocationDetails :museumLocation="museumLocation" :eventsGroupedByMonthAndDeparture="events"></LocationDetails>
     </div>
   </div>
+  <div class="default-footer"></div>
 </template>
 <script setup lang="ts">
 import { useRoute } from "nuxt/app";
