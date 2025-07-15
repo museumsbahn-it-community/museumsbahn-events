@@ -71,6 +71,7 @@
       </div>
     </div>
   </div>
+  <div class="default-footer"></div>
 </template>
 
 <script setup lang="ts">

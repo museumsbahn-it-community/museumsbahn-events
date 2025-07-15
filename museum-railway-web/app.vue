@@ -33,6 +33,5 @@ onMounted(() => initHistoryCount());
       <!-- component matched by the route will render here -->
       <NuxtPage/>
     </main>
-    <div class="footer"></div>
   </div>
 </template>

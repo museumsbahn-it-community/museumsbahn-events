@@ -14,7 +14,7 @@
 </style>
 <template>
   <div class="flex flex-column h-full w-full align-items-center">
-    <div class="w-10 lg:w-7 flex flex-column mb-6 gap-3">
+    <div class="w-10 lg:w-7 flex flex-column mb-3 gap-3">
       <div>
         <h1>Die Informationsseite für Museumsbahnen und Eisenbahnmuseen in Österreich</h1>
         <p>
@@ -61,6 +61,7 @@
       </div>
     </div>
   </div>
+  <div class="default-footer"></div>
 </template>
 <script setup lang="ts">
 import { subDays, addDays } from "date-fns";
