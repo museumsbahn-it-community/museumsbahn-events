@@ -27,9 +27,62 @@
     margin-left: 25%; // Equivalent to col-3 width
   }
 }
+
+// Mobile footer styles
+.mobile-footer {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+  background-color: var(--color-umbragrau);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+// Custom styles for the bottom drawer
+.filter-drawer {
+  height: 80% !important;
+  overflow-y: auto;
+  padding: 1rem;
+}
+
+// Style footer buttons
+.footer-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 1.5rem;
+  width: 100%;
+}
+
+.footer-button {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: opacity 0.2s;
+  color: white;
+  background: none;
+  border: none;
+  padding: 0.5rem;
+}
+
+//.footer-button:hover {
+//  opacity: 0.8;
+//}
+//
+.footer-button i {
+  font-size: 1.5rem;
+}
+
+.footer-button span {
+  font-size: 0.8rem;
+}
 </style>
 <template>
-  <div class="grid w-full">
+  <div class="grid w-full page-content">
     <div class="col-2 lg:col-3 flex flex-1 content-left-column sticky-sidebar-container" v-if="viewport.isGreaterOrEquals('tablet')">
       <div class="w-full flex flex-column justify-content-center align-items-start overflow-hidden sticky-sidebar-container">
         <CustomSidebar class="w-full lg:w-11" style="height: 80%;" title="Filter" side="left">
@@ -58,13 +111,6 @@
                        class="w-full"/>
           </InputGroup>
 
-          <!-- Mobile Filters -->
-          <CustomSidebar class="w-full mb-3" v-if="viewport.isLessThan('tablet')" title="Filter" side="center">
-            <EventFilters
-                :availableTags="availableTags"
-                @update:filters="updateFilters"/>
-          </CustomSidebar>
-
           <!-- State Filter (kept in main content for visibility) -->
           <div class="mb-3 flex flex-row flex-wrap justify-content-center">
             <ToggleButton v-for="state in stateList" :key="state.code"
@@ -82,6 +128,38 @@
     <div class="col-2 lg:col-3 flex flex-1 content-left-column" v-if="viewport.isGreaterOrEquals('tablet')">
     </div>
   </div>
+
+  <!-- Mobile Footer -->
+  <div class="mobile-footer pb-1 pt-3" v-if="viewport.isLessThan('tablet')">
+    <div class="footer-buttons">
+      <Button class="footer-button" @click="showFilterDrawer = true">
+        <i class="pi pi-filter"></i>
+        <span>Filter</span>
+      </Button>
+      <Button class="footer-button" @click="shareCurrentPage">
+        <i class="pi pi-share-alt"></i>
+        <span>Teilen</span>
+      </Button>
+    </div>
+  </div>
+
+  <!-- Mobile Filter Drawer -->
+  <Sidebar v-model:visible="showFilterDrawer"
+           position="bottom" 
+           class="filter-drawer"
+           :modal="true" 
+           :dismissable="true" 
+           :showCloseIcon="true"
+           :baseZIndex="1001">
+    <template #header>
+      <h2 class="text-xl font-bold m-0 p-3">Filter</h2>
+    </template>
+    <div class="p-3">
+      <EventFilters
+          :availableTags="availableTags"
+          @update:filters="updateFilters"/>
+    </div>
+  </Sidebar>
 </template>
 <script setup lang="ts">
 import {useAllEvents} from "~/composables/eventComposables";
@@ -94,6 +172,7 @@ import {
 import {getStateList, type StateInfo} from "~/composables/locationDataFunctions";
 import EventFilters from "~/components/EventFilters.vue";
 import CustomSidebar from "~/components/CustomSidebar.vue";
+import { useToast } from 'primevue/usetoast';
 
 const route = useRoute();
 const router = useRouter();
@@ -101,6 +180,68 @@ const viewport = useViewport();
 
 const {data: events} = useAllEvents();
 const {data: locations} = useAllLocations();
+
+// Mobile drawer state
+const showFilterDrawer = ref(false);
+
+
+const shareCurrentPage = () => {
+  // Only run on client-side
+  if (import.meta.client) {
+    // Get the current URL with query parameters
+    const currentUrl = window.location.href;
+    const toast = useToast();
+
+    // Check if the Web Share API is available
+    if (navigator.share) {
+      navigator.share({
+        title: 'Museumsbahn Events',
+        url: currentUrl
+      })
+      .catch(error => {
+        console.error('Error sharing:', error);
+        // Fall back to clipboard if sharing fails
+        copyToClipboard(currentUrl, toast);
+      });
+    } else {
+      // Web Share API not available, use clipboard
+      copyToClipboard(currentUrl, toast);
+    }
+  }
+};
+
+const copyToClipboard = (text: string, toast: any) => {
+  // Check if Clipboard API is available
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(text)
+      .then(() => {
+        // Show success message using PrimeVue Toast
+        toast.add({
+          severity: 'success',
+          summary: 'Link kopiert',
+          detail: 'Der Link wurde in die Zwischenablage kopiert.',
+          life: 3000
+        });
+      })
+      .catch(err => {
+        console.error('Failed to copy text: ', err);
+        showFallbackCopyMessage(text, toast);
+      });
+  } else {
+    // Clipboard API not available, show manual copy message
+    showFallbackCopyMessage(text, toast);
+  }
+};
+
+const showFallbackCopyMessage = (text: string, toast: any) => {
+  // Show message with the URL for manual copying
+  toast.add({
+    severity: 'info',
+    summary: 'Link teilen',
+    detail: 'Bitte kopieren Sie den Link manuell: ' + text,
+    life: 5000
+  });
+};
 
 // Initialize from query parameters if available
 const searchTerm = ref(route.query.search?.toString() || '');

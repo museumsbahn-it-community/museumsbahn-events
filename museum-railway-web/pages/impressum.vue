@@ -13,6 +13,7 @@
       </Card>
     </template>
   </ArticleList>
+  <div class="default-footer"></div>
 </template>
 <script setup lang="ts">
 const contentCollection: string = "imprint"
