@@ -30,25 +30,34 @@ const props = defineProps<{
 <style lang="scss">
 @use "../assets/variables_impl" as variables;
 
+/* Common styles for all sidebar types */
+.sidebar-left, .sidebar-right, .sidebar-center {
+  overflow: hidden;
+  box-sizing: border-box;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  position: relative; /* Use relative positioning instead of fixed */
+  width: 100%; /* Let parent control the width */
+  height: 100%; /* Let parent control the height */
+}
+
+/* Specific styles for each sidebar type that don't assume parent layout */
 .sidebar-left {
-  overflow: scroll;
   border-top-right-radius: variables.$border-radius-small;
   border-bottom-right-radius: variables.$border-radius-small;
 }
 
 .sidebar-right {
-  overflow: scroll;
   border-top-left-radius: variables.$border-radius-small;
   border-bottom-left-radius: variables.$border-radius-small;
 }
 
 .sidebar-center {
-  overflow: scroll;
   border-radius: variables.$border-radius-small;
 }
 
 .sidebar-content {
-  overflow-y: scroll;
+  overflow-y: auto;
   min-height: 100px;
+  height: 100%; /* Let parent control the height */
 }
 </style>
