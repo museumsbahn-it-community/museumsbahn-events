@@ -94,7 +94,7 @@ class MyServiceTest {
     fun `calling myFunction with testParams should return expectedValue`() {
        // Given
        val service = MyService()
-       val testParams = new Params(...) // initialize test params
+       val testParams = Params(param1 = "value1", param2 = 123) // initialize test params
 
         // When
         val result = service.myFunction(testParams)
@@ -132,6 +132,13 @@ It is not necessary to build or start since nuxt dev is running and provides hot
 - Use composition API for new components
 - Use TypeScript for type safety
 - Organize components in a logical structure
+- Make style changes in small, incremental steps
+- Always get approval before making extensive UI/layout changes
+- When modifying UI components, focus on one aspect at a time (positioning, styling, functionality)
+- Use PrimeVue components whenever sensible instead of creating custom components
+- Use PrimeFlex classes instead of writing custom CSS rules
+- Reduce written CSS rules to a minimum and go with the defaults provided by PrimeVue whenever possible
+- Only add custom CSS when absolutely necessary and no suitable PrimeVue component or PrimeFlex class exists
 
 ### Git Workflow
 - Create feature branches for new features
