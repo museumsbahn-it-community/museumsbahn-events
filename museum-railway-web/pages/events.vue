@@ -255,7 +255,7 @@ const selectedStates = ref<string[]>(
 const stateList = computed<StateInfo[]>(() => locations.value ? getStateList(locations.value) : []);
 
 // Advanced filter states
-const dateRange = ref<[Date | null, Date | null]>([null, null]);
+const dateRange = ref<Date[]>([]);
 const selectedEventTypes = ref<string[]>([]);
 const selectedTrainTypes = ref<string[]>([]);
 const isVolunteer = ref(false);
@@ -279,7 +279,7 @@ const toggleState = (stateCode: string) => {
 
 // Handle filter updates from EventFilters component
 const updateFilters = (filters: {
-  dateRange: [Date | null, Date | null],
+  dateRange: Date[],
   eventTypes: string[],
   trainTypes: string[],
   isVolunteer: boolean,
@@ -319,11 +319,11 @@ watch([searchTerm, selectedStates, dateRange, selectedEventTypes, selectedTrainT
           query.states = newSelectedStates;
         }
 
-        if (newDateRange[0]) {
+        if (newDateRange.length > 0 && newDateRange[0]) {
           query.fromDate = newDateRange[0].toISOString();
         }
 
-        if (newDateRange[1]) {
+        if (newDateRange.length > 1 && newDateRange[1]) {
           query.toDate = newDateRange[1].toISOString();
         }
 
@@ -356,66 +356,22 @@ watch([searchTerm, selectedStates, dateRange, selectedEventTypes, selectedTrainT
 const filteredEvents = computed(() => {
   if (!events.value) return [];
 
-  let filtered = filterEvents(
+  // Use the enhanced filterEvents function with all filter criteria
+  return filterEvents(
       events.value ?? [],
       locations.value ?? [],
       {
         searchTerm: searchTerm.value,
         selectedStates: selectedStates.value,
-        allStates: stateList.value.map(state => state.code)
+        allStates: stateList.value.map(state => state.code),
+        dateRange: dateRange.value,
+        eventTypes: selectedEventTypes.value,
+        trainTypes: selectedTrainTypes.value,
+        isVolunteer: isVolunteer.value,
+        isCommercial: isCommercial.value,
+        tags: selectedTags.value
       }
   );
-
-  // Apply date range filter
-  if (dateRange.value[0]) {
-    const fromDate = dateRange.value[0];
-    filtered = filtered.filter(event => new Date(event.date) >= fromDate);
-  }
-
-  if (dateRange.value[1]) {
-    const toDate = dateRange.value[1];
-    filtered = filtered.filter(event => new Date(event.date) <= toDate);
-  }
-
-  // Apply event type filter (if any selected, otherwise show all)
-  if (selectedEventTypes.value.length > 0) {
-    filtered = filtered.filter(event =>
-        selectedEventTypes.value.includes(event.eventCategory) || !event.eventCategory
-    );
-  }
-
-  // Apply train type filter (if any selected, otherwise show all)
-  if (selectedTrainTypes.value.length > 0) {
-    filtered = filtered.filter(event =>
-        selectedTrainTypes.value.includes(event.locomotiveType) || !event.locomotiveType
-    );
-  }
-
-  // Apply volunteer/commercial filters
-  // Note: This is a placeholder implementation since the actual data model doesn't have these fields
-  // In a real implementation, you would filter based on actual data fields
-  if (isVolunteer.value && !isCommercial.value) {
-    // Only show volunteer events
-    filtered = filtered.filter(event => event.name.toLowerCase().includes('ehrenamtlich') ||
-        (event.description && event.description.toLowerCase().includes('ehrenamtlich')));
-  } else if (!isVolunteer.value && isCommercial.value) {
-    // Only show commercial events
-    filtered = filtered.filter(event => event.name.toLowerCase().includes('kommerziell') ||
-        (event.description && event.description.toLowerCase().includes('kommerziell')));
-  }
-
-  // Apply tag filters
-  if (selectedTags.value.length > 0) {
-    filtered = filtered.filter(event => {
-      // Check if any of the selected tags are in the event name or description
-      return selectedTags.value.some(tag =>
-          event.name.toLowerCase().includes(tag.toLowerCase()) ||
-          (event.description && event.description.toLowerCase().includes(tag.toLowerCase()))
-      );
-    });
-  }
-
-  return filtered;
 });
 
 // Group filtered events

@@ -174,17 +174,33 @@ export interface EventFilterOptions {
     searchTerm: string;
     selectedStates: string[];
     allStates: string[];
+    dateRange?: Date[];
+    eventTypes?: string[];
+    trainTypes?: string[];
+    isVolunteer?: boolean;
+    isCommercial?: boolean;
+    tags?: string[];
 }
 
 /**
- * Filters events by search term and selected states
+ * Filters events by all available filter criteria
  * @param events
  * @param locations
  * @param options The filter options
  * @returns Filtered events
  */
 export function filterEvents(events: MuseumEvent[], locations: MuseumLocation[], options: EventFilterOptions): MuseumEvent[] {
-    const {searchTerm, selectedStates, allStates} = options;
+    const {
+        searchTerm, 
+        selectedStates, 
+        allStates, 
+        dateRange, 
+        eventTypes, 
+        trainTypes, 
+        isVolunteer, 
+        isCommercial, 
+        tags
+    } = options;
 
     if (!events || events.length === 0) return [];
 
@@ -210,7 +226,111 @@ export function filterEvents(events: MuseumEvent[], locations: MuseumLocation[],
         );
     }
 
+    // Apply date range filter
+    if (dateRange && dateRange.length > 0) {
+        if (dateRange[0]) {
+            const fromDate = dateRange[0];
+            filtered = filtered.filter(event => new Date(event.date) >= fromDate);
+        }
+
+        if (dateRange.length > 1 && dateRange[1]) {
+            const toDate = dateRange[1];
+            filtered = filtered.filter(event => new Date(event.date) <= toDate);
+        }
+    }
+
+    // Apply event type filter (if any selected, otherwise show all)
+    if (eventTypes && eventTypes.length > 0) {
+        filtered = filtered.filter(event =>
+            eventTypes.some(type => 
+                event.eventCategory && event.eventCategory.toLowerCase() === type.toLowerCase()
+            ) || !event.eventCategory
+        );
+    }
+
+    // Apply train type filter (if any selected, otherwise show all)
+    if (trainTypes && trainTypes.length > 0) {
+        filtered = filtered.filter(event =>
+            trainTypes.some(type => 
+                event.locomotiveType && event.locomotiveType.toLowerCase() === type.toLowerCase()
+            ) || !event.locomotiveType
+        );
+    }
+
+    // Apply volunteer/commercial filters
+    if (isVolunteer && !isCommercial) {
+        // Only show volunteer events - look for keywords in name or description
+        filtered = filtered.filter(event => 
+            hasVolunteerKeywords(event.name) || 
+            (event.description && hasVolunteerKeywords(event.description))
+        );
+    } else if (!isVolunteer && isCommercial) {
+        // Only show commercial events - look for keywords in name or description
+        filtered = filtered.filter(event => 
+            hasCommercialKeywords(event.name) || 
+            (event.description && hasCommercialKeywords(event.description))
+        );
+    }
+
+    // Apply tag filters
+    if (tags && tags.length > 0) {
+        filtered = filtered.filter(event => {
+            // Check if any of the selected tags are in the event name or description
+            return tags.some(tag =>
+                hasTagKeywords(event.name, tag) ||
+                (event.description && hasTagKeywords(event.description, tag))
+            );
+        });
+    }
+
     return filtered;
+}
+
+/**
+ * Helper function to check if text contains volunteer-related keywords
+ */
+function hasVolunteerKeywords(text: string): boolean {
+    const keywords = ['ehrenamtlich', 'verein', 'freiwillig', 'hobby'];
+    const lowerText = text.toLowerCase();
+    return keywords.some(keyword => lowerText.includes(keyword));
+}
+
+/**
+ * Helper function to check if text contains commercial-related keywords
+ */
+function hasCommercialKeywords(text: string): boolean {
+    const keywords = ['kommerziell', 'gewerblich', 'unternehmen', 'firma'];
+    const lowerText = text.toLowerCase();
+    return keywords.some(keyword => lowerText.includes(keyword));
+}
+
+/**
+ * Helper function to check if text contains tag-related keywords
+ */
+function hasTagKeywords(text: string, tag: string): boolean {
+    // Map tags to related keywords
+    const tagKeywords: {[key: string]: string[]} = {
+        'Dampflok': ['dampf', 'dampflok', 'dampflokomotive'],
+        'Diesellok': ['diesel', 'diesellok', 'diesellokomotive'],
+        'Elektrolok': ['elektro', 'elektrolok', 'elektrische lokomotive', 'e-lok'],
+        'Schienenbus': ['schienenbus', 'triebwagen'],
+        'Triebwagen': ['triebwagen', 'triebzug'],
+        'Nostalgiezug': ['nostalgie', 'nostalgiezug', 'historisch'],
+        'Kinderprogramm': ['kind', 'kinder', 'familie', 'familien'],
+        'Führerstandsmitfahrt': ['führerstand', 'mitfahrt', 'führerstandsmitfahrt'],
+        'Fotohalt': ['foto', 'fotohalt', 'fotostopp']
+    };
+
+    const lowerText = text.toLowerCase();
+
+    // Check if the tag itself is in the text
+    if (lowerText.includes(tag.toLowerCase())) {
+        return true;
+    }
+
+    // Check if any of the tag's keywords are in the text
+    const keywords = tagKeywords[tag] || [];
+    return keywords.some(keyword => lowerText.includes(keyword));
 }
 
 
