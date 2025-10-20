@@ -9,7 +9,7 @@ export default defineNuxtConfig({
             }
         },
         sourcemap: true,
-        ssr: true,
+        ssr: false,
     },
     runtimeConfig: {
         public: {
@@ -136,7 +136,11 @@ export default defineNuxtConfig({
     },
 
     nitro: {
-        preset: 'node-server'
+        preset: 'node-server',
+        devProxy: {
+            '/api/search/': 'http://localhost:8082/',
+            '/api/location': 'http://localhost:8080/api/location',
+        }
     },
 
     openFetch: {
