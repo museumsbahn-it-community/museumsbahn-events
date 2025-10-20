@@ -6,6 +6,7 @@ import message from "./theme/message.ts";
 import {colors} from "./theme/colors.ts";
 import togglebutton from "assets/theme/togglebutton";
 import inputgroup from "assets/theme/inputgroup";
+import badge from "assets/theme/badge";
 
 const MuseumRailwayEventsTheme = definePreset(Lara, {
     ...base,
@@ -30,6 +31,7 @@ const MuseumRailwayEventsTheme = definePreset(Lara, {
 
     // Component specific styles
     components: {
+        badge,
         button,
         message,
         togglebutton,

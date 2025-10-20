@@ -1,3 +1,4 @@
+
 <template>
   <div class="grid w-full page-content">
     <div class="col-2 lg:col-3 flex flex-1 content-left-column sticky-sidebar-container" v-if="showFilterSidebar">
@@ -29,7 +30,7 @@
             <InputText v-model="searchTerm" placeholder="Suche nach Veranstaltungen, Orten oder Beschreibungen"
                        class="w-full"/>
           </InputGroup>
-          <div class="w-full font-bold align-content-start">
+          <div class="w-full font-bold align-content-start mb-3">
             <label v-if="filteredEvents.length > 0">{{filteredEvents.length}} Events gefunden</label>
             <label v-if="filteredEvents.length === 0">keine Events gefunden</label>
           </div>
@@ -38,12 +39,20 @@
           <div class="mb-3 flex flex-row flex-wrap justify-content-center"
                v-if="showFilterSidebar"
           >
-            <ToggleButton v-for="state in stateList" :key="state.code"
-                          :modelValue="selectedStates.includes(state.code)"
-                          :onLabel="state.name"
-                          :offLabel="state.name"
-                          class="mx-1 mb-2"
-                          @click="toggleState(state.code)"/>
+            <div v-for="state in stateList" :key="state.code" class="mx-1 mb-2">
+              <ToggleButton
+                  :modelValue="selectedStates.includes(state.code)"
+                  :onLabel="state.name"
+                  :offLabel="state.name"
+                  class="state-toggle-button"
+                  @click="toggleState(state.code)">
+                {{state.name}}
+              <Badge
+                  :value="getEventCountForState(state.code)"
+                  severity="primary"
+                  class="state-badge"/>
+              </ToggleButton>
+            </div>
           </div>
         </div>
 
@@ -87,6 +96,7 @@
     </div>
   </Sidebar>
 </template>
+
 <style lang="scss">
 @use "../assets/variables_impl.scss" as variables;
 
@@ -169,7 +179,14 @@
 .footer-button span {
   font-size: 0.8rem;
 }
+
+.state-badge {
+  min-width: 1.5rem;
+  height: 1.5rem;
+  font-size: 0.75rem;
+}
 </style>
+
 <script setup lang="ts">
 import {useAllEvents} from "~/composables/eventComposables";
 import {useAllLocations} from "~/composables/locationComposables";
@@ -201,29 +218,29 @@ const showFilterDrawer = ref(false);
 const filterState = ref<EventFilter>({
   search: route.query.search?.toString() || '',
   states: route.query.states
-    ? (Array.isArray(route.query.states)
-        ? route.query.states.map(s => s.toString())
-        : [route.query.states.toString()])
-    : [],
+      ? (Array.isArray(route.query.states)
+          ? route.query.states.map(s => s.toString())
+          : [route.query.states.toString()])
+      : [],
   fromDate: route.query.fromDate ? new Date(route.query.fromDate.toString()) : undefined,
   toDate: route.query.toDate ? new Date(route.query.toDate.toString()) : undefined,
   eventTypes: route.query.eventTypes
-    ? (Array.isArray(route.query.eventTypes)
-        ? route.query.eventTypes.map(s => s.toString())
-        : [route.query.eventTypes.toString()])
-    : [],
+      ? (Array.isArray(route.query.eventTypes)
+          ? route.query.eventTypes.map(s => s.toString())
+          : [route.query.eventTypes.toString()])
+      : [],
   trainTypes: route.query.trainTypes
-    ? (Array.isArray(route.query.trainTypes)
-        ? route.query.trainTypes.map(s => s.toString())
-        : [route.query.trainTypes.toString()])
-    : [],
+      ? (Array.isArray(route.query.trainTypes)
+          ? route.query.trainTypes.map(s => s.toString())
+          : [route.query.trainTypes.toString()])
+      : [],
   volunteer: route.query.volunteer === 'true',
   commercial: route.query.commercial === 'true',
   tags: route.query.tags
-    ? (Array.isArray(route.query.tags)
-        ? route.query.tags.map(s => s.toString())
-        : [route.query.tags.toString()])
-    : []
+      ? (Array.isArray(route.query.tags)
+          ? route.query.tags.map(s => s.toString())
+          : [route.query.tags.toString()])
+      : []
 });
 
 // Computed properties for backward compatibility
@@ -252,6 +269,26 @@ const filterOptions = computed<EventFilterOptions>(() => ({
     'Nostalgiezug', 'Kinderprogramm', 'Führerstandsmitfahrt', 'Fotohalt'
   ]
 }));
+
+// Function to get event count for a specific state
+const getEventCountForState = (stateCode: string): number => {
+  if (!events.value || !locations.value) return 0;
+
+  // Create a filter with only the search term and the specific state
+  const tempFilter = {
+    searchTerm: filterState.value.search || '',
+    selectedStates: [stateCode], // Only this state
+    allStates: stateList.value.map(state => state.code),
+    dateRange: [filterState.value.fromDate, filterState.value.toDate].filter(Boolean) as Date[],
+    eventTypes: filterState.value.eventTypes || [],
+    trainTypes: filterState.value.trainTypes || [],
+    isVolunteer: filterState.value.volunteer || false,
+    isCommercial: filterState.value.commercial || false,
+    tags: filterState.value.tags || []
+  };
+
+  return filterEvents(events.value, locations.value, tempFilter).length;
+};
 
 // Toggle state selection
 const toggleState = (stateCode: string) => {
@@ -356,11 +393,11 @@ const shareCurrentPage = () => {
         title: 'Museumsbahn Events',
         url: currentUrl
       })
-      .catch(error => {
-        console.error('Error sharing:', error);
-        // Fall back to clipboard if sharing fails
-        copyToClipboard(currentUrl, toast);
-      });
+          .catch(error => {
+            console.error('Error sharing:', error);
+            // Fall back to clipboard if sharing fails
+            copyToClipboard(currentUrl, toast);
+          });
     } else {
       // Web Share API not available, use clipboard
       copyToClipboard(currentUrl, toast);
@@ -372,19 +409,19 @@ const copyToClipboard = (text: string, toast: any) => {
   // Check if Clipboard API is available
   if (navigator.clipboard && navigator.clipboard.writeText) {
     navigator.clipboard.writeText(text)
-      .then(() => {
-        // Show success message using PrimeVue Toast
-        toast.add({
-          severity: 'success',
-          summary: 'Link kopiert',
-          detail: 'Der Link wurde in die Zwischenablage kopiert.',
-          life: 3000
+        .then(() => {
+          // Show success message using PrimeVue Toast
+          toast.add({
+            severity: 'success',
+            summary: 'Link kopiert',
+            detail: 'Der Link wurde in die Zwischenablage kopiert.',
+            life: 3000
+          });
+        })
+        .catch(err => {
+          console.error('Failed to copy text: ', err);
+          showFallbackCopyMessage(text, toast);
         });
-      })
-      .catch(err => {
-        console.error('Failed to copy text: ', err);
-        showFallbackCopyMessage(text, toast);
-      });
   } else {
     // Clipboard API not available, show manual copy message
     showFallbackCopyMessage(text, toast);
