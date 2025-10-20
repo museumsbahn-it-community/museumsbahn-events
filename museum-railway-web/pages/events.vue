@@ -7,6 +7,7 @@
           <EventFilters
               :filter-options="filterOptions"
               :filter-state="filterState"
+              :filter-counts="filterCounts"
               :show-states="false"
               @update:filters="updateFilters"/>
         </CustomSidebar>
@@ -92,6 +93,7 @@
       <EventFilters
           :filter-options="filterOptions"
           :filter-state="filterState"
+          :filter-counts="filterCounts"
           @update:filters="updateFilters"/>
     </div>
   </Sidebar>
@@ -199,7 +201,7 @@ import {getStateList, type StateInfo} from "~/composables/locationDataFunctions"
 import EventFilters from "~/components/EventFilters.vue";
 import CustomSidebar from "~/components/CustomSidebar.vue";
 import { useToast } from 'primevue/usetoast';
-import type { EventFilter, EventFilterOptions, EventFilterUpdate, StateOption } from '~/types/EventFilterTypes';
+import type { EventFilter, EventFilterOptions, EventFilterUpdate, StateOption, FilterCounts } from '~/types/EventFilterTypes';
 
 const route = useRoute();
 const router = useRouter();
@@ -289,6 +291,98 @@ const getEventCountForState = (stateCode: string): number => {
 
   return filterEvents(events.value, locations.value, tempFilter).length;
 };
+
+// Calculate counts for all filter options
+const filterCounts = computed<FilterCounts>(() => {
+  if (!events.value || !locations.value) {
+    return {
+      eventTypes: {},
+      trainTypes: {},
+      tags: {},
+      states: {}
+    };
+  }
+
+  const counts: FilterCounts = {
+    eventTypes: {},
+    trainTypes: {},
+    tags: {},
+    states: {}
+  };
+
+  // Initialize counts for all options
+  filterOptions.value.eventTypes.forEach(type => {
+    counts.eventTypes[type] = 0;
+  });
+
+  filterOptions.value.trainTypes.forEach(type => {
+    counts.trainTypes[type] = 0;
+  });
+
+  filterOptions.value.tags.forEach(tag => {
+    counts.tags[tag] = 0;
+  });
+
+  filterOptions.value.states.forEach(state => {
+    counts.states[state.code] = 0;
+  });
+
+  // Only calculate if we have events and locations
+  if (events.value && locations.value) {
+    // Calculate counts for each option
+    filterOptions.value.eventTypes.forEach(type => {
+      const tempFilter = {
+        searchTerm: filterState.value.search || '',
+        selectedStates: filterState.value.states || [],
+        allStates: stateList.value.map(state => state.code),
+        dateRange: [filterState.value.fromDate, filterState.value.toDate].filter(Boolean) as Date[],
+        eventTypes: [type], // Only this event type
+        trainTypes: filterState.value.trainTypes || [],
+        isVolunteer: filterState.value.volunteer || false,
+        isCommercial: filterState.value.commercial || false,
+        tags: filterState.value.tags || []
+      };
+      counts.eventTypes[type] = filterEvents(events.value, locations.value as any, tempFilter).length;
+    });
+
+    filterOptions.value.trainTypes.forEach(type => {
+      const tempFilter = {
+        searchTerm: filterState.value.search || '',
+        selectedStates: filterState.value.states || [],
+        allStates: stateList.value.map(state => state.code),
+        dateRange: [filterState.value.fromDate, filterState.value.toDate].filter(Boolean) as Date[],
+        eventTypes: filterState.value.eventTypes || [],
+        trainTypes: [type], // Only this train type
+        isVolunteer: filterState.value.volunteer || false,
+        isCommercial: filterState.value.commercial || false,
+        tags: filterState.value.tags || []
+      };
+      counts.trainTypes[type] = filterEvents(events.value, locations.value as any, tempFilter).length;
+    });
+
+    filterOptions.value.tags.forEach(tag => {
+      const tempFilter = {
+        searchTerm: filterState.value.search || '',
+        selectedStates: filterState.value.states || [],
+        allStates: stateList.value.map(state => state.code),
+        dateRange: [filterState.value.fromDate, filterState.value.toDate].filter(Boolean) as Date[],
+        eventTypes: filterState.value.eventTypes || [],
+        trainTypes: filterState.value.trainTypes || [],
+        isVolunteer: filterState.value.volunteer || false,
+        isCommercial: filterState.value.commercial || false,
+        tags: [tag] // Only this tag
+      };
+      counts.tags[tag] = filterEvents(events.value, locations.value as any, tempFilter).length;
+    });
+
+    // States are already calculated by getEventCountForState, but we'll store them here too
+    filterOptions.value.states.forEach(state => {
+      counts.states[state.code] = getEventCountForState(state.code);
+    });
+  }
+
+  return counts;
+});
 
 // Toggle state selection
 const toggleState = (stateCode: string) => {
