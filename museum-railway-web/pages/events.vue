@@ -4,7 +4,8 @@
       <div class="w-full flex flex-column justify-content-center align-items-start overflow-hidden sticky-sidebar-container">
         <CustomSidebar class="w-full lg:w-11" style="height: 80%;" title="Filter" side="left">
           <EventFilters
-              :availableTags="availableTags"
+              :filter-options="filterOptions"
+              :current-state="filterState"
               @update:filters="updateFilters"/>
         </CustomSidebar>
       </div>
@@ -27,6 +28,10 @@
             <InputText v-model="searchTerm" placeholder="Suche nach Veranstaltungen, Orten oder Beschreibungen"
                        class="w-full"/>
           </InputGroup>
+          <div class="w-full font-bold align-content-start">
+            <label v-if="filteredEvents.length > 0">{{filteredEvents.length}} Events gefunden</label>
+            <label v-if="filteredEvents.length === 0">keine Events gefunden</label>
+          </div>
 
           <!-- State Filter (kept in main content for visibility) -->
           <div class="mb-3 flex flex-row flex-wrap justify-content-center"
@@ -75,7 +80,8 @@
     </template>
     <div class="p-3">
       <EventFilters
-          :availableTags="availableTags"
+          :filter-options="filterOptions"
+          :filter-state="filterState"
           @update:filters="updateFilters"/>
     </div>
   </Sidebar>
@@ -175,6 +181,7 @@ import {getStateList, type StateInfo} from "~/composables/locationDataFunctions"
 import EventFilters from "~/components/EventFilters.vue";
 import CustomSidebar from "~/components/CustomSidebar.vue";
 import { useToast } from 'primevue/usetoast';
+import type { EventFilter, EventFilterOptions, EventFilterUpdate, StateOption } from '~/types/EventFilterTypes';
 
 const route = useRoute();
 const router = useRouter();
@@ -188,6 +195,153 @@ const showFilterSidebar = computed(() => viewport.isGreaterOrEquals('desktop'));
 // Mobile drawer state
 const showFilterDrawer = ref(false);
 
+// Initialize filter state
+const filterState = ref<EventFilter>({
+  search: route.query.search?.toString() || '',
+  states: route.query.states
+    ? (Array.isArray(route.query.states)
+        ? route.query.states.map(s => s.toString())
+        : [route.query.states.toString()])
+    : [],
+  fromDate: route.query.fromDate ? new Date(route.query.fromDate.toString()) : undefined,
+  toDate: route.query.toDate ? new Date(route.query.toDate.toString()) : undefined,
+  eventTypes: route.query.eventTypes
+    ? (Array.isArray(route.query.eventTypes)
+        ? route.query.eventTypes.map(s => s.toString())
+        : [route.query.eventTypes.toString()])
+    : [],
+  trainTypes: route.query.trainTypes
+    ? (Array.isArray(route.query.trainTypes)
+        ? route.query.trainTypes.map(s => s.toString())
+        : [route.query.trainTypes.toString()])
+    : [],
+  volunteer: route.query.volunteer === 'true',
+  commercial: route.query.commercial === 'true',
+  tags: route.query.tags
+    ? (Array.isArray(route.query.tags)
+        ? route.query.tags.map(s => s.toString())
+        : [route.query.tags.toString()])
+    : []
+});
+
+// Computed properties for backward compatibility
+const searchTerm = computed({
+  get: () => filterState.value.search || '',
+  set: (value: string) => filterState.value.search = value
+});
+
+const selectedStates = computed({
+  get: () => filterState.value.states || [],
+  set: (value: string[]) => filterState.value.states = value
+});
+
+const stateList = computed<StateInfo[]>(() => locations.value ? getStateList(locations.value) : []);
+
+// Create filter options
+const filterOptions = computed<EventFilterOptions>(() => ({
+  states: stateList.value.map((state): StateOption => ({
+    code: state.code,
+    name: state.name
+  })),
+  eventTypes: ['Museumsbahn', 'Museum', 'Sonderfahrt', 'Veranstaltung'],
+  trainTypes: ['Dampf', 'Diesel', 'Elektro', 'Tram', 'Schiff'],
+  tags: [
+    'Dampflok', 'Diesellok', 'Elektrolok', 'Schienenbus', 'Triebwagen',
+    'Nostalgiezug', 'Kinderprogramm', 'Führerstandsmitfahrt', 'Fotohalt'
+  ]
+}));
+
+// Toggle state selection
+const toggleState = (stateCode: string) => {
+  const currentStates = filterState.value.states || [];
+  if (currentStates.includes(stateCode)) {
+    filterState.value.states = currentStates.filter(s => s !== stateCode);
+  } else {
+    filterState.value.states = [...currentStates, stateCode];
+  }
+};
+
+// Handle filter updates from EventFilters component
+const updateFilters = (filters: EventFilterUpdate) => {
+  filterState.value = {
+    ...filterState.value,
+    fromDate: filters.dateRange.length > 0 ? filters.dateRange[0] : undefined,
+    toDate: filters.dateRange.length > 1 ? filters.dateRange[1] : undefined,
+    states: filters.states,
+    eventTypes: filters.eventTypes,
+    trainTypes: filters.trainTypes,
+    volunteer: filters.isVolunteer,
+    commercial: filters.isCommercial,
+    tags: filters.tags
+  };
+};
+
+// Update query parameters when filters change
+watch(filterState, (newFilter) => {
+  // Only run on client-side to avoid SSR issues
+  if (import.meta.client) {
+    const query: Record<string, string | string[]> = {};
+
+    if (newFilter.search) {
+      query.search = newFilter.search;
+    }
+    if (newFilter.states && newFilter.states.length > 0) {
+      query.states = newFilter.states;
+    }
+    if (newFilter.fromDate) {
+      query.fromDate = newFilter.fromDate.toISOString();
+    }
+    if (newFilter.toDate) {
+      query.toDate = newFilter.toDate.toISOString();
+    }
+    if (newFilter.eventTypes && newFilter.eventTypes.length > 0) {
+      query.eventTypes = newFilter.eventTypes;
+    }
+    if (newFilter.trainTypes && newFilter.trainTypes.length > 0) {
+      query.trainTypes = newFilter.trainTypes;
+    }
+    if (newFilter.volunteer) {
+      query.volunteer = 'true';
+    }
+    if (newFilter.commercial) {
+      query.commercial = 'true';
+    }
+    if (newFilter.tags && newFilter.tags.length > 0) {
+      query.tags = newFilter.tags;
+    }
+
+    // Update the URL without reloading the page
+    router.replace({query});
+  }
+}, {deep: true});
+
+// Filter events using the centralized filter object
+const filteredEvents = computed(() => {
+  if (!events.value) return [];
+
+  return filterEvents(
+      events.value ?? [],
+      locations.value ?? [],
+      {
+        searchTerm: filterState.value.search || '',
+        selectedStates: filterState.value.states || [],
+        allStates: stateList.value.map(state => state.code),
+        dateRange: [filterState.value.fromDate, filterState.value.toDate].filter(Boolean) as Date[],
+        eventTypes: filterState.value.eventTypes || [],
+        trainTypes: filterState.value.trainTypes || [],
+        isVolunteer: filterState.value.volunteer || false,
+        isCommercial: filterState.value.commercial || false,
+        tags: filterState.value.tags || []
+      }
+  );
+});
+
+// Group filtered events
+const filteredEventGroups = computed<MuseumEventGroupGroup[]>(() => {
+  return filteredEvents.value.length > 0 ? eventsGroupedByMonthAndDepartureTime(filteredEvents.value) : [];
+});
+
+// Share functionality (keeping existing implementation)
 const shareCurrentPage = () => {
   // Only run on client-side
   if (import.meta.client) {
@@ -246,142 +400,6 @@ const showFallbackCopyMessage = (text: string, toast: any) => {
   });
 };
 
-// Initialize from query parameters if available
-const searchTerm = ref(route.query.search?.toString() || '');
-const selectedStates = ref<string[]>(
-    route.query.states
-        ? (Array.isArray(route.query.states)
-            ? route.query.states.map(s => s.toString())
-            : [route.query.states.toString()])
-        : []
-);
-const stateList = computed<StateInfo[]>(() => locations.value ? getStateList(locations.value) : []);
-
-// Advanced filter states
-const dateRange = ref<Date[]>([]);
-const selectedEventTypes = ref<string[]>([]);
-const selectedTrainTypes = ref<string[]>([]);
-const isVolunteer = ref(false);
-const isCommercial = ref(false);
-const selectedTags = ref<string[]>([]);
-
-// Sample tags - in a real application, these would come from the backend
-const availableTags = ref<string[]>([
-  'Dampflok', 'Diesellok', 'Elektrolok', 'Schienenbus', 'Triebwagen',
-  'Nostalgiezug', 'Kinderprogramm', 'Führerstandsmitfahrt', 'Fotohalt'
-]);
-
-// Toggle state selection
-const toggleState = (stateCode: string) => {
-  if (selectedStates.value.includes(stateCode)) {
-    selectedStates.value = selectedStates.value.filter(s => s !== stateCode);
-  } else {
-    selectedStates.value.push(stateCode);
-  }
-};
-
-// Handle filter updates from EventFilters component
-const updateFilters = (filters: {
-  dateRange: Date[],
-  eventTypes: string[],
-  trainTypes: string[],
-  isVolunteer: boolean,
-  isCommercial: boolean,
-  tags: string[]
-}) => {
-  dateRange.value = filters.dateRange;
-  selectedEventTypes.value = filters.eventTypes;
-  selectedTrainTypes.value = filters.trainTypes;
-  isVolunteer.value = filters.isVolunteer;
-  isCommercial.value = filters.isCommercial;
-  selectedTags.value = filters.tags;
-};
-
-// Update query parameters when search term or selected states change
-watch([searchTerm, selectedStates, dateRange, selectedEventTypes, selectedTrainTypes, isVolunteer, isCommercial, selectedTags],
-    ([newSearchTerm, newSelectedStates, newDateRange, newEventTypes, newTrainTypes, newIsVolunteer, newIsCommercial, newTags]) => {
-      // Only run on client-side to avoid SSR issues
-      if (import.meta.client) {
-        const query: {
-          search?: string,
-          states?: string[],
-          fromDate?: string,
-          toDate?: string,
-          eventTypes?: string[],
-          trainTypes?: string[],
-          volunteer?: string,
-          commercial?: string,
-          tags?: string[]
-        } = {};
-
-        if (newSearchTerm) {
-          query.search = newSearchTerm;
-        }
-
-        if (newSelectedStates.length > 0) {
-          query.states = newSelectedStates;
-        }
-
-        if (newDateRange.length > 0 && newDateRange[0]) {
-          query.fromDate = newDateRange[0].toISOString();
-        }
-
-        if (newDateRange.length > 1 && newDateRange[1]) {
-          query.toDate = newDateRange[1].toISOString();
-        }
-
-        if (newEventTypes.length > 0) {
-          query.eventTypes = newEventTypes;
-        }
-
-        if (newTrainTypes.length > 0) {
-          query.trainTypes = newTrainTypes;
-        }
-
-        if (newIsVolunteer) {
-          query.volunteer = 'true';
-        }
-
-        if (newIsCommercial) {
-          query.commercial = 'true';
-        }
-
-        if (newTags.length > 0) {
-          query.tags = newTags;
-        }
-
-        // Update the URL without reloading the page
-        router.replace({query});
-      }
-    }, {deep: true});
-
-// Filter events by all filter criteria
-const filteredEvents = computed(() => {
-  if (!events.value) return [];
-
-  // Use the enhanced filterEvents function with all filter criteria
-  return filterEvents(
-      events.value ?? [],
-      locations.value ?? [],
-      {
-        searchTerm: searchTerm.value,
-        selectedStates: selectedStates.value,
-        allStates: stateList.value.map(state => state.code),
-        dateRange: dateRange.value,
-        eventTypes: selectedEventTypes.value,
-        trainTypes: selectedTrainTypes.value,
-        isVolunteer: isVolunteer.value,
-        isCommercial: isCommercial.value,
-        tags: selectedTags.value
-      }
-  );
-});
-
-// Group filtered events
-const filteredEventGroups = computed<MuseumEventGroupGroup[]>(() => {
-  return filteredEvents.value.length > 0 ? eventsGroupedByMonthAndDepartureTime(filteredEvents.value) : [];
-});
-
 useSeoMeta({
   title: 'Veranstaltungsliste',
   ogTitle: 'Veranstaltungsliste',
@@ -390,5 +408,4 @@ useSeoMeta({
   ogImage: 'https://museumsbahn-events.at/img/social_media_preview.jpg',
   twitterCard: 'summary_large_image',
 })
-
 </script>
