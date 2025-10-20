@@ -4,11 +4,35 @@
     <div class="filter-section mb-3">
       <div class="flex justify-content-between align-items-center">
         <h3>Zeitraum</h3>
-        <Button v-if="dateRange.length > 0" label="löschen" size="small" text class="reset-button" @click="resetDateRange" />
+        <Button
+            v-if="dateRange.length > 0" label="löschen" size="small" text class="reset-button"
+            @click="resetDateRange"/>
       </div>
       <div class="flex flex-column gap-2">
-        <Calendar v-model="dateRange" selectionMode="range" dateFormat="dd.mm.yy" 
-                 placeholder="Zeitraum auswählen" class="w-full" />
+        <Calendar
+            v-model="dateRange" selection-mode="range" date-format="dd.mm.yy"
+            placeholder="Zeitraum auswählen" class="w-full"/>
+      </div>
+    </div>
+
+
+    <div
+        v-if="filterOptions?.states?.length > 0"
+        class="filter-section mb-3">
+      <div class="flex justify-content-between align-items-center">
+        <h3>Bundesland</h3>
+        <Button
+            v-if="selectedStates.length > 0" label="löschen" size="small" text class="reset-button"
+            @click="resetStates"/>
+      </div>
+      <div class="flex flex-wrap gap-2">
+        <ToggleButton
+            v-for="state in filterOptions.states" :key="state.code"
+            :model-value="selectedStates.includes(state.code)"
+            :on-label="state.name"
+            :off-label="state.name"
+            class="mx-1 mb-2"
+            @click="toggleState(state.code)"/>
       </div>
     </div>
 
@@ -16,15 +40,18 @@
     <div class="filter-section mb-3">
       <div class="flex justify-content-between align-items-center">
         <h3>Veranstaltungstyp</h3>
-        <Button v-if="selectedEventTypes.length > 0" label="löschen" size="small" text class="reset-button" @click="resetEventTypes" />
+        <Button
+            v-if="selectedEventTypes.length > 0" label="löschen" size="small" text class="reset-button"
+            @click="resetEventTypes"/>
       </div>
       <div class="flex flex-wrap gap-2">
-        <ToggleButton v-for="type in eventTypes" :key="type"
-                     :modelValue="selectedEventTypes.includes(type)"
-                     :onLabel="type"
-                     :offLabel="type"
-                     class="mb-2"
-                     @click="toggleEventType(type)" />
+        <ToggleButton
+            v-for="type in filterOptions.eventTypes" :key="type"
+            :model-value="selectedEventTypes.includes(type)"
+            :on-label="type"
+            :off-label="type"
+            class="mb-2"
+            @click="toggleEventType(type)"/>
       </div>
     </div>
 
@@ -32,15 +59,18 @@
     <div class="filter-section mb-3">
       <div class="flex justify-content-between align-items-center">
         <h3>Fahrzeugtyp</h3>
-        <Button v-if="selectedTrainTypes.length > 0" label="löschen" size="small" text class="reset-button" @click="resetTrainTypes" />
+        <Button
+            v-if="selectedTrainTypes.length > 0" label="löschen" size="small" text class="reset-button"
+            @click="resetTrainTypes"/>
       </div>
       <div class="flex flex-wrap gap-2">
-        <ToggleButton v-for="type in trainTypes" :key="type"
-                     :modelValue="selectedTrainTypes.includes(type)"
-                     :onLabel="type"
-                     :offLabel="type"
-                     class="mb-2"
-                     @click="toggleTrainType(type)" />
+        <ToggleButton
+            v-for="type in filterOptions.trainTypes" :key="type"
+            :model-value="selectedTrainTypes.includes(type)"
+            :on-label="type"
+            :off-label="type"
+            class="mb-2"
+            @click="toggleTrainType(type)"/>
       </div>
     </div>
 
@@ -48,79 +78,109 @@
     <div class="filter-section mb-3">
       <div class="flex justify-content-between align-items-center">
         <h3>Art der Veranstaltung</h3>
-        <Button v-if="isVolunteer || isCommercial" label="löschen" size="small" text class="reset-button" @click="resetEventType" />
+        <Button
+            v-if="isVolunteer || isCommercial" label="löschen" size="small" text class="reset-button"
+            @click="resetEventType"/>
       </div>
       <div class="flex flex-wrap gap-2">
-        <ToggleButton v-model="isVolunteer" 
-                     onLabel="Ehrenamtlich" 
-                     offLabel="Ehrenamtlich" 
-                     class="mb-2" />
-        <ToggleButton v-model="isCommercial" 
-                     onLabel="Kommerziell" 
-                     offLabel="Kommerziell" 
-                     class="mb-2" />
+        <ToggleButton
+            v-model="isVolunteer"
+            on-label="Ehrenamtlich"
+            off-label="Ehrenamtlich"
+            class="mb-2"/>
+        <ToggleButton
+            v-model="isCommercial"
+            on-label="Kommerziell"
+            off-label="Kommerziell"
+            class="mb-2"/>
       </div>
     </div>
 
     <!-- Tag Filters -->
-    <div class="filter-section mb-3" v-if="tags.length > 0">
+    <div v-if="filterOptions.tags.length > 0" class="filter-section mb-3">
       <div class="flex justify-content-between align-items-center">
         <h3>Tags</h3>
-        <Button v-if="selectedTags.length > 0" label="löschen" size="small" text class="reset-button" @click="resetTags" />
+        <Button
+            v-if="selectedTags.length > 0" label="löschen" size="small" text class="reset-button"
+            @click="resetTags"/>
       </div>
       <div class="flex flex-wrap gap-2">
-        <ToggleButton v-for="tag in tags" :key="tag"
-                     :modelValue="selectedTags.includes(tag)"
-                     :onLabel="tag"
-                     :offLabel="tag"
-                     class="mb-2"
-                     @click="toggleTag(tag)" />
+        <ToggleButton
+            v-for="tag in filterOptions.tags" :key="tag"
+            :model-value="selectedTags.includes(tag)"
+            :on-label="tag"
+            :off-label="tag"
+            class="mb-2"
+            @click="toggleTag(tag)"/>
       </div>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import { ref, computed, watch } from 'vue';
+import {ref, watch, watchEffect} from 'vue';
 import Button from 'primevue/button';
+import type {EventFilter, EventFilterOptions, EventFilterUpdate} from '~/types/EventFilterTypes';
 
-// Define props to receive tags from parent component
+// Define props to receive filter options from parent component
 const props = defineProps<{
-  availableTags?: string[]
+  filterOptions: EventFilterOptions,
+  filterState: EventFilter,
 }>();
 
 // Define emits to send filter changes to parent component
 const emit = defineEmits<{
-  (e: 'update:filters', filters: {
-    dateRange: Date[],
-    eventTypes: string[],
-    trainTypes: string[],
-    isVolunteer: boolean,
-    isCommercial: boolean,
-    tags: string[]
-  }): void
+  (e: 'update:filters', filters: EventFilterUpdate): void
 }>();
 
-// Date Range
+// Initialize reactive refs with empty defaults
 const dateRange = ref<Date[]>([]);
-
-// Event Types
-const eventTypes = ['Museumsbahn', 'Museum', 'Sonderfahrt', 'Veranstaltung'];
 const selectedEventTypes = ref<string[]>([]);
-
-// Train Types
-const trainTypes = ['Dampf', 'Diesel', 'Elektro', 'Tram', 'Schiff'];
+const selectedStates = ref<string[]>([]);
 const selectedTrainTypes = ref<string[]>([]);
-
-// Volunteer/Commercial
 const isVolunteer = ref(false);
 const isCommercial = ref(false);
-
-// Tags
-const tags = computed(() => props.availableTags || []);
 const selectedTags = ref<string[]>([]);
 
+const isUpdatingFromProps = ref(false);
+
+// Initialize values from props.filterState
+watchEffect(() => {
+  isUpdatingFromProps.value = true;
+  if (props.filterState) {
+    // Initialize date range from filterState
+    const dates: Date[] = [];
+    if (props.filterState.fromDate) {
+      dates.push(props.filterState.fromDate);
+    }
+    if (props.filterState.fromDate && props.filterState.toDate) {
+      dates.push(props.filterState.toDate);
+    }
+    dateRange.value = dates;
+
+    // Initialize other filter values from filterState
+    selectedStates.value = props.filterState.states || [];
+    selectedEventTypes.value = props.filterState.eventTypes || [];
+    selectedTrainTypes.value = props.filterState.trainTypes || [];
+    isVolunteer.value = props.filterState.volunteer || false;
+    isCommercial.value = props.filterState.commercial || false;
+    selectedTags.value = props.filterState.tags || [];
+
+    nextTick(() => {
+      isUpdatingFromProps.value = false;
+    });
+  }
+});
+
 // Toggle functions
+const toggleState = (state: string) => {
+  if (selectedStates.value.includes(state)) {
+    selectedStates.value = selectedStates.value.filter(t => t !== state);
+  } else {
+    selectedStates.value.push(state);
+  }
+};
+
 const toggleEventType = (type: string) => {
   if (selectedEventTypes.value.includes(type)) {
     selectedEventTypes.value = selectedEventTypes.value.filter(t => t !== type);
@@ -150,6 +210,10 @@ const resetDateRange = () => {
   dateRange.value = [];
 };
 
+const resetStates = () => {
+  selectedStates.value = [];
+};
+
 const resetEventTypes = () => {
   selectedEventTypes.value = [];
 };
@@ -169,18 +233,21 @@ const resetTags = () => {
 
 // Watch for changes in filters and emit them to parent
 watch(
-  [dateRange, selectedEventTypes, selectedTrainTypes, isVolunteer, isCommercial, selectedTags],
-  () => {
-    emit('update:filters', {
-      dateRange: dateRange.value,
-      eventTypes: selectedEventTypes.value,
-      trainTypes: selectedTrainTypes.value,
-      isVolunteer: isVolunteer.value,
-      isCommercial: isCommercial.value,
-      tags: selectedTags.value
-    });
-  },
-  { deep: true }
+    [dateRange,selectedStates, selectedEventTypes, selectedTrainTypes, isVolunteer, isCommercial, selectedTags],
+    () => {
+      if (!isUpdatingFromProps.value) {
+        emit('update:filters', {
+          dateRange: dateRange.value,
+          states: selectedStates.value,
+          eventTypes: selectedEventTypes.value,
+          trainTypes: selectedTrainTypes.value,
+          isVolunteer: isVolunteer.value,
+          isCommercial: isCommercial.value,
+          tags: selectedTags.value
+        });
+      }
+    },
+    {deep: true}
 );
 </script>
 
