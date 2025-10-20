@@ -34,4 +34,5 @@ onMounted(() => initHistoryCount());
       <NuxtPage/>
     </main>
   </div>
+  <Toast />
 </template>
