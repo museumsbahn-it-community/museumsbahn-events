@@ -17,7 +17,7 @@
 
 
     <div
-        v-if="filterOptions?.states?.length > 0"
+        v-if="filterOptions?.states?.length > 0 && showStates"
         class="filter-section mb-3">
       <div class="flex justify-content-between align-items-center">
         <h3>Bundesland</h3>
@@ -123,10 +123,14 @@ import Button from 'primevue/button';
 import type {EventFilter, EventFilterOptions, EventFilterUpdate} from '~/types/EventFilterTypes';
 
 // Define props to receive filter options from parent component
-const props = defineProps<{
+const props = withDefaults(defineProps<{
   filterOptions: EventFilterOptions,
   filterState: EventFilter,
-}>();
+  showStates: boolean,
+}>(), {
+  showStates: true
+});
+
 
 // Define emits to send filter changes to parent component
 const emit = defineEmits<{
