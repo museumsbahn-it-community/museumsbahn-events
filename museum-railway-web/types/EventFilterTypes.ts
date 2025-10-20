@@ -25,6 +25,14 @@ export interface StateOption {
   name: string;
 }
 
+// Type for filter counts
+export interface FilterCounts {
+  eventTypes: Record<string, number>;
+  trainTypes: Record<string, number>;
+  tags: Record<string, number>;
+  states: Record<string, number>;
+}
+
 // Type for the filter update payload from EventFilters component
 export interface EventFilterUpdate {
   dateRange: Date[];

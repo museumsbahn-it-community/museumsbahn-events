@@ -51,7 +51,14 @@
             :on-label="type"
             :off-label="type"
             class="mb-2"
-            @click="toggleEventType(type)"/>
+            @click="toggleEventType(type)">
+          {{type}}
+          <Badge
+              v-if="filterCounts?.eventTypes && filterCounts.eventTypes[type] !== undefined"
+              :value="filterCounts.eventTypes[type]"
+              severity="primary"
+              class="filter-badge"/>
+        </ToggleButton>
       </div>
     </div>
 
@@ -70,7 +77,14 @@
             :on-label="type"
             :off-label="type"
             class="mb-2"
-            @click="toggleTrainType(type)"/>
+            @click="toggleTrainType(type)">
+          {{type}}
+          <Badge
+              v-if="filterCounts?.trainTypes && filterCounts.trainTypes[type] !== undefined"
+              :value="filterCounts.trainTypes[type]"
+              severity="primary"
+              class="filter-badge"/>
+        </ToggleButton>
       </div>
     </div>
 
@@ -111,7 +125,14 @@
             :on-label="tag"
             :off-label="tag"
             class="mb-2"
-            @click="toggleTag(tag)"/>
+            @click="toggleTag(tag)">
+          {{tag}}
+          <Badge
+              v-if="filterCounts?.tags && filterCounts.tags[tag] !== undefined"
+              :value="filterCounts.tags[tag]"
+              severity="primary"
+              class="filter-badge"/>
+        </ToggleButton>
       </div>
     </div>
   </div>
@@ -120,12 +141,14 @@
 <script setup lang="ts">
 import {ref, watch, watchEffect} from 'vue';
 import Button from 'primevue/button';
-import type {EventFilter, EventFilterOptions, EventFilterUpdate} from '~/types/EventFilterTypes';
+import Badge from 'primevue/badge';
+import type {EventFilter, EventFilterOptions, EventFilterUpdate, FilterCounts} from '~/types/EventFilterTypes';
 
 // Define props to receive filter options from parent component
 const props = withDefaults(defineProps<{
   filterOptions: EventFilterOptions,
   filterState: EventFilter,
+  filterCounts?: FilterCounts,
   showStates: boolean,
 }>(), {
   showStates: true
@@ -269,5 +292,11 @@ watch(
   font-size: 0.8rem;
   font-weight: normal;
   padding: 0.25rem 0.5rem;
+}
+
+.filter-badge {
+  min-width: 1.5rem;
+  height: 1.5rem;
+  font-size: 0.75rem;
 }
 </style>
