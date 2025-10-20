@@ -5,7 +5,8 @@
         <CustomSidebar class="w-full lg:w-11" style="height: 80%;" title="Filter" side="left">
           <EventFilters
               :filter-options="filterOptions"
-              :current-state="filterState"
+              :filter-state="filterState"
+              :show-states="false"
               @update:filters="updateFilters"/>
         </CustomSidebar>
       </div>
@@ -54,7 +55,7 @@
   </div>
 
   <!-- Mobile Footer -->
-  <div class="mobile-footer pb-1 pt-3" v-if="!showFilterSidebar">
+  <div class="mobile-footer" v-if="!showFilterSidebar">
     <div class="footer-buttons">
       <Button class="footer-button" @click="showFilterDrawer = true">
         <i class="pi pi-filter"></i>
@@ -118,6 +119,7 @@
 
 // Mobile footer styles
 .mobile-footer {
+  height: 5rem;
   position: fixed;
   bottom: 0;
   left: 0;
@@ -140,11 +142,15 @@
 .footer-buttons {
   display: flex;
   justify-content: center;
-  gap: 1.5rem;
+  padding: 1rem;
+  gap: 1rem;
   width: 100%;
 }
 
 .footer-button {
+  width: 4rem;
+  height: 4rem;
+  padding: 1rem;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -154,7 +160,6 @@
   color: white;
   background: none;
   border: none;
-  padding: 0.5rem;
 }
 
 //.footer-button:hover {
