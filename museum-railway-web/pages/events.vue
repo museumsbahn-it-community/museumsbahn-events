@@ -162,10 +162,6 @@
   border: none;
 }
 
-//.footer-button:hover {
-//  opacity: 0.8;
-//}
-//
 .footer-button i {
   font-size: 1.5rem;
 }
@@ -191,6 +187,7 @@ import type { EventFilter, EventFilterOptions, EventFilterUpdate, StateOption } 
 const route = useRoute();
 const router = useRouter();
 const viewport = useViewport();
+const toast = useToast();
 
 const {data: events} = useAllEvents();
 const {data: locations} = useAllLocations();
@@ -352,7 +349,6 @@ const shareCurrentPage = () => {
   if (import.meta.client) {
     // Get the current URL with query parameters
     const currentUrl = window.location.href;
-    const toast = useToast();
 
     // Check if the Web Share API is available
     if (navigator.share) {
