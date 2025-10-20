@@ -1,3 +1,85 @@
+<template>
+  <div class="grid w-full page-content">
+    <div class="col-2 lg:col-3 flex flex-1 content-left-column sticky-sidebar-container" v-if="showFilterSidebar">
+      <div class="w-full flex flex-column justify-content-center align-items-start overflow-hidden sticky-sidebar-container">
+        <CustomSidebar class="w-full lg:w-11" style="height: 80%;" title="Filter" side="left">
+          <EventFilters
+              :availableTags="availableTags"
+              @update:filters="updateFilters"/>
+        </CustomSidebar>
+      </div>
+    </div>
+    <div class="flex flex-column align-items-center mx-2 col-12 lg:col-9 xl:col-6" :class="{ 'main-content-with-sidebar': viewport.isGreaterOrEquals('tablet') }">
+      <Message class="my-2 mx-4" severity="info" icon="pi pi-info-circle"> Achtung! Die Daten werden automatisch erfasst
+        und
+        nicht manuell geprüft.
+        Abfahrtszeiten und aktuelle Informationen immer auf den Webseiten der jeweiligen Veranstalter
+        kontrollieren!
+      </Message>
+      <div class="h-1rem"></div>
+      <div class="flex flex-column h-full mx-2 mb-6 md:mx-5 align-items-center">
+        <!-- Search Bar (kept in main content for visibility) -->
+        <div class="top-filters w-full flex flex-column align-items-center mb-4">
+          <InputGroup class="w-full flex mb-3">
+            <InputGroupAddon>
+              <i class="pi pi-search"></i>
+            </InputGroupAddon>
+            <InputText v-model="searchTerm" placeholder="Suche nach Veranstaltungen, Orten oder Beschreibungen"
+                       class="w-full"/>
+          </InputGroup>
+
+          <!-- State Filter (kept in main content for visibility) -->
+          <div class="mb-3 flex flex-row flex-wrap justify-content-center"
+               v-if="showFilterSidebar"
+          >
+            <ToggleButton v-for="state in stateList" :key="state.code"
+                          :modelValue="selectedStates.includes(state.code)"
+                          :onLabel="state.name"
+                          :offLabel="state.name"
+                          class="mx-1 mb-2"
+                          @click="toggleState(state.code)"/>
+          </div>
+        </div>
+
+        <EventList class="h-full" :eventsGroupedByMonthAndDeparture="filteredEventGroups"></EventList>
+      </div>
+    </div>
+    <div class="col-2 lg:col-3 flex flex-1 content-left-column" v-if="showFilterSidebar">
+    </div>
+  </div>
+
+  <!-- Mobile Footer -->
+  <div class="mobile-footer pb-1 pt-3" v-if="!showFilterSidebar">
+    <div class="footer-buttons">
+      <Button class="footer-button" @click="showFilterDrawer = true">
+        <i class="pi pi-filter"></i>
+        <span>Filter</span>
+      </Button>
+      <Button class="footer-button" @click="shareCurrentPage">
+        <i class="pi pi-share-alt"></i>
+        <span>Teilen</span>
+      </Button>
+    </div>
+  </div>
+
+  <!-- Mobile Filter Drawer -->
+  <Sidebar v-model:visible="showFilterDrawer"
+           position="bottom"
+           class="filter-drawer"
+           :modal="true"
+           :dismissable="true"
+           :showCloseIcon="true"
+           :baseZIndex="1001">
+    <template #header>
+      <h2 class="text-xl font-bold m-0 p-3">Filter</h2>
+    </template>
+    <div class="p-3">
+      <EventFilters
+          :availableTags="availableTags"
+          @update:filters="updateFilters"/>
+    </div>
+  </Sidebar>
+</template>
 <style lang="scss">
 @use "../assets/variables_impl.scss" as variables;
 
@@ -81,86 +163,6 @@
   font-size: 0.8rem;
 }
 </style>
-<template>
-  <div class="grid w-full page-content">
-    <div class="col-2 lg:col-3 flex flex-1 content-left-column sticky-sidebar-container" v-if="viewport.isGreaterOrEquals('tablet')">
-      <div class="w-full flex flex-column justify-content-center align-items-start overflow-hidden sticky-sidebar-container">
-        <CustomSidebar class="w-full lg:w-11" style="height: 80%;" title="Filter" side="left">
-          <EventFilters
-              :availableTags="availableTags"
-              @update:filters="updateFilters"/>
-        </CustomSidebar>
-      </div>
-    </div>
-    <div class="flex flex-column align-items-center mx-2 col-12 md:col-9 lg:col-6" :class="{ 'main-content-with-sidebar': viewport.isGreaterOrEquals('tablet') }">
-      <Message class="my-2 mx-4" severity="info" icon="pi pi-info-circle"> Achtung! Die Daten werden automatisch erfasst
-        und
-        nicht manuell geprüft.
-        Abfahrtszeiten und aktuelle Informationen immer auf den Webseiten der jeweiligen Veranstalter
-        kontrollieren!
-      </Message>
-      <div class="h-1rem"></div>
-      <div class="flex flex-column h-full mx-2 mb-6 md:mx-5 align-items-center">
-        <!-- Search Bar (kept in main content for visibility) -->
-        <div class="top-filters w-full flex flex-column align-items-center mb-4">
-          <InputGroup class="w-full flex mb-3">
-            <InputGroupAddon>
-              <i class="pi pi-search"></i>
-            </InputGroupAddon>
-            <InputText v-model="searchTerm" placeholder="Suche nach Veranstaltungen, Orten oder Beschreibungen"
-                       class="w-full"/>
-          </InputGroup>
-
-          <!-- State Filter (kept in main content for visibility) -->
-          <div class="mb-3 flex flex-row flex-wrap justify-content-center">
-            <ToggleButton v-for="state in stateList" :key="state.code"
-                          :modelValue="selectedStates.includes(state.code)"
-                          :onLabel="state.name"
-                          :offLabel="state.name"
-                          class="mx-1 mb-2"
-                          @click="toggleState(state.code)"/>
-          </div>
-        </div>
-
-        <EventList class="h-full" :eventsGroupedByMonthAndDeparture="filteredEventGroups"></EventList>
-      </div>
-    </div>
-    <div class="col-2 lg:col-3 flex flex-1 content-left-column" v-if="viewport.isGreaterOrEquals('tablet')">
-    </div>
-  </div>
-
-  <!-- Mobile Footer -->
-  <div class="mobile-footer pb-1 pt-3" v-if="viewport.isLessThan('tablet')">
-    <div class="footer-buttons">
-      <Button class="footer-button" @click="showFilterDrawer = true">
-        <i class="pi pi-filter"></i>
-        <span>Filter</span>
-      </Button>
-      <Button class="footer-button" @click="shareCurrentPage">
-        <i class="pi pi-share-alt"></i>
-        <span>Teilen</span>
-      </Button>
-    </div>
-  </div>
-
-  <!-- Mobile Filter Drawer -->
-  <Sidebar v-model:visible="showFilterDrawer"
-           position="bottom" 
-           class="filter-drawer"
-           :modal="true" 
-           :dismissable="true" 
-           :showCloseIcon="true"
-           :baseZIndex="1001">
-    <template #header>
-      <h2 class="text-xl font-bold m-0 p-3">Filter</h2>
-    </template>
-    <div class="p-3">
-      <EventFilters
-          :availableTags="availableTags"
-          @update:filters="updateFilters"/>
-    </div>
-  </Sidebar>
-</template>
 <script setup lang="ts">
 import {useAllEvents} from "~/composables/eventComposables";
 import {useAllLocations} from "~/composables/locationComposables";
@@ -181,9 +183,10 @@ const viewport = useViewport();
 const {data: events} = useAllEvents();
 const {data: locations} = useAllLocations();
 
+const showFilterSidebar = computed(() => viewport.isGreaterOrEquals('desktop'));
+
 // Mobile drawer state
 const showFilterDrawer = ref(false);
-
 
 const shareCurrentPage = () => {
   // Only run on client-side
