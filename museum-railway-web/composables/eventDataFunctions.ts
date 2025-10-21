@@ -276,9 +276,10 @@ export function filterEvents(events: MuseumEvent[], locations: MuseumLocation[],
     if (tags && tags.length > 0) {
         filtered = filtered.filter(event => {
             // Check if any of the selected tags are in the event name or description
+            // TODO: also check the tags themselves
             return tags.some(tag =>
                 hasTagKeywords(event.name, tag) ||
-                (event.description && hasTagKeywords(event.description, tag))
+                event.description && hasTagKeywords(event.description, tag)
             );
         });
     }
@@ -309,15 +310,16 @@ function hasCommercialKeywords(text: string): boolean {
  */
 function hasTagKeywords(text: string, tag: string): boolean {
     // Map tags to related keywords
+    // TODO: remove and replace by proper keywords
     const tagKeywords: {[key: string]: string[]} = {
         'Dampflok': ['dampf', 'dampflok', 'dampflokomotive'],
         'Diesellok': ['diesel', 'diesellok', 'diesellokomotive'],
         'Elektrolok': ['elektro', 'elektrolok', 'elektrische lokomotive', 'e-lok'],
-        'Schienenbus': ['schienenbus', 'triebwagen'],
+        'Schienenbus': ['schienenbus'],
         'Triebwagen': ['triebwagen', 'triebzug'],
         'Nostalgiezug': ['nostalgie', 'nostalgiezug', 'historisch'],
         'Kinderprogramm': ['kind', 'kinder', 'familie', 'familien'],
-        'Führerstandsmitfahrt': ['führerstand', 'mitfahrt', 'führerstandsmitfahrt'],
+        'Führerstandsmitfahrt': ['führerstandsmitfahrt'],
         'Fotohalt': ['foto', 'fotohalt', 'fotostopp']
     };
 
