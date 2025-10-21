@@ -31,6 +31,68 @@
             <InputText v-model="searchTerm" placeholder="Suche nach Veranstaltungen, Orten oder Beschreibungen"
                        class="w-full"/>
           </InputGroup>
+
+          <!-- Filter Chips -->
+          <div v-if="hasActiveFilters" class="w-full flex flex-wrap gap-2 mb-3">
+            <!-- Search Term Chip -->
+            <Chip v-if="filterState.search" 
+                  :label="'Suche: ' + filterState.search" 
+                  removable 
+                  @remove="filterState.search = ''" />
+
+            <!-- Date Range Chip -->
+            <Chip v-if="filterState.fromDate || filterState.toDate" 
+                  :label="getDateRangeLabel()" 
+                  removable 
+                  @remove="resetDateRange()" />
+
+            <!-- State Chips -->
+            <Chip v-for="stateCode in filterState.states" 
+                  :key="'state-' + stateCode" 
+                  :label="getStateName(stateCode)" 
+                  removable 
+                  @remove="toggleState(stateCode)" />
+
+            <!-- Event Type Chips -->
+            <Chip v-for="type in filterState.eventTypes" 
+                  :key="'event-' + type" 
+                  :label="'Typ: ' + type" 
+                  removable 
+                  @remove="removeEventType(type)" />
+
+            <!-- Train Type Chips -->
+            <Chip v-for="type in filterState.trainTypes" 
+                  :key="'train-' + type" 
+                  :label="'Fahrzeug: ' + type" 
+                  removable 
+                  @remove="removeTrainType(type)" />
+
+            <!-- Volunteer/Commercial Chips -->
+            <Chip v-if="filterState.volunteer" 
+                  label="Ehrenamtlich" 
+                  removable 
+                  @remove="filterState.volunteer = false" />
+            <Chip v-if="filterState.commercial" 
+                  label="Kommerziell" 
+                  removable 
+                  @remove="filterState.commercial = false" />
+
+            <!-- Tag Chips -->
+            <Chip v-for="tag in filterState.tags" 
+                  :key="'tag-' + tag" 
+                  :label="'Tag: ' + tag" 
+                  removable 
+                  @remove="removeTag(tag)" />
+
+            <!-- Clear All Button -->
+            <Button v-if="hasActiveFilters" 
+                    label="Alle Filter löschen" 
+                    size="small" 
+                    text 
+                    class="ml-2" 
+                    @click="clearAllFilters" />
+          </div>
+
           <div class="w-full font-bold align-content-start mb-3">
             <label v-if="filteredEvents.length > 0">{{filteredEvents.length}} Events gefunden</label>
             <label v-if="filteredEvents.length === 0">keine Events gefunden</label>
@@ -381,6 +443,8 @@ const filterCounts = computed<FilterCounts>(() => {
     });
   }
 
+  console.log(counts);
+
   return counts;
 });
 
@@ -473,6 +537,103 @@ const filteredEvents = computed(() => {
 const filteredEventGroups = computed<MuseumEventGroupGroup[]>(() => {
   return filteredEvents.value.length > 0 ? eventsGroupedByMonthAndDepartureTime(filteredEvents.value) : [];
 });
+
+// Check if any filters are active
+const hasActiveFilters = computed(() => {
+  return !!(
+    filterState.value.search || 
+    (filterState.value.states && filterState.value.states.length > 0) ||
+    filterState.value.fromDate ||
+    filterState.value.toDate ||
+    (filterState.value.eventTypes && filterState.value.eventTypes.length > 0) ||
+    (filterState.value.trainTypes && filterState.value.trainTypes.length > 0) ||
+    filterState.value.volunteer ||
+    filterState.value.commercial ||
+    (filterState.value.tags && filterState.value.tags.length > 0)
+  );
+});
+
+// Format date range for display in chip
+const getDateRangeLabel = (): string => {
+  if (filterState.value.fromDate && filterState.value.toDate) {
+    const fromDate = new Date(filterState.value.fromDate).toLocaleDateString('de-DE');
+    const toDate = new Date(filterState.value.toDate).toLocaleDateString('de-DE');
+    return `Zeitraum: ${fromDate} - ${toDate}`;
+  } else if (filterState.value.fromDate) {
+    const fromDate = new Date(filterState.value.fromDate).toLocaleDateString('de-DE');
+    return `Ab: ${fromDate}`;
+  } else if (filterState.value.toDate) {
+    const toDate = new Date(filterState.value.toDate).toLocaleDateString('de-DE');
+    return `Bis: ${toDate}`;
+  }
+  return '';
+};
+
+// Reset date range filter
+const resetDateRange = () => {
+  filterState.value.fromDate = undefined;
+  filterState.value.toDate = undefined;
+};
+
+// Get state name from state code
+const getStateName = (stateCode: string): string => {
+  const state = stateList.value.find(s => s.code === stateCode);
+  return state ? state.name : stateCode;
+};
+
+// Remove event type filter
+const removeEventType = (type: string) => {
+  if (filterState.value.eventTypes) {
+    const newEventTypes: string[] = [];
+    for (const t of filterState.value.eventTypes) {
+      if (t !== type) {
+        newEventTypes.push(t);
+      }
+    }
+    filterState.value.eventTypes = newEventTypes;
+  }
+};
+
+// Remove train type filter
+const removeTrainType = (type: string) => {
+  if (filterState.value.trainTypes) {
+    const newTrainTypes: string[] = [];
+    for (const t of filterState.value.trainTypes) {
+      if (t !== type) {
+        newTrainTypes.push(t);
+      }
+    }
+    filterState.value.trainTypes = newTrainTypes;
+  }
+};
+
+// Remove tag filter
+const removeTag = (tag: string) => {
+  if (filterState.value.tags) {
+    const newTags: string[] = [];
+    for (const t of filterState.value.tags) {
+      if (t !== tag) {
+        newTags.push(t);
+      }
+    }
+    filterState.value.tags = newTags;
+  }
+};
+
+// Clear all filters
+const clearAllFilters = () => {
+  filterState.value = {
+    search: '',
+    states: [],
+    fromDate: undefined,
+    toDate: undefined,
+    eventTypes: [],
+    trainTypes: [],
+    volunteer: false,
+    commercial: false,
+    tags: []
+  };
+};
 
 // Share functionality (keeping existing implementation)
 const shareCurrentPage = () => {
