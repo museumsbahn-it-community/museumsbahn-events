@@ -9,7 +9,7 @@
 </style>
 <template>
   <div v-if="eventsGroupedByMonthAndDeparture.length > 0" class="flex flex-column">
-    <div v-for="eventGroup in eventsGroupedByMonthAndDeparture" class="bg-grauweiß mb-4 w-full">
+    <div v-for="eventGroup in eventsGroupedByMonthAndDeparture" class="mb-4 w-full">
       <h1 class="my-2">{{ eventGroup.label }}</h1>
       <div class="flex flex-row flex-wrap w-full justify-content-center">
         <div v-for="eventsGroupedByDeparture in eventGroup.eventGroups"

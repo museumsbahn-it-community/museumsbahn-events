@@ -18,13 +18,13 @@ html {
 body {
   display: flex;
   flex-direction: column;
-  color: colors.$color-umbragrau;
-  background: colors.$color-grauweiß;
+  color: colors.$text-color-dark;
+  background: colors.$background-color-light;
   margin: 0;
 }
 
 a {
-  color: colors.$color-umbragrau;
+  color: colors.$text-color-dark;
 }
 
 a:not(.p-menubar-item-link ):hover {
@@ -36,7 +36,7 @@ a:not(.p-menubar-item-link ):hover {
 }
 
 .invisible-link:hover {
-  color: colors.$color-umbragrau;
+  color: colors.$text-color-dark;
 }
 
 .p-button[variant="link"],
