@@ -1,8 +1,8 @@
-
 <template>
   <div class="grid w-full page-content">
     <div class="col-2 lg:col-3 flex flex-1 content-left-column sticky-sidebar-container" v-if="showFilterSidebar">
-      <div class="w-full flex flex-column justify-content-center align-items-start overflow-hidden sticky-sidebar-container">
+      <div
+          class="w-full flex flex-column justify-content-center align-items-start overflow-hidden sticky-sidebar-container">
         <CustomSidebar class="w-full lg:w-11" style="height: 80%;" title="Filter" side="left">
           <EventFilters
               :filter-options="filterOptions"
@@ -13,7 +13,8 @@
         </CustomSidebar>
       </div>
     </div>
-    <div class="flex flex-column align-items-center mx-2 col-12 lg:col-9 xl:col-6" :class="{ 'main-content-with-sidebar': viewport.isGreaterOrEquals('tablet') }">
+    <div class="flex flex-column align-items-center mx-2 col-12 lg:col-9 xl:col-6"
+         :class="{ 'main-content-with-sidebar': viewport.isGreaterOrEquals('tablet') }">
       <Message class="my-2 mx-4" severity="info" icon="pi pi-info-circle"> Achtung! Die Daten werden automatisch erfasst
         und
         nicht manuell geprüft.
@@ -35,66 +36,80 @@
           <!-- Filter Chips -->
           <div v-if="hasActiveFilters" class="w-full flex flex-wrap gap-2 mb-3">
             <!-- Search Term Chip -->
-            <Chip v-if="filterState.search" 
-                  :label="'Suche: ' + filterState.search" 
-                  removable 
-                  @remove="filterState.search = ''" />
+            <Chip v-if="filterState.searchTerm"
+                  :label="'Suche: ' + filterState.searchTerm"
+                  removable
+                  @remove="filterState.searchTerm = ''"/>
 
             <!-- Date Range Chip -->
-            <Chip v-if="filterState.fromDate || filterState.toDate" 
-                  :label="getDateRangeLabel()" 
-                  removable 
-                  @remove="resetDateRange()" />
+            <Chip v-if="filterState.fromDate || filterState.toDate"
+                  :label="getDateRangeLabel()"
+                  removable
+                  @remove="resetDateRange()"/>
 
             <!-- State Chips -->
-            <Chip v-for="stateCode in filterState.states" 
-                  :key="'state-' + stateCode" 
-                  :label="getStateName(stateCode)" 
-                  removable 
-                  @remove="toggleState(stateCode)" />
+            <Chip v-for="stateCode in filterState.selectedStates"
+                  :key="'state-' + stateCode"
+                  :label="getStateName(stateCode)"
+                  removable
+                  @remove="toggleState(stateCode)"/>
 
             <!-- Event Type Chips -->
             <Chip v-for="type in filterState.eventCategories"
-                  :key="'event-' + type" 
+                  :key="'event-' + type"
                   :label="'Typ: ' + translateTag(type, EventCategoryLabels)"
-                  removable 
-                  @remove="removeEventType(type)" />
+                  removable
+                  @remove="removeEventType(type)"/>
 
             <!-- Train Type Chips -->
             <Chip v-for="type in filterState.vehicleTypes"
-                  :key="'train-' + type" 
+                  :key="'train-' + type"
                   :label="'Fahrzeug: ' + translateTag(type, VehicleTypeLabels)"
-                  removable 
-                  @remove="removeVehicleType(type)" />
+                  removable
+                  @remove="removeVehicleType(type)"/>
 
             <!-- Volunteer/Commercial Chips -->
-            <Chip v-if="filterState.volunteer" 
+            <Chip v-if="filterState.isVolunteer"
                   :v-label="translateTag(OperationType.VOLUNTEER, OperationTypeLabels)"
-                  removable 
-                  @remove="filterState.volunteer = false" />
-            <Chip v-if="filterState.commercial"
+                  removable
+                  @remove="filterState.isVolunteer = false"/>
+            <Chip v-if="filterState.isCommercial"
                   :v-label="translateTag(OperationType.COMMERCIAL, OperationTypeLabels)"
-                  removable 
-                  @remove="filterState.commercial = false" />
+                  removable
+                  @remove="filterState.isCommercial = false"/>
 
             <!-- Tag Chips -->
-            <Chip v-for="tag in filterState.tags" 
-                  :key="'tag-' + tag" 
-                  :label="'Tag: ' + tag" 
-                  removable 
-                  @remove="removeTag(tag)" />
+            <Chip v-for="tag in filterState.tags"
+                  :key="'tag-' + tag"
+                  :label="'Tag: ' + tag"
+                  removable
+                  @remove="removeTag(tag)"/>
+
+            <!-- Recurrence Type Chips -->
+            <Chip v-for="type in filterState.recurrenceTypes"
+                  :key="'recurrence-' + type"
+                  :label="'Häufigkeit: ' + translateTag(type, RecurrenceTypeLabels)"
+                  removable
+                  @remove="removeRecurrenceType(type)"/>
+
+            <!-- Registration Type Chips -->
+            <Chip v-for="type in filterState.registrationTypes"
+                  :key="'registration-' + type"
+                  :label="'Anmeldung: ' + translateTag(type, RegistrationTypeLabels)"
+                  removable
+                  @remove="removeRegistrationType(type)"/>
 
             <!-- Clear All Button -->
-            <Button v-if="hasActiveFilters" 
-                    label="Alle Filter löschen" 
-                    size="small" 
-                    text 
-                    class="ml-2" 
-                    @click="clearAllFilters" />
+            <Button v-if="hasActiveFilters"
+                    label="Alle Filter löschen"
+                    size="small"
+                    text
+                    class="ml-2"
+                    @click="clearAllFilters"/>
           </div>
 
           <div class="w-full font-bold align-content-start mb-3">
-            <label v-if="filteredEvents.length > 0">{{filteredEvents.length}} Events gefunden</label>
+            <label v-if="filteredEvents.length > 0">{{ filteredEvents.length }} Events gefunden</label>
             <label v-if="filteredEvents.length === 0">keine Events gefunden</label>
           </div>
 
@@ -109,11 +124,11 @@
                   :offLabel="state.name"
                   class="state-toggle-button"
                   @click="toggleState(state.code)">
-                {{state.name}}
-              <Badge
-                  :value="getEventCountForState(state.code)"
-                  severity="primary"
-                  class="state-badge"/>
+                {{ state.name }}
+                <Badge
+                    :value="getEventCountForState(state.code)"
+                    severity="primary"
+                    class="state-badge"/>
               </ToggleButton>
             </div>
           </div>
@@ -258,14 +273,29 @@ import {
   EventCategoryLabels,
   eventsGroupedByMonthAndDepartureTime,
   filterEvents,
-  type MuseumEventGroupGroup, translateTag
+  type MuseumEventGroupGroup,
+  RegistrationTypeLabels,
+  translateTag
 } from "~/composables/eventDataFunctions";
 import {getStateList, type StateInfo} from "~/composables/locationDataFunctions";
 import EventFilters from "~/components/EventFilters.vue";
 import CustomSidebar from "~/components/CustomSidebar.vue";
-import { useToast } from 'primevue/usetoast';
-import type { EventFilter, EventFilterOptions, EventFilterUpdate, StateOption, FilterCounts } from '~/types/EventFilterTypes';
-import {MuseumEventCategory, OperationType, VehicleType} from "~/apiModel/apiModel";
+import {useToast} from 'primevue/usetoast';
+import type {
+  EventFilter,
+  EventFilterOptions,
+  EventFilterUpdate,
+  FilterCounts,
+  StateOption
+} from '~/types/EventFilterTypes';
+import {
+  MuseumEventCategory,
+  MuseumEventRegistration,
+  OperationType,
+  RecurrenceType,
+  VehicleType
+} from "~/apiModel/apiModel";
+
 
 const route = useRoute();
 const router = useRouter();
@@ -282,8 +312,8 @@ const showFilterDrawer = ref(false);
 
 // Initialize filter state
 const filterState = ref<EventFilter>({
-  search: route.query.search?.toString() || '',
-  states: route.query.states
+  searchTerm: route.query.search?.toString() || '',
+  selectedStates: route.query.states
       ? (Array.isArray(route.query.states)
           ? route.query.states.map(s => s.toString())
           : [route.query.states.toString()])
@@ -300,24 +330,34 @@ const filterState = ref<EventFilter>({
           ? route.query.vehicleTypes.map(s => s.toString())
           : [route.query.vehicleTypes.toString()])
       : [],
-  volunteer: route.query.volunteer === 'true',
-  commercial: route.query.commercial === 'true',
+  isVolunteer: route.query.volunteer === 'true',
+  isCommercial: route.query.commercial === 'true',
   tags: route.query.tags
       ? (Array.isArray(route.query.tags)
           ? route.query.tags.map(s => s.toString())
           : [route.query.tags.toString()])
+      : [],
+  recurrenceTypes: route.query.recurrenceTypes
+      ? (Array.isArray(route.query.recurrenceTypes)
+          ? route.query.recurrenceTypes.map(s => s.toString())
+          : [route.query.recurrenceTypes.toString()])
+      : [],
+  registrationTypes: route.query.registrationTypes
+      ? (Array.isArray(route.query.registrationTypes)
+          ? route.query.registrationTypes.map(s => s.toString())
+          : [route.query.registrationTypes.toString()])
       : []
 });
 
 // Computed properties for backward compatibility
 const searchTerm = computed({
-  get: () => filterState.value.search || '',
-  set: (value: string) => filterState.value.search = value
+  get: () => filterState.value.searchTerm || '',
+  set: (value: string) => filterState.value.searchTerm = value
 });
 
 const selectedStates = computed({
-  get: () => filterState.value.states || [],
-  set: (value: string[]) => filterState.value.states = value
+  get: () => filterState.value.selectedStates || [],
+  set: (value: string[]) => filterState.value.selectedStates = value
 });
 
 const stateList = computed<StateInfo[]>(() => locations.value ? getStateList(locations.value) : []);
@@ -330,6 +370,8 @@ const filterOptions = computed<EventFilterOptions>(() => ({
   })),
   eventCategories: Object.values(MuseumEventCategory),
   vehicleTypes: Object.values(VehicleType),
+  recurrenceTypes: Object.values(RecurrenceType),
+  registrationTypes: Object.values(MuseumEventRegistration),
   tags: [
     'Dampflok', 'Diesellok', 'Elektrolok', 'Schienenbus', 'Triebwagen',
     'Nostalgiezug', 'Kinderprogramm', 'Führerstandsmitfahrt', 'Fotohalt'
@@ -342,14 +384,14 @@ const getEventCountForState = (stateCode: string): number => {
 
   // Create a filter with only the search term and the specific state
   const tempFilter = {
-    searchTerm: filterState.value.search || '',
+    searchTerm: filterState.value.searchTerm || '',
     selectedStates: [stateCode], // Only this state
     allStates: stateList.value.map(state => state.code),
     dateRange: [filterState.value.fromDate, filterState.value.toDate].filter(Boolean) as Date[],
     eventCategories: filterState.value.eventCategories || [],
     vehicleTypes: filterState.value.vehicleTypes || [],
-    isVolunteer: filterState.value.volunteer || false,
-    isCommercial: filterState.value.commercial || false,
+    isVolunteer: filterState.value.isVolunteer || false,
+    isCommercial: filterState.value.isCommercial || false,
     tags: filterState.value.tags || []
   };
 
@@ -362,6 +404,8 @@ const filterCounts = computed<FilterCounts>(() => {
     return {
       eventCategories: {},
       vehicleTypes: {},
+      recurrenceTypes: {},
+      registrationTypes: {},
       tags: {},
       states: {}
     };
@@ -370,6 +414,8 @@ const filterCounts = computed<FilterCounts>(() => {
   const counts: FilterCounts = {
     eventCategories: {},
     vehicleTypes: {},
+    recurrenceTypes: {},
+    registrationTypes: {},
     tags: {},
     states: {}
   };
@@ -381,6 +427,14 @@ const filterCounts = computed<FilterCounts>(() => {
 
   filterOptions.value.vehicleTypes.forEach(type => {
     counts.vehicleTypes[type] = 0;
+  });
+
+  filterOptions.value.recurrenceTypes.forEach(type => {
+    counts.recurrenceTypes[type] = 0;
+  });
+
+  filterOptions.value.registrationTypes.forEach(type => {
+    counts.registrationTypes[type] = 0;
   });
 
   filterOptions.value.tags.forEach(tag => {
@@ -396,14 +450,14 @@ const filterCounts = computed<FilterCounts>(() => {
     // Calculate counts for each option
     filterOptions.value.eventCategories.forEach(type => {
       const tempFilter = {
-        searchTerm: filterState.value.search || '',
-        selectedStates: filterState.value.states || [],
+        searchTerm: filterState.value.searchTerm || '',
+        selectedStates: filterState.value.selectedStates || [],
         allStates: stateList.value.map(state => state.code),
         dateRange: [filterState.value.fromDate, filterState.value.toDate].filter(Boolean) as Date[],
         eventCategories: [type], // Only this event type
         vehicleTypes: filterState.value.vehicleTypes || [],
-        isVolunteer: filterState.value.volunteer || false,
-        isCommercial: filterState.value.commercial || false,
+        isVolunteer: filterState.value.isVolunteer || false,
+        isCommercial: filterState.value.isCommercial || false,
         tags: filterState.value.tags || []
       };
       counts.eventCategories[type] = filterEvents(events.value, locations.value as any, tempFilter).length;
@@ -411,14 +465,14 @@ const filterCounts = computed<FilterCounts>(() => {
 
     filterOptions.value.vehicleTypes.forEach(type => {
       const tempFilter = {
-        searchTerm: filterState.value.search || '',
-        selectedStates: filterState.value.states || [],
+        searchTerm: filterState.value.searchTerm || '',
+        selectedStates: filterState.value.selectedStates || [],
         allStates: stateList.value.map(state => state.code),
         dateRange: [filterState.value.fromDate, filterState.value.toDate].filter(Boolean) as Date[],
         eventCategories: filterState.value.eventCategories || [],
         vehicleTypes: [type], // Only this train type
-        isVolunteer: filterState.value.volunteer || false,
-        isCommercial: filterState.value.commercial || false,
+        isVolunteer: filterState.value.isVolunteer || false,
+        isCommercial: filterState.value.isCommercial || false,
         tags: filterState.value.tags || []
       };
       counts.vehicleTypes[type] = filterEvents(events.value, locations.value as any, tempFilter).length;
@@ -426,14 +480,14 @@ const filterCounts = computed<FilterCounts>(() => {
 
     filterOptions.value.tags.forEach(tag => {
       const tempFilter = {
-        searchTerm: filterState.value.search || '',
-        selectedStates: filterState.value.states || [],
+        searchTerm: filterState.value.searchTerm || '',
+        selectedStates: filterState.value.selectedStates || [],
         allStates: stateList.value.map(state => state.code),
         dateRange: [filterState.value.fromDate, filterState.value.toDate].filter(Boolean) as Date[],
         eventCategories: filterState.value.eventCategories || [],
         vehicleTypes: filterState.value.vehicleTypes || [],
-        isVolunteer: filterState.value.volunteer || false,
-        isCommercial: filterState.value.commercial || false,
+        isVolunteer: filterState.value.isVolunteer || false,
+        isCommercial: filterState.value.isCommercial || false,
         tags: [tag] // Only this tag
       };
       counts.tags[tag] = filterEvents(events.value, locations.value as any, tempFilter).length;
@@ -443,20 +497,54 @@ const filterCounts = computed<FilterCounts>(() => {
     filterOptions.value.states.forEach(state => {
       counts.states[state.code] = getEventCountForState(state.code);
     });
-  }
 
-  console.log(counts);
+    // Calculate for recurrenceTypes
+    filterOptions.value.recurrenceTypes.forEach(type => {
+      const tempFilter = {
+        searchTerm: filterState.value.searchTerm || '',
+        selectedStates: filterState.value.selectedStates || [],
+        allStates: stateList.value.map(state => state.code),
+        dateRange: [filterState.value.fromDate, filterState.value.toDate].filter(Boolean) as Date[],
+        eventCategories: filterState.value.eventCategories || [],
+        vehicleTypes: filterState.value.vehicleTypes || [],
+        isVolunteer: filterState.value.isVolunteer || false,
+        isCommercial: filterState.value.isCommercial || false,
+        tags: filterState.value.tags || [],
+        recurrenceTypes: [type], // Only this recurrence type
+        registrationTypes: filterState.value.registrationTypes || []
+      };
+      counts.recurrenceTypes[type] = filterEvents(events.value, locations.value as any, tempFilter).length;
+    });
+
+    // Calculate for registrationTypes
+    filterOptions.value.registrationTypes.forEach(type => {
+      const tempFilter = {
+        searchTerm: filterState.value.searchTerm || '',
+        selectedStates: filterState.value.selectedStates || [],
+        allStates: stateList.value.map(state => state.code),
+        dateRange: [filterState.value.fromDate, filterState.value.toDate].filter(Boolean) as Date[],
+        eventCategories: filterState.value.eventCategories || [],
+        vehicleTypes: filterState.value.vehicleTypes || [],
+        isVolunteer: filterState.value.isVolunteer || false,
+        isCommercial: filterState.value.isCommercial || false,
+        tags: filterState.value.tags || [],
+        recurrenceTypes: filterState.value.recurrenceTypes || [],
+        registrationTypes: [type] // Only this registration type
+      };
+      counts.registrationTypes[type] = filterEvents(events.value, locations.value as any, tempFilter).length;
+    });
+  }
 
   return counts;
 });
 
 // Toggle state selection
 const toggleState = (stateCode: string) => {
-  const currentStates = filterState.value.states || [];
+  const currentStates = filterState.value.selectedStates || [];
   if (currentStates.includes(stateCode)) {
-    filterState.value.states = currentStates.filter(s => s !== stateCode);
+    filterState.value.selectedStates = currentStates.filter(s => s !== stateCode);
   } else {
-    filterState.value.states = [...currentStates, stateCode];
+    filterState.value.selectedStates = [...currentStates, stateCode];
   }
 };
 
@@ -466,12 +554,14 @@ const updateFilters = (filters: EventFilterUpdate) => {
     ...filterState.value,
     fromDate: filters.dateRange.length > 0 ? filters.dateRange[0] : undefined,
     toDate: filters.dateRange.length > 1 ? filters.dateRange[1] : undefined,
-    states: filters.states,
+    selectedStates: filters.states,
     eventCategories: filters.eventCategories,
     vehicleTypes: filters.vehicleTypes,
-    volunteer: filters.isVolunteer,
-    commercial: filters.isCommercial,
-    tags: filters.tags
+    isVolunteer: filters.isVolunteer,
+    isCommercial: filters.isCommercial,
+    tags: filters.tags,
+    recurrenceTypes: filters.recurrenceTypes,
+    registrationTypes: filters.registrationTypes
   };
 };
 
@@ -509,6 +599,13 @@ watch(filterState, (newFilter) => {
       query.tags = newFilter.tags;
     }
 
+    if (newFilter.recurrenceTypes && newFilter.recurrenceTypes.length > 0) {
+      query.recurrenceTypes = newFilter.recurrenceTypes;
+    }
+    if (newFilter.registrationTypes && newFilter.registrationTypes.length > 0) {
+      query.registrationTypes = newFilter.registrationTypes;
+    }
+
     // Update the URL without reloading the page
     router.replace({query});
   }
@@ -522,15 +619,17 @@ const filteredEvents = computed(() => {
       events.value ?? [],
       locations.value ?? [],
       {
-        searchTerm: filterState.value.search || '',
-        selectedStates: filterState.value.states || [],
-        allStates: stateList.value.map(state => state.code),
-        dateRange: [filterState.value.fromDate, filterState.value.toDate].filter(Boolean) as Date[],
+        searchTerm: filterState.value.searchTerm || '',
+        selectedStates: filterState.value.selectedStates || [],
+        fromDate: filterState.value.fromDate,
+        toDate: filterState.value.toDate,
         eventCategories: filterState.value.eventCategories || [],
         vehicleTypes: filterState.value.vehicleTypes || [],
-        isVolunteer: filterState.value.volunteer || false,
-        isCommercial: filterState.value.commercial || false,
-        tags: filterState.value.tags || []
+        isVolunteer: filterState.value.isVolunteer || false,
+        isCommercial: filterState.value.isCommercial || false,
+        recurrenceTypes: filterState.value.recurrenceTypes || [],
+        registrationTypes: filterState.value.registrationTypes || [],
+        tags: filterState.value.tags || [],
       }
   );
 });
@@ -543,15 +642,17 @@ const filteredEventGroups = computed<MuseumEventGroupGroup[]>(() => {
 // Check if any filters are active
 const hasActiveFilters = computed(() => {
   return !!(
-    filterState.value.search || 
-    (filterState.value.states && filterState.value.states.length > 0) ||
-    filterState.value.fromDate ||
-    filterState.value.toDate ||
-    (filterState.value.eventCategories && filterState.value.eventCategories.length > 0) ||
-    (filterState.value.vehicleTypes && filterState.value.vehicleTypes.length > 0) ||
-    filterState.value.volunteer ||
-    filterState.value.commercial ||
-    (filterState.value.tags && filterState.value.tags.length > 0)
+      filterState.value.searchTerm ||
+      (filterState.value.selectedStates && filterState.value.selectedStates.length > 0) ||
+      filterState.value.fromDate ||
+      filterState.value.toDate ||
+      (filterState.value.eventCategories && filterState.value.eventCategories.length > 0) ||
+      (filterState.value.vehicleTypes && filterState.value.vehicleTypes.length > 0) ||
+      filterState.value.isVolunteer ||
+      filterState.value.isCommercial ||
+      (filterState.value.tags && filterState.value.tags.length > 0) ||
+      (filterState.value.recurrenceTypes && filterState.value.recurrenceTypes.length > 0) ||
+      (filterState.value.registrationTypes && filterState.value.registrationTypes.length > 0)
   );
 });
 
@@ -622,17 +723,33 @@ const removeTag = (tag: string) => {
   }
 };
 
+// Remove recurrence type filter
+const removeRecurrenceType = (type: string) => {
+  if (filterState.value.recurrenceTypes) {
+    filterState.value.recurrenceTypes = filterState.value.recurrenceTypes?.filter(t => t !== type);
+  }
+};
+
+// Remove registration type filter
+const removeRegistrationType = (type: string) => {
+  if (filterState.value.registrationTypes) {
+    filterState.value.registrationTypes = filterState.value.registrationTypes?.filter(t => t !== type);
+  }
+};
+
 // Clear all filters
 const clearAllFilters = () => {
   filterState.value = {
-    search: '',
-    states: [],
+    searchTerm: '',
+    selectedStates: [],
     fromDate: undefined,
     toDate: undefined,
     eventCategories: [],
     vehicleTypes: [],
-    volunteer: false,
-    commercial: false,
+    isVolunteer: false,
+    isCommercial: false,
+    recurrenceTypes: [],
+    registrationTypes: [],
     tags: []
   };
 };

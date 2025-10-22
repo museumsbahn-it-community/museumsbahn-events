@@ -1,13 +1,15 @@
 // Common event filter type that includes all filter criteria
 export interface EventFilter {
-  search?: string;
-  states?: string[];
+  searchTerm?: string;
+  selectedStates?: string[];
   fromDate?: Date;
   toDate?: Date;
   eventCategories?: string[];
   vehicleTypes?: string[];
-  volunteer?: boolean;
-  commercial?: boolean;
+  isVolunteer?: boolean;
+  isCommercial?: boolean;
+  recurrenceTypes?: string[];
+  registrationTypes?: string[];
   tags?: string[];
 }
 
@@ -16,6 +18,8 @@ export interface EventFilterOptions {
   states: StateOption[];
   eventCategories: string[];
   vehicleTypes: string[];
+  recurrenceTypes: string[];
+  registrationTypes: string[];
   tags: string[];
 }
 
@@ -29,6 +33,8 @@ export interface StateOption {
 export interface FilterCounts {
   eventCategories: Record<string, number>;
   vehicleTypes: Record<string, number>;
+  recurrenceTypes: Record<string, number>;
+  registrationTypes: Record<string, number>;
   tags: Record<string, number>;
   states: Record<string, number>;
 }
@@ -39,6 +45,8 @@ export interface EventFilterUpdate {
   states: string[];
   eventCategories: string[];
   vehicleTypes: string[];
+  recurrenceTypes: string[];
+  registrationTypes: string[];
   isVolunteer: boolean;
   isCommercial: boolean;
   tags: string[];
