@@ -5,10 +5,64 @@ import {buildQuery} from '~/composables/queryGenerator';
 import {createLocationMap, type LocationMap} from '~/model/util';
 import {CommonKeys} from '~/model/commonKeys';
 import {SemanticKeys} from '~/model/semanticKeys';
-import type {EventFilterSettings, MuseumEvent, MuseumLocation} from '~/apiModel/apiModel';
+import type {
+    MuseumEventCategory,
+    MuseumEventRegistration,
+    RecurrenceType,
+    VehicleType
+} from '~/apiModel/apiModel';
+import {
+    type EventFilterSettings,
+    type MuseumEvent,
+    type MuseumLocation,
+    OperationType
+} from '~/apiModel/apiModel';
 
 export type Entry = { [key: string]: string; };
 const EVENT_COUNT_STEP_SIZE = 500;
+
+export const VehicleTypeLabels: { [key: string]: string } = {
+    "diesel_train": "Diesel",
+    "steam_train": "Dampfzug",
+    "electric_train": "Elektrisch",
+    "tram": "Straßenbahn",
+    "ship": "Schiff",
+}
+
+export const MuseumEventRegistrationLabels: { [key: string]: string } = {
+    "free": "Freier Eintritt",
+    "registration": "Vorab Registrierung notwendig",
+    "pre-sales-only": "Nur Vorverkauf",
+    "reservation-recommended": "Reservierung empfohlen",
+    "private-event": "Privat", // not in use at the moment, but could be useful for events like photo trains
+    "ticket": "Ticket",
+}
+
+export const RecurrenceTypeLabels: { [key: string]: string } = {
+    "regularly": "Regelmäßíg",
+    "rarely": "Gelegentlich",
+    "once": "Einmalig",
+}
+
+export const OperationTypeLabels: { [key: string]: string } = {
+    "volunteer_run": "Ehrenamtlich organisiert",
+    "commercial": "Kommerziell organisiert",
+}
+
+export const EventCategoryLabels: { [key: string]: string } = {
+    "special_trip": "Sonderfahrt", // Sonderfahrt - excursion on public rails or a special event on the museum railway
+    "railway_museum": "Museum", // Museum - opening day of a museum, for museums without regular opening days or special events
+    "museum_railway": "Museumsbahn", // Museumsbahn - running day of a dedicated museum railway
+    "museum_event": "Veranstaltung", // Veranstaltung - besondere Veranstaltung, Konzert etc.
+    "model_railway": "Modellbahn", // Modellbahn - not in use at the moment
+}
+
+export function translateTag(tag: string, table: { [key: string]: string }): string {
+    console.log(table)
+    console.log(tag)
+    console.log(table[tag])
+    return table[tag] || tag;
+}
 
 export const EMPTY_EVENT_FILTERS: EventFilterSettings = {
     fromDate: subDays(new Date(), 1),
@@ -95,20 +149,24 @@ function mapBoudiccaEntriesToEvents(entries: Entry[], locations: LocationMap): M
         const url = value[SemanticKeys.URL];
 
         const startDateKeys = Object.keys(value).filter(val => val.startsWith(SemanticKeys.STARTDATE));
-
         return {
             name: value[SemanticKeys.NAME],
-            eventCategory: value[SemanticKeys.CATEGORY]?.toLowerCase(),
+            eventCategory: value[CommonKeys.MUSEUM_EVENTS_CATEGORY] as MuseumEventCategory | undefined,
             date: new Date(value[startDateKeys[0]]),
             description: value[SemanticKeys.DESCRIPTION],
             pictureUrl: value[SemanticKeys.PICTUREURL],
             pictureAltText: value[SemanticKeys.PICTURE_ALT_TEXT],
             pictureCopyright: value[SemanticKeys.PICTURE_COPYRIGHT],
             location: museumLocation,
+            vehicleType: value[CommonKeys.VEHICLE_TYPE] as VehicleType | undefined,
+            registration: value[CommonKeys.MUSEUM_EVENT_REGISTRATION] as MuseumEventRegistration | undefined,
+            recurrenceType: value[SemanticKeys.RECURRENCE_TYPE] as RecurrenceType | undefined,
+            operationType: value[CommonKeys.OPERATION_TYPE] as OperationType | undefined,
             url,
             locationId,
             operatorId,
-            locomotiveType: value[CommonKeys.LOCOMOTIVE_TYPE],
+            tags: [],
+            locomotiveType: value[CommonKeys.VEHICLE_TYPE],
         };
     });
 }
@@ -175,8 +233,8 @@ export interface EventFilterOptions {
     selectedStates: string[];
     allStates: string[];
     dateRange?: Date[];
-    eventTypes?: string[];
-    trainTypes?: string[];
+    eventCategories?: string[];
+    vehicleTypes?: string[];
     isVolunteer?: boolean;
     isCommercial?: boolean;
     tags?: string[];
@@ -191,14 +249,14 @@ export interface EventFilterOptions {
  */
 export function filterEvents(events: MuseumEvent[], locations: MuseumLocation[], options: EventFilterOptions): MuseumEvent[] {
     const {
-        searchTerm, 
-        selectedStates, 
-        allStates, 
-        dateRange, 
-        eventTypes, 
-        trainTypes, 
-        isVolunteer, 
-        isCommercial, 
+        searchTerm,
+        selectedStates,
+        allStates,
+        dateRange,
+        eventCategories,
+        vehicleTypes,
+        isVolunteer,
+        isCommercial,
         tags
     } = options;
 
@@ -240,35 +298,33 @@ export function filterEvents(events: MuseumEvent[], locations: MuseumLocation[],
     }
 
     // Apply event type filter (if any selected, otherwise show all)
-    if (eventTypes && eventTypes.length > 0) {
+    if (eventCategories && eventCategories.length > 0) {
         filtered = filtered.filter(event =>
-            eventTypes.some(type => 
-                event.eventCategory && event.eventCategory.toLowerCase() === type.toLowerCase()
-            ) || !event.eventCategory
+            eventCategories.some(type =>
+                event.eventCategory != null && event.eventCategory.toLowerCase() === type.toLowerCase()
+            )
         );
     }
 
     // Apply train type filter (if any selected, otherwise show all)
-    if (trainTypes && trainTypes.length > 0) {
+    if (vehicleTypes && vehicleTypes.length > 0) {
         filtered = filtered.filter(event =>
-            trainTypes.some(type => 
-                event.locomotiveType && event.locomotiveType.toLowerCase() === type.toLowerCase()
-            ) || !event.locomotiveType
+            vehicleTypes.some(type =>
+                event.vehicleType != null && event.vehicleType.toLowerCase() === type.toLowerCase()
+            )
         );
     }
 
     // Apply volunteer/commercial filters
     if (isVolunteer && !isCommercial) {
         // Only show volunteer events - look for keywords in name or description
-        filtered = filtered.filter(event => 
-            hasVolunteerKeywords(event.name) || 
-            (event.description && hasVolunteerKeywords(event.description))
+        filtered = filtered.filter(event =>
+            event.operationType === OperationType.VOLUNTEER
         );
     } else if (!isVolunteer && isCommercial) {
         // Only show commercial events - look for keywords in name or description
-        filtered = filtered.filter(event => 
-            hasCommercialKeywords(event.name) || 
-            (event.description && hasCommercialKeywords(event.description))
+        filtered = filtered.filter(event =>
+            event.operationType === OperationType.COMMERCIAL
         );
     }
 
@@ -288,30 +344,12 @@ export function filterEvents(events: MuseumEvent[], locations: MuseumLocation[],
 }
 
 /**
- * Helper function to check if text contains volunteer-related keywords
- */
-function hasVolunteerKeywords(text: string): boolean {
-    const keywords = ['ehrenamtlich', 'verein', 'freiwillig', 'hobby'];
-    const lowerText = text.toLowerCase();
-    return keywords.some(keyword => lowerText.includes(keyword));
-}
-
-/**
- * Helper function to check if text contains commercial-related keywords
- */
-function hasCommercialKeywords(text: string): boolean {
-    const keywords = ['kommerziell', 'gewerblich', 'unternehmen', 'firma'];
-    const lowerText = text.toLowerCase();
-    return keywords.some(keyword => lowerText.includes(keyword));
-}
-
-/**
  * Helper function to check if text contains tag-related keywords
  */
 function hasTagKeywords(text: string, tag: string): boolean {
     // Map tags to related keywords
     // TODO: remove and replace by proper keywords
-    const tagKeywords: {[key: string]: string[]} = {
+    const tagKeywords: { [key: string]: string[] } = {
         'Dampflok': ['dampf', 'dampflok', 'dampflokomotive'],
         'Diesellok': ['diesel', 'diesellok', 'diesellokomotive'],
         'Elektrolok': ['elektro', 'elektrolok', 'elektrische lokomotive', 'e-lok'],
