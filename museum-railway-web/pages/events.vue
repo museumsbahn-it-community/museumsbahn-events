@@ -382,16 +382,18 @@ const filterOptions = computed<EventFilterOptions>(() => ({
 const getEventCountForState = (stateCode: string): number => {
   if (!events.value || !locations.value) return 0;
 
-  // Create a filter with only the search term and the specific state
+  // Create a copy of the current filters, but replace the state selection with only this state
   const tempFilter = {
     searchTerm: filterState.value.searchTerm || '',
     selectedStates: [stateCode], // Only this state
-    allStates: stateList.value.map(state => state.code),
-    dateRange: [filterState.value.fromDate, filterState.value.toDate].filter(Boolean) as Date[],
+    fromDate: filterState.value.fromDate,
+    toDate: filterState.value.toDate,
     eventCategories: filterState.value.eventCategories || [],
     vehicleTypes: filterState.value.vehicleTypes || [],
     isVolunteer: filterState.value.isVolunteer || false,
     isCommercial: filterState.value.isCommercial || false,
+    recurrenceTypes: filterState.value.recurrenceTypes || [],
+    registrationTypes: filterState.value.registrationTypes || [],
     tags: filterState.value.tags || []
   };
 
