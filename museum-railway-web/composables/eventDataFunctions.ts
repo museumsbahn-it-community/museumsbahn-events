@@ -5,7 +5,7 @@ import {buildQuery} from '~/composables/queryGenerator';
 import {createLocationMap, type LocationMap} from '~/model/util';
 import {CommonKeys} from '~/model/commonKeys';
 import {SemanticKeys} from '~/model/semanticKeys';
-import type {
+import {
     MuseumEventCategory,
     VehicleType
 } from '~/apiModel/apiModel';
@@ -25,39 +25,29 @@ export type Entry = { [key: string]: string; };
 const EVENT_COUNT_STEP_SIZE = 500;
 
 export const VehicleTypeLabels: { [key: string]: string } = {
-    "diesel_train": "Diesel",
-    "steam_train": "Dampfzug",
-    "electric_train": "Elektrisch",
-    "tram": "Straßenbahn",
-    "ship": "Schiff",
+    [VehicleType.DIESEL_TRAIN]: "Diesel",
+    [VehicleType.STEAM_TRAIN]: "Dampfzug",
+    [VehicleType.ELECTRIC_TRAIN]: "Elektrisch",
+    [VehicleType.TRAM]: "Straßenbahn",
+    [VehicleType.SHIP]: "Schiff",
 }
-
-export const MuseumEventRegistrationLabels: { [key: string]: string } = {
-    "free": "Freier Eintritt",
-    "registration": "Vorab Registrierung notwendig",
-    "pre-sales-only": "Nur Vorverkauf",
-    "reservation-recommended": "Reservierung empfohlen",
-    "private-event": "Privat", // not in use at the moment, but could be useful for events like photo trains
-    "ticket": "Ticket",
-}
-
 export const RecurrenceTypeLabels: { [key: string]: string } = {
-    "regularly": "Regelmäßíg",
-    "rarely": "Gelegentlich",
-    "once": "Einmalig",
+    [RecurrenceType.REGULARLY]: "Regelmäßíg",
+    [RecurrenceType.RARELY]: "Gelegentlich",
+    [RecurrenceType.ONCE]: "Einmalig",
 }
 
 export const OperationTypeLabels: { [key: string]: string } = {
-    "volunteer_run": "Ehrenamtlich organisiert",
-    "commercial": "Kommerziell organisiert",
+    [OperationType.VOLUNTEER]: "Ehrenamtlich organisiert",
+    [OperationType.COMMERCIAL]: "Kommerziell organisiert",
 }
 
 export const EventCategoryLabels: { [key: string]: string } = {
-    "special_trip": "Sonderfahrt", // Sonderfahrt - excursion on public rails or a special event on the museum railway
-    "railway_museum": "Museum", // Museum - opening day of a museum, for museums without regular opening days or special events
-    "museum_railway": "Museumsbahn", // Museumsbahn - running day of a dedicated museum railway
-    "museum_event": "Veranstaltung", // Veranstaltung - besondere Veranstaltung, Konzert etc.
-    "model_railway": "Modellbahn", // Modellbahn - not in use at the moment
+    [MuseumEventCategory.SPECIAL_TRIP]: "Sonderfahrt", // Sonderfahrt - excursion on public rails or a special event on the museum railway
+    [MuseumEventCategory.RAILWAY_MUSEUM]: "Museum", // Museum - opening day of a museum, for museums without regular opening days or special events
+    [MuseumEventCategory.MUSEUM_RAILWAY]: "Museumsbahn", // Museumsbahn - running day of a dedicated museum railway
+    [MuseumEventCategory.MUSEUM_EVENT]: "Veranstaltung", // Veranstaltung - besondere Veranstaltung, Konzert etc.
+    [MuseumEventCategory.MODEL_RAILWAY]: "Modellbahn", // Modellbahn - not in use at the moment
 }
 
 export const RegistrationTypeLabels = {
