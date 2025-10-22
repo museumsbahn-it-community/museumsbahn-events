@@ -7,9 +7,11 @@ import {CommonKeys} from '~/model/commonKeys';
 import {SemanticKeys} from '~/model/semanticKeys';
 import type {
     MuseumEventCategory,
-    MuseumEventRegistration,
-    RecurrenceType,
     VehicleType
+} from '~/apiModel/apiModel';
+import {
+    MuseumEventRegistration,
+    RecurrenceType
 } from '~/apiModel/apiModel';
 import {
     type EventFilterSettings,
@@ -17,6 +19,7 @@ import {
     type MuseumLocation,
     OperationType
 } from '~/apiModel/apiModel';
+import type {EventFilter} from "~/types/EventFilterTypes";
 
 export type Entry = { [key: string]: string; };
 const EVENT_COUNT_STEP_SIZE = 500;
@@ -57,10 +60,16 @@ export const EventCategoryLabels: { [key: string]: string } = {
     "model_railway": "Modellbahn", // Modellbahn - not in use at the moment
 }
 
+export const RegistrationTypeLabels = {
+    [MuseumEventRegistration.FREE]: 'Ohne Anmeldung',
+    [MuseumEventRegistration.REGISTRATION]: 'Anmeldung erforderlich',
+    [MuseumEventRegistration.PRE_SALES_ONLY]: 'Nur Vorverkauf',
+    [MuseumEventRegistration.RESERVATION_RECOMMENDED]: 'Reservierung empfohlen',
+    [MuseumEventRegistration.PRIVATE_EVENT]: 'Private Veranstaltung',
+    [MuseumEventRegistration.TICKET]: 'Ticketpflichtig',
+};
+
 export function translateTag(tag: string, table: { [key: string]: string }): string {
-    console.log(table)
-    console.log(tag)
-    console.log(table[tag])
     return table[tag] || tag;
 }
 
@@ -226,35 +235,22 @@ export function eventCountForLocationId(events: MuseumEvent[], locationId: strin
 }
 
 /**
- * Interface for event filter options
- */
-export interface EventFilterOptions {
-    searchTerm: string;
-    selectedStates: string[];
-    allStates: string[];
-    dateRange?: Date[];
-    eventCategories?: string[];
-    vehicleTypes?: string[];
-    isVolunteer?: boolean;
-    isCommercial?: boolean;
-    tags?: string[];
-}
-
-/**
  * Filters events by all available filter criteria
  * @param events
  * @param locations
  * @param options The filter options
  * @returns Filtered events
  */
-export function filterEvents(events: MuseumEvent[], locations: MuseumLocation[], options: EventFilterOptions): MuseumEvent[] {
+export function filterEvents(events: MuseumEvent[], locations: MuseumLocation[], options: EventFilter): MuseumEvent[] {
     const {
         searchTerm,
         selectedStates,
-        allStates,
-        dateRange,
+        fromDate,
+        toDate,
         eventCategories,
         vehicleTypes,
+        recurrenceTypes,
+        registrationTypes,
         isVolunteer,
         isCommercial,
         tags
@@ -265,7 +261,7 @@ export function filterEvents(events: MuseumEvent[], locations: MuseumLocation[],
     let filtered = [...events];
 
     // Filter by search term
-    if (searchTerm.trim()) {
+    if (searchTerm != null && searchTerm?.trim()) {
         const term = searchTerm.toLowerCase().trim();
         filtered = filtered.filter(event =>
             event.name.toLowerCase().includes(term) ||
@@ -275,7 +271,7 @@ export function filterEvents(events: MuseumEvent[], locations: MuseumLocation[],
     }
 
     // Filter by selected states - only if at least one state is selected but not all
-    if (selectedStates.length > 0 && selectedStates.length < allStates.length) {
+    if (selectedStates != null && selectedStates.length > 0) {
         const states = selectedStates.map(state => state.toLowerCase());
         filtered = filtered.filter(event => {
                 const location = locations.filter(location => location.locationId === event.locationId)[0];
@@ -285,16 +281,12 @@ export function filterEvents(events: MuseumEvent[], locations: MuseumLocation[],
     }
 
     // Apply date range filter
-    if (dateRange && dateRange.length > 0) {
-        if (dateRange[0]) {
-            const fromDate = dateRange[0];
-            filtered = filtered.filter(event => new Date(event.date) >= fromDate);
-        }
+    if (fromDate != null) {
+        filtered = filtered.filter(event => new Date(event.date) >= fromDate);
+    }
 
-        if (dateRange.length > 1 && dateRange[1]) {
-            const toDate = dateRange[1];
-            filtered = filtered.filter(event => new Date(event.date) <= toDate);
-        }
+    if (toDate != null) {
+        filtered = filtered.filter(event => new Date(event.date) <= toDate);
     }
 
     // Apply event type filter (if any selected, otherwise show all)
@@ -311,6 +303,24 @@ export function filterEvents(events: MuseumEvent[], locations: MuseumLocation[],
         filtered = filtered.filter(event =>
             vehicleTypes.some(type =>
                 event.vehicleType != null && event.vehicleType.toLowerCase() === type.toLowerCase()
+            )
+        );
+    }
+
+    // Apply recurrence type filter (if any selected, otherwise show all)
+    if (recurrenceTypes && recurrenceTypes.length > 0) {
+        filtered = filtered.filter(event =>
+            recurrenceTypes.some(type =>
+                event.recurrenceType != null && event.recurrenceType.toLowerCase() === type.toLowerCase()
+            )
+        );
+    }
+
+    // Apply registration type filter (if any selected, otherwise show all)
+    if (registrationTypes && registrationTypes.length > 0) {
+        filtered = filtered.filter(event =>
+            registrationTypes.some(type =>
+                event.registration != null && event.registration.toLowerCase() === type.toLowerCase()
             )
         );
     }
