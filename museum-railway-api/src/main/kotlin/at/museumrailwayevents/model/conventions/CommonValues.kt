@@ -39,6 +39,11 @@ object RecurrenceType {
     const val ONCE = "once"
 }
 
+object OperationType {
+    const val VOLUNTEER = "volunteer_run"
+    const val COMMERCIAL = "commercial"
+}
+
 /**
  * categories of events
  */

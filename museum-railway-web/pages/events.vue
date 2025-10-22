@@ -21,7 +21,7 @@
         kontrollieren!
       </Message>
       <div class="h-1rem"></div>
-      <div class="flex flex-column h-full mx-2 mb-6 md:mx-5 align-items-center">
+      <div class="flex flex-column w-full h-full mx-2 mb-6 md:mx-5 align-items-center">
         <!-- Search Bar (kept in main content for visibility) -->
         <div class="top-filters w-full flex flex-column align-items-center mb-4">
           <InputGroup class="w-full flex mb-3">
@@ -54,26 +54,26 @@
                   @remove="toggleState(stateCode)" />
 
             <!-- Event Type Chips -->
-            <Chip v-for="type in filterState.eventTypes" 
+            <Chip v-for="type in filterState.eventCategories"
                   :key="'event-' + type" 
-                  :label="'Typ: ' + type" 
+                  :label="'Typ: ' + translateTag(type, EventCategoryLabels)"
                   removable 
                   @remove="removeEventType(type)" />
 
             <!-- Train Type Chips -->
-            <Chip v-for="type in filterState.trainTypes" 
+            <Chip v-for="type in filterState.vehicleTypes"
                   :key="'train-' + type" 
-                  :label="'Fahrzeug: ' + type" 
+                  :label="'Fahrzeug: ' + translateTag(type, VehicleTypeLabels)"
                   removable 
-                  @remove="removeTrainType(type)" />
+                  @remove="removeVehicleType(type)" />
 
             <!-- Volunteer/Commercial Chips -->
             <Chip v-if="filterState.volunteer" 
-                  label="Ehrenamtlich" 
+                  :v-label="translateTag(OperationType.VOLUNTEER, OperationTypeLabels)"
                   removable 
                   @remove="filterState.volunteer = false" />
-            <Chip v-if="filterState.commercial" 
-                  label="Kommerziell" 
+            <Chip v-if="filterState.commercial"
+                  :v-label="translateTag(OperationType.COMMERCIAL, OperationTypeLabels)"
                   removable 
                   @remove="filterState.commercial = false" />
 
@@ -255,15 +255,17 @@
 import {useAllEvents} from "~/composables/eventComposables";
 import {useAllLocations} from "~/composables/locationComposables";
 import {
+  EventCategoryLabels,
   eventsGroupedByMonthAndDepartureTime,
   filterEvents,
-  type MuseumEventGroupGroup
+  type MuseumEventGroupGroup, translateTag
 } from "~/composables/eventDataFunctions";
 import {getStateList, type StateInfo} from "~/composables/locationDataFunctions";
 import EventFilters from "~/components/EventFilters.vue";
 import CustomSidebar from "~/components/CustomSidebar.vue";
 import { useToast } from 'primevue/usetoast';
 import type { EventFilter, EventFilterOptions, EventFilterUpdate, StateOption, FilterCounts } from '~/types/EventFilterTypes';
+import {MuseumEventCategory, OperationType, VehicleType} from "~/apiModel/apiModel";
 
 const route = useRoute();
 const router = useRouter();
@@ -288,15 +290,15 @@ const filterState = ref<EventFilter>({
       : [],
   fromDate: route.query.fromDate ? new Date(route.query.fromDate.toString()) : undefined,
   toDate: route.query.toDate ? new Date(route.query.toDate.toString()) : undefined,
-  eventTypes: route.query.eventTypes
-      ? (Array.isArray(route.query.eventTypes)
-          ? route.query.eventTypes.map(s => s.toString())
-          : [route.query.eventTypes.toString()])
+  eventCategories: route.query.eventCategories
+      ? (Array.isArray(route.query.eventCategories)
+          ? route.query.eventCategories.map(s => s.toString())
+          : [route.query.eventCategories.toString()])
       : [],
-  trainTypes: route.query.trainTypes
-      ? (Array.isArray(route.query.trainTypes)
-          ? route.query.trainTypes.map(s => s.toString())
-          : [route.query.trainTypes.toString()])
+  vehicleTypes: route.query.vehicleTypes
+      ? (Array.isArray(route.query.vehicleTypes)
+          ? route.query.vehicleTypes.map(s => s.toString())
+          : [route.query.vehicleTypes.toString()])
       : [],
   volunteer: route.query.volunteer === 'true',
   commercial: route.query.commercial === 'true',
@@ -326,8 +328,8 @@ const filterOptions = computed<EventFilterOptions>(() => ({
     code: state.code,
     name: state.name
   })),
-  eventTypes: ['Museumsbahn', 'Museum', 'Sonderfahrt', 'Veranstaltung'],
-  trainTypes: ['Dampf', 'Diesel', 'Elektro', 'Tram', 'Schiff'],
+  eventCategories: Object.values(MuseumEventCategory),
+  vehicleTypes: Object.values(VehicleType),
   tags: [
     'Dampflok', 'Diesellok', 'Elektrolok', 'Schienenbus', 'Triebwagen',
     'Nostalgiezug', 'Kinderprogramm', 'Führerstandsmitfahrt', 'Fotohalt'
@@ -344,8 +346,8 @@ const getEventCountForState = (stateCode: string): number => {
     selectedStates: [stateCode], // Only this state
     allStates: stateList.value.map(state => state.code),
     dateRange: [filterState.value.fromDate, filterState.value.toDate].filter(Boolean) as Date[],
-    eventTypes: filterState.value.eventTypes || [],
-    trainTypes: filterState.value.trainTypes || [],
+    eventCategories: filterState.value.eventCategories || [],
+    vehicleTypes: filterState.value.vehicleTypes || [],
     isVolunteer: filterState.value.volunteer || false,
     isCommercial: filterState.value.commercial || false,
     tags: filterState.value.tags || []
@@ -358,27 +360,27 @@ const getEventCountForState = (stateCode: string): number => {
 const filterCounts = computed<FilterCounts>(() => {
   if (!events.value || !locations.value) {
     return {
-      eventTypes: {},
-      trainTypes: {},
+      eventCategories: {},
+      vehicleTypes: {},
       tags: {},
       states: {}
     };
   }
 
   const counts: FilterCounts = {
-    eventTypes: {},
-    trainTypes: {},
+    eventCategories: {},
+    vehicleTypes: {},
     tags: {},
     states: {}
   };
 
   // Initialize counts for all options
-  filterOptions.value.eventTypes.forEach(type => {
-    counts.eventTypes[type] = 0;
+  filterOptions.value.eventCategories.forEach(type => {
+    counts.eventCategories[type] = 0;
   });
 
-  filterOptions.value.trainTypes.forEach(type => {
-    counts.trainTypes[type] = 0;
+  filterOptions.value.vehicleTypes.forEach(type => {
+    counts.vehicleTypes[type] = 0;
   });
 
   filterOptions.value.tags.forEach(tag => {
@@ -392,34 +394,34 @@ const filterCounts = computed<FilterCounts>(() => {
   // Only calculate if we have events and locations
   if (events.value && locations.value) {
     // Calculate counts for each option
-    filterOptions.value.eventTypes.forEach(type => {
+    filterOptions.value.eventCategories.forEach(type => {
       const tempFilter = {
         searchTerm: filterState.value.search || '',
         selectedStates: filterState.value.states || [],
         allStates: stateList.value.map(state => state.code),
         dateRange: [filterState.value.fromDate, filterState.value.toDate].filter(Boolean) as Date[],
-        eventTypes: [type], // Only this event type
-        trainTypes: filterState.value.trainTypes || [],
+        eventCategories: [type], // Only this event type
+        vehicleTypes: filterState.value.vehicleTypes || [],
         isVolunteer: filterState.value.volunteer || false,
         isCommercial: filterState.value.commercial || false,
         tags: filterState.value.tags || []
       };
-      counts.eventTypes[type] = filterEvents(events.value, locations.value as any, tempFilter).length;
+      counts.eventCategories[type] = filterEvents(events.value, locations.value as any, tempFilter).length;
     });
 
-    filterOptions.value.trainTypes.forEach(type => {
+    filterOptions.value.vehicleTypes.forEach(type => {
       const tempFilter = {
         searchTerm: filterState.value.search || '',
         selectedStates: filterState.value.states || [],
         allStates: stateList.value.map(state => state.code),
         dateRange: [filterState.value.fromDate, filterState.value.toDate].filter(Boolean) as Date[],
-        eventTypes: filterState.value.eventTypes || [],
-        trainTypes: [type], // Only this train type
+        eventCategories: filterState.value.eventCategories || [],
+        vehicleTypes: [type], // Only this train type
         isVolunteer: filterState.value.volunteer || false,
         isCommercial: filterState.value.commercial || false,
         tags: filterState.value.tags || []
       };
-      counts.trainTypes[type] = filterEvents(events.value, locations.value as any, tempFilter).length;
+      counts.vehicleTypes[type] = filterEvents(events.value, locations.value as any, tempFilter).length;
     });
 
     filterOptions.value.tags.forEach(tag => {
@@ -428,8 +430,8 @@ const filterCounts = computed<FilterCounts>(() => {
         selectedStates: filterState.value.states || [],
         allStates: stateList.value.map(state => state.code),
         dateRange: [filterState.value.fromDate, filterState.value.toDate].filter(Boolean) as Date[],
-        eventTypes: filterState.value.eventTypes || [],
-        trainTypes: filterState.value.trainTypes || [],
+        eventCategories: filterState.value.eventCategories || [],
+        vehicleTypes: filterState.value.vehicleTypes || [],
         isVolunteer: filterState.value.volunteer || false,
         isCommercial: filterState.value.commercial || false,
         tags: [tag] // Only this tag
@@ -465,8 +467,8 @@ const updateFilters = (filters: EventFilterUpdate) => {
     fromDate: filters.dateRange.length > 0 ? filters.dateRange[0] : undefined,
     toDate: filters.dateRange.length > 1 ? filters.dateRange[1] : undefined,
     states: filters.states,
-    eventTypes: filters.eventTypes,
-    trainTypes: filters.trainTypes,
+    eventCategories: filters.eventCategories,
+    vehicleTypes: filters.vehicleTypes,
     volunteer: filters.isVolunteer,
     commercial: filters.isCommercial,
     tags: filters.tags
@@ -491,11 +493,11 @@ watch(filterState, (newFilter) => {
     if (newFilter.toDate) {
       query.toDate = newFilter.toDate.toISOString();
     }
-    if (newFilter.eventTypes && newFilter.eventTypes.length > 0) {
-      query.eventTypes = newFilter.eventTypes;
+    if (newFilter.eventCategories && newFilter.eventCategories.length > 0) {
+      query.eventCategories = newFilter.eventCategories;
     }
-    if (newFilter.trainTypes && newFilter.trainTypes.length > 0) {
-      query.trainTypes = newFilter.trainTypes;
+    if (newFilter.vehicleTypes && newFilter.vehicleTypes.length > 0) {
+      query.vehicleTypes = newFilter.vehicleTypes;
     }
     if (newFilter.volunteer) {
       query.volunteer = 'true';
@@ -524,8 +526,8 @@ const filteredEvents = computed(() => {
         selectedStates: filterState.value.states || [],
         allStates: stateList.value.map(state => state.code),
         dateRange: [filterState.value.fromDate, filterState.value.toDate].filter(Boolean) as Date[],
-        eventTypes: filterState.value.eventTypes || [],
-        trainTypes: filterState.value.trainTypes || [],
+        eventCategories: filterState.value.eventCategories || [],
+        vehicleTypes: filterState.value.vehicleTypes || [],
         isVolunteer: filterState.value.volunteer || false,
         isCommercial: filterState.value.commercial || false,
         tags: filterState.value.tags || []
@@ -545,8 +547,8 @@ const hasActiveFilters = computed(() => {
     (filterState.value.states && filterState.value.states.length > 0) ||
     filterState.value.fromDate ||
     filterState.value.toDate ||
-    (filterState.value.eventTypes && filterState.value.eventTypes.length > 0) ||
-    (filterState.value.trainTypes && filterState.value.trainTypes.length > 0) ||
+    (filterState.value.eventCategories && filterState.value.eventCategories.length > 0) ||
+    (filterState.value.vehicleTypes && filterState.value.vehicleTypes.length > 0) ||
     filterState.value.volunteer ||
     filterState.value.commercial ||
     (filterState.value.tags && filterState.value.tags.length > 0)
@@ -583,27 +585,27 @@ const getStateName = (stateCode: string): string => {
 
 // Remove event type filter
 const removeEventType = (type: string) => {
-  if (filterState.value.eventTypes) {
-    const newEventTypes: string[] = [];
-    for (const t of filterState.value.eventTypes) {
+  if (filterState.value.eventCategories) {
+    const neweventCategories: string[] = [];
+    for (const t of filterState.value.eventCategories) {
       if (t !== type) {
-        newEventTypes.push(t);
+        neweventCategories.push(t);
       }
     }
-    filterState.value.eventTypes = newEventTypes;
+    filterState.value.eventCategories = neweventCategories;
   }
 };
 
 // Remove train type filter
-const removeTrainType = (type: string) => {
-  if (filterState.value.trainTypes) {
-    const newTrainTypes: string[] = [];
-    for (const t of filterState.value.trainTypes) {
+const removeVehicleType = (type: string) => {
+  if (filterState.value.vehicleTypes) {
+    const newvehicleTypes: string[] = [];
+    for (const t of filterState.value.vehicleTypes) {
       if (t !== type) {
-        newTrainTypes.push(t);
+        newvehicleTypes.push(t);
       }
     }
-    filterState.value.trainTypes = newTrainTypes;
+    filterState.value.vehicleTypes = newvehicleTypes;
   }
 };
 
@@ -627,8 +629,8 @@ const clearAllFilters = () => {
     states: [],
     fromDate: undefined,
     toDate: undefined,
-    eventTypes: [],
-    trainTypes: [],
+    eventCategories: [],
+    vehicleTypes: [],
     volunteer: false,
     commercial: false,
     tags: []

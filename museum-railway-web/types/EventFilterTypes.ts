@@ -4,8 +4,8 @@ export interface EventFilter {
   states?: string[];
   fromDate?: Date;
   toDate?: Date;
-  eventTypes?: string[];
-  trainTypes?: string[];
+  eventCategories?: string[];
+  vehicleTypes?: string[];
   volunteer?: boolean;
   commercial?: boolean;
   tags?: string[];
@@ -14,8 +14,8 @@ export interface EventFilter {
 // Type for available filter options
 export interface EventFilterOptions {
   states: StateOption[];
-  eventTypes: string[];
-  trainTypes: string[];
+  eventCategories: string[];
+  vehicleTypes: string[];
   tags: string[];
 }
 
@@ -27,8 +27,8 @@ export interface StateOption {
 
 // Type for filter counts
 export interface FilterCounts {
-  eventTypes: Record<string, number>;
-  trainTypes: Record<string, number>;
+  eventCategories: Record<string, number>;
+  vehicleTypes: Record<string, number>;
   tags: Record<string, number>;
   states: Record<string, number>;
 }
@@ -37,8 +37,8 @@ export interface FilterCounts {
 export interface EventFilterUpdate {
   dateRange: Date[];
   states: string[];
-  eventTypes: string[];
-  trainTypes: string[];
+  eventCategories: string[];
+  vehicleTypes: string[];
   isVolunteer: boolean;
   isCommercial: boolean;
   tags: string[];
