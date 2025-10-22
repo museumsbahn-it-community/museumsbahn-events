@@ -7,7 +7,6 @@ object Tags {
     const val HISTORY = "history"
     const val NARROW_GAUGE = "narrow_gauge"
     const val MUSEUM = "museum"
-    const val MUSEUM_TRAIN = "museum_train"
     val MUSEUM_RAILWAY = MuseumEventsCategory.MUSEUM_RAILWAY.jsonValue
     val RAILWAY_MUSEUM = MuseumEventsCategory.RAILWAY_MUSEUM.jsonValue
     val MUSEUM_EVENT = MuseumEventsCategory.MUSEUM_EVENT.jsonValue // a special event in a museum, like a concert
@@ -58,7 +57,7 @@ enum class MuseumEventsCategory(val jsonValue: String) {
 val TAGS_MUSEUM_EVENT =
     setOf(Tags.HISTORY, Tags.MUSEUM, Tags.MUSEUM_EVENT, Tags.RAILWAY_MUSEUM)
 val TAGS_MUSEUM_RAILWAY_SPECIAL_TRIP =
-    setOf(Tags.HISTORY, Tags.HISTORIC_TRAIN, Tags.MUSEUM_TRAIN, Tags.HISTORIC_TRAIN_TRIP)
-val TAGS_MUSEUM_RAILWAY_OPERATING = setOf(Tags.HISTORY, Tags.HISTORIC_TRAIN, Tags.MUSEUM_TRAIN, Tags.MUSEUM_RAILWAY)
+    setOf(Tags.HISTORY, Tags.HISTORIC_TRAIN, Tags.HISTORIC_TRAIN_TRIP)
+val TAGS_MUSEUM_RAILWAY_OPERATING = setOf(Tags.HISTORY, Tags.HISTORIC_TRAIN, Tags.MUSEUM_RAILWAY)
 val TAGS_NARROW_GAUGE =
-    setOf(Tags.HISTORY, Tags.HISTORIC_TRAIN, Tags.MUSEUM_TRAIN, Tags.MUSEUM_RAILWAY, Tags.NARROW_GAUGE)
+    setOf(Tags.HISTORY, Tags.HISTORIC_TRAIN, Tags.MUSEUM_RAILWAY, Tags.NARROW_GAUGE)

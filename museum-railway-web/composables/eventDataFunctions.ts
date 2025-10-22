@@ -140,12 +140,61 @@ export function groupEventsByDepartureTime(events: MuseumEvent[]): MuseumEventGr
     return eventGroups;
 }
 
+// Add this to eventDataFunctions.ts where the other label maps are defined
+
+// Translation map for tags - will be populated dynamically but starting with common translations
+export const TagLabels: { [key: string]: string } = {
+  'historic_train': 'Nostalgiezug',
+  'historic_train_trip': 'Reise mit Nostalgiezug',
+  'history': 'Geschichte',
+  'museum': 'Museum',
+  'museum_event': 'Veranstaltung im Museum',
+  'museum_railway': 'Museumsbahn',
+  'narrow_gauge': 'Schmalspurbahn',
+  'railway_museum': 'Eisenbahnmuseum',
+};
+
+// Function to extract unique tags from all events
+export function extractUniqueTagsFromEvents(events: MuseumEvent[]): string[] {
+  if (!events || events.length === 0) return [];
+  
+  const allTags = new Set<string>();
+  
+  // Extract tags from events
+  events.forEach(event => {
+    // Add tags from the tags array if it exists
+    if (event.tags && Array.isArray(event.tags)) {
+      event.tags.forEach(tag => allTags.add(tag));
+    }
+  });
+  
+  // Convert Set to sorted Array
+  return Array.from(allTags).sort();
+}
+
+// Updated function to get tag count with proper tag extraction
+function getTagsFromEvent(event: MuseumEvent): string[] {
+  const eventTags: string[] = [];
+  
+  // Add tags from the tags array if it exists
+  if (event.tags && Array.isArray(event.tags)) {
+    eventTags.push(...event.tags);
+  }
+  
+  return [...new Set(eventTags)]; // Remove duplicates
+}
+
+// Modify the mapBoudiccaEntriesToEvents function to extract tags from the TAGS field
 function mapBoudiccaEntriesToEvents(entries: Entry[], locations: LocationMap): MuseumEvent[] {
     return entries.map((value) => {
         const locationId = value[CommonKeys.LOCATION_ID];
         const operatorId = value[CommonKeys.OPERATOR_ID];
         const museumLocation = locations[locationId];
         const url = value[SemanticKeys.URL];
+
+        // Extract tags from the TAGS field if it exists
+        const tagsString = value[SemanticKeys.TAGS] || '';
+        const tags = tagsString ? tagsString.split(',').map(tag => tag.trim()) : [];
 
         const startDateKeys = Object.keys(value).filter(val => val.startsWith(SemanticKeys.STARTDATE));
         return {
@@ -164,7 +213,7 @@ function mapBoudiccaEntriesToEvents(entries: Entry[], locations: LocationMap): M
             url,
             locationId,
             operatorId,
-            tags: [],
+            tags,
             locomotiveType: value[CommonKeys.VEHICLE_TYPE],
         };
     });
@@ -330,14 +379,10 @@ export function filterEvents(events: MuseumEvent[], locations: MuseumLocation[],
 
     // Apply tag filters
     if (tags && tags.length > 0) {
-        filtered = filtered.filter(event => {
-            // Check if any of the selected tags are in the event name or description
-            // TODO: also check the tags themselves
-            return tags.some(tag =>
-                hasTagKeywords(event.name, tag) ||
-                event.description && hasTagKeywords(event.description, tag)
-            );
-        });
+      filtered = filtered.filter(event => {
+        const eventTags = getTagsFromEvent(event);
+        return tags.some(tag => eventTags.includes(tag));
+      });
     }
 
     return filtered;

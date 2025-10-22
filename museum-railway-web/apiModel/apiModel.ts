@@ -13,8 +13,9 @@ export enum MuseumEventRegistration {
     REGISTRATION = "registration", // free, but requires registration
     PRE_SALES_ONLY = "pre-sales-only",
     RESERVATION_RECOMMENDED = "reservation-recommended",
-    PRIVATE_EVENT = "private-event", // not in use at the moment, but could be useful for events like photo trains
     TICKET = "ticket",
+    // Not supported on the frontend for now
+    //PRIVATE_EVENT = "private-event", // not in use at the moment, but could be useful for events like photo trains
 }
 
 export enum RecurrenceType {
