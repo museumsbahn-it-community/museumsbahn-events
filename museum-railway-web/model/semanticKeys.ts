@@ -13,5 +13,6 @@ export const SemanticKeys = {
 	PICTURE_ALT_TEXT: 'pictureAltText',
 	PICTURE_COPYRIGHT: 'pictureCopyright',
 	COLLECTORNAME: 'collectorName',
+	RECURRENCE_TYPE: 'recurrence.type',
 	SOURCES: 'sources',
 };

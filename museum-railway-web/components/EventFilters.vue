@@ -41,21 +41,19 @@
       <div class="flex justify-content-between align-items-center">
         <h3>Veranstaltungstyp</h3>
         <Button
-            v-if="selectedEventTypes.length > 0" label="löschen" size="small" text class="reset-button"
-            @click="resetEventTypes"/>
+            v-if="selectedEventCategories.length > 0" label="löschen" size="small" text class="reset-button"
+            @click="reseteventCategories"/>
       </div>
       <div class="flex flex-wrap gap-2">
         <ToggleButton
-            v-for="type in filterOptions.eventTypes" :key="type"
-            :model-value="selectedEventTypes.includes(type)"
-            :on-label="type"
-            :off-label="type"
+            v-for="type in filterOptions.eventCategories" :key="type"
+            :model-value="selectedEventCategories.includes(type)"
             class="mb-2"
             @click="toggleEventType(type)">
-          {{type}}
+          {{translateTag(type, EventCategoryLabels)}}
           <Badge
-              v-if="filterCounts?.eventTypes && filterCounts.eventTypes[type] !== undefined"
-              :value="filterCounts.eventTypes[type]"
+              v-if="filterCounts?.eventCategories && filterCounts.eventCategories[type] !== undefined"
+              :value="filterCounts.eventCategories[type]"
               severity="primary"
               class="filter-badge"/>
         </ToggleButton>
@@ -67,21 +65,19 @@
       <div class="flex justify-content-between align-items-center">
         <h3>Fahrzeugtyp</h3>
         <Button
-            v-if="selectedTrainTypes.length > 0" label="löschen" size="small" text class="reset-button"
-            @click="resetTrainTypes"/>
+            v-if="selectedvehicleTypes.length > 0" label="löschen" size="small" text class="reset-button"
+            @click="resetvehicleTypes"/>
       </div>
       <div class="flex flex-wrap gap-2">
         <ToggleButton
-            v-for="type in filterOptions.trainTypes" :key="type"
-            :model-value="selectedTrainTypes.includes(type)"
-            :on-label="type"
-            :off-label="type"
+            v-for="type in filterOptions.vehicleTypes" :key="type"
+            :model-value="selectedvehicleTypes.includes(type)"
             class="mb-2"
             @click="toggleTrainType(type)">
-          {{type}}
+          {{translateTag(type, VehicleTypeLabels)}}
           <Badge
-              v-if="filterCounts?.trainTypes && filterCounts.trainTypes[type] !== undefined"
-              :value="filterCounts.trainTypes[type]"
+              v-if="filterCounts?.vehicleTypes && filterCounts.vehicleTypes[type] !== undefined"
+              :value="filterCounts.vehicleTypes[type]"
               severity="primary"
               class="filter-badge"/>
         </ToggleButton>
@@ -99,13 +95,13 @@
       <div class="flex flex-wrap gap-2">
         <ToggleButton
             v-model="isVolunteer"
-            on-label="Ehrenamtlich"
-            off-label="Ehrenamtlich"
+            :on-label="translateTag(OperationType.VOLUNTEER, OperationTypeLabels)"
+            :off-label="translateTag(OperationType.VOLUNTEER, OperationTypeLabels)"
             class="mb-2"/>
         <ToggleButton
             v-model="isCommercial"
-            on-label="Kommerziell"
-            off-label="Kommerziell"
+            :on-label="translateTag(OperationType.COMMERCIAL, OperationTypeLabels)"
+            :off-label="translateTag(OperationType.COMMERCIAL, OperationTypeLabels)"
             class="mb-2"/>
       </div>
     </div>
@@ -143,6 +139,8 @@ import {ref, watch, watchEffect} from 'vue';
 import Button from 'primevue/button';
 import Badge from 'primevue/badge';
 import type {EventFilter, EventFilterOptions, EventFilterUpdate, FilterCounts} from '~/types/EventFilterTypes';
+import {EventCategoryLabels, translateTag} from "~/composables/eventDataFunctions";
+import {OperationType} from "~/apiModel/apiModel";
 
 // Define props to receive filter options from parent component
 const props = withDefaults(defineProps<{
@@ -162,9 +160,9 @@ const emit = defineEmits<{
 
 // Initialize reactive refs with empty defaults
 const dateRange = ref<Date[]>([]);
-const selectedEventTypes = ref<string[]>([]);
+const selectedEventCategories = ref<string[]>([]);
 const selectedStates = ref<string[]>([]);
-const selectedTrainTypes = ref<string[]>([]);
+const selectedvehicleTypes = ref<string[]>([]);
 const isVolunteer = ref(false);
 const isCommercial = ref(false);
 const selectedTags = ref<string[]>([]);
@@ -187,8 +185,8 @@ watchEffect(() => {
 
     // Initialize other filter values from filterState
     selectedStates.value = props.filterState.states || [];
-    selectedEventTypes.value = props.filterState.eventTypes || [];
-    selectedTrainTypes.value = props.filterState.trainTypes || [];
+    selectedEventCategories.value = props.filterState.eventCategories || [];
+    selectedvehicleTypes.value = props.filterState.vehicleTypes || [];
     isVolunteer.value = props.filterState.volunteer || false;
     isCommercial.value = props.filterState.commercial || false;
     selectedTags.value = props.filterState.tags || [];
@@ -209,18 +207,18 @@ const toggleState = (state: string) => {
 };
 
 const toggleEventType = (type: string) => {
-  if (selectedEventTypes.value.includes(type)) {
-    selectedEventTypes.value = selectedEventTypes.value.filter(t => t !== type);
+  if (selectedEventCategories.value.includes(type)) {
+    selectedEventCategories.value = selectedEventCategories.value.filter(t => t !== type);
   } else {
-    selectedEventTypes.value.push(type);
+    selectedEventCategories.value.push(type);
   }
 };
 
 const toggleTrainType = (type: string) => {
-  if (selectedTrainTypes.value.includes(type)) {
-    selectedTrainTypes.value = selectedTrainTypes.value.filter(t => t !== type);
+  if (selectedvehicleTypes.value.includes(type)) {
+    selectedvehicleTypes.value = selectedvehicleTypes.value.filter(t => t !== type);
   } else {
-    selectedTrainTypes.value.push(type);
+    selectedvehicleTypes.value.push(type);
   }
 };
 
@@ -241,12 +239,12 @@ const resetStates = () => {
   selectedStates.value = [];
 };
 
-const resetEventTypes = () => {
-  selectedEventTypes.value = [];
+const reseteventCategories = () => {
+  selectedEventCategories.value = [];
 };
 
-const resetTrainTypes = () => {
-  selectedTrainTypes.value = [];
+const resetvehicleTypes = () => {
+  selectedvehicleTypes.value = [];
 };
 
 const resetEventType = () => {
@@ -260,14 +258,14 @@ const resetTags = () => {
 
 // Watch for changes in filters and emit them to parent
 watch(
-    [dateRange,selectedStates, selectedEventTypes, selectedTrainTypes, isVolunteer, isCommercial, selectedTags],
+    [dateRange,selectedStates, selectedEventCategories, selectedvehicleTypes, isVolunteer, isCommercial, selectedTags],
     () => {
       if (!isUpdatingFromProps.value) {
         emit('update:filters', {
           dateRange: dateRange.value,
           states: selectedStates.value,
-          eventTypes: selectedEventTypes.value,
-          trainTypes: selectedTrainTypes.value,
+          eventCategories: selectedEventCategories.value,
+          vehicleTypes: selectedvehicleTypes.value,
           isVolunteer: isVolunteer.value,
           isCommercial: isCommercial.value,
           tags: selectedTags.value
