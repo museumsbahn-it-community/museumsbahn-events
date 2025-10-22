@@ -1,300 +1,345 @@
 <template>
   <div class="event-filters">
     <!-- Date Range Filter -->
-    <div class="filter-section mb-3">
-      <div class="flex justify-content-between align-items-center">
-        <h3>Zeitraum</h3>
-        <Button
-            v-if="dateRange.length > 0" label="löschen" size="small" text class="reset-button"
-            @click="resetDateRange"/>
-      </div>
-      <div class="flex flex-column gap-2">
-        <Calendar
-            v-model="dateRange" selection-mode="range" date-format="dd.mm.yy"
-            placeholder="Zeitraum auswählen" class="w-full"/>
-      </div>
+    <div class="flex flex-column gap-2">
+      <Calendar v-model="dateRange" selectionMode="range" :showIcon="true"
+                placeholder="Zeitraum auswählen" dateFormat="dd.mm.yy" class="w-full"
+                :maxDate="maxDate"/>
     </div>
 
+    <!-- State Filter (if enabled) -->
+    <Fieldset v-if="showStates" legend="Bundesländer" :toggleable="true" class="mt-3">
+      <div class="grid">
+        <div v-for="state in filterOptions.states" :key="state.code" class="col-6 mb-2">
+          <div class="flex align-items-center">
+            <Checkbox :id="'state-' + state.code"
+                      v-model="selectedStates"
+                      :value="state.code"
+                      :disabled="getStateCount(state.code) === 0"/>
+            <label :for="'state-' + state.code" class="ml-2 font-medium">
+              {{ state.name }} ({{ getStateCount(state.code) }})
+            </label>
+          </div>
+        </div>
+      </div>
+    </Fieldset>
 
-    <div
-        v-if="filterOptions?.states?.length > 0 && showStates"
-        class="filter-section mb-3">
-      <div class="flex justify-content-between align-items-center">
-        <h3>Bundesland</h3>
-        <Button
-            v-if="selectedStates.length > 0" label="löschen" size="small" text class="reset-button"
-            @click="resetStates"/>
+    <!-- Event Category Filter -->
+    <Fieldset legend="Veranstaltungstyp" :toggleable="true" class="mt-3">
+      <div class="grid">
+        <div v-for="category in filterOptions.eventCategories" :key="category" class="col-12 mb-2">
+          <div class="flex align-items-center">
+            <Checkbox :id="'category-' + category"
+                      v-model="selectedEventCategories"
+                      :value="category"
+                      :disabled="getEventCategoryCount(category) === 0"/>
+            <label :for="'category-' + category" class="ml-2 font-medium">
+              {{ translateTag(category, EventCategoryLabels) }} ({{ getEventCategoryCount(category) }})
+            </label>
+          </div>
+        </div>
       </div>
-      <div class="flex flex-wrap gap-2">
-        <ToggleButton
-            v-for="state in filterOptions.states" :key="state.code"
-            :model-value="selectedStates.includes(state.code)"
-            :on-label="state.name"
-            :off-label="state.name"
-            class="mx-1 mb-2"
-            @click="toggleState(state.code)"/>
-      </div>
-    </div>
+    </Fieldset>
 
-    <!-- Event Type Filter -->
-    <div class="filter-section mb-3">
-      <div class="flex justify-content-between align-items-center">
-        <h3>Veranstaltungstyp</h3>
-        <Button
-            v-if="selectedEventCategories.length > 0" label="löschen" size="small" text class="reset-button"
-            @click="reseteventCategories"/>
+    <!-- Recurrence Type Filter -->
+    <Fieldset legend="Häufigkeit" :toggleable="true" class="mt-3">
+      <div class="grid">
+        <div v-for="type in filterOptions.recurrenceTypes" :key="type" class="col-12 mb-2">
+          <div class="flex align-items-center">
+            <Checkbox :id="'recurrence-' + type"
+                      v-model="selectedRecurrenceTypes"
+                      :value="type"
+                      :disabled="getRecurrenceTypeCount(type) === 0"/>
+            <label :for="'recurrence-' + type" class="ml-2 font-medium">
+              {{ translateTag(type, RecurrenceTypeLabels) }} ({{ getRecurrenceTypeCount(type) }})
+            </label>
+          </div>
+        </div>
       </div>
-      <div class="flex flex-wrap gap-2">
-        <ToggleButton
-            v-for="type in filterOptions.eventCategories" :key="type"
-            :model-value="selectedEventCategories.includes(type)"
-            class="mb-2"
-            @click="toggleEventType(type)">
-          {{translateTag(type, EventCategoryLabels)}}
-          <Badge
-              v-if="filterCounts?.eventCategories && filterCounts.eventCategories[type] !== undefined"
-              :value="filterCounts.eventCategories[type]"
-              severity="primary"
-              class="filter-badge"/>
-        </ToggleButton>
-      </div>
-    </div>
+    </Fieldset>
 
-    <!-- Train Type Filter -->
-    <div class="filter-section mb-3">
-      <div class="flex justify-content-between align-items-center">
-        <h3>Fahrzeugtyp</h3>
-        <Button
-            v-if="selectedvehicleTypes.length > 0" label="löschen" size="small" text class="reset-button"
-            @click="resetvehicleTypes"/>
+    <!-- Registration Type Filter -->
+    <Fieldset legend="Anmeldung" :toggleable="true" class="mt-3">
+      <div class="grid">
+        <div v-for="type in filterOptions.registrationTypes" :key="type" class="col-12 mb-2">
+          <div class="flex align-items-center">
+            <Checkbox :id="'registration-' + type"
+                      v-model="selectedRegistrationTypes"
+                      :value="type"
+                      :disabled="getRegistrationTypeCount(type) === 0"/>
+            <label :for="'registration-' + type" class="ml-2 font-medium">
+              {{ translateTag(type, RegistrationTypeLabels) }} ({{ getRegistrationTypeCount(type) }})
+            </label>
+          </div>
+        </div>
       </div>
-      <div class="flex flex-wrap gap-2">
-        <ToggleButton
-            v-for="type in filterOptions.vehicleTypes" :key="type"
-            :model-value="selectedvehicleTypes.includes(type)"
-            class="mb-2"
-            @click="toggleTrainType(type)">
-          {{translateTag(type, VehicleTypeLabels)}}
-          <Badge
-              v-if="filterCounts?.vehicleTypes && filterCounts.vehicleTypes[type] !== undefined"
-              :value="filterCounts.vehicleTypes[type]"
-              severity="primary"
-              class="filter-badge"/>
-        </ToggleButton>
-      </div>
-    </div>
+    </Fieldset>
 
-    <!-- Volunteer/Commercial Toggle Buttons -->
-    <div class="filter-section mb-3">
-      <div class="flex justify-content-between align-items-center">
-        <h3>Art der Veranstaltung</h3>
-        <Button
-            v-if="isVolunteer || isCommercial" label="löschen" size="small" text class="reset-button"
-            @click="resetEventType"/>
+    <!-- Vehicle Type Filter -->
+    <Fieldset legend="Fahrzeugtyp" :toggleable="true" class="mt-3">
+      <div class="grid">
+        <div v-for="type in filterOptions.vehicleTypes" :key="type" class="col-12 mb-2">
+          <div class="flex align-items-center">
+            <Checkbox :id="'vehicle-' + type"
+                      v-model="selectedVehicleTypes"
+                      :value="type"
+                      :disabled="getVehicleTypeCount(type) === 0"/>
+            <label :for="'vehicle-' + type" class="ml-2 font-medium">
+              {{ translateTag(type, VehicleTypeLabels) }} ({{ getVehicleTypeCount(type) }})
+            </label>
+          </div>
+        </div>
       </div>
-      <div class="flex flex-wrap gap-2">
-        <ToggleButton
-            v-model="isVolunteer"
-            :on-label="translateTag(OperationType.VOLUNTEER, OperationTypeLabels)"
-            :off-label="translateTag(OperationType.VOLUNTEER, OperationTypeLabels)"
-            class="mb-2"/>
-        <ToggleButton
-            v-model="isCommercial"
-            :on-label="translateTag(OperationType.COMMERCIAL, OperationTypeLabels)"
-            :off-label="translateTag(OperationType.COMMERCIAL, OperationTypeLabels)"
-            class="mb-2"/>
-      </div>
-    </div>
+    </Fieldset>
 
-    <!-- Tag Filters -->
-    <div v-if="filterOptions.tags.length > 0" class="filter-section mb-3">
-      <div class="flex justify-content-between align-items-center">
-        <h3>Tags</h3>
-        <Button
-            v-if="selectedTags.length > 0" label="löschen" size="small" text class="reset-button"
-            @click="resetTags"/>
+    <!-- Operation Type Filter -->
+    <Fieldset legend="Betriebsart" :toggleable="true" class="mt-3">
+      <div class="grid">
+        <div class="col-12 mb-2">
+          <div class="flex align-items-center">
+            <Checkbox id="volunteer"
+                      v-model="isVolunteer"
+                      :binary="true"
+                      :disabled="!filterCounts || !filterCounts.operationVolunteer"/>
+            <label for="volunteer" class="ml-2 font-medium">
+              Ehrenamtlicher Betrieb ({{ filterCounts?.operationVolunteer || 0 }})
+            </label>
+          </div>
+        </div>
+        <div class="col-12 mb-2">
+          <div class="flex align-items-center">
+            <Checkbox id="commercial"
+                      v-model="isCommercial"
+                      :binary="true"
+                      :disabled="!filterCounts || !filterCounts.operationCommercial"/>
+            <label for="commercial" class="ml-2 font-medium">
+              Kommerzieller Betrieb ({{ filterCounts?.operationCommercial || 0 }})
+            </label>
+          </div>
+        </div>
       </div>
-      <div class="flex flex-wrap gap-2">
-        <ToggleButton
-            v-for="tag in filterOptions.tags" :key="tag"
-            :model-value="selectedTags.includes(tag)"
-            :on-label="tag"
-            :off-label="tag"
-            class="mb-2"
-            @click="toggleTag(tag)">
-          {{tag}}
-          <Badge
-              v-if="filterCounts?.tags && filterCounts.tags[tag] !== undefined"
-              :value="filterCounts.tags[tag]"
-              severity="primary"
-              class="filter-badge"/>
-        </ToggleButton>
+    </Fieldset>
+
+    <!-- Tag Filter -->
+    <Fieldset legend="Tags" :toggleable="true" class="mt-3">
+      <div class="grid">
+        <div v-for="tag in filterOptions.tags" :key="tag" class="col-12 mb-2">
+          <div class="flex align-items-center">
+            <Checkbox :id="'tag-' + tag"
+                      v-model="selectedTags"
+                      :value="tag"
+                      :disabled="getTagCount(tag) === 0"/>
+            <label :for="'tag-' + tag" class="ml-2 font-medium">
+              {{ tag }} ({{ getTagCount(tag) }})
+            </label>
+          </div>
+        </div>
       </div>
-    </div>
+    </Fieldset>
   </div>
 </template>
 
 <script setup lang="ts">
-import {ref, watch, watchEffect} from 'vue';
-import Button from 'primevue/button';
-import Badge from 'primevue/badge';
+import {computed, ref, watch} from 'vue';
 import type {EventFilter, EventFilterOptions, EventFilterUpdate, FilterCounts} from '~/types/EventFilterTypes';
-import {EventCategoryLabels, translateTag} from "~/composables/eventDataFunctions";
-import {OperationType} from "~/apiModel/apiModel";
+import {
+  EventCategoryLabels,
+  RecurrenceTypeLabels,
+  RegistrationTypeLabels,
+  translateTag,
+  VehicleTypeLabels
+} from '~/composables/eventDataFunctions';
 
-// Define props to receive filter options from parent component
-const props = withDefaults(defineProps<{
-  filterOptions: EventFilterOptions,
-  filterState: EventFilter,
-  filterCounts?: FilterCounts,
-  showStates: boolean,
-}>(), {
-  showStates: true
-});
-
-
-// Define emits to send filter changes to parent component
-const emit = defineEmits<{
-  (e: 'update:filters', filters: EventFilterUpdate): void
+// Defining props and emits
+const props = defineProps<{
+  filterOptions: EventFilterOptions;
+  filterState: EventFilter;
+  filterCounts: FilterCounts;
+  showStates?: boolean;
 }>();
 
-// Initialize reactive refs with empty defaults
+const emit = defineEmits<{
+  (e: 'update:filters', payload: EventFilterUpdate): void;
+}>();
+
+// Define the maximum date for the date picker (today + 365 days)
+const maxDate = new Date();
+maxDate.setDate(maxDate.getDate() + 365);
+
+// Date range
 const dateRange = ref<Date[]>([]);
-const selectedEventCategories = ref<string[]>([]);
-const selectedStates = ref<string[]>([]);
-const selectedvehicleTypes = ref<string[]>([]);
-const isVolunteer = ref(false);
-const isCommercial = ref(false);
-const selectedTags = ref<string[]>([]);
 
 const isUpdatingFromProps = ref(false);
 
-// Initialize values from props.filterState
-watchEffect(() => {
+// Internal state to prevent infinite loops in computed properties
+const internalState = ref({
+  states: [] as string[],
+  eventCategories: [] as string[],
+  vehicleTypes: [] as string[],
+  recurrenceTypes: [] as string[],
+  registrationTypes: [] as string[],
+  isVolunteer: false,
+  isCommercial: false,
+  tags: [] as string[]
+});
+
+// Initialize internal state from filter state
+watch(() => props.filterState, (newState) => {
   isUpdatingFromProps.value = true;
-  if (props.filterState) {
-    // Initialize date range from filterState
-    const dates: Date[] = [];
-    if (props.filterState.fromDate) {
-      dates.push(props.filterState.fromDate);
-    }
-    if (props.filterState.fromDate && props.filterState.toDate) {
-      dates.push(props.filterState.toDate);
-    }
-    dateRange.value = dates;
+  // Update date range
+  const dates: Date[] = [];
+  if (newState.fromDate) {
+    dates.push(newState.fromDate);
+  }
+  if (newState.toDate) {
+    dates.push(newState.toDate);
+  }
+  dateRange.value = dates;
+  
+  // Update internal state to match filter state
+  internalState.value = {
+    states: newState.selectedStates || [],
+    eventCategories: newState.eventCategories || [],
+    vehicleTypes: newState.vehicleTypes || [],
+    recurrenceTypes: newState.recurrenceTypes || [],
+    registrationTypes: newState.registrationTypes || [],
+    isVolunteer: newState.isVolunteer || false,
+    isCommercial: newState.isCommercial || false,
+    tags: newState.tags || []
+  };
 
-    // Initialize other filter values from filterState
-    selectedStates.value = props.filterState.states || [];
-    selectedEventCategories.value = props.filterState.eventCategories || [];
-    selectedvehicleTypes.value = props.filterState.vehicleTypes || [];
-    isVolunteer.value = props.filterState.volunteer || false;
-    isCommercial.value = props.filterState.commercial || false;
-    selectedTags.value = props.filterState.tags || [];
+  nextTick(() => {
+    isUpdatingFromProps.value = false;
+  });
+}, {immediate: true, deep: true});
 
-    nextTick(() => {
-      isUpdatingFromProps.value = false;
-    });
+// Selected states
+const selectedStates = computed({
+  get: () => internalState.value.states,
+  set: (value: string[]) => {
+    internalState.value.states = value;
+    emitFilterUpdate({states: value});
   }
 });
 
-// Toggle functions
-const toggleState = (state: string) => {
-  if (selectedStates.value.includes(state)) {
-    selectedStates.value = selectedStates.value.filter(t => t !== state);
-  } else {
-    selectedStates.value.push(state);
+// Selected event categories
+const selectedEventCategories = computed({
+  get: () => internalState.value.eventCategories,
+  set: (value: string[]) => {
+    internalState.value.eventCategories = value;
+    emitFilterUpdate({eventCategories: value});
   }
-};
+});
 
-const toggleEventType = (type: string) => {
-  if (selectedEventCategories.value.includes(type)) {
-    selectedEventCategories.value = selectedEventCategories.value.filter(t => t !== type);
-  } else {
-    selectedEventCategories.value.push(type);
+// Selected vehicle types
+const selectedVehicleTypes = computed({
+  get: () => internalState.value.vehicleTypes,
+  set: (value: string[]) => {
+    internalState.value.vehicleTypes = value;
+    emitFilterUpdate({vehicleTypes: value});
   }
-};
+});
 
-const toggleTrainType = (type: string) => {
-  if (selectedvehicleTypes.value.includes(type)) {
-    selectedvehicleTypes.value = selectedvehicleTypes.value.filter(t => t !== type);
-  } else {
-    selectedvehicleTypes.value.push(type);
+// Selected recurrence types
+const selectedRecurrenceTypes = computed({
+  get: () => internalState.value.recurrenceTypes,
+  set: (value: string[]) => {
+    internalState.value.recurrenceTypes = value;
+    emitFilterUpdate({recurrenceTypes: value});
   }
-};
+});
 
-const toggleTag = (tag: string) => {
-  if (selectedTags.value.includes(tag)) {
-    selectedTags.value = selectedTags.value.filter(t => t !== tag);
-  } else {
-    selectedTags.value.push(tag);
+// Selected registration types
+const selectedRegistrationTypes = computed({
+  get: () => internalState.value.registrationTypes,
+  set: (value: string[]) => {
+    internalState.value.registrationTypes = value;
+    emitFilterUpdate({registrationTypes: value});
   }
+});
+
+// Is volunteer
+const isVolunteer = computed({
+  get: () => internalState.value.isVolunteer,
+  set: (value: boolean) => {
+    internalState.value.isVolunteer = value;
+    emitFilterUpdate({isVolunteer: value});
+  }
+});
+
+// Is commercial
+const isCommercial = computed({
+  get: () => internalState.value.isCommercial,
+  set: (value: boolean) => {
+    internalState.value.isCommercial = value;
+    emitFilterUpdate({isCommercial: value});
+  }
+});
+
+// Selected tags
+const selectedTags = computed({
+  get: () => internalState.value.tags,
+  set: (value: string[]) => {
+    internalState.value.tags = value;
+    emitFilterUpdate({tags: value});
+  }
+});
+
+// Watch for date range changes
+watch(dateRange, (newRange) => {
+  emitFilterUpdate({dateRange: newRange || []});
+});
+
+// Helper functions to get counts for each filter option
+const getStateCount = (stateCode: string): number => {
+  return props.filterCounts?.states?.[stateCode] || 0;
 };
 
-// Reset functions for each filter type
-const resetDateRange = () => {
-  dateRange.value = [];
+const getEventCategoryCount = (category: string): number => {
+  return props.filterCounts?.eventCategories?.[category] || 0;
 };
 
-const resetStates = () => {
-  selectedStates.value = [];
+const getVehicleTypeCount = (type: string): number => {
+  return props.filterCounts?.vehicleTypes?.[type] || 0;
 };
 
-const reseteventCategories = () => {
-  selectedEventCategories.value = [];
+const getRecurrenceTypeCount = (type: string): number => {
+  return props.filterCounts?.recurrenceTypes?.[type] || 0;
 };
 
-const resetvehicleTypes = () => {
-  selectedvehicleTypes.value = [];
+const getRegistrationTypeCount = (type: string): number => {
+  return props.filterCounts?.registrationTypes?.[type] || 0;
 };
 
-const resetEventType = () => {
-  isVolunteer.value = false;
-  isCommercial.value = false;
+const getTagCount = (tag: string): number => {
+  return props.filterCounts?.tags?.[tag] || 0;
 };
 
-const resetTags = () => {
-  selectedTags.value = [];
-};
+// Function to emit filter updates
+const emitFilterUpdate = (partialUpdate: Partial<EventFilterUpdate>) => {
+  if (isUpdatingFromProps.value) {
+    return;
+  }
 
-// Watch for changes in filters and emit them to parent
-watch(
-    [dateRange,selectedStates, selectedEventCategories, selectedvehicleTypes, isVolunteer, isCommercial, selectedTags],
-    () => {
-      if (!isUpdatingFromProps.value) {
-        emit('update:filters', {
-          dateRange: dateRange.value,
-          states: selectedStates.value,
-          eventCategories: selectedEventCategories.value,
-          vehicleTypes: selectedvehicleTypes.value,
-          isVolunteer: isVolunteer.value,
-          isCommercial: isCommercial.value,
-          tags: selectedTags.value
-        });
-      }
-    },
-    {deep: true}
-);
+  const update: EventFilterUpdate = {
+    dateRange: dateRange.value || [],
+    states: internalState.value.states,
+    eventCategories: internalState.value.eventCategories,
+    vehicleTypes: internalState.value.vehicleTypes,
+    recurrenceTypes: internalState.value.recurrenceTypes,
+    registrationTypes: internalState.value.registrationTypes,
+    isVolunteer: internalState.value.isVolunteer,
+    isCommercial: internalState.value.isCommercial,
+    tags: internalState.value.tags,
+    ...partialUpdate
+  };
+
+  emit('update:filters', update);
+};
 </script>
 
 <style scoped>
 .event-filters {
   width: 100%;
-}
-
-.filter-section h3 {
-  margin-bottom: 0.5rem;
-  font-size: 1.1rem;
-}
-
-.reset-button {
-  font-size: 0.8rem;
-  font-weight: normal;
-  padding: 0.25rem 0.5rem;
-}
-
-.filter-badge {
-  min-width: 1.5rem;
-  height: 1.5rem;
-  font-size: 0.75rem;
 }
 </style>
