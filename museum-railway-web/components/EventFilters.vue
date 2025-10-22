@@ -130,7 +130,7 @@
                       :value="tag"
                       :disabled="getTagCount(tag) === 0"/>
             <label :for="'tag-' + tag" class="ml-2 font-medium">
-              {{ tag }} ({{ getTagCount(tag) }})
+              {{ translateTag(tag, TagLabels) }} ({{ getTagCount(tag) }})
             </label>
           </div>
         </div>

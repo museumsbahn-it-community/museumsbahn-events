@@ -81,7 +81,7 @@
             <!-- Tag Chips -->
             <Chip v-for="tag in filterState.tags"
                   :key="'tag-' + tag"
-                  :label="'Tag: ' + tag"
+                  :label="'Tag: ' + translateTag(tag, TagLabels)"
                   removable
                   @remove="removeTag(tag)"/>
 
@@ -267,16 +267,19 @@
 </style>
 
 <script setup lang="ts">
-import {useAllEvents} from "~/composables/eventComposables";
-import {useAllLocations} from "~/composables/locationComposables";
+// Import the new functions
 import {
   EventCategoryLabels,
   eventsGroupedByMonthAndDepartureTime,
   filterEvents,
   type MuseumEventGroupGroup,
   RegistrationTypeLabels,
-  translateTag
+  translateTag,
+  extractUniqueTagsFromEvents,
+  TagLabels
 } from "~/composables/eventDataFunctions";
+import {useAllEvents} from "~/composables/eventComposables";
+import {useAllLocations} from "~/composables/locationComposables";
 import {getStateList, type StateInfo} from "~/composables/locationDataFunctions";
 import EventFilters from "~/components/EventFilters.vue";
 import CustomSidebar from "~/components/CustomSidebar.vue";
@@ -362,7 +365,13 @@ const selectedStates = computed({
 
 const stateList = computed<StateInfo[]>(() => locations.value ? getStateList(locations.value) : []);
 
-// Create filter options
+// Create computed property for dynamic tags from events
+const availableTags = computed(() => {
+  if (!events.value) return [];
+  return extractUniqueTagsFromEvents(events.value);
+});
+
+// Update the filterOptions computed property to use dynamic tags
 const filterOptions = computed<EventFilterOptions>(() => ({
   states: stateList.value.map((state): StateOption => ({
     code: state.code,
@@ -372,10 +381,7 @@ const filterOptions = computed<EventFilterOptions>(() => ({
   vehicleTypes: Object.values(VehicleType),
   recurrenceTypes: Object.values(RecurrenceType),
   registrationTypes: Object.values(MuseumEventRegistration),
-  tags: [
-    'Dampflok', 'Diesellok', 'Elektrolok', 'Schienenbus', 'Triebwagen',
-    'Nostalgiezug', 'Kinderprogramm', 'Führerstandsmitfahrt', 'Fotohalt'
-  ]
+  tags: availableTags.value
 }));
 
 // Function to get event count for a specific state
