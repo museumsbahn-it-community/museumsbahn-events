@@ -13,6 +13,18 @@ export async function fetchLocations(): Promise<MuseumLocation[]> {
     return rawLocations as MuseumLocation[];
 }
 
+export async function fetchLocationInfo(locationId: string): Promise<MuseumLocation[]> {
+    const {$museumRailwayBackendApi} = useNuxtApp();
+    const rawLocations = await $museumRailwayBackendApi(`/api/location/${locationId}`, {})
+        .catch(e => {
+            console.error(`error loading location info for ${locationId}: `, e);
+            return [];
+        });
+
+    return rawLocations as MuseumLocation[];
+}
+
+
 // Map of state codes to full state names
 const stateNameMap: { [key: string]: string } = {
     'B': 'Burgenland',
@@ -51,4 +63,4 @@ export function getLocationById(locations: MuseumLocation[], locationId: string)
     } else {
         return undefined;
     }
-};
+}
