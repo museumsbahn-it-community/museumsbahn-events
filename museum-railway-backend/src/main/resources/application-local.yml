@@ -1,3 +1,6 @@
+museum-railway-backend:
+  publicBaseUrl: "http://localhost:8080"
+
 image:
   img-proxy-url: "http://localhost:8090"
   signing-key: "c265ea162df50eb1793cfd4547e1c0d8cffa61e3abdaf9e075c3376bdae53ec731bc6a9d0c743e4242071aabf61a9a290799c1bb96c26ba827730f7371f908c9"
@@ -6,3 +9,7 @@ image:
 google:
   credentialsPath: "data/googleCredentials.json"
   spreadsheetId: "1EDLDIaiQmhErSBxjAUzmcDwkgEOcsb-x1aZ-DJTvOcU"
+
+#logging:
+#  level:
+#    org.springframework.web: debug

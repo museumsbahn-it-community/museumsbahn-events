@@ -22,8 +22,8 @@ interface LocationsApi {
     fun getLocation(@PathVariable locationId: String): ResponseEntity<MuseumLocation>
 
     @GetMapping(
-        "/{locationId}/image/{imageIndex}",
+        path = ["/{locationId}/image/{imageIndex}", "/{locationId}/image/{imageIndex}/"],
         produces = [MediaType.IMAGE_JPEG_VALUE, MediaType.IMAGE_PNG_VALUE],
     )
-    fun getImage(@PathVariable locationId: String, @PathVariable imageIndex: Int): ResponseEntity<ByteArray>
+    fun getImage(@PathVariable locationId: String, @PathVariable imageIndex: Int, @RequestParam size: Int?): ResponseEntity<ByteArray>
 }
