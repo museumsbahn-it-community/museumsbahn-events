@@ -7,7 +7,7 @@ import io.github.oshai.kotlinlogging.KotlinLogging
 import org.springframework.http.MediaType
 import org.springframework.http.ResponseEntity
 import org.springframework.scheduling.annotation.Scheduled
-import org.springframework.stereotype.Controller
+import org.springframework.web.bind.annotation.RestController
 import java.net.URI
 import java.net.http.HttpClient
 import java.net.http.HttpRequest
@@ -19,7 +19,7 @@ import java.util.concurrent.ConcurrentHashMap
 import java.util.concurrent.TimeUnit
 import kotlin.jvm.optionals.getOrNull
 
-@Controller
+@RestController
 class ImageCachingProxyController(
     private val imageCachingConfig: ImageCachingConfig,
     private val signingService: ImgproxyUrlSigningService,
@@ -31,9 +31,9 @@ class ImageCachingProxyController(
         .followRedirects(HttpClient.Redirect.NORMAL)
         .build()
 
-    override fun getImage(url: String): ResponseEntity<ByteArray> {
+    override fun getImage(url: String, size: Int?): ResponseEntity<ByteArray> {
         // need to replace spaces, but official java url encoding encodes too much for imgproxy
-        val encodedUrl = url.replace(" ", "%20")
+        val encodedUrl = url.replace(" ", "%20").plus("#${size ?: imageCachingConfig.width}")
         val cached = cache[encodedUrl]
         if (cached != null) {
             val mediaType = cached.contentType.getOrNull()
@@ -44,14 +44,17 @@ class ImageCachingProxyController(
             }
         }
 
+        if (size != null) {
+            require(imageCachingConfig.allowedSizes.contains(size))
+        }
+
         val imgproxyUrl = signingService.createSignedImgProxyUrlForOperations(
-            imageCachingConfig.width,
-            imageCachingConfig.height,
+            size ?: imageCachingConfig.width,
+            size ?: imageCachingConfig.height,
             URI(encodedUrl)
         )
 
         try {
-
             val request = HttpRequest.newBuilder().GET()
                 .uri(URI.create(imgproxyUrl))
                 .build()

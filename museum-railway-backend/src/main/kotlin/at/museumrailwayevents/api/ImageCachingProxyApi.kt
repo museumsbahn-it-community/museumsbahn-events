@@ -10,8 +10,9 @@ import org.springframework.web.bind.annotation.ResponseBody
 @RequestMapping("/imgcache")
 interface ImageCachingProxyApi {
     @GetMapping(
+        path = ["", "/"], // needed because nuxt devproxy adds a trailing slash
         produces = [MediaType.IMAGE_JPEG_VALUE, MediaType.IMAGE_PNG_VALUE]
     )
     @ResponseBody
-    fun getImage(@RequestParam url: String): ResponseEntity<ByteArray>
+    fun getImage(@RequestParam url: String, @RequestParam size: Int?): ResponseEntity<ByteArray>
 }
