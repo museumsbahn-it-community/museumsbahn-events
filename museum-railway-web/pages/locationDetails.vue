@@ -1,22 +1,32 @@
 <template>
-  <div class="flex flex-row justify-content-center">
-    <div class="w-full lg:w-10 xl:w-8 xxl:w-6 lg:p-5">
+  <div class="location-details w-full align-items-center flex flex-column m-0 p-2 md:p-0">
+    <div class="w-full md:w-8 xl:w-6 m-0 md:m-2 mb-5 p-0">
       <LocationDetails :museumLocation="museumLocation" :eventsGroupedByMonthAndDeparture="events"></LocationDetails>
     </div>
   </div>
   <div class="default-footer"></div>
 </template>
+<style>
+.location-details {
+  top: calc(variables.$navbar-height);
+}
+</style>
 <script setup lang="ts">
-import { useRoute } from "nuxt/app";
-import { getLocationById } from "~/composables/locationDataFunctions";
+import {useRoute} from "nuxt/app";
+import {getLocationById} from "~/composables/locationDataFunctions";
 
-const { data: locations } = useAllLocations()
-const { data: eventsRaw } = useAllEvents()
+const {data: locations} = useAllLocations();
+const {data: eventsRaw} = useAllEvents();
 
 const route = useRoute();
 const locationId = route?.params?.locationId as string;
+const viewport = useViewport();
 
 const museumLocation = computed(() => getLocationById(locations.value ?? [], locationId));
+watch(museumLocation, () => {
+  console.log(museumLocation.value)
+})
+
 const events = computed(() => eventsForLocationIdGrouped(eventsRaw.value ?? [], locationId));
 
 useSeoMeta({
