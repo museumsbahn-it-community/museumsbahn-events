@@ -25,8 +25,8 @@ class LocationsController(private val dataLoaderService: GoogleDataLoaderService
         return ResponseEntity.ok(location)
     }
 
-    override fun getImage(locationId: String, imageIndex: Int): ResponseEntity<ByteArray> {
-        val image = dataLoaderService.loadImageForLocation(locationId, imageIndex) ?: return ResponseEntity.notFound().build()
+    override fun getImage(locationId: String, imageIndex: Int, size: Int?): ResponseEntity<ByteArray> {
+        val image = dataLoaderService.loadImageForLocation(locationId, imageIndex, size) ?: return ResponseEntity.notFound().build()
         return ResponseEntity.ok(image)
     }
 

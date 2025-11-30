@@ -156,10 +156,10 @@ class GoogleDataLoaderService(val googleConfig: GoogleConfig, val driveDownloadS
     }
 
     // TODO: cache calls and add option to reload caches
-    fun loadImageForLocation(locationId: String, imageIndex: Int): ByteArray? {
+    fun loadImageForLocation(locationId: String, imageIndex: Int, size: Int? = null): ByteArray? {
         val locationImageData = museumLocationImageData[locationId] ?: return null
         val imageSpec = locationImageData[imageIndex]
-        return driveDownloadService.downloadImage(imageSpec.googleDriveId)
+        return driveDownloadService.downloadImage(imageSpec.googleDriveId, size)
     }
 
     fun reloadData() {
