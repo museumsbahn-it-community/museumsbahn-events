@@ -1,0 +1,32 @@
+### GET request to example server
+POST http://localhost:8082/queryEntries
+Content-Type: application/json
+
+{}
+
+###
+
+POST https://museumsbahn-events.at/api/search/queryEntries
+Content-Type: application/json
+
+{}
+
+###
+
+
+POST https://museumsbahn-events.at/api/search/queryEntries
+Content-Type: application/json
+
+{
+  "query": "\"startDate\" AFTER \"2025-10-12\"",
+  "size": 500
+}
+
+
+###
+
+GET https://museumsbahn-events.at/api/location
+
+###
+
+GET https://museumsbahn-events.at/entries

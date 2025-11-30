@@ -113,6 +113,18 @@ button.p-link {
   border: 0;
 }
 
+.image-border-radius-small {
+  > img{
+      border-radius: variables.$border-radius-small;
+  }
+}
+
+.image-border-radius-big {
+   > img {
+    border-radius: variables.$border-radius-big;
+  }
+}
+
 .border-radius-small {
   border-radius: variables.$border-radius-small;
 }

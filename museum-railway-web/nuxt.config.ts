@@ -24,9 +24,9 @@ export default defineNuxtConfig({
                 lang: 'de'
             },
             meta: [
-                { name: 'viewport', content: 'width=device-width, initial-scale=1' },
-                { name: 'robots', content: 'index, follow' },
-                { name: 'author', content: 'MUSEUMSBAHN-events.at' },
+                {name: 'viewport', content: 'width=device-width, initial-scale=1'},
+                {name: 'robots', content: 'index, follow'},
+                {name: 'author', content: 'MUSEUMSBAHN-events.at'},
             ],
             link: [
                 {
@@ -140,6 +140,8 @@ export default defineNuxtConfig({
         devProxy: {
             '/api/search/': 'http://localhost:8082/',
             '/api/location': 'http://localhost:8080/api/location',
+            '/api/location/*': 'http://localhost:8080/api/location/',
+            '/imgcache': 'http://localhost:8080/imgcache',
         }
     },
 
@@ -165,7 +167,7 @@ export default defineNuxtConfig({
         },
     },
     primevue: {
-        importTheme: { from: './assets/theme.ts' },
+        importTheme: {from: './assets/theme.ts'},
     },
 
     compatibilityDate: '2025-01-02'
