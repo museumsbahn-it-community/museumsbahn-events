@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.test.context.ActiveProfiles
 
+@Disabled("Cannot run in the pipeline because it requires local Google credentials")
 @SpringBootTest
 @ActiveProfiles("local")
 class GoogleDataLoaderServiceTest {
@@ -16,7 +17,6 @@ class GoogleDataLoaderServiceTest {
     lateinit var service: GoogleDataLoaderService
 
     @Test
-    @Disabled // disabled because it cannot run in the pipeline
     fun `locations and operators should be properly loaded`() {
         println("loaded ${service.museumOperators.size} museum operators")
         println("loaded ${service.museumLocations.size} museum locations")

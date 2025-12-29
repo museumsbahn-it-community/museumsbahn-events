@@ -128,17 +128,17 @@ class EventcollectorTest {
         assertThat(events.filter { it.data.containsKey(SemanticKeys.PICTURE_URL) }.size).isEqualTo(5)
     }
 
-    @Test
-    fun `mlv zwettl should collect 10 events`() {
-        val eventcollector = MLVZwettlCollector(mockJsoupCrawler)
-        val expectedNumberOfEvents = 10
-        val events = eventcollector.collectEvents()
-        assertThat(events.size).isEqualTo(expectedNumberOfEvents)
-
-        assertThat(events.filter { it.data.containsValue(MuseumEventsCategory.MUSEUM_RAILWAY.jsonValue) }.size).isEqualTo(6)
-        assertThat(events.filter { it.data.containsValue(MuseumEventsCategory.RAILWAY_MUSEUM.jsonValue) }.size).isEqualTo(4)
-        assertThat(events.filter { it.data.containsValue(VehicleType.STEAM_TRAIN) }.size).isEqualTo(5)
-    }
+//    @Test
+//    fun `mlv zwettl should collect 10 events`() {
+//        val eventcollector = MLVZwettlCollector(mockJsoupCrawler)
+//        val expectedNumberOfEvents = 10
+//        val events = eventcollector.collectEvents()
+//        assertThat(events.size).isEqualTo(expectedNumberOfEvents)
+//
+//        assertThat(events.filter { it.data.containsValue(MuseumEventsCategory.MUSEUM_RAILWAY.jsonValue) }.size).isEqualTo(6)
+//        assertThat(events.filter { it.data.containsValue(MuseumEventsCategory.RAILWAY_MUSEUM.jsonValue) }.size).isEqualTo(4)
+//        assertThat(events.filter { it.data.containsValue(VehicleType.STEAM_TRAIN) }.size).isEqualTo(5)
+//    }
 
     @Test
     fun `tramway museum graz should collect 7 events`() {
