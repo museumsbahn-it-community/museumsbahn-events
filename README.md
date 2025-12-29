@@ -31,23 +31,6 @@ locations, opening hours, contact details and so on.
 
 It's recommended to use IntelliJ or VsCode as IDE. Nuxt support in both is unfortunately not great.
 
-### Publish artifacts to private repos
-
-This setup is necessary once in order to be able to publish to private repos
-
-Create $HOME/.npmrc with the following contents
-```
-@boudicca:registry=<PRIVATE_REPO_URL>
-@museumrailwayevents:registry=https://<PRIVATE_REPO_URL>
-//<PRIVATE_REPO_URL>:_authToken=<PRIVATE_REPO_AUTH>
-```
-
-Create $home/.gradle/gradle.properties with the following contents
-```
-museumrailwayEventsNpmRepoUrl=https://<PRIVATE_REPO_URL>
-museumrailwayEventsNpmToken=<PRIVATE_REPO_AUTH>
-```
-
 ### Modifying the API and releasing a new version
 
 1. bump the version in build.gradle.kts
