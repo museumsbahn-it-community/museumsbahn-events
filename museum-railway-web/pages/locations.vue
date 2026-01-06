@@ -48,7 +48,7 @@
               <div class="mx-3 mb-3">
                 <!--              <Image class="banner-image" :src="imageLocation(location.locationId)"></Image>-->
                 <div class="flex align-items-center text-sm my-2">
-                  <span class="material-icons-outlined">location_on</span> {{ location.location.city }},
+                  <span class="material-symbols-outlined">location_on</span> {{ location.location.city }},
                   {{ location.location.state }}
                 </div>
                 <div class="my-4">

@@ -1,14 +1,17 @@
 <template>
-  <div class="location-details w-full align-items-center flex flex-column m-0 p-2 md:p-0">
-    <div class="w-full md:w-8 xl:w-6 m-0 md:m-2 mb-5 p-0">
+  <div class="location-details w-full h-full align-items-center flex flex-column m-0 p-2 md:p-0">
+    <div class="w-full xxl:w-8 m-0 md:m-2 mb-5 p-0">
       <LocationDetails :museumLocation="museumLocation" :eventsGroupedByMonthAndDeparture="events"></LocationDetails>
     </div>
   </div>
   <div class="default-footer"></div>
 </template>
-<style>
+<style lang="scss">
+@use '../assets/variables_impl' as variables;
+
 .location-details {
   top: calc(variables.$navbar-height);
+  min-height: calc(100vh - variables.$navbar-height);
 }
 </style>
 <script setup lang="ts">
