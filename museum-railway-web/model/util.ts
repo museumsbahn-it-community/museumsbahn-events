@@ -11,6 +11,7 @@ export function createLocationMap(locations: MuseumLocation[]): LocationMap {
 }
 
 export function eventKey(event: MuseumEvent): string {
+    console.log(event.name, event.date, event)
     const escapedName = event.name.trim()
         .replace(/\s+/g, '-') // replace whitespace with dash
         .replace(/[^0-9a-zäöüÄÖÜ_-]/gi, '') // remove non alphanum
