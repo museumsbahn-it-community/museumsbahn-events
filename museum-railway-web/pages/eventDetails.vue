@@ -11,34 +11,36 @@
 
 .event-details {
   top: calc(variables.$navbar-height);
+  min-height: calc(100vh - variables.$navbar-height);
 }
 </style>
 
 <template>
-  <div class="event-details w-full grid m-0 p-2 md:p-0">
-    <div class="xl:col-4 flex flex-1 content-left-column" v-if="viewport.isGreaterOrEquals('desktop-xl')"></div>
-    <div class="col-12 md:col-8 xl:col-6 content-center-column m-0 md:m-2 mb-5 p-0">
+  <div class="event-details w-full h-full align-items-center flex flex-column p-3">
+    <div class="w-full flex flex-column xxl:w-8 md:m-2 mb-5 gap-4">
       <EventDetails :event="selectedEvent" :no-event-selected-placeholder-text="noEventSelectedPlaceholderText">
         Event Details
       </EventDetails>
-      <CustomSidebar class="mt-2 w-full" v-if="viewport.isLessThan('tablet')"
-                     :title="`Weitere Veranstaltungen von ${location?.name}`" side="center">
-        <div class="flex flex-column gap-2">
-          <EventCardSmall v-for="eventEntry in eventsForSameLocation" :event="eventEntry">
-          </EventCardSmall>
-        </div>
-      </CustomSidebar>
-    </div>
-    <div class="col-2 flex flex-1 content-right-column" v-if="viewport.isGreaterOrEquals('tablet')">
-      <div class="w-full flex flex-column justify-content-center align-items-end overflow-hidden">
-        <CustomSidebar class="w-full lg:w-11" style="height: 80%;"
-                       :title="`Weitere Veranstaltungen von ${location?.name}`" side="right">
-          <div class="flex flex-column gap-2">
-            <EventCardSmall v-for="eventEntry in eventsForSameLocation" :event="eventEntry">
-            </EventCardSmall>
+      <card v-if="selectedEvent != null" class="w-full">
+        <template #title>Künftige Veranstaltungen</template>
+        <template #content>
+          <div class="flex flex-column gap-3">
+            <div v-if="museumLocation?.eventListUrl" class="flex align-items-center">
+              <span class="material-symbols-outlined">calendar_month</span>
+              <a
+                  :href="museumLocation.eventListUrl" target="_blank" rel="noopener noreferrer"
+                  class="p-button p-button-text font-bold dark-text">Veranstaltungsliste des Museums</a>
+            </div>
+            <!-- we have to build a custom event list here, because the normal event list does a grouping, which we don't need -->
+            <div
+                v-for="eventEntry in eventsForSameLocation"
+                :key="eventKey(eventEntry)"
+            >
+              <EventCardSmall :event="eventEntry"/>
+            </div>
           </div>
-        </CustomSidebar>
-      </div>
+        </template>
+      </card>
     </div>
   </div>
   <div class="default-footer"></div>
@@ -47,14 +49,12 @@
 <script setup lang="ts">
 import {computed} from 'vue';
 import {useRoute} from 'vue-router';
-import EventCardSmall from '~/components/EventCardSmall.vue';
 import EventDetails from '~/components/EventDetails.vue';
 import {useAllEvents} from '~/composables/eventComposables';
 import {useAllLocations} from '~/composables/locationComposables';
 import {getLocationById} from '~/composables/locationDataFunctions';
 import {eventKey} from '~/model/util';
 import type {MuseumEvent} from "~/apiModel/apiModel";
-import CustomSidebar from "~/components/CustomSidebar.vue";
 
 const route = useRoute();
 const viewport = useViewport();
@@ -74,8 +74,7 @@ const selectedEvent = computed(() => {
   return event;
 });
 const locationId = computed(() => selectedEvent.value?.locationId);
-const location = computed(() => locationId.value == null ? null : getLocationById(locations.value ?? [], locationId.value));
-
+const museumLocation = computed(() => locationId.value == null ? null : getLocationById(locations.value ?? [], locationId.value));
 
 const eventsForSameLocation = computed(() => {
   const locId = locationId.value;
