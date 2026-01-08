@@ -1,3 +1,36 @@
+<template>
+  <RouterLink :to="`/eventDetails/${eventKey(event)}`" class="flex flex-1 event-card-small">
+    <div class="w-full bg-grauweiß flex flex-row event-card-small">
+      <!-- image -->
+      <div v-if="event.pictureUrl" class="event-card-image">
+        <Image :src="imgSource" :alt="imgAltText" class="h-full" image-class="h-full w-full object-fit-cover"/>
+      </div>
+      <!-- summary -->
+      <div class="flex flex-column justify-content-start p-2">
+        <div class="m-1">
+          <NuxtTime :datetime="event.date" year="numeric" month="numeric" day="numeric" locale="de-AT"
+                    timeZone="Europe/Vienna"/>
+        </div>
+        <div class="flex flex-grow-1 align-items-center">
+          <h2 class="event-title m-1">{{ event.name }}</h2>
+        </div>
+      </div>
+    </div>
+  </RouterLink>
+</template>
+<script setup lang="ts">
+import {computed} from 'vue';
+import {getAltTextOrDefault, getImageUrlOrDefault} from '~/composables/eventImage';
+import {eventKey} from '~/model/util.ts';
+import type {MuseumEvent} from "~/apiModel/apiModel";
+
+const props = defineProps<{
+  event: MuseumEvent
+}>()
+
+const imgSource = computed(() => getImageUrlOrDefault(props.event?.pictureUrl));
+const imgAltText = computed(() => getAltTextOrDefault(props.event?.pictureAltText));
+</script>
 <style lang="scss">
 @use "../assets/colors" as colors;
 @use "../assets/variables_impl" as variables;
@@ -24,35 +57,3 @@ a.event-card-small {
   overflow-wrap: anywhere;
 }
 </style>
-<template>
-  <RouterLink :to="`/eventDetails/${eventKey(event)}`" class="flex flex-1 event-card-small">
-    <div class="w-full bg-grauweiß flex flex-row event-card-small">
-      <!-- image -->
-      <div v-if="event.pictureUrl" class="event-card-image">
-        <Image :src="imgSource" :alt="imgAltText" class="h-full" image-class="h-full w-full object-fit-cover" />
-      </div>
-      <!-- summary -->
-      <div class="flex flex-column justify-content-start p-2">
-        <div class="m-1">
-          <NuxtTime :datetime="event.date" year="numeric" month="numeric" day="numeric" locale="de-AT"
-            timeZone="Europe/Vienna" />
-        </div>
-        <div class="flex flex-grow-1 align-items-center">
-          <h2 class="event-title m-1">{{ event.name }}</h2>
-        </div>
-      </div>
-    </div>
-  </RouterLink>
-</template>
-<script setup lang="ts">
-import { computed } from 'vue';
-import { getAltTextOrDefault, getImageUrlOrDefault } from '~/composables/eventImage';
-import { eventKey } from '~/model/util.ts';
-
-const props = defineProps<{
-  event: MuseumEvent
-}>()
-
-const imgSource = computed(() => getImageUrlOrDefault(props.event?.pictureUrl));
-const imgAltText = computed(() => getAltTextOrDefault(props.event?.pictureAltText));
-</script>
