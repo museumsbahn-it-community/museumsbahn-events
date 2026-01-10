@@ -12,12 +12,13 @@ export default defineNuxtConfig({
         ssr: false,
     },
     runtimeConfig: {
-        public: {
-            matomoBase: 'http://localhost:8100' // can be overridden by NUXT_PUBLIC_API_BASE environment variable
-        },
         backendApiProxyUrl: 'http://localhost:3050',
     },
-
+    umami: {
+        id: 'my-w3b517e-id',
+        host: 'http://localhost:3020',
+        autoTrack: true,
+    },
     app: {
         head: {
             htmlAttrs: {
@@ -96,15 +97,16 @@ export default defineNuxtConfig({
     ],
 
     modules: [
-        '@nuxt/content',
-        '@nuxtjs/device',
-        '@nuxtjs/leaflet',
-        'nuxt-viewport',
-        '@primevue/nuxt-module',
-        'nuxt-open-fetch',
-        'nuxt-time',
-        '@nuxtjs/seo',
-        '@nuxt/eslint'
+      '@nuxt/content',
+      '@nuxtjs/device',
+      '@nuxtjs/leaflet',
+      'nuxt-viewport',
+      '@primevue/nuxt-module',
+      'nuxt-open-fetch',
+      'nuxt-time',
+      '@nuxtjs/seo',
+      '@nuxt/eslint',
+      'nuxt-umami'
     ],
 
     site: {

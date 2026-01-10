@@ -1,39 +1,6 @@
 version: '3'
 
 services:
-  matomo-db:
-    image: mariadb:10.11
-    command: --max-allowed-packet=64MB
-    restart: always
-    volumes:
-      - matomo-db:/var/lib/mysql:Z
-    environment:
-      - MYSQL_ROOT_PASSWORD=changeme
-      - MARIADB_AUTO_UPGRADE=1
-      - MARIADB_DISABLE_UPGRADE_BACKUP=1
-      - MYSQL_PASSWORD=matomodev
-      - MYSQL_DATABASE=matomo
-      - MYSQL_USER=matomo
-    env_file:
-      - ./dev-data/db.env
-    networks:
-      - matomo
-  matomo-app:
-    # matomo locally is only working directly and not via traefik for now
-    image: matomo
-    restart: always
-    volumes:
-      #     - ./config:/var/www/html/config:z
-      #     - ./logs:/var/www/html/logs:z
-      - matomo-app:/var/www/html:z
-    environment:
-      - MATOMO_DATABASE_HOST=matomo-db
-    env_file:
-      - ./dev-data/db.env
-    ports:
-      - "8100:80"
-    networks:
-      - matomo
   boudicca-eventdb:
     image: docker.io/boudicca/eventdb:latest
     ports:
@@ -49,7 +16,7 @@ services:
     volumes:
       - ./boudicca.store/:/boudicca.store/:Z
     networks:
-      - traefik-router
+      - museumsbahn-events-local
   boudicca-search:
     image: docker.io/boudicca/search:latest
     depends_on:
@@ -69,7 +36,7 @@ services:
       - "traefik.http.middlewares.admin-stripprefix.stripprefix.prefixes=/api/search"
       - "traefik.http.services.search.loadbalancer.server.port=8080"
     networks:
-      - traefik-router
+      - museumsbahn-events-local
   boudicca-ical:
     # minimal ical query: http://localhost:3050/ical/calendar.ics?query=%22startDate%22%20after%202024-01-01%20and%20%22startDate%22%20after%202025-01-01
     image: docker.io/boudicca/publisher-event-ical:latest
@@ -84,7 +51,7 @@ services:
       - "traefik.http.routers.boudicca-ical.middlewares=ical-stripprefix"
       - "traefik.http.middlewares.ical-stripprefix.stripprefix.prefixes=/ical"
     networks:
-      - traefik-router
+      - museumsbahn-events-local
   museum-railway-events-backend:
     image: git.twatzl.eu/twatzl/museum-railway-events-backend:latest
     ports:
@@ -101,7 +68,7 @@ services:
       - "traefik.http.routers.backend.entrypoints=web"
       - "traefik.http.services.backend.loadbalancer.server.port=8080"
     networks:
-      - traefik-router
+      - museumsbahn-events-local
   museum-railway-events-eventcollectors:
     image: git.twatzl.eu/twatzl/museum-railway-events-eventcollectors:latest
     depends_on:
@@ -109,7 +76,7 @@ services:
     ports:
       - "8083:8083"
     networks:
-      - traefik-router
+      - museumsbahn-events-local
   museum-railway-events-web:
     image: git.twatzl.eu/twatzl/museum-railway-events-web:latest
     depends_on:
@@ -129,7 +96,7 @@ services:
     ports:
       - "3010:3000"
     networks:
-      - traefik-router
+      - museumsbahn-events-local
   imgproxy:
     image: darthsim/imgproxy:v3.27.1
     ports:
@@ -138,7 +105,7 @@ services:
       - IMGPROXY_KEY=c265ea162df50eb1793cfd4547e1c0d8cffa61e3abdaf9e075c3376bdae53ec731bc6a9d0c743e4242071aabf61a9a290799c1bb96c26ba827730f7371f908c9
       - IMGPROXY_SALT=d531871747288265e6144698350f915a781005ba8dd7ed6fcf28634cec4a8c47744d37e830b5e5942c3c2a3e0758a00a6f2d2f847afb1728e31d1e10beb44d87
     networks:
-      - traefik-router
+      - museumsbahn-events-local
   reverse-proxy:
     # The official v3 Traefik docker image
     image: traefik:v3.2.3
@@ -172,13 +139,7 @@ services:
       - ./traefik/config/:/config/:Z
       - ./traefik/logs/:/logs/:Z
     networks:
-      - traefik-router
-
-
-volumes:
-  matomo-db:
-  matomo-app:
+      - museumsbahn-events-local
 
 networks:
-  matomo:
-  traefik-router:
+  museumsbahn-events-local:
