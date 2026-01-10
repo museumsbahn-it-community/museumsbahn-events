@@ -169,7 +169,7 @@ export default defineNuxtConfig({
         },
     },
     primevue: {
-        importTheme: {from: './assets/theme.ts'},
+        importTheme: {from: '@/assets/theme.ts'},
     },
 
     compatibilityDate: '2025-01-02'
