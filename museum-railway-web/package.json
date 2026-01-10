@@ -13,20 +13,19 @@
   "dependencies": {
     "@nuxt/content": "^3.5.1",
     "@nuxt/eslint": "^1.4.1",
-    "@nuxtjs/device": "^3.1.1",
-    "@nuxtjs/i18n": "^9.5.4",
+    "@nuxtjs/device": "^4.0.0",
+    "@nuxtjs/i18n": "^10.2.1",
     "@nuxtjs/leaflet": "^1.2.6",
-    "@nuxtjs/seo": "^3.0.3",
-    "@primeuix/themes": "^1.1.1",
+    "@nuxtjs/seo": "^3.3.0",
+    "@primeuix/themes": "^1.2.5",
     "@primevue/forms": "^4.3.4",
-    "@primevue/nuxt-module": "^4.3.4",
-    "@types/leaflet": "^1.9.8",
-    "better-sqlite3": "^11.10.0",
+    "@primevue/nuxt-module": "^4.5.4",
+    "@types/leaflet": "^1.9.21",
     "date-fns": "^4.1.0",
     "eslint": "^9.29.0",
     "leaflet": "^1.9.4",
     "material-symbols": "^0.40.2",
-    "nuxt": "^3.15.0",
+    "nuxt": "^4.2.2",
     "nuxt-open-fetch": "^0.12.2",
     "nuxt-time": "^1.0.3",
     "nuxt-umami": "^3.2.1",
@@ -39,8 +38,8 @@
   },
   "devDependencies": {
     "@nuxt/types": "^2.17.3",
-    "@vitejs/plugin-vue": "^5.0.4",
-    "sass": "^1.72.0",
-    "sass-loader": "^14.1.1"
+    "@vitejs/plugin-vue": "^5.2.4",
+    "sass": "^1.97.2",
+    "sass-loader": "^14.2.1"
   }
 }

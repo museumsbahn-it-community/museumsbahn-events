@@ -1,13 +1,13 @@
 import {definePreset} from '@primeuix/themes';
 import Lara from '@primeuix/themes/lara';
-import base from "./theme/base.ts";
-import button from "./theme/button.ts";
-import message from "./theme/message.ts";
-import {colors} from "./theme/colors.ts";
-import togglebutton from "assets/theme/togglebutton";
-import inputgroup from "assets/theme/inputgroup";
-import badge from "assets/theme/badge";
-import chip from "assets/theme/chip";
+import base from "./theme/base";
+import button from "./theme/button";
+import message from "./theme/message";
+import {colors} from "./theme/colors";
+import togglebutton from "./theme/togglebutton";
+import inputgroup from "./theme/inputgroup";
+import badge from "./theme/badge";
+import chip from "./theme/chip";
 
 const MuseumRailwayEventsTheme = definePreset(Lara, {
     ...base,
