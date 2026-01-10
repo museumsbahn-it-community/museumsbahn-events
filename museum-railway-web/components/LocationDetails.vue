@@ -1,7 +1,7 @@
 <template>
   <div class="w-full flex flex-column align-items-center">
-    <div v-if="museumLocation != undefined" class="w-full lg:w-8 flex flex-column gap-3 p-3 align-items-center">
-      <div class="flex flex-column w-full align-items-center mb-4 gap-3" :class="{'lg:flex-row': hasImages}">
+    <div v-if="museumLocation" class="w-full flex flex-column gap-4 align-items-center">
+      <div class="flex flex-column w-full align-items-center gap-4" :class="{'lg:flex-row': hasImages}">
         <Galleria
             v-if="hasImages"
             container-class="w-full lg:w-6"

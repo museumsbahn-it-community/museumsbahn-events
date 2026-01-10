@@ -1,6 +1,6 @@
 <template>
-  <div class="location-details w-full h-full align-items-center flex flex-column m-0 p-2 md:p-0">
-    <div class="w-full xxl:w-8 m-0 md:m-2 mb-5 p-0">
+  <div class="location-details w-full h-full align-items-center flex flex-column p-2">
+    <div class="w-full xl:w-8 mb-5">
       <LocationDetails :museumLocation="museumLocation" :eventsGroupedByMonthAndDeparture="events"></LocationDetails>
     </div>
   </div>

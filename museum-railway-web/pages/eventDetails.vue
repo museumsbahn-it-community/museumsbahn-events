@@ -16,8 +16,8 @@
 </style>
 
 <template>
-  <div class="event-details w-full h-full align-items-center flex flex-column p-3">
-    <div class="w-full flex flex-column xxl:w-8 md:m-2 mb-5 gap-4">
+  <div class="event-details w-full h-full align-items-center flex flex-column p-2">
+    <div class="w-full flex flex-column xl:w-8 mb-5 gap-4">
       <EventDetails :event="selectedEvent" :no-event-selected-placeholder-text="noEventSelectedPlaceholderText">
         Event Details
       </EventDetails>
