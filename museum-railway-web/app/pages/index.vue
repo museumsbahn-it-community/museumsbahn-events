@@ -2,6 +2,11 @@
 @use "../assets/colors" as colors;
 @use "../assets/variables_impl" as variables;
 
+.main-page {
+  top: calc(variables.$navbar-height);
+  min-height: calc(100vh - variables.$navbar-height);
+}
+
 .image-text {
   border-radius: 0 0 variables.$border-radius-small variables.$border-radius-small;
   background: rgba(0, 0, 0, 0.4);
@@ -13,7 +18,7 @@
 }
 </style>
 <template>
-  <div class="flex flex-column h-full w-full align-items-center">
+  <div class="flex flex-column h-full w-full align-items-center main-page">
     <div class="w-10 lg:w-7 flex flex-column mb-3 gap-3">
       <div>
         <h1>Die Informationsseite für Museumsbahnen und Eisenbahnmuseen in Österreich</h1>
