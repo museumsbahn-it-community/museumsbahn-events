@@ -1,282 +1,200 @@
 <template>
-  <div class="grid w-full page-content">
-    <div class="col-2 lg:col-3 flex flex-1 content-left-column sticky-sidebar-container" v-if="showFilterSidebar">
-      <div
-          class="w-full flex flex-column justify-content-center align-items-start overflow-hidden sticky-sidebar-container">
-        <CustomSidebar class="w-full lg:w-11" style="height: 80%;" title="Filter" side="left">
-          <EventFilters
-              :filter-options="filterOptions"
-              :filter-state="filterState"
-              :filter-counts="filterCounts"
-              :show-states="false"
-              @update:filters="updateFilters"/>
-        </CustomSidebar>
+  <div class="w-full h-full events-page">
+    <div class="grid w-full page-content">
+      <div v-if="showFilterSidebar" class="col-2 xl:col-3 flex flex-1 content-left-column sticky-sidebar-container">
+        <div
+            class="w-full flex flex-column justify-content-center align-items-start overflow-hidden sticky-sidebar-container">
+          <CustomSidebar class="w-full lg:w-11" style="height: 80%;" title="Filter" side="left">
+            <EventFilters
+                :filter-options="filterOptions"
+                :filter-state="filterState"
+                :filter-counts="filterCounts"
+                :show-states="false"
+                @update:filters="updateFilters"/>
+          </CustomSidebar>
+        </div>
       </div>
-    </div>
-    <div class="flex flex-column align-items-center mx-2 col-12 lg:col-9 xl:col-6"
-         :class="{ 'main-content-with-sidebar': viewport.isGreaterOrEquals('tablet') }">
-      <Message class="my-2 mx-4" severity="info" icon="pi pi-info-circle"> Achtung! Die Daten werden automatisch erfasst
-        und
-        nicht manuell geprüft.
-        Abfahrtszeiten und aktuelle Informationen immer auf den Webseiten der jeweiligen Veranstalter
-        kontrollieren!
-      </Message>
-      <div class="h-1rem"></div>
-      <div class="flex flex-column w-full h-full mx-2 mb-6 md:mx-5 align-items-center">
-        <!-- Search Bar (kept in main content for visibility) -->
-        <div class="top-filters w-full flex flex-column align-items-center mb-4">
-          <InputGroup class="w-full flex mb-3">
-            <InputGroupAddon>
-              <i class="pi pi-search"></i>
-            </InputGroupAddon>
-            <InputText v-model="searchTerm" placeholder="Suche nach Veranstaltungen, Orten oder Beschreibungen"
-                       class="w-full"/>
-          </InputGroup>
+      <div
+          class="flex flex-column align-items-center mx-2 col-12 xl:col-6"
+          :class="{ 'main-content-with-sidebar': viewport.isGreaterOrEquals('tablet') }">
+        <Message class="my-2 mx-4" severity="info" icon="pi pi-info-circle"> Achtung! Die Daten werden automatisch
+          erfasst
+          und
+          nicht manuell geprüft.
+          Abfahrtszeiten und aktuelle Informationen immer auf den Webseiten der jeweiligen Veranstalter
+          kontrollieren!
+        </Message>
+        <div class="h-1rem"/>
+        <div class="flex flex-column w-full h-full mx-2 mb-6 md:mx-5 align-items-center">
+          <!-- Search Bar (kept in main content for visibility) -->
+          <div class="top-filters w-full flex flex-column align-items-center mb-4">
+            <InputGroup class="w-full flex mb-3">
+              <InputGroupAddon>
+                <i class="pi pi-search"/>
+              </InputGroupAddon>
+              <InputText
+                  v-model="searchTerm" placeholder="Suche nach Veranstaltungen, Orten oder Beschreibungen"
+                  class="w-full"/>
+            </InputGroup>
 
-          <!-- Filter Chips -->
-          <div v-if="hasActiveFilters" class="w-full flex flex-wrap gap-2 mb-3">
-            <!-- Search Term Chip -->
-            <Chip v-if="filterState.searchTerm"
+            <!-- Filter Chips -->
+            <div v-if="hasActiveFilters" class="w-full flex flex-wrap gap-2 mb-3">
+              <!-- Search Term Chip -->
+              <Chip
+                  v-if="filterState.searchTerm"
                   :label="'Suche: ' + filterState.searchTerm"
                   removable
                   @remove="filterState.searchTerm = ''"/>
 
-            <!-- Date Range Chip -->
-            <Chip v-if="filterState.fromDate || filterState.toDate"
+              <!-- Date Range Chip -->
+              <Chip
+                  v-if="filterState.fromDate || filterState.toDate"
                   :label="getDateRangeLabel()"
                   removable
                   @remove="resetDateRange()"/>
 
-            <!-- State Chips -->
-            <Chip v-for="stateCode in filterState.selectedStates"
+              <!-- State Chips -->
+              <Chip
+                  v-for="stateCode in filterState.selectedStates"
                   :key="'state-' + stateCode"
                   :label="getStateName(stateCode)"
                   removable
                   @remove="toggleState(stateCode)"/>
 
-            <!-- Event Type Chips -->
-            <Chip v-for="type in filterState.eventCategories"
+              <!-- Event Type Chips -->
+              <Chip
+                  v-for="type in filterState.eventCategories"
                   :key="'event-' + type"
                   :label="'Typ: ' + translateTag(type, EventCategoryLabels)"
                   removable
                   @remove="removeEventType(type)"/>
 
-            <!-- Train Type Chips -->
-            <Chip v-for="type in filterState.vehicleTypes"
+              <!-- Train Type Chips -->
+              <Chip
+                  v-for="type in filterState.vehicleTypes"
                   :key="'train-' + type"
                   :label="'Fahrzeug: ' + translateTag(type, VehicleTypeLabels)"
                   removable
                   @remove="removeVehicleType(type)"/>
 
-            <!-- Volunteer/Commercial Chips -->
-            <Chip v-if="filterState.isVolunteer"
+              <!-- Volunteer/Commercial Chips -->
+              <Chip
+                  v-if="filterState.isVolunteer"
                   :v-label="translateTag(OperationType.VOLUNTEER, OperationTypeLabels)"
                   removable
                   @remove="filterState.isVolunteer = false"/>
-            <Chip v-if="filterState.isCommercial"
+              <Chip
+                  v-if="filterState.isCommercial"
                   :v-label="translateTag(OperationType.COMMERCIAL, OperationTypeLabels)"
                   removable
                   @remove="filterState.isCommercial = false"/>
 
-            <!-- Tag Chips -->
-            <Chip v-for="tag in filterState.tags"
+              <!-- Tag Chips -->
+              <Chip
+                  v-for="tag in filterState.tags"
                   :key="'tag-' + tag"
                   :label="'Tag: ' + translateTag(tag, TagLabels)"
                   removable
                   @remove="removeTag(tag)"/>
 
-            <!-- Recurrence Type Chips -->
-            <Chip v-for="type in filterState.recurrenceTypes"
+              <!-- Recurrence Type Chips -->
+              <Chip
+                  v-for="type in filterState.recurrenceTypes"
                   :key="'recurrence-' + type"
                   :label="'Häufigkeit: ' + translateTag(type, RecurrenceTypeLabels)"
                   removable
                   @remove="removeRecurrenceType(type)"/>
 
-            <!-- Registration Type Chips -->
-            <Chip v-for="type in filterState.registrationTypes"
+              <!-- Registration Type Chips -->
+              <Chip
+                  v-for="type in filterState.registrationTypes"
                   :key="'registration-' + type"
                   :label="'Anmeldung: ' + translateTag(type, RegistrationTypeLabels)"
                   removable
                   @remove="removeRegistrationType(type)"/>
 
-            <!-- Clear All Button -->
-            <Button v-if="hasActiveFilters"
-                    label="Alle Filter löschen"
-                    size="small"
-                    text
-                    class="ml-2"
-                    @click="clearAllFilters"/>
-          </div>
-
-          <div class="w-full font-bold align-content-start mb-3">
-            <label v-if="filteredEvents.length > 0">{{ filteredEvents.length }} Events gefunden</label>
-            <label v-if="filteredEvents.length === 0">keine Events gefunden</label>
-          </div>
-
-          <!-- State Filter (kept in main content for visibility) -->
-          <div class="mb-3 flex flex-row flex-wrap justify-content-center"
-               v-if="showFilterSidebar"
-          >
-            <div v-for="state in stateList" :key="state.code" class="mx-1 mb-2">
-              <ToggleButton
-                  :modelValue="selectedStates.includes(state.code)"
-                  :onLabel="state.name"
-                  :offLabel="state.name"
-                  class="state-toggle-button"
-                  @click="toggleState(state.code)">
-                {{ state.name }}
-                <Badge
-                    :value="getEventCountForState(state.code)"
-                    severity="primary"
-                    class="state-badge"/>
-              </ToggleButton>
+              <!-- Clear All Button -->
+              <Button
+                  v-if="hasActiveFilters"
+                  label="Alle Filter löschen"
+                  size="small"
+                  text
+                  class="ml-2"
+                  @click="clearAllFilters"/>
             </div>
-          </div>
-        </div>
 
-        <EventList class="h-full" :eventsGroupedByMonthAndDeparture="filteredEventGroups"></EventList>
+            <div class="w-full font-bold align-content-start mb-3">
+              <label v-if="filteredEvents.length > 0">{{ filteredEvents.length }} Events gefunden</label>
+              <label v-if="filteredEvents.length === 0">keine Events gefunden</label>
+            </div>
+
+            <StateFilters
+                v-if="showFilterSidebar"
+                :state-list="stateList"
+                :selected-states="filterState.selectedStates"
+                :event-count-for-state="getEventCountForState"
+                @toggle-state="toggleState($event)"/>
+          </div>
+
+          <EventList class="h-full" :events-grouped-by-month-and-departure="filteredEventGroups"/>
+        </div>
+      </div>
+      <div v-if="showFilterSidebar" class="col-2 xl:col-3 flex flex-1 content-left-column"/>
+    </div>
+
+    <!-- Mobile Footer -->
+    <div v-if="!showFilterSidebar" class="mobile-footer">
+      <div class="footer-buttons">
+        <Button class="footer-button" @click="showFilterDrawer = true">
+          <i class="pi pi-filter"/>
+          <span>Filter</span>
+        </Button>
+        <Button class="footer-button" @click="shareCurrentPage">
+          <i class="pi pi-share-alt"/>
+          <span>Teilen</span>
+        </Button>
       </div>
     </div>
-    <div class="col-2 lg:col-3 flex flex-1 content-left-column" v-if="showFilterSidebar">
-    </div>
-  </div>
 
-  <!-- Mobile Footer -->
-  <div class="mobile-footer" v-if="!showFilterSidebar">
-    <div class="footer-buttons">
-      <Button class="footer-button" @click="showFilterDrawer = true">
-        <i class="pi pi-filter"></i>
-        <span>Filter</span>
-      </Button>
-      <Button class="footer-button" @click="shareCurrentPage">
-        <i class="pi pi-share-alt"></i>
-        <span>Teilen</span>
-      </Button>
-    </div>
+    <!-- Mobile Filter Drawer -->
+    <Sidebar
+        v-model:visible="showFilterDrawer"
+        position="bottom"
+        class="filter-drawer"
+        :modal="true"
+        :dismissable="true"
+        :show-close-icon="true"
+        :base-z-index="1001">
+      <template #header>
+        <h2 class="text-xl font-bold m-0 p-3">Filter</h2>
+      </template>
+      <div class="p-3">
+        <StateFilters
+            :state-list="stateList"
+            :selected-states="filterState.selectedStates"
+            :event-count-for-state="getEventCountForState"
+            @toggle-state="toggleState($event)"/>
+        <EventFilters
+            :filter-options="filterOptions"
+            :filter-state="filterState"
+            :filter-counts="filterCounts"
+            @update:filters="updateFilters"/>
+      </div>
+    </Sidebar>
   </div>
-
-  <!-- Mobile Filter Drawer -->
-  <Sidebar v-model:visible="showFilterDrawer"
-           position="bottom"
-           class="filter-drawer"
-           :modal="true"
-           :dismissable="true"
-           :showCloseIcon="true"
-           :baseZIndex="1001">
-    <template #header>
-      <h2 class="text-xl font-bold m-0 p-3">Filter</h2>
-    </template>
-    <div class="p-3">
-      <EventFilters
-          :filter-options="filterOptions"
-          :filter-state="filterState"
-          :filter-counts="filterCounts"
-          @update:filters="updateFilters"/>
-    </div>
-  </Sidebar>
 </template>
-
-<style lang="scss">
-@use "../assets/variables_impl.scss" as variables;
-
-.top-filters {
-  max-width: 40rem;
-}
-
-.content-left-column {
-  flex: auto 2 1;
-  padding: 0;
-  overflow: hidden;
-  height: variables.$min-content-height;
-}
-
-.sticky-sidebar-container {
-  position: sticky;
-  top: variables.$navbar-height;
-}
-
-// Add margin to main content to prevent overlap with fixed sidebar
-.main-content-with-sidebar {
-  margin-left: 16.67%; // Equivalent to col-2 width
-}
-
-@media (min-width: 992px) { // lg breakpoint
-  .main-content-with-sidebar {
-    margin-left: 25%; // Equivalent to col-3 width
-  }
-}
-
-// Mobile footer styles
-.mobile-footer {
-  height: 5rem;
-  position: fixed;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  z-index: 1000;
-  background-color: var(--color-umbragrau);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-// Custom styles for the bottom drawer
-.filter-drawer {
-  height: 80% !important;
-  overflow-y: auto;
-  padding: 1rem;
-}
-
-// Style footer buttons
-.footer-buttons {
-  display: flex;
-  justify-content: center;
-  padding: 1rem;
-  gap: 1rem;
-  width: 100%;
-}
-
-.footer-button {
-  width: 4rem;
-  height: 4rem;
-  padding: 1rem;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  transition: opacity 0.2s;
-  color: white;
-  background: none;
-  border: none;
-}
-
-.footer-button i {
-  font-size: 1.5rem;
-}
-
-.footer-button span {
-  font-size: 0.8rem;
-}
-
-.state-badge {
-  min-width: 1.5rem;
-  height: 1.5rem;
-  font-size: 0.75rem;
-}
-</style>
 
 <script setup lang="ts">
 // Import the new functions
 import {
   EventCategoryLabels,
   eventsGroupedByMonthAndDepartureTime,
+  extractUniqueTagsFromEvents,
   filterEvents,
   type MuseumEventGroupGroup,
   RegistrationTypeLabels,
-  translateTag,
-  extractUniqueTagsFromEvents,
-  TagLabels
+  TagLabels,
+  translateTag
 } from "~/composables/eventDataFunctions";
 import {useAllEvents} from "~/composables/eventComposables";
 import {useAllLocations} from "~/composables/locationComposables";
@@ -298,7 +216,7 @@ import {
   RecurrenceType,
   VehicleType
 } from "~/apiModel/apiModel";
-
+import StateFilters from "~/components/StateFilters.vue";
 
 const route = useRoute();
 const router = useRouter();
@@ -308,7 +226,7 @@ const toast = useToast();
 const {data: events} = useAllEvents();
 const {data: locations} = useAllLocations();
 
-const showFilterSidebar = computed(() => viewport.isGreaterOrEquals('desktop'));
+const showFilterSidebar = computed(() => viewport.isGreaterThan('desktop'));
 
 // Mobile drawer state
 const showFilterDrawer = ref(false);
@@ -358,11 +276,7 @@ const searchTerm = computed({
   set: (value: string) => filterState.value.searchTerm = value
 });
 
-const selectedStates = computed({
-  get: () => filterState.value.selectedStates || [],
-  set: (value: string[]) => filterState.value.selectedStates = value
-});
-
+const selectedStates = computed(() => filterState.value.selectedStates || []);
 const stateList = computed<StateInfo[]>(() => locations.value ? getStateList(locations.value) : []);
 
 // Create computed property for dynamic tags from events
@@ -829,3 +743,92 @@ useSeoMeta({
   twitterCard: 'summary_large_image',
 })
 </script>
+
+<style lang="scss">
+@use "../assets/variables_impl.scss" as variables;
+
+.events-page {
+  background: white;
+}
+
+.top-filters {
+  max-width: 40rem;
+}
+
+.content-left-column {
+  flex: auto 2 1;
+  padding: 0;
+  overflow: hidden;
+  height: variables.$min-content-height;
+}
+
+.sticky-sidebar-container {
+  position: sticky;
+  top: variables.$navbar-height;
+}
+
+// Add margin to main content to prevent overlap with fixed sidebar
+.main-content-with-sidebar {
+  margin-left: 16.67%; // Equivalent to col-2 width
+}
+
+@media (min-width: 992px) { // lg breakpoint
+  .main-content-with-sidebar {
+    margin-left: 25%; // Equivalent to col-3 width
+  }
+}
+
+// Mobile footer styles
+.mobile-footer {
+  height: 5rem;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+  background-color: var(--color-umbragrau);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+// Custom styles for the bottom drawer
+.filter-drawer {
+  height: 80% !important;
+  overflow-y: auto;
+  padding: 1rem;
+}
+
+// Style footer buttons
+.footer-buttons {
+  display: flex;
+  justify-content: center;
+  padding: 1rem;
+  gap: 1rem;
+  width: 100%;
+}
+
+.footer-button {
+  width: 4rem;
+  height: 4rem;
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: opacity 0.2s;
+  color: white;
+  background: none;
+  border: none;
+}
+
+.footer-button i {
+  font-size: 1.5rem;
+}
+
+.footer-button span {
+  font-size: 0.8rem;
+}
+
+</style>
