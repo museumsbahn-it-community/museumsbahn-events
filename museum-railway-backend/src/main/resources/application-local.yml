@@ -7,7 +7,7 @@ image:
   signing-salt: "d531871747288265e6144698350f915a781005ba8dd7ed6fcf28634cec4a8c47744d37e830b5e5942c3c2a3e0758a00a6f2d2f847afb1728e31d1e10beb44d87"
 
 google:
-  credentialsPath: "data/googleCredentials.json"
+  credentialsPath: "config/googleCredentials.json"
   spreadsheetId: "1EDLDIaiQmhErSBxjAUzmcDwkgEOcsb-x1aZ-DJTvOcU"
 
 #logging:

@@ -1,15 +1,21 @@
 # museum-railway-backend
 
+## Google Cloud Access
+
+### Museum Database
 
 https://developers.google.com/sheets/api/quickstart/java
 
+In Google Cloud Console:
+- create a project
+- enable GoogleSheets API
+- create Service Account
 
-- create project
-- enable sheets api
-- create client
+1. Create a Service Account but DO NOT give it any IAM roles in the Google Cloud Console.
+2. Get the Service Account's email. Share the specific Google Sheet with that email address (Read-only).
+3. From the API Manager, just create select "Create credentials" > "Service Account key" and generate a new key for the Service that is associated to your Google Play account.
 
-
-From the API Manager, just create select "Create credentials" > "Service Account key" and generate a new key for the Service that is associated to your Google Play account.
+This limits the service account to ONLY the document explicitly shared with it.
 
 credentials file should look like
 ```json
@@ -27,3 +33,10 @@ credentials file should look like
 }
 
 ```
+
+### Images
+
+Images are simply stored in Google Drive and shared publicly. Then the image id is enough to access it.
+
+For added protection the image id's themselves are never shared with the frontend, but the backend controller internally applies
+a mapping.
