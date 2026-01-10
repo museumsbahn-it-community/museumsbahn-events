@@ -21,6 +21,7 @@
     "@primevue/forms": "^4.3.4",
     "@primevue/nuxt-module": "^4.5.4",
     "@types/leaflet": "^1.9.21",
+    "better-sqlite3": "^12.6.0",
     "date-fns": "^4.1.0",
     "eslint": "^9.29.0",
     "leaflet": "^1.9.4",

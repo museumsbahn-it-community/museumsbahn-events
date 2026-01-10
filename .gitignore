@@ -1,5 +1,9 @@
 boudicca.store/boudicca.store
 
+museum-railway-backend/config/googleCredentials.json
+infrastructure/config/googleCredentials.json
+infrastructure/boudicca.store/boudicca.store
+
 # generated code
 museum-railway-web/api/search-api-client-generated
 
