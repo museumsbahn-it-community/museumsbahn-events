@@ -1,7 +1,7 @@
 <template>
   <div class="w-full h-full events-page">
     <div class="grid w-full page-content">
-      <div v-if="showFilterSidebar" class="col-2 xl:col-3 flex flex-1 content-left-column sticky-sidebar-container">
+      <div v-if="showFilterSidebar" class="col-2 flex flex-1 content-left-column sticky-sidebar-container">
         <div
             class="w-full flex flex-column justify-content-center align-items-start overflow-hidden sticky-sidebar-container">
           <CustomSidebar class="w-full lg:w-11" style="height: 80%;" title="Filter" side="left">
@@ -15,7 +15,7 @@
         </div>
       </div>
       <div
-          class="flex flex-column align-items-center mx-2 col-12 xl:col-6"
+          class="flex flex-column align-items-center mx-2 col-12 xl:col-8"
           :class="{ 'main-content-with-sidebar': viewport.isGreaterOrEquals('tablet') }">
         <Message class="my-2 mx-4" severity="info" icon="pi pi-info-circle"> Achtung! Die Daten werden automatisch
           erfasst
