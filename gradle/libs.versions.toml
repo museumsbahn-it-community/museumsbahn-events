@@ -12,8 +12,14 @@ jackson-databind-nullable = "0.2.6"
 junit-jupiter = "5.12.0"
 assertk = "0.28.1"
 mockk = "1.13.17"
+slf4j = "2.0.17"
 spring-mockk = "4.0.2"
 graalvm = "0.10.5"
+biweekly = "0.6.8"
+handlebars = "4.5.0"
+kotlin-logging = "7.0.13"
+otel = "1.57.0"
+otel-instrumentation = "2.23.0-alpha"
 
 [libraries]
 spring-boot-starter-web = { module = "org.springframework.boot:spring-boot-starter-web", version.ref = "spring-boot" }
@@ -26,10 +32,20 @@ spring-boot-starter-test = { module = "org.springframework.boot:spring-boot-star
 kotlin-stdlib = {module ="org.jetbrains.kotlin:kotlin-stdlib"}
 kotlin-reflect = {module ="org.jetbrains.kotlin:kotlin-reflect"}
 
+slf4j = { module = "org.slf4j:slf4j-api", version.ref = "slf4j" }
+
 boudicca-eventdb-openapi = {module ="events.boudicca:eventdb-openapi", version.ref = "boudicca"}
 boudicca-commonmodel = {module ="events.boudicca:common-model", version.ref = "boudicca"}
+boudicca-fetcherlib = {module ="events.boudicca:fetcher-lib", version.ref = "boudicca"}
+# TODO: enable again once published by boudicca
+# boudicca-dateparserlib = {module ="events.boudicca:dateparser-lib", version.ref = "boudicca"}
+boudicca-publisher-client = {module ="events.boudicca:publisher-client", version.ref = "boudicca"}
+boudicca-ingest-client = {module ="events.boudicca:ingest-client", version.ref = "boudicca"}
+boudicca-enricher-client = {module ="events.boudicca:enricher-client", version.ref = "boudicca"}
 boudicca-eventcollector-client = {module ="events.boudicca:eventcollector-client", version.ref = "boudicca"}
+boudicca-remotecollector-client = {module ="events.boudicca:remote-collector-client", version.ref = "boudicca"}
 
+kotlin-logging = { module = "io.github.oshai:kotlin-logging-jvm", version.ref = "kotlin-logging" }
 kotlin-csv-jvm = {module ="com.github.doyaaaaaken:kotlin-csv-jvm", version="1.9.3"}
 
 # todo: kinda wanna get rid of jackson in favor of kotlinx.serialization
@@ -57,6 +73,21 @@ junit-platform-launcher = { module = "org.junit.platform:junit-platform-launcher
 assertk = { module = "com.willowtreeapps.assertk:assertk", version.ref = "assertk" }
 mockk = { module = "io.mockk:mockk", version.ref = "mockk" }
 spring-mockk = { module = "com.ninja-squad:springmockk", version.ref = "spring-mockk" }
+
+biweekly = { module = "net.sf.biweekly:biweekly", version.ref = "biweekly" }
+
+handlebars = { module = "com.github.jknack:handlebars", version.ref = "handlebars" }
+handlebars-springmvc = { module = "com.github.jknack:handlebars-springmvc", version.ref = "handlebars" }
+
+micrometer-core = { module = "io.micrometer:micrometer-core", version = "1.16.1" }
+micrometer-otel-bridge = { module = "io.micrometer:micrometer-tracing-bridge-otel", version = "1.6.1" }
+otel-api = { module = "io.opentelemetry:opentelemetry-api", version.ref = "otel" }
+otel-sdk = { module = "io.opentelemetry:opentelemetry-sdk", version.ref = "otel" }
+otel-exporter = { module = "io.opentelemetry:opentelemetry-exporter-otlp", version.ref = "otel" }
+otel-semconv = { module = "io.opentelemetry.semconv:opentelemetry-semconv", version = "1.37.0" }
+otel-java-httpclient = { module = "io.opentelemetry.instrumentation:opentelemetry-java-http-client", version.ref = "otel-instrumentation" }
+otel-micrometer = { module = "io.opentelemetry.instrumentation:opentelemetry-micrometer-1.5", version.ref = "otel-instrumentation" }
+otel-logback = { module = "io.opentelemetry.instrumentation:opentelemetry-logback-appender-1.0", version.ref = "otel-instrumentation" }
 
 google-api-client = { module = "com.google.api-client:google-api-client", version = "2.7.2" }
 google-auth-library-oauth2-http = { module = "com.google.auth:google-auth-library-oauth2-http", version = "1.33.1" }
