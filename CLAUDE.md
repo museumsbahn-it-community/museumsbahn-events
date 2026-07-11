@@ -6,6 +6,10 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 museumsbahn-events.at is an event aggregation platform for Austrian heritage railways. It crawls events from ~20 associations without requiring extra work from them, providing a single entry point for trip planning.
 
+## Roadmap
+
+Prioritized upcoming work lives in `docs/ROADMAP.md` — check it for current priorities, item status, and open product questions before planning new feature work.
+
 ## Architecture
 
 The system integrates with **Boudicca.events** as a central event hub:
