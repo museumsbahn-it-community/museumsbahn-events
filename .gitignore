@@ -47,3 +47,7 @@ nb-configuration.xml
 .env
 
 traefik/logs/access.log
+infrastructure/traefik/logs/access.log
+
+# Claude Code local settings
+.claude/settings.local.json
