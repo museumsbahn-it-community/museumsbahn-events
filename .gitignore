@@ -51,3 +51,7 @@ infrastructure/traefik/logs/access.log
 
 # Claude Code local settings
 .claude/settings.local.json
+.claude/settings.json
+
+# Citadel local state (machine-specific paths, not portable)
+.planning/
