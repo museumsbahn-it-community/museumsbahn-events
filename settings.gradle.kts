@@ -2,7 +2,6 @@
 include("dateparser-lib")
 include("museum-railway-eventcollectors")
 include("museum-railway-backend")
-include("museum-railway-openapi")
 include("museum-railway-web")
 include("museum-railway-api")
 

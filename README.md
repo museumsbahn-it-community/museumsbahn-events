@@ -1,6 +1,6 @@
 # museumsbahn-events
 
-This is the code behind the page museumsbahn-events.at which will be launched in the first half of 2024.
+This is the code behind the page museumsbahn-events.at, an event aggregation platform for Austrian heritage railways.
 
 ## Goal
 
@@ -19,17 +19,42 @@ We implemented some custom eventcollectors, which are fully compatible with boud
 Additionally we use a separate backend to provide additional information like museum 
 locations, opening hours, contact details and so on.
 
+See `CLAUDE.md` for the full module breakdown, build commands, and technical details.
+
 ## Current Limitations
 
 ## Development
 
 ### Requirements
 
-- npm
-- java21
-- gradle
+All required tool versions (Java, Node, Python/uv) are declared in the root `mise.toml`. With
+[mise](https://mise.jdt.io/) installed, run:
+
+```bash
+mise install
+```
+
+to provision the full toolchain in one shot. If you're not using mise, you need at minimum:
+
+- Java 21
+- Node (see `mise.toml` for the pinned version)
+- Gradle (via the included `./gradlew` wrapper, no separate install needed)
 
 It's recommended to use IntelliJ or VsCode as IDE. Nuxt support in both is unfortunately not great.
+
+### Knowledge graph (graphify)
+
+This repo maintains a queryable knowledge graph of the codebase under `graphify-out/` (gitignored,
+regenerate locally — it's not shipped with a fresh clone). It's built and queried through the
+`graphify` skill inside Claude Code:
+
+1. First run: `uv tool install graphifyy` (needs `uv`, provisioned by `mise install` above) — or
+   just invoke `/graphify` once, which installs it automatically if missing.
+2. Rebuild after code changes: `/graphify --update` (incremental, re-extracts only changed files).
+3. Re-cluster without re-extracting: `/graphify --cluster-only`.
+4. Ask questions about the codebase directly: `/graphify query "<question>"`.
+
+See `CLAUDE.md` for more detail on how this is expected to be used during agent-driven work.
 
 ### Modifying the API and releasing a new version
 
