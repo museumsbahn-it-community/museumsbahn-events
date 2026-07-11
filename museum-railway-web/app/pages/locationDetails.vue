@@ -26,10 +26,6 @@ const locationId = route?.params?.locationId as string;
 const viewport = useViewport();
 
 const museumLocation = computed(() => getLocationById(locations.value ?? [], locationId));
-watch(museumLocation, () => {
-  console.log(museumLocation.value)
-})
-
 const events = computed(() => eventsForLocationIdGrouped(eventsRaw.value ?? [], locationId));
 
 useSeoMeta({
