@@ -1,0 +1,5 @@
+[allowlist]
+description = "Ignore test fixture"
+paths = [
+  '''museum-railway-eventcollectors/src/test/resources/examples/.*''',
+]
