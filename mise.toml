@@ -1,0 +1,8 @@
+[tools]
+# Java 21 is required by all Kotlin/Gradle modules (backend, eventcollectors, api, dateparser-lib)
+java = "21"
+# Node is required by museum-railway-web (Nuxt 4)
+node = "20"
+# Python + uv are required by graphify (uv tool install graphifyy)
+python = "3.12"
+uv = "latest"

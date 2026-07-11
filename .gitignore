@@ -11,6 +11,9 @@ museum-railway-web/api/search-api-client-generated
 .gradle/
 build/
 
+#Graphify
+graphify-out/
+
 # gradle.properties must be consciously commited
 
 # Eclipse
@@ -55,3 +58,17 @@ infrastructure/traefik/logs/access.log
 
 # Citadel local state (machine-specific paths, not portable)
 .planning/
+
+# Runtime state (regenerated automatically)
+.claude/circuit-breaker-state.json
+.claude/compact-state.json
+.claude/harness.json
+.claude/consent-*.json
+.claude/settings.json
+.claude/settings.local.json
+.claude/agent-context/
+
+# Per-project scaffolded state (created by init-project hook)
+.citadel/*
+!.citadel/project.md
+!.citadel/project.template.md
