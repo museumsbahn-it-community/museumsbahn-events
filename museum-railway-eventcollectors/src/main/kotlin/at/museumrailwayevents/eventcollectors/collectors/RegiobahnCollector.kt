@@ -5,8 +5,10 @@ import at.museumrailwayevents.eventcollectors.collectors.util.keepLineBreaks
 import at.museumrailwayevents.eventcollectors.service.JsoupCrawler
 import at.museumrailwayevents.model.conventions.*
 import base.boudicca.SemanticKeys
+import base.boudicca.api.eventcollector.annotations.BoudiccaEventCollector
 import base.boudicca.model.Event
 
+@BoudiccaEventCollector(collectorTypeName = "regiobahn")
 class RegiobahnCollector(val jsoupCrawler: JsoupCrawler) : MuseumRailwayEventCollector(
     "regiobahn",
     "regiobahn",

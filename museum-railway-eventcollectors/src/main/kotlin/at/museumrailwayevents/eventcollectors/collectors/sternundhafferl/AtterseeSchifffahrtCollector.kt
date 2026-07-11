@@ -2,8 +2,10 @@ package at.museumrailwayevents.eventcollectors.collectors.sternundhafferl
 
 import at.museumrailwayevents.eventcollectors.service.JsoupCrawler
 import at.museumrailwayevents.model.conventions.VehicleType
+import base.boudicca.api.eventcollector.annotations.BoudiccaEventCollector
 import base.boudicca.model.Event
 
+@BoudiccaEventCollector(collectorTypeName = "atterseeschifffahrt")
 class AtterseeSchifffahrtCollector(jsoupCrawler: JsoupCrawler) : SternHafferlCollector(
     jsoupCrawler,
     VehicleType.SHIP,

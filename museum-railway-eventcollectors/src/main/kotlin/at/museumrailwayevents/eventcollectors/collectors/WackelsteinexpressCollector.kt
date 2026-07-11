@@ -5,10 +5,12 @@ import at.museumrailwayevents.eventcollectors.collectors.dateParser.DateParser.p
 import at.museumrailwayevents.eventcollectors.service.JsoupCrawler
 import at.museumrailwayevents.model.conventions.*
 import base.boudicca.SemanticKeys
+import base.boudicca.api.eventcollector.annotations.BoudiccaEventCollector
 import base.boudicca.model.Event
 import org.jsoup.nodes.Document
 import java.util.*
 
+@BoudiccaEventCollector(collectorTypeName = "wackelsteinexpress")
 class WackelsteinexpressCollector(val jsoupCrawler: JsoupCrawler) : MuseumRailwayEventCollector(
     operatorId = "wackelsteinexpress",
     locationId = "wackelsteinexpress",

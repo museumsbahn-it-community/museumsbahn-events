@@ -5,10 +5,12 @@ import at.museumrailwayevents.eventcollectors.collectors.util.toTagsValue
 import at.museumrailwayevents.eventcollectors.service.JsoupCrawler
 import at.museumrailwayevents.model.conventions.*
 import base.boudicca.SemanticKeys
+import base.boudicca.api.eventcollector.annotations.BoudiccaEventCollector
 import base.boudicca.model.Event
 import org.jsoup.nodes.Element
 import java.time.OffsetDateTime
 
+@BoudiccaEventCollector(collectorTypeName = "ebm_schwechat")
 class EbmSchwechatCollector(val jsoupCrawler: JsoupCrawler) : MuseumRailwayEventCollector(
     "vef",
     "ebm_schwechat",

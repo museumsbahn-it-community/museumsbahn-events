@@ -2,8 +2,10 @@ package at.museumrailwayevents.eventcollectors.collectors
 
 import at.museumrailwayevents.eventcollectors.service.JsoupCrawler
 import at.museumrailwayevents.model.conventions.VehicleType
+import base.boudicca.api.eventcollector.annotations.BoudiccaEventCollector
 import base.boudicca.model.Event
 
+@BoudiccaEventCollector(collectorTypeName = "ybbstalbahn")
 class YbbstalbahnCollector(jsoupCrawler: JsoupCrawler) : OeglbCollector(
     jsoupCrawler,
     VehicleType.DIESEL_TRAIN, // jan 2025: i hope they will ever run the steamer again :D

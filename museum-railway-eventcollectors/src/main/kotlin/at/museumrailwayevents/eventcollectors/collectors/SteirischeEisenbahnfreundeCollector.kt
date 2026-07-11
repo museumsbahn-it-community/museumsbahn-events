@@ -5,8 +5,10 @@ import at.museumrailwayevents.eventcollectors.collectors.util.toTagsValue
 import at.museumrailwayevents.eventcollectors.service.JsoupCrawler
 import at.museumrailwayevents.model.conventions.*
 import base.boudicca.SemanticKeys
+import base.boudicca.api.eventcollector.annotations.BoudiccaEventCollector
 import base.boudicca.model.Event
 
+@BoudiccaEventCollector(collectorTypeName = "steirische_eisenbahnfreunde")
 class SteirischeEisenbahnfreundeCollector(val jsoupCrawler: JsoupCrawler) : MuseumRailwayEventCollector(
     "stef",
     "stef",

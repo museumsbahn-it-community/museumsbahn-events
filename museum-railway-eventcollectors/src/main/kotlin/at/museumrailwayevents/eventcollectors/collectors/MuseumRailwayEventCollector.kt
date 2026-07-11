@@ -5,6 +5,7 @@ import base.boudicca.model.structured.Key
 import base.boudicca.SemanticKeys
 import base.boudicca.TextProperty
 import base.boudicca.api.eventcollector.EventCollector
+import base.boudicca.api.eventcollector.config.EventCollectorBaseConfig
 import base.boudicca.format.UrlUtils
 import base.boudicca.model.Event
 import base.boudicca.model.structured.StructuredEvent
@@ -19,7 +20,7 @@ abstract class MuseumRailwayEventCollector(
     protected val sourceUrl: String,
     protected val tags: List<String> = emptyList(),
     protected val locationName: String
-) : EventCollector {
+) : EventCollector<EventCollectorBaseConfig>(EventCollectorBaseConfig::class) {
 
     @Deprecated("use createStructuredEvent instead")
     protected fun createEvent(

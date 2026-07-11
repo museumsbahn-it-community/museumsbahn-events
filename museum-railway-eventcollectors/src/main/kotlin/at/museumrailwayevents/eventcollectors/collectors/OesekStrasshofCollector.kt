@@ -5,10 +5,12 @@ import at.museumrailwayevents.eventcollectors.collectors.util.keepLineBreaks
 import at.museumrailwayevents.eventcollectors.service.JsoupCrawler
 import at.museumrailwayevents.model.conventions.*
 import base.boudicca.SemanticKeys
+import base.boudicca.api.eventcollector.annotations.BoudiccaEventCollector
 import base.boudicca.model.Event
 import java.time.LocalDate
 import java.time.OffsetDateTime
 
+@BoudiccaEventCollector(collectorTypeName = "oesek_strasshof")
 class OesekStrasshofCollector(val jsoupCrawler: JsoupCrawler) : MuseumRailwayEventCollector(
     "oesek",
     "oesek",

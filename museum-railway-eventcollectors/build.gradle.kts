@@ -16,6 +16,7 @@ dependencies {
     implementation(libs.kotlin.stdlib)
     implementation(libs.boudicca.eventdb.openapi)
     implementation(libs.boudicca.commonmodel)
+    implementation(libs.otel.api)
     implementation(libs.boudicca.eventcollector.client)
     implementation(libs.kotlin.csv.jvm)
     implementation("org.jsoup:jsoup:1.16.1")

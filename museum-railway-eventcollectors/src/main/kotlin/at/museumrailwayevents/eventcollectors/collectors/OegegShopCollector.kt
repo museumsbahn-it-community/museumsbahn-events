@@ -4,6 +4,7 @@ import at.museumrailwayevents.eventcollectors.collectors.dateParser.DateParser
 import at.museumrailwayevents.eventcollectors.service.JsoupCrawler
 import at.museumrailwayevents.model.conventions.*
 import base.boudicca.SemanticKeys
+import base.boudicca.api.eventcollector.annotations.BoudiccaEventCollector
 import base.boudicca.model.Event
 
 private val operatorId = "oegeg";
@@ -15,6 +16,7 @@ private val urlSchifffahrtsTermine = "https://www.oegeg.at/termine/termine-schif
 /**
  * Collects entries from ÖGEG shop pages. This includes Normalspur and Schifffahrt, but NOT Schmalspur.
  */
+@BoudiccaEventCollector(collectorTypeName = "oegeg_shop")
 class OegegShopCollector(val jsoupCrawler: JsoupCrawler) : MuseumRailwayEventCollector(
     operatorId, locationId_bahn, urlNormalspurTermine, locationName = "ÖGEG"
 ) {

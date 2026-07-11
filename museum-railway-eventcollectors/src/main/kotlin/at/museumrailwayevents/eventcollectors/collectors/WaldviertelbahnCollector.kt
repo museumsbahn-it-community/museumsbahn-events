@@ -5,12 +5,14 @@ import at.museumrailwayevents.eventcollectors.service.JsoupCrawler
 import at.museumrailwayevents.model.conventions.TAGS_NARROW_GAUGE
 import at.museumrailwayevents.model.conventions.Tags
 import at.museumrailwayevents.model.conventions.VehicleType
+import base.boudicca.api.eventcollector.annotations.BoudiccaEventCollector
 import base.boudicca.model.Event
 
 /**
  * There are offers for golden DMUs, but these are excluded here, because
  * these reflect more of a regular train service than historic trains.
  */
+@BoudiccaEventCollector(collectorTypeName = "waldviertelbahn")
 class WaldviertelbahnCollector(jsoupCrawler: JsoupCrawler) : NoevogCollector(
     jsoupCrawler,
     operatorId = "noevog",

@@ -8,8 +8,10 @@ import at.museumrailwayevents.eventcollectors.collectors.dateParser.DateParser.m
 import at.museumrailwayevents.eventcollectors.collectors.dateParser.DateParser.toDayValue
 import at.museumrailwayevents.eventcollectors.service.JsoupCrawler
 import base.boudicca.SemanticKeys
+import base.boudicca.api.eventcollector.annotations.BoudiccaEventCollector
 import base.boudicca.model.Event
 
+@BoudiccaEventCollector(collectorTypeName = "oegeg_schmalspur")
 class OegegSchmalspurCollector(val jsoupCrawler: JsoupCrawler) : MuseumRailwayEventCollector(
     operatorId = "oegeg",
     locationId = "oegeg_schmalspur",
