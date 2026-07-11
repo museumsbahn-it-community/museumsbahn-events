@@ -5,11 +5,13 @@ import at.museumrailwayevents.eventcollectors.collectors.util.toTagsValue
 import at.museumrailwayevents.eventcollectors.service.JsoupCrawler
 import at.museumrailwayevents.model.conventions.*
 import base.boudicca.SemanticKeys
+import base.boudicca.api.eventcollector.annotations.BoudiccaEventCollector
 import base.boudicca.model.Event
 
 /**
  * This collector only collects the Mh6 Events. Mariazellerbahn steam train and Ötscherbär are covered separately.
  */
+@BoudiccaEventCollector(collectorTypeName = "mh6")
 class Mh6Collector(val jsoupCrawler: JsoupCrawler) : MuseumRailwayEventCollector(
     operatorId = "mh6",
     locationId = "mh6_heizhaus_krumpe",

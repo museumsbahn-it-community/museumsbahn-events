@@ -5,6 +5,7 @@ import at.museumrailwayevents.eventcollectors.collectors.util.toTagsValue
 import at.museumrailwayevents.eventcollectors.service.JsoupCrawler
 import at.museumrailwayevents.model.conventions.*
 import base.boudicca.SemanticKeys
+import base.boudicca.api.eventcollector.annotations.BoudiccaEventCollector
 import base.boudicca.model.Event
 
 const val locationId_ebfl_museum = "ebfl_museum"
@@ -15,6 +16,7 @@ const val locationId_ebfl_suedbahn_express = "ebfl_suedbahn_express"
  * events on the museum page are too unstructured to be parsed automatically
  * (special events and regular opening hours are mixed).
  */
+@BoudiccaEventCollector(collectorTypeName = "ebfl")
 class EbflCollector(val jsoupCrawler: JsoupCrawler) : MuseumRailwayEventCollector(
     operatorId = "ebfl",
     locationId = locationId_ebfl_museum,
@@ -107,6 +109,4 @@ class EbflCollector(val jsoupCrawler: JsoupCrawler) : MuseumRailwayEventCollecto
     }
 
     override fun getName(): String = "EBFL Collector"
-
-
 }

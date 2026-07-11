@@ -5,6 +5,7 @@ import at.museumrailwayevents.eventcollectors.collectors.util.toTagsValue
 import at.museumrailwayevents.eventcollectors.service.JsoupCrawler
 import at.museumrailwayevents.model.conventions.*
 import base.boudicca.SemanticKeys
+import base.boudicca.api.eventcollector.annotations.BoudiccaEventCollector
 import base.boudicca.model.Event
 import org.jsoup.nodes.Element
 import org.jsoup.select.Elements
@@ -16,6 +17,7 @@ import java.util.*
 val fahrplanUrl = "https://waelderbaehnle.at/fahrplanbetrieb-preise-2025"
 val sonderfahrtenUrl = "https://waelderbaehnle.at/aktuelles/veranstaltungskalender-2025"
 
+@BoudiccaEventCollector(collectorTypeName = "waelderbahnle")
 class WälderbähnleCollector(val jsoupCrawler: JsoupCrawler) : MuseumRailwayEventCollector(
     operatorId = "waelderbaehnle",
     locationId = "waelderbaehnle",

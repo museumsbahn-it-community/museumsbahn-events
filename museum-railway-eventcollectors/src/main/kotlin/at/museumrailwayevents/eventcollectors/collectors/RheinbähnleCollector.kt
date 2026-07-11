@@ -4,6 +4,7 @@ import at.museumrailwayevents.eventcollectors.collectors.util.toTagsValue
 import at.museumrailwayevents.eventcollectors.service.JsoupCrawler
 import at.museumrailwayevents.model.conventions.*
 import base.boudicca.SemanticKeys
+import base.boudicca.api.eventcollector.annotations.BoudiccaEventCollector
 import base.boudicca.model.Event
 import org.jsoup.Jsoup
 import java.time.Instant
@@ -12,6 +13,7 @@ import java.time.OffsetDateTime
 import java.time.ZoneId
 import java.time.format.DateTimeFormatter
 
+@BoudiccaEventCollector(collectorTypeName = "rheinbaehnle")
 class RheinbähnleCollector(val jsoupCrawler: JsoupCrawler) : MuseumRailwayEventCollector(
     operatorId = "rheinschauen",
     locationId = "rheinschauen",

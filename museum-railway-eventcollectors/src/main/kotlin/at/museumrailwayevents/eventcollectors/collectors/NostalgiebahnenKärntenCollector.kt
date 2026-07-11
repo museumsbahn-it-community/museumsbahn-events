@@ -4,6 +4,7 @@ import at.museumrailwayevents.eventcollectors.collectors.dateParser.DateParser
 import at.museumrailwayevents.eventcollectors.service.JsoupCrawler
 import at.museumrailwayevents.model.conventions.*
 import base.boudicca.SemanticKeys
+import base.boudicca.api.eventcollector.annotations.BoudiccaEventCollector
 import base.boudicca.model.Event
 
 private val locationId_bahn = "nbik_eisenbahn"
@@ -15,6 +16,7 @@ private val locationId_tram = "nbik_tram"
 val operatorIdNbik = "nbik"
 val imageUrlBase = "https://www.nostalgiebahn.at/"
 
+@BoudiccaEventCollector(collectorTypeName = "nostalgiebahnen_kaernten")
 class NostalgiebahnenKärntenCollector(val jsoupCrawler: JsoupCrawler) : MuseumRailwayEventCollector(
     operatorId = operatorIdNbik,
     locationId = locationId_bahn,

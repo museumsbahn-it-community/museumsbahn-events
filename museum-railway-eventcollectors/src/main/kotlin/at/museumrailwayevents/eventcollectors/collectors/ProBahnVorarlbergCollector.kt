@@ -9,6 +9,7 @@ import net.fortuna.ical4j.model.Calendar
 import net.fortuna.ical4j.model.Property
 import net.fortuna.ical4j.model.component.VEvent
 import net.fortuna.ical4j.model.property.Attach
+import base.boudicca.api.eventcollector.annotations.BoudiccaEventCollector
 import java.net.URI
 import java.net.URL
 import java.time.LocalDate
@@ -16,6 +17,7 @@ import java.time.LocalDateTime
 import java.time.ZoneId
 import java.time.format.DateTimeFormatter
 
+@BoudiccaEventCollector(collectorTypeName = "probahn_vorarlberg")
 class ProBahnVorarlbergCollector : MuseumRailwayEventCollector(
     operatorId = "pbv",
     locationId = "pbv",

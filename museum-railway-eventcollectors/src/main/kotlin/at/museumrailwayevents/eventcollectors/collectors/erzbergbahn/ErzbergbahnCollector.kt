@@ -1,8 +1,10 @@
 package at.museumrailwayevents.eventcollectors.collectors.erzbergbahn
 
+import base.boudicca.api.eventcollector.annotations.BoudiccaEventCollector
 import base.boudicca.model.Event
 
 
+@BoudiccaEventCollector(collectorTypeName = "erzbergbahn")
 class ErzbergbahnCollector : RegiondoCollector(
     locationName = "Erzbergbahn",
     sourceUrl = "https://www.erzbergbahn.at/",

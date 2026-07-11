@@ -5,9 +5,11 @@ import at.museumrailwayevents.eventcollectors.collectors.util.toTagsValue
 import at.museumrailwayevents.eventcollectors.service.JsoupCrawler
 import at.museumrailwayevents.model.conventions.*
 import base.boudicca.SemanticKeys
+import base.boudicca.api.eventcollector.annotations.BoudiccaEventCollector
 import base.boudicca.model.Event
 import java.net.URI
 
+@BoudiccaEventCollector(collectorTypeName = "wiener_tramway_museum")
 class WienerTramwayMuseumCollector(private val jsoupCrawler: JsoupCrawler) : MuseumRailwayEventCollector(
     operatorId = "wtm",
     locationId = "wtm",
@@ -59,6 +61,6 @@ class WienerTramwayMuseumCollector(private val jsoupCrawler: JsoupCrawler) : Mus
         return events
     }
 
-    override fun getName(): String = "Tramwaymuseum Graz Collector"
+    override fun getName(): String = "WTM Collector"
 
 }

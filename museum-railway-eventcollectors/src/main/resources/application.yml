@@ -1,0 +1,83 @@
+server:
+  port: 8083
+
+boudicca:
+  collector:
+    collection-interval: PT6H
+    webui:
+      time-zone-id: "Europe/Vienna"
+    eventdb-url: http://boudicca-eventdb:8080
+    ingest-auth: ingest:ingest
+    collectors:
+      - type: atterseebahn
+        name: Atterseebahn Nostalgie
+        enabled: true
+      - type: atterseeschifffahrt
+        name: Attersee Schifffahrt
+        enabled: true
+      - type: ebfl
+        name: EBFL
+        enabled: true
+      - type: oegeg_shop
+        name: OEGEG Shop
+        enabled: true
+      - type: oegeg_schmalspur
+        name: OEGEG Schmalspur
+        enabled: true
+      - type: probahn_vorarlberg
+        name: ProBahn Vorarlberg
+        enabled: true
+      - type: oesek_strasshof
+        name: OESEK Strasshof
+        enabled: true
+      - type: regiobahn
+        name: Regiobahn
+        enabled: true
+      - type: rheinbaehnle
+        name: Rheinbähnle
+        enabled: true
+      - type: waelderbahnle
+        name: Wälderbähnle
+        enabled: true
+      - type: nostalgiebahnen_kaernten
+        name: Nostalgiebahnen Kärnten
+        enabled: true
+      - type: wackelsteinexpress
+        name: Wackelsteinexpress
+        enabled: true
+      - type: hoellentalbahn
+        name: Höllentalbahn
+        enabled: true
+      - type: ybbstalbahn
+        name: Ybbstalbahn
+        enabled: true
+      - type: mh6
+        name: MH6
+        enabled: true
+      - type: steirische_eisenbahnfreunde
+        name: Steirische Eisenbahnfreunde
+        enabled: true
+      - type: ebm_schwechat
+        name: EBM Schwechat
+        enabled: true
+      - type: wiener_tramway_museum
+        name: Wiener Tramway Museum
+        enabled: true
+      - type: traunseetram
+        name: Traunseetram
+        enabled: true
+      - type: tramway_museum_graz
+        name: Tramwaymuseum Graz
+        enabled: true
+      - type: erzbergbahn
+        name: Erzbergbahn
+        enabled: true
+      - type: mlv_zwettl
+        name: MLV Zwettl
+        enabled: true
+      - type: waldviertelbahn
+        name: Waldviertelbahn
+        enabled: false
+      - type: reblausexpress
+        name: Reblausexpress
+        enabled: false

@@ -18,6 +18,7 @@ dependencies {
     api(libs.boudicca.fetcherlib)
     api(libs.kotlin.logging)
     api(project(":dateparser-lib"))
+    api(libs.otel.api)
     api(libs.biweekly)
     api(libs.spring.boot.starter.web)
     api(libs.handlebars)

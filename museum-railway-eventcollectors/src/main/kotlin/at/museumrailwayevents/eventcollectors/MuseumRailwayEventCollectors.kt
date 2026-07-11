@@ -1,41 +1,102 @@
 package at.museumrailwayevents.eventcollectors
 
-import at.museumrailwayevents.eventcollectors.collectors.sternundhafferl.AtterseeSchifffahrtCollector
-import at.museumrailwayevents.eventcollectors.collectors.*
-import at.museumrailwayevents.eventcollectors.collectors.erzbergbahn.ErzbergbahnCollector
-import at.museumrailwayevents.eventcollectors.collectors.sternundhafferl.AtterseebahnCollector
-import at.museumrailwayevents.eventcollectors.collectors.sternundhafferl.TraunseetramCollector
-import at.museumrailwayevents.eventcollectors.service.JsoupCrawlerImpl
-import base.boudicca.api.eventcollector.EventCollectorCoordinatorBuilder
+import base.boudicca.api.eventcollector.EventCollectionRunner
+import base.boudicca.api.eventcollector.EventCollector
+import base.boudicca.api.eventcollector.annotations.BoudiccaEventCollector
+import base.boudicca.api.eventcollector.configuration.EventCollectorsConfigurationProperties
+import base.boudicca.api.eventcollector.runner.RunnerEnricherInterface
+import base.boudicca.api.eventcollector.runner.RunnerIngestionInterface
+import io.github.oshai.kotlinlogging.KotlinLogging
+import org.springframework.beans.factory.findAnnotationOnBean
+import org.springframework.beans.factory.getBeanNamesForAnnotation
+import org.springframework.boot.WebApplicationType
+import org.springframework.boot.autoconfigure.SpringBootApplication
+import org.springframework.boot.builder.SpringApplicationBuilder
+import org.springframework.context.ApplicationContext
+import org.springframework.context.annotation.Bean
+import org.springframework.context.annotation.Profile
+import org.springframework.scheduling.annotation.EnableScheduling
+import org.springframework.scheduling.annotation.Scheduled
 
-val crawler = JsoupCrawlerImpl()
-fun main() {
-    EventCollectorCoordinatorBuilder()
-        .addEventCollector(AtterseebahnCollector(crawler))
-        .addEventCollector(AtterseeSchifffahrtCollector(crawler))
-        .addEventCollector(EbflCollector(crawler))
-        .addEventCollector(OegegShopCollector(crawler))
-        .addEventCollector(OegegSchmalspurCollector(crawler))
-        .addEventCollector(ProBahnVorarlbergCollector())
-        .addEventCollector(OesekStrasshofCollector(crawler))
-        .addEventCollector(RegiobahnCollector(crawler))
-        .addEventCollector(RheinbähnleCollector(crawler))
-        .addEventCollector(WälderbähnleCollector(crawler))
-        .addEventCollector(NostalgiebahnenKärntenCollector(crawler))
-        .addEventCollector(WackelsteinexpressCollector(crawler))
-        .addEventCollector(HoellentalbahnCollector(crawler))
-        .addEventCollector(YbbstalbahnCollector(crawler))
-        .addEventCollector(Mh6Collector(crawler))
-//        .addEventCollector(WaldviertelbahnCollector(crawler))
-//        .addEventCollector(ReblausexpressCollector(crawler))
-        .addEventCollector(SteirischeEisenbahnfreundeCollector(crawler))
-        .addEventCollector(EbmSchwechatCollector(crawler))
-        .addEventCollector(WienerTramwayMuseumCollector(crawler))
-        .addEventCollector(TraunseetramCollector(crawler))
-        .addEventCollector(TramwaymuseumGrazCollector(crawler))
-        .addEventCollector(ErzbergbahnCollector())
-        .addEventCollector(MLVZwettlCollector(crawler))
+@Profile("!debug")
+@SpringBootApplication
+@EnableScheduling
+class MuseumRailwayEventCollectors(
+    private val applicationContext: ApplicationContext,
+    private val eventCollectorsConfigurationProperties: EventCollectorsConfigurationProperties,
+) {
+    companion object {
+        private val logger = KotlinLogging.logger {}
+    }
+
+    // TODO: inject OpenTelemetry when OTEL is configured
+
+    val ingestionInterface =
+        RunnerIngestionInterface.createFromConfiguration(
+            eventDbUrl = eventCollectorsConfigurationProperties.eventdbUrl,
+            ingestAuth = eventCollectorsConfigurationProperties.ingestAuth,
+        )
+    val enricherInterface =
+        RunnerEnricherInterface.createFromConfiguration(
+            enricherUrl = eventCollectorsConfigurationProperties.enricherUrl,
+        )
+
+    // TODO: pass OpenTelemetry instance to EventCollectionRunner when OTEL is configured
+    private val eventCollectionRunner = EventCollectionRunner()
+
+    private val enabledCollectors: List<EventCollector<*>> = initCollectors()
+
+    private fun initCollectors(): List<EventCollector<*>> {
+        // This is a bit of spring black magic, but it allows us to configure eventcollectors at runtime
+        // and run multiple collectors of the same type at once.
+        // First we find all registered collector beans.
+        val typeToBeanClass =
+            applicationContext
+                .getBeanNamesForAnnotation<BoudiccaEventCollector>()
+                .associate { beanName ->
+                    val type =
+                        applicationContext.findAnnotationOnBean<BoudiccaEventCollector>(beanName)?.collectorTypeName
+                            ?: beanName
+                    val clazz =
+                        applicationContext.getType(beanName)
+                            ?: error("Could not get type for bean $beanName")
+                    type to clazz
+                }
+
+        // now we iterate over all the configurations
+        return eventCollectorsConfigurationProperties.collectors
+            .filter { it.enabled }
+            .mapNotNull { config ->
+                // get the correct bean for the type
+                val beanClass = typeToBeanClass[config.type]
+                if (beanClass == null) {
+                    logger.warn { "Collector of type ${config.type} not found" }
+                    null
+                } else {
+                    // create a new instance of the collector with the given configuration
+                    val collector = applicationContext.autowireCapableBeanFactory.createBean(beanClass) as EventCollector<*>
+                    collector.configure(config.name, config.properties)
+                    collector
+                }
+            }
+    }
+
+    @Bean
+    fun eventCollectionRunner(): EventCollectionRunner = eventCollectionRunner
+
+    @Scheduled(fixedRateString = "\${boudicca.collector.collection-interval}")
+    private fun runCollection() {
+        this.eventCollectionRunner.run(
+            enabledCollectors,
+            ingestionInterface,
+            enricherInterface,
+        )
+    }
+}
+
+fun main(args: Array<String>) {
+    SpringApplicationBuilder(MuseumRailwayEventCollectors::class.java)
+        .web(WebApplicationType.SERVLET)
         .build()
-        .startWebUi()
-        .run()
+        .run(*args)
 }
