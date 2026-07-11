@@ -108,8 +108,6 @@ const mappedImages = computed(() => props.museumLocation?.images?.map(image => {
 
 const hasImages = computed(() => mappedImages.value.length > 0)
 
-watch(mappedImages, mi => console.log(mi))
-
 function navigateToEventDetails(value: string) {
   router.push({name: 'eventDetails', params: {eventKey: eventKey(value)}});
 }
