@@ -1,0 +1,4 @@
+boudicca:
+  collector:
+    eventdb-url: http://localhost:8080
+    collection-interval: PT10M
