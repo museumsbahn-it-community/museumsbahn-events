@@ -1,0 +1,61 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+# Cancel superseded runs on the same branch/PR to conserve free-tier minutes.
+concurrency:
+  group: ci-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  # Gradle/JVM file handling is locale-sensitive; force UTF-8 so filenames
+  # with umlauts (e.g. NostalgiebahnenKärntenCollector.kt) resolve correctly.
+  LANG: en_US.UTF-8
+  LC_ALL: en_US.UTF-8
+
+jobs:
+  gradle-build:
+    name: Gradle build (backend, eventcollectors, api, dateparser-lib)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "21"
+
+      - uses: gradle/actions/setup-gradle@v4
+
+      - name: Build and test
+        run: ./gradlew build
+
+      - name: Upload test reports
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: gradle-test-reports
+          path: "**/build/reports/tests/**"
+          retention-days: 7
+
+  web-build:
+    name: Frontend build (museum-railway-web)
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: museum-railway-web
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: npm
+          cache-dependency-path: museum-railway-web/package-lock.json
+
+      - run: npm ci
+
+      - run: npm run build
