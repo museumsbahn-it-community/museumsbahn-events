@@ -94,5 +94,5 @@ class OegegSchmalspurCollector(val jsoupCrawler: JsoupCrawler) : MuseumRailwayEv
         return null
     }
 
-    override fun getName(): String = "ÖGEG Schmalspur Termine"
+    override fun defaultDisplayName(): String = "ÖGEG Schmalspur Termine"
 }

@@ -69,7 +69,7 @@ class Mh6Collector(val jsoupCrawler: JsoupCrawler) : MuseumRailwayEventCollector
         return events
     }
 
-    override fun getName(): String = "Mh6 Collector"
+    override fun defaultDisplayName(): String = "Mh6 Collector"
 
 
 }

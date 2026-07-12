@@ -61,5 +61,5 @@ class RegiobahnCollector(val jsoupCrawler: JsoupCrawler) : MuseumRailwayEventCol
     }
 
 
-    override fun getName(): String = "Regiobahn Collector"
+    override fun defaultDisplayName(): String = "Regiobahn Collector"
 }

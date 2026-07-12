@@ -81,5 +81,5 @@ class NostalgiebahnenKärntenCollector(val jsoupCrawler: JsoupCrawler) : MuseumR
         return events
     }
 
-    override fun getName(): String = "Nostalgiebahnen in Kärnten"
+    override fun defaultDisplayName(): String = "Nostalgiebahnen in Kärnten"
 }

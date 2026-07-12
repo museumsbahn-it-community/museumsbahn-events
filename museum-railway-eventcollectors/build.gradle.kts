@@ -17,7 +17,7 @@ dependencies {
     implementation(libs.boudicca.eventdb.openapi)
     implementation(libs.boudicca.commonmodel)
     implementation(libs.otel.api)
-    implementation(libs.boudicca.eventcollector.client)
+    implementation(project(":museum-railway-eventcollectors-base"))
     implementation(libs.kotlin.csv.jvm)
     implementation("org.jsoup:jsoup:1.16.1")
     implementation("org.mnode.ical4j:ical4j:3.2.14")

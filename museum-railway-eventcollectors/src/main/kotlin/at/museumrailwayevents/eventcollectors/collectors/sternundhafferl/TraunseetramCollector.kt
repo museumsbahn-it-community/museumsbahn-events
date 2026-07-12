@@ -18,5 +18,5 @@ class TraunseetramCollector(jsoupCrawler: JsoupCrawler) : SternHafferlCollector(
 ) {
     override fun collectEvents(): List<Event> = collectEventsFromPage(sourceUrl)
 
-    override fun getName(): String = "Traunseetram Collector"
+    override fun defaultDisplayName(): String = "Traunseetram Collector"
 }

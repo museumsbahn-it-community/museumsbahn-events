@@ -34,5 +34,5 @@ class WaldviertelbahnCollector(jsoupCrawler: JsoupCrawler) : NoevogCollector(
 
     }
 
-    override fun getName(): String = "Waldviertelbahn Collector"
+    override fun defaultDisplayName(): String = "Waldviertelbahn Collector"
 }

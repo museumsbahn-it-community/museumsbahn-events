@@ -91,7 +91,7 @@ class DateParserTest {
 
     @Test()
     fun `generic parsing of multiple dates in strings should work`() {
-        val currentYear = 2025 // TODO: increase this on 01.01.2026 to fix the tests ;)
+        val currentYear = 2026 // TODO: increase this on 01.01.2027 to fix the tests ;)
         val testCases = mapOf(
             "Planzüge jeden Mittwoch, Samstag, Sonn- und Feiertag vom 17.07.2024 bis 28.08.2024" to listOf(
                 createDate(2024, 7, 17),

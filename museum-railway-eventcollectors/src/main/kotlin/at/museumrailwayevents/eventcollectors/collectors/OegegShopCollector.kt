@@ -66,6 +66,6 @@ class OegegShopCollector(val jsoupCrawler: JsoupCrawler) : MuseumRailwayEventCol
         return events
     }
 
-    override fun getName(): String = "ÖGEG Normalspur Termine"
+    override fun defaultDisplayName(): String = "ÖGEG Normalspur Termine"
 
 }

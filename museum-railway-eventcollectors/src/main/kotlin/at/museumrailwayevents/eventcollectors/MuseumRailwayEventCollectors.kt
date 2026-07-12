@@ -79,6 +79,7 @@ class MuseumRailwayEventCollectors(
                     collector
                 }
             }
+            .also { logger.info { "Initialized ${it.size} configured collector instances" } }
     }
 
     @Bean
