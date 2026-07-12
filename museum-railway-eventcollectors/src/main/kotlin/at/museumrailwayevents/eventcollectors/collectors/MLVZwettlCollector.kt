@@ -122,7 +122,7 @@ class MLVZwettlCollector(val jsoupCrawler: JsoupCrawler) : MuseumRailwayEventCol
     }
 
 
-    override fun getName(): String = "MLV Zwettl Collector"
+    override fun defaultDisplayName(): String = "MLV Zwettl Collector"
 }
 
 private fun String.isMuseum(): Boolean = this.contains("eventshed.gif") || this.contains("eventshed_no.gif")

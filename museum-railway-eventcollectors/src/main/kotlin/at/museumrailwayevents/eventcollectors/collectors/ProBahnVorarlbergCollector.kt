@@ -79,5 +79,5 @@ class ProBahnVorarlbergCollector : MuseumRailwayEventCollector(
     }
 
 
-    override fun getName(): String = "ProBahn Vorarlberg Collector"
+    override fun defaultDisplayName(): String = "ProBahn Vorarlberg Collector"
 }

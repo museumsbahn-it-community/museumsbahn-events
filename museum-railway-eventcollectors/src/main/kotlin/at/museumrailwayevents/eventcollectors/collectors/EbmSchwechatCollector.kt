@@ -89,5 +89,5 @@ class EbmSchwechatCollector(val jsoupCrawler: JsoupCrawler) : MuseumRailwayEvent
 
     private fun String.hasTrain() = this.lowercase().contains("pendelfahrt") || this.lowercase().contains("sonderzug")
 
-    override fun getName(): String = "Eisenbahnmuseum Schwechat Collector"
+    override fun defaultDisplayName(): String = "Eisenbahnmuseum Schwechat Collector"
 }

@@ -104,5 +104,5 @@ class WackelsteinexpressCollector(val jsoupCrawler: JsoupCrawler) : MuseumRailwa
         return emptyList()
     }
 
-    override fun getName(): String = "Wackelsteinexpress Collector"
+    override fun defaultDisplayName(): String = "Wackelsteinexpress Collector"
 }

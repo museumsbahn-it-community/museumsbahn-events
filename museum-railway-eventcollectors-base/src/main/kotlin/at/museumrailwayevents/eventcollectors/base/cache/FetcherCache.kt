@@ -35,7 +35,7 @@ object NoopFetcherCache : FetcherCache {
     override fun containsEntry(key: String): Boolean = false
 
     override fun getEntry(key: String): String {
-        error { "noop implementation does not contain $key" }
+        error("noop implementation does not contain $key")
     }
 
     override fun putEntry(
@@ -74,7 +74,7 @@ class FileBackedFetcherCache(
             }
             loadFile()
         } else {
-            error { "invalid file $file specified" }
+            error("invalid file $file specified")
         }
     }
 

@@ -66,6 +66,6 @@ class TramwaymuseumGrazCollector(private val jsoupCrawler: JsoupCrawler) : Museu
         return events
     }
 
-    override fun getName(): String = "Tramwaymuseum Graz Collector"
+    override fun defaultDisplayName(): String = "Tramwaymuseum Graz Collector"
 
 }

@@ -29,6 +29,6 @@ class YbbstalbahnCollector(jsoupCrawler: JsoupCrawler) : OeglbCollector(
         return regularEvents + sonderfahrten
     }
 
-    override fun getName(): String = "Ybbstalbahn Collector"
+    override fun defaultDisplayName(): String = "Ybbstalbahn Collector"
 
 }

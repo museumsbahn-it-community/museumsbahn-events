@@ -108,5 +108,5 @@ class EbflCollector(val jsoupCrawler: JsoupCrawler) : MuseumRailwayEventCollecto
         return events
     }
 
-    override fun getName(): String = "EBFL Collector"
+    override fun defaultDisplayName(): String = "EBFL Collector"
 }

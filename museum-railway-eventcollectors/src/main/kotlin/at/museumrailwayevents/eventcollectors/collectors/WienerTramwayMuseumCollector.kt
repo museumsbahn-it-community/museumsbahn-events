@@ -61,6 +61,6 @@ class WienerTramwayMuseumCollector(private val jsoupCrawler: JsoupCrawler) : Mus
         return events
     }
 
-    override fun getName(): String = "WTM Collector"
+    override fun defaultDisplayName(): String = "WTM Collector"
 
 }

@@ -13,5 +13,5 @@ class ErzbergbahnCollector : RegiondoCollector(
     eventOverviewUrl = "https://www.erzbergbahn.at/bahnfahrten-angebote/",
     regiondoPartnerCode = "VE187"
 ) {
-    override fun getName(): String = "Erzbergbahn Collector"
+    override fun defaultDisplayName(): String = "Erzbergbahn Collector"
 }

@@ -30,6 +30,6 @@ class HoellentalbahnCollector(jsoupCrawler: JsoupCrawler) : OeglbCollector(
         return regularEvents + sonderfahrten
     }
 
-    override fun getName(): String = "Höllentalbahn Collector"
+    override fun defaultDisplayName(): String = "Höllentalbahn Collector"
 
 }

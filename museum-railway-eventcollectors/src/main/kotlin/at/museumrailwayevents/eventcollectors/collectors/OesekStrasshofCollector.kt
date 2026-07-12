@@ -67,5 +67,5 @@ class OesekStrasshofCollector(val jsoupCrawler: JsoupCrawler) : MuseumRailwayEve
     }
 
 
-    override fun getName(): String = "Eisenbahnmuseum Strasshof Collector"
+    override fun defaultDisplayName(): String = "Eisenbahnmuseum Strasshof Collector"
 }

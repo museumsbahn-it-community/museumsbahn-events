@@ -43,5 +43,5 @@ class ReblausexpressCollector(jsoupCrawler: JsoupCrawler) : NoevogCollector(
 
     }
 
-    override fun getName(): String = "Reblausexpress Collector"
+    override fun defaultDisplayName(): String = "Reblausexpress Collector"
 }

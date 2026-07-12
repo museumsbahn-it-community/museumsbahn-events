@@ -166,7 +166,7 @@ class WälderbähnleCollector(val jsoupCrawler: JsoupCrawler) : MuseumRailwayEve
         return builder.toFormatter(locale)
     }
 
-    override fun getName(): String = "Wälderbähnle/Bregenzerwaldbahn Collector"
+    override fun defaultDisplayName(): String = "Wälderbähnle/Bregenzerwaldbahn Collector"
 
     private fun Element.getDate(): List<LocalDate> {
         return this.select("tr.day>th").eachText().map { LocalDate.from(dateFormatter.parse(it.split(" ")[1])) }

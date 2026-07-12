@@ -80,5 +80,5 @@ class RheinbähnleCollector(val jsoupCrawler: JsoupCrawler) : MuseumRailwayEvent
         return events
     }
 
-    override fun getName(): String = "Rheinbähnle Collector"
+    override fun defaultDisplayName(): String = "Rheinbähnle Collector"
 }

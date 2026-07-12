@@ -95,5 +95,5 @@ class SteirischeEisenbahnfreundeCollector(val jsoupCrawler: JsoupCrawler) : Muse
     private fun String.isPrivateEvent() = this.lowercase().contains("geschlossene veranstaltung") ||
             this.lowercase().contains("nicht öffentlich")
 
-    override fun getName(): String = "Steirische Eisenbahnfreunde Collector"
+    override fun defaultDisplayName(): String = "Steirische Eisenbahnfreunde Collector"
 }

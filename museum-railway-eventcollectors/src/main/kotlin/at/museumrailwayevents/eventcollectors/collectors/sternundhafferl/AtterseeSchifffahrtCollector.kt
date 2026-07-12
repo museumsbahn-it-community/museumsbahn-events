@@ -17,5 +17,5 @@ class AtterseeSchifffahrtCollector(jsoupCrawler: JsoupCrawler) : SternHafferlCol
 ) {
     override fun collectEvents(): List<Event> = collectEventsFromPage(sourceUrl)
 
-    override fun getName(): String = "Atterseeschifffahrt Collector"
+    override fun defaultDisplayName(): String = "Atterseeschifffahrt Collector"
 }
