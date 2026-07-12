@@ -101,6 +101,10 @@ When changing the backend API:
 - Museum metadata is loaded from Google Sheets via `GoogleDataLoaderService`
 - Backend management endpoints are protected with Spring Security `ROLE_MANAGE`
 
+## Commit Messages
+
+Use [Conventional Commits](https://www.conventionalcommits.org/) format (`type(scope): description`, e.g. `fix(eventcollectors): ...`, `docs: ...`). Common types: `feat`, `fix`, `docs`, `refactor`, `chore`, `test`.
+
 ## Local Development Data
 
 - Boudicca EventDB stores data in `infrastructure/boudicca.store/boudicca.store` — delete this file to reset the event database
