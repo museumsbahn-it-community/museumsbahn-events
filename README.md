@@ -77,6 +77,22 @@ for dry run you can use
 npm publish --dry-run
 ```
 
+### Local Setup Links
+
+When running the full stack via `docker compose -f infrastructure/docker-compose.yml up`, these are
+reachable locally:
+
+| What | URL | Notes |
+| --- | --- | --- |
+| Main application (frontend, via Traefik) | http://localhost:3050 | Entry point, proxies `/api`, `/ingest`, `/entries`, `/ical` etc. to the backing services |
+| Traefik dashboard | http://localhost:3090/dashboard/ | Routing/service overview (`--api.insecure=true`) |
+| Frontend (direct, bypassing Traefik) | http://localhost:3010 | Nuxt dev container |
+| Backend API | http://localhost:8080 | Also serves the OpenAPI spec at `/v3/api-docs.yaml` |
+| Boudicca EventDB | http://localhost:8081 | Raw event storage |
+| Boudicca Search | http://localhost:8082 | `/api/search` behind Traefik |
+| Eventcollectors monitoring webui | http://localhost:8083 | Shows collected events/errors per run. Always on (Spring Boot auto-configuration, no profile needed), reached via its own published port directly — not routed through Traefik. Not to be confused with the separate `debug` Spring profile (`LocalCollectorDebug.kt`), which swaps in a one-shot local collector test harness instead of the real scheduled/ingesting app |
+| ImgProxy | http://localhost:8090 | Image caching/signing backend |
+
 ### Local Store File
 
 When running EventDB with the supplied docker-compose it saves its data into the file `boudicca.store` in the boudicca.store/ folder of the project. So if you want to

@@ -77,6 +77,10 @@ services:
     image: git.twatzl.eu/twatzl/museum-railway-events-eventcollectors:latest
     depends_on:
       - boudicca-eventdb
+    # The collector app's monitoring webui (collected events/errors per run) is always on -
+    # it's Spring Boot auto-configuration, not gated behind any profile. Reached directly via
+    # the published port below; not routed through Traefik (its path-based routing doesn't
+    # play well with the webui's own absolute-path links/assets).
     ports:
       - "8083:8083"
     networks:
