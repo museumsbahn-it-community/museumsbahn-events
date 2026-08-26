@@ -59,6 +59,21 @@ class EventcollectorTest {
     @Test
     fun `ybbstalbahn should collect 39 events`() {
         val eventcollector = YbbstalbahnCollector(mockJsoupCrawler)
+        // exercises the same Binder-based configure() path used at runtime from application.yml,
+        // with the same flattened property keys (incl. "fahrplanUrls[0]" list-index syntax)
+        eventcollector.configure(
+            "Ybbstalbahn",
+            mapOf(
+                "operatorId" to "oeglb",
+                "locationId" to "ybbstalbahn",
+                "locationName" to "Ybbstalbahn Bergstrecke",
+                "sourceUrl" to "https://www.lokalbahnen.at/bergstrecke/",
+                "baseUrl" to "https://www.lokalbahnen.at/",
+                "fahrplanUrls[0]" to "https://www.lokalbahnen.at/bergstrecke/mitfahren/fahrplan/",
+                "sonderfahrtenUrl" to "https://www.lokalbahnen.at/bergstrecke/mitfahren/sonderveranstaltungen/",
+                "locomotiveType" to VehicleType.DIESEL_TRAIN,
+            )
+        )
         val events = eventcollector.collectEvents()
         assertThat(events.size).isEqualTo(34)
     }

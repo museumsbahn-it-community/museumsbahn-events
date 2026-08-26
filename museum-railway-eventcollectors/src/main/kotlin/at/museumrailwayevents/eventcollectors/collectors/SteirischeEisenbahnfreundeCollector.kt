@@ -1,5 +1,6 @@
 package at.museumrailwayevents.eventcollectors.collectors
 
+import at.museumrailwayevents.eventcollectors.collectors.config.MuseumRailwayCollectorConfig
 import at.museumrailwayevents.eventcollectors.collectors.dateParser.DateParser
 import at.museumrailwayevents.eventcollectors.collectors.util.toTagsValue
 import at.museumrailwayevents.eventcollectors.service.JsoupCrawler
@@ -9,12 +10,13 @@ import base.boudicca.api.eventcollector.annotations.BoudiccaEventCollector
 import base.boudicca.model.Event
 
 @BoudiccaEventCollector(collectorTypeName = "steirische_eisenbahnfreunde")
-class SteirischeEisenbahnfreundeCollector(val jsoupCrawler: JsoupCrawler) : MuseumRailwayEventCollector(
-    "stef",
-    "stef",
-    "https://www.stef.at/program/",
-    locationName = "Steirische Eisenbahnfreunde"
-) {
+class SteirischeEisenbahnfreundeCollector(val jsoupCrawler: JsoupCrawler) :
+    MuseumRailwayEventCollector<MuseumRailwayCollectorConfig>(MuseumRailwayCollectorConfig::class) {
+
+    override val operatorId = "stef"
+    override val locationId = "stef"
+    override val sourceUrl = "https://www.stef.at/program/"
+    override val locationName = "Steirische Eisenbahnfreunde"
     private val locationIdMuseum = "stef_museum"
     private val locationIdSonderfahrten = "stef_sonderfahrten"
 

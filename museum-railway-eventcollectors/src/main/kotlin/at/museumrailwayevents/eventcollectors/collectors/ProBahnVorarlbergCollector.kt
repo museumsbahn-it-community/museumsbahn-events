@@ -1,5 +1,6 @@
 package at.museumrailwayevents.eventcollectors.collectors
 
+import at.museumrailwayevents.eventcollectors.collectors.config.MuseumRailwayCollectorConfig
 import at.museumrailwayevents.eventcollectors.collectors.util.toTagsValue
 import at.museumrailwayevents.model.conventions.*
 import base.boudicca.SemanticKeys
@@ -18,12 +19,13 @@ import java.time.ZoneId
 import java.time.format.DateTimeFormatter
 
 @BoudiccaEventCollector(collectorTypeName = "probahn_vorarlberg")
-class ProBahnVorarlbergCollector : MuseumRailwayEventCollector(
-    operatorId = "pbv",
-    locationId = "pbv",
-    locationName = "PROBAHN Vorarlberg",
-    sourceUrl = "https://probahn-vlbg.at/sonderfahrten/liste/",
-) {
+class ProBahnVorarlbergCollector :
+    MuseumRailwayEventCollector<MuseumRailwayCollectorConfig>(MuseumRailwayCollectorConfig::class) {
+
+    override val operatorId = "pbv"
+    override val locationId = "pbv"
+    override val locationName = "PROBAHN Vorarlberg"
+    override val sourceUrl = "https://probahn-vlbg.at/sonderfahrten/liste/"
     override fun collectEvents(): List<Event> {
         val icsUrl = "$sourceUrl?ical=1"
         return parseEventFromIcs(URI(icsUrl).toURL())

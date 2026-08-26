@@ -6,6 +6,7 @@ export enum VehicleType {
     ELECTRIC_TRAIN = "electric_train",
     TRAM = "tram",
     SHIP = "ship",
+    UNKNOWN = "unknown",
 }
 
 export enum MuseumEventRegistration {
@@ -27,6 +28,7 @@ export enum RecurrenceType {
 export enum OperationType {
     VOLUNTEER = "volunteer_run",
     COMMERCIAL = "commercial",
+    UNKNOWN = "unknown",
 }
 
 export enum MuseumEventCategory {

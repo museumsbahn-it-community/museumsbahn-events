@@ -1,6 +1,7 @@
 package at.museumrailwayevents.eventcollectors.collectors.sternundhafferl
 
 import at.museumrailwayevents.eventcollectors.collectors.MuseumRailwayEventCollector
+import at.museumrailwayevents.eventcollectors.collectors.config.MuseumRailwayCollectorConfig
 import at.museumrailwayevents.eventcollectors.collectors.dateParser.DateParser
 import at.museumrailwayevents.eventcollectors.collectors.sternundhafferl.model.RecurringInformationFixedDates
 import at.museumrailwayevents.eventcollectors.collectors.sternundhafferl.model.RecurringInformationWeekdays
@@ -32,18 +33,16 @@ import java.time.OffsetDateTime
 abstract class SternHafferlCollector(
     val jsoupCrawler: JsoupCrawler,
     val locomotiveType: String,
-    operatorId: String,
-    locationId: String,
-    sourceUrl: String,
-    tags: List<String> = emptyList(),
-    locationName: String,
+    override val operatorId: String,
+    override val locationId: String,
+    override val sourceUrl: String,
+    override val tags: List<String> = emptyList(),
+    override val locationName: String,
     val eventJsonApiUrl: String,
     // the api is mixed for traunseetram and atterseebahn
     val filterIncludeStrings: List<String> = emptyList(),
     val filterExcludeStrings: List<String> = emptyList()
-) : MuseumRailwayEventCollector(
-    operatorId, locationId, sourceUrl, tags, locationName
-) {
+) : MuseumRailwayEventCollector<MuseumRailwayCollectorConfig>(MuseumRailwayCollectorConfig::class) {
 
     protected fun collectEventsFromPage(url: String): List<Event> {
         val rawEvents = getEvents(eventJsonApiUrl)

@@ -1,5 +1,6 @@
 package at.museumrailwayevents.eventcollectors.collectors
 
+import at.museumrailwayevents.eventcollectors.collectors.config.MuseumRailwayCollectorConfig
 import at.museumrailwayevents.eventcollectors.collectors.dateParser.DateParser
 import at.museumrailwayevents.eventcollectors.collectors.util.keepLineBreaks
 import at.museumrailwayevents.eventcollectors.service.JsoupCrawler
@@ -11,12 +12,13 @@ import java.time.LocalDate
 import java.time.OffsetDateTime
 
 @BoudiccaEventCollector(collectorTypeName = "oesek_strasshof")
-class OesekStrasshofCollector(val jsoupCrawler: JsoupCrawler) : MuseumRailwayEventCollector(
-    "oesek",
-    "oesek",
-    "https://eisenbahnmuseum-heizhaus.com/de/veranstaltungen",
-    locationName = "Eisenbahnmuseum Strasshof"
-) {
+class OesekStrasshofCollector(val jsoupCrawler: JsoupCrawler) :
+    MuseumRailwayEventCollector<MuseumRailwayCollectorConfig>(MuseumRailwayCollectorConfig::class) {
+
+    override val operatorId = "oesek"
+    override val locationId = "oesek"
+    override val sourceUrl = "https://eisenbahnmuseum-heizhaus.com/de/veranstaltungen"
+    override val locationName = "Eisenbahnmuseum Strasshof"
     override fun collectEvents(): List<Event> {
         val baseUrl = "https://eisenbahnmuseum-heizhaus.com/"
         val document = jsoupCrawler.getDocument(sourceUrl)

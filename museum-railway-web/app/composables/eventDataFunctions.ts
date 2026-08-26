@@ -30,6 +30,7 @@ export const VehicleTypeLabels: { [key: string]: string } = {
     [VehicleType.ELECTRIC_TRAIN]: "Elektrisch",
     [VehicleType.TRAM]: "Straßenbahn",
     [VehicleType.SHIP]: "Schiff",
+    [VehicleType.UNKNOWN]: "Unbekannt",
 }
 export const RecurrenceTypeLabels: { [key: string]: string } = {
     [RecurrenceType.REGULARLY]: "Regelmäßíg",
@@ -40,6 +41,7 @@ export const RecurrenceTypeLabels: { [key: string]: string } = {
 export const OperationTypeLabels: { [key: string]: string } = {
     [OperationType.VOLUNTEER]: "Ehrenamtlich organisiert",
     [OperationType.COMMERCIAL]: "Kommerziell organisiert",
+    [OperationType.UNKNOWN]: "Unbekannt",
 }
 
 export const EventCategoryLabels: { [key: string]: string } = {

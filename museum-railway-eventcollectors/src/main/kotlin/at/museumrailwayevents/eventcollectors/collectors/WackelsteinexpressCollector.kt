@@ -1,5 +1,6 @@
 package at.museumrailwayevents.eventcollectors.collectors
 
+import at.museumrailwayevents.eventcollectors.collectors.config.MuseumRailwayCollectorConfig
 import at.museumrailwayevents.eventcollectors.collectors.dateParser.DateParser
 import at.museumrailwayevents.eventcollectors.collectors.dateParser.DateParser.parseAllTimesFrom
 import at.museumrailwayevents.eventcollectors.service.JsoupCrawler
@@ -11,12 +12,13 @@ import org.jsoup.nodes.Document
 import java.util.*
 
 @BoudiccaEventCollector(collectorTypeName = "wackelsteinexpress")
-class WackelsteinexpressCollector(val jsoupCrawler: JsoupCrawler) : MuseumRailwayEventCollector(
-    operatorId = "wackelsteinexpress",
-    locationId = "wackelsteinexpress",
-    locationName = "Wackelsteinexpress",
-    sourceUrl = "https://www.wackelsteinexpress.at/",
-) {
+class WackelsteinexpressCollector(val jsoupCrawler: JsoupCrawler) :
+    MuseumRailwayEventCollector<MuseumRailwayCollectorConfig>(MuseumRailwayCollectorConfig::class) {
+
+    override val operatorId = "wackelsteinexpress"
+    override val locationId = "wackelsteinexpress"
+    override val locationName = "Wackelsteinexpress"
+    override val sourceUrl = "https://www.wackelsteinexpress.at/"
     val locale = Locale.GERMAN
     val regularEventsUrl = "https://www.wackelsteinexpress.at/fahrplan/"
     val themenfahrtenUrl = "https://reservierung.wackelsteinexpress.at/"

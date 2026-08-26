@@ -1,5 +1,6 @@
 package at.museumrailwayevents.eventcollectors.collectors
 
+import at.museumrailwayevents.eventcollectors.collectors.config.MuseumRailwayCollectorConfig
 import at.museumrailwayevents.eventcollectors.collectors.dateParser.DateParser
 import at.museumrailwayevents.eventcollectors.service.JsoupCrawler
 import at.museumrailwayevents.model.conventions.*
@@ -7,7 +8,6 @@ import base.boudicca.SemanticKeys
 import base.boudicca.api.eventcollector.annotations.BoudiccaEventCollector
 import base.boudicca.model.Event
 
-private val operatorId = "oegeg";
 private val locationId_bahn = "oegeg_normalspur"
 private val locationId_schiff = "oegeg_schifffahrt"
 private val urlNormalspurTermine = "https://www.oegeg.at/termine/termine-normalspur-museum-lokpark-ampflwang/"
@@ -17,9 +17,13 @@ private val urlSchifffahrtsTermine = "https://www.oegeg.at/termine/termine-schif
  * Collects entries from ÖGEG shop pages. This includes Normalspur and Schifffahrt, but NOT Schmalspur.
  */
 @BoudiccaEventCollector(collectorTypeName = "oegeg_shop")
-class OegegShopCollector(val jsoupCrawler: JsoupCrawler) : MuseumRailwayEventCollector(
-    operatorId, locationId_bahn, urlNormalspurTermine, locationName = "ÖGEG"
-) {
+class OegegShopCollector(val jsoupCrawler: JsoupCrawler) :
+    MuseumRailwayEventCollector<MuseumRailwayCollectorConfig>(MuseumRailwayCollectorConfig::class) {
+
+    override val operatorId = "oegeg"
+    override val locationId = locationId_bahn
+    override val locationName = "ÖGEG"
+    override val sourceUrl = urlNormalspurTermine
     override fun collectEvents(): List<Event> {
 
         val events = mutableListOf<Event>()

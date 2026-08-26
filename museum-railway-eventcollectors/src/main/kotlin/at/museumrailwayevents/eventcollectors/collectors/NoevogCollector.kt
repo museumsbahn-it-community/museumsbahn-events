@@ -1,5 +1,6 @@
 package at.museumrailwayevents.eventcollectors.collectors
 
+import at.museumrailwayevents.eventcollectors.collectors.config.MuseumRailwayCollectorConfig
 import at.museumrailwayevents.eventcollectors.collectors.dateParser.DateParser
 import at.museumrailwayevents.eventcollectors.collectors.dateParser.DateParser.fullDateRegexString
 import at.museumrailwayevents.eventcollectors.service.JsoupCrawler
@@ -10,14 +11,14 @@ import java.time.OffsetDateTime
 
 abstract class NoevogCollector(
     val jsoupCrawler: JsoupCrawler,
-    operatorId: String,
-    locationId: String,
-    url: String,
-    tags: List<String> = emptyList(),
-    locationName: String
-) : MuseumRailwayEventCollector(
-    operatorId, locationId, url, tags, locationName
-) {
+    override val operatorId: String,
+    override val locationId: String,
+    val url: String,
+    override val tags: List<String> = emptyList(),
+    override val locationName: String
+) : MuseumRailwayEventCollector<MuseumRailwayCollectorConfig>(MuseumRailwayCollectorConfig::class) {
+
+    override val sourceUrl: String get() = url
     private fun isNoevogDurationString(it: String): Boolean {
         val regex = Regex("von$fullDateRegexString(\\s)*-$fullDateRegexString")
         return it.matches(regex)

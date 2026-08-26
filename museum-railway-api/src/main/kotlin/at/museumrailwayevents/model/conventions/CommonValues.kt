@@ -20,6 +20,7 @@ object VehicleType {
     const val ELECTRIC_TRAIN = "electric_train"
     const val TRAM = "tram"
     const val SHIP = "ship"
+    const val UNKNOWN = "unknown"
 }
 
 enum class MuseumEventRegistration(val jsonValue: String) {
@@ -41,6 +42,7 @@ object RecurrenceType {
 object OperationType {
     const val VOLUNTEER = "volunteer_run"
     const val COMMERCIAL = "commercial"
+    const val UNKNOWN = "unknown"
 }
 
 /**

@@ -1,5 +1,6 @@
 package at.museumrailwayevents.eventcollectors.collectors
 
+import at.museumrailwayevents.eventcollectors.collectors.config.MuseumRailwayCollectorConfig
 import at.museumrailwayevents.eventcollectors.collectors.dateParser.DateParser
 import at.museumrailwayevents.eventcollectors.collectors.util.toTagsValue
 import at.museumrailwayevents.eventcollectors.service.JsoupCrawler
@@ -12,12 +13,13 @@ import base.boudicca.model.Event
  * This collector only collects the Mh6 Events. Mariazellerbahn steam train and Ötscherbär are covered separately.
  */
 @BoudiccaEventCollector(collectorTypeName = "mh6")
-class Mh6Collector(val jsoupCrawler: JsoupCrawler) : MuseumRailwayEventCollector(
-    operatorId = "mh6",
-    locationId = "mh6_heizhaus_krumpe",
-    locationName = "Verein Mh.6 Heizhaus Ober-Grafendorf und Krumpe",
-    sourceUrl = "http://www.mh6.at/"
-) {
+class Mh6Collector(val jsoupCrawler: JsoupCrawler) :
+    MuseumRailwayEventCollector<MuseumRailwayCollectorConfig>(MuseumRailwayCollectorConfig::class) {
+
+    override val operatorId = "mh6"
+    override val locationId = "mh6_heizhaus_krumpe"
+    override val locationName = "Verein Mh.6 Heizhaus Ober-Grafendorf und Krumpe"
+    override val sourceUrl = "http://www.mh6.at/"
     private val eventsUrl = "http://www.mh6.at/de/termine/"
 
     data class EventEntry(val dateString: String, val title: String, val eventUrl: String)

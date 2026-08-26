@@ -1,5 +1,6 @@
 package at.museumrailwayevents.eventcollectors.collectors
 
+import at.museumrailwayevents.eventcollectors.collectors.config.MuseumRailwayCollectorConfig
 import at.museumrailwayevents.eventcollectors.collectors.dateParser.DateParser
 import at.museumrailwayevents.eventcollectors.collectors.util.toTagsValue
 import at.museumrailwayevents.eventcollectors.service.JsoupCrawler
@@ -17,12 +18,13 @@ const val locationId_ebfl_suedbahn_express = "ebfl_suedbahn_express"
  * (special events and regular opening hours are mixed).
  */
 @BoudiccaEventCollector(collectorTypeName = "ebfl")
-class EbflCollector(val jsoupCrawler: JsoupCrawler) : MuseumRailwayEventCollector(
-    operatorId = "ebfl",
-    locationId = locationId_ebfl_museum,
-    locationName = "EBFL",
-    sourceUrl = "https://ebfl.at/"
-) {
+class EbflCollector(val jsoupCrawler: JsoupCrawler) :
+    MuseumRailwayEventCollector<MuseumRailwayCollectorConfig>(MuseumRailwayCollectorConfig::class) {
+
+    override val operatorId = "ebfl"
+    override val locationId = locationId_ebfl_museum
+    override val locationName = "EBFL"
+    override val sourceUrl = "https://ebfl.at/"
     private val museumUrl = "https://ebfl.at/index.php/suedbahn-heizhaus/"
     private val suedbahnExpressUrl = "https://ebfl.at/index.php/termine-ausfahrten/"
 

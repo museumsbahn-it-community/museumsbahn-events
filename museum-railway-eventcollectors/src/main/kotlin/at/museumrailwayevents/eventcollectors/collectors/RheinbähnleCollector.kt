@@ -1,5 +1,6 @@
 package at.museumrailwayevents.eventcollectors.collectors
 
+import at.museumrailwayevents.eventcollectors.collectors.config.MuseumRailwayCollectorConfig
 import at.museumrailwayevents.eventcollectors.collectors.util.toTagsValue
 import at.museumrailwayevents.eventcollectors.service.JsoupCrawler
 import at.museumrailwayevents.model.conventions.*
@@ -14,12 +15,14 @@ import java.time.ZoneId
 import java.time.format.DateTimeFormatter
 
 @BoudiccaEventCollector(collectorTypeName = "rheinbaehnle")
-class RheinbähnleCollector(val jsoupCrawler: JsoupCrawler) : MuseumRailwayEventCollector(
-    operatorId = "rheinschauen",
-    locationId = "rheinschauen",
-    locationName = "Rhein-Schauen | Museum und Rheinbähnle",
-    sourceUrl = "https://www.rheinschauen.at/museum-baehnle/fahrplan"
-) {
+class RheinbähnleCollector(val jsoupCrawler: JsoupCrawler) :
+    MuseumRailwayEventCollector<MuseumRailwayCollectorConfig>(MuseumRailwayCollectorConfig::class) {
+
+    override val operatorId = "rheinschauen"
+    override val locationId = "rheinschauen"
+    override val locationName = "Rhein-Schauen | Museum und Rheinbähnle"
+    override val sourceUrl = "https://www.rheinschauen.at/museum-baehnle/fahrplan"
+
     val beginString = "Beginn der Veranstaltung"
     val endString = "Ende der Veranstaltung"
     val formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy [HH:mm][H:mm]")

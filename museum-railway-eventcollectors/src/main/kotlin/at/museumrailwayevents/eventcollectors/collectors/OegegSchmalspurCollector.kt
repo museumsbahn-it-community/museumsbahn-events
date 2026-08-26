@@ -1,5 +1,6 @@
 package at.museumrailwayevents.eventcollectors.collectors
 
+import at.museumrailwayevents.eventcollectors.collectors.config.MuseumRailwayCollectorConfig
 import at.museumrailwayevents.eventcollectors.collectors.dateParser.DateParser
 import at.museumrailwayevents.eventcollectors.collectors.dateParser.DateParser.createDate
 import at.museumrailwayevents.eventcollectors.collectors.dateParser.DateParser.findAllDays
@@ -12,12 +13,13 @@ import base.boudicca.api.eventcollector.annotations.BoudiccaEventCollector
 import base.boudicca.model.Event
 
 @BoudiccaEventCollector(collectorTypeName = "oegeg_schmalspur")
-class OegegSchmalspurCollector(val jsoupCrawler: JsoupCrawler) : MuseumRailwayEventCollector(
-    operatorId = "oegeg",
-    locationId = "oegeg_schmalspur",
-    locationName = "ÖGEG Steyrtalbahn",
-    sourceUrl = "https://www.oegeg.at/termine/termine-schmalspur-steyrtalbahn/"
-) {
+class OegegSchmalspurCollector(val jsoupCrawler: JsoupCrawler) :
+    MuseumRailwayEventCollector<MuseumRailwayCollectorConfig>(MuseumRailwayCollectorConfig::class) {
+
+    override val operatorId = "oegeg"
+    override val locationId = "oegeg_schmalspur"
+    override val locationName = "ÖGEG Steyrtalbahn"
+    override val sourceUrl = "https://www.oegeg.at/termine/termine-schmalspur-steyrtalbahn/"
     private val eventTitle = "Steyrtal Museumsbahn"
 
     override fun collectEvents(): List<Event> {

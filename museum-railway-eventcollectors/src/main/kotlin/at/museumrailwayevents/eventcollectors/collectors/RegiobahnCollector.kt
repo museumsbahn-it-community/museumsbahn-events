@@ -1,5 +1,6 @@
 package at.museumrailwayevents.eventcollectors.collectors
 
+import at.museumrailwayevents.eventcollectors.collectors.config.MuseumRailwayCollectorConfig
 import at.museumrailwayevents.eventcollectors.collectors.dateParser.DateParser
 import at.museumrailwayevents.eventcollectors.collectors.util.keepLineBreaks
 import at.museumrailwayevents.eventcollectors.service.JsoupCrawler
@@ -9,12 +10,13 @@ import base.boudicca.api.eventcollector.annotations.BoudiccaEventCollector
 import base.boudicca.model.Event
 
 @BoudiccaEventCollector(collectorTypeName = "regiobahn")
-class RegiobahnCollector(val jsoupCrawler: JsoupCrawler) : MuseumRailwayEventCollector(
-    "regiobahn",
-    "regiobahn",
-    "https://regiobahn.at/ausflugsfahrten/",
-    locationName = "Regiobahn"
-) {
+class RegiobahnCollector(val jsoupCrawler: JsoupCrawler) :
+    MuseumRailwayEventCollector<MuseumRailwayCollectorConfig>(MuseumRailwayCollectorConfig::class) {
+
+    override val operatorId = "regiobahn"
+    override val locationId = "regiobahn"
+    override val sourceUrl = "https://regiobahn.at/ausflugsfahrten/"
+    override val locationName = "Regiobahn"
     override fun collectEvents(): List<Event> {
         val document = jsoupCrawler.getDocument(sourceUrl)
         val eventLinks = document.select("div.tourmaster-tour-grid-inner a").map { it.attr("href") }.toSet()

@@ -1,5 +1,6 @@
 package at.museumrailwayevents.eventcollectors.collectors
 
+import at.museumrailwayevents.eventcollectors.collectors.config.MuseumRailwayCollectorConfig
 import at.museumrailwayevents.eventcollectors.collectors.dateParser.DateParser
 import at.museumrailwayevents.eventcollectors.service.JsoupCrawler
 import at.museumrailwayevents.model.conventions.*
@@ -17,12 +18,13 @@ val operatorIdNbik = "nbik"
 val imageUrlBase = "https://www.nostalgiebahn.at/"
 
 @BoudiccaEventCollector(collectorTypeName = "nostalgiebahnen_kaernten")
-class NostalgiebahnenKärntenCollector(val jsoupCrawler: JsoupCrawler) : MuseumRailwayEventCollector(
-    operatorId = operatorIdNbik,
-    locationId = locationId_bahn,
-    locationName = "Nostalgiebahnen in Kärnten",
-    sourceUrl = "https://www.nostalgiebahn.at/termine.html"
-) {
+class NostalgiebahnenKärntenCollector(val jsoupCrawler: JsoupCrawler) :
+    MuseumRailwayEventCollector<MuseumRailwayCollectorConfig>(MuseumRailwayCollectorConfig::class) {
+
+    override val operatorId = operatorIdNbik
+    override val locationId = locationId_bahn
+    override val locationName = "Nostalgiebahnen in Kärnten"
+    override val sourceUrl = "https://www.nostalgiebahn.at/termine.html"
     // these indicate durations and need special handling in the future
     val dateStringBlocklist = listOf(
         "ab",

@@ -1,5 +1,6 @@
 package at.museumrailwayevents.eventcollectors.collectors
 
+import at.museumrailwayevents.eventcollectors.collectors.config.OeglbCollectorConfig
 import at.museumrailwayevents.eventcollectors.collectors.dateParser.DateParser
 import at.museumrailwayevents.eventcollectors.collectors.util.toTagsValue
 import at.museumrailwayevents.eventcollectors.service.JsoupCrawler
@@ -11,15 +12,9 @@ import java.time.OffsetDateTime
 
 abstract class OeglbCollector(
     val jsoupCrawler: JsoupCrawler,
-    val locomotiveType: String,
-    operatorId: String,
-    locationId: String,
-    sourceUrl: String,
-    tags: List<String> = emptyList(),
-    locationName: String
-) : MuseumRailwayEventCollector(
-    operatorId, locationId, sourceUrl, tags, locationName
-) {
+) : MuseumRailwayEventCollector<OeglbCollectorConfig>(OeglbCollectorConfig::class) {
+
+    protected open val locomotiveType: String get() = config.locomotiveType
     protected fun collectSonderfahrten(baseUrl: String, sonderfahrtenUrl: String): List<Event> {
         val events = mutableListOf<Event>()
 

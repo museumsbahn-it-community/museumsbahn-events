@@ -8,6 +8,7 @@ import at.museumrailwayevents.eventcollectors.collectors.sternundhafferl.Traunse
 import at.museumrailwayevents.eventcollectors.service.JsoupCrawler
 import at.museumrailwayevents.eventcollectors.base.cache.FileBackedFetcherCache
 import base.boudicca.SemanticKeys
+import base.boudicca.api.eventcollector.EventCollector
 import base.boudicca.api.eventcollector.config.EventCollectorBaseConfig
 import base.boudicca.api.eventcollector.configuration.EventCollectorsConfigurationProperties
 import base.boudicca.api.eventcollector.debugger.DataShouldContainKey
@@ -22,6 +23,25 @@ import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Profile
 import java.io.File
 
+/**
+ * Configures [this] collector from its matching entry in `application.yml`
+ * (matched by [EventCollector.defaultDisplayName], which - per the vendored base class - returns the
+ * `@BoudiccaEventCollector` annotation's `collectorTypeName`, i.e. the yaml `type:` value).
+ *
+ * This replaces per-collector `.withDebugConfig(EventCollectorBaseConfig("..."))` literals: debug mode
+ * now binds through the exact same `Binder`-based `configure()` path production uses, so URLs/config
+ * only ever have to be declared once, in yaml - regardless of how many collectors get their own typed
+ * config class over the following phases of the eventcollector-overhaul campaign.
+ */
+private fun <T : EventCollectorBaseConfig> EventCollector<T>.configureFromYaml(
+    configuration: EventCollectorsConfigurationProperties,
+): EventCollector<T> {
+    val type = defaultDisplayName()
+    val yamlConfig = configuration.collectors.find { it.type == type }
+    configure(yamlConfig?.name, yamlConfig?.properties ?: emptyMap())
+    return this
+}
+
 @Profile("debug")
 @SpringBootApplication
 class LocalCollectorDebug(
@@ -32,35 +52,35 @@ class LocalCollectorDebug(
         buildRunnerFor(
             listOf(
                 // Add or remove collectors here for debugging
-                EbflCollector(jsoupCrawler).withDebugConfig(EventCollectorBaseConfig("EBFL")),
+                EbflCollector(jsoupCrawler).configureFromYaml(configuration),
                 // Stern & Hafferl
-                AtterseebahnCollector(jsoupCrawler).withDebugConfig(EventCollectorBaseConfig("Atterseebahn")),
-                AtterseeSchifffahrtCollector(jsoupCrawler).withDebugConfig(EventCollectorBaseConfig("Attersee Schifffahrt")),
-                TraunseetramCollector(jsoupCrawler).withDebugConfig(EventCollectorBaseConfig("Traunseetram")),
+                AtterseebahnCollector(jsoupCrawler).configureFromYaml(configuration),
+                AtterseeSchifffahrtCollector(jsoupCrawler).configureFromYaml(configuration),
+                TraunseetramCollector(jsoupCrawler).configureFromYaml(configuration),
                 // mainline
-                OegegShopCollector(jsoupCrawler).withDebugConfig(EventCollectorBaseConfig("OEGEG Shop")),
-                OegegSchmalspurCollector(jsoupCrawler).withDebugConfig(EventCollectorBaseConfig("OEGEG Schmalspur")),
-                ProBahnVorarlbergCollector().withDebugConfig(EventCollectorBaseConfig("ProBahn Vorarlberg")),
-                NostalgiebahnenKärntenCollector(jsoupCrawler).withDebugConfig(EventCollectorBaseConfig("Nostalgiebahnen Kärnten")),
-                SteirischeEisenbahnfreundeCollector(jsoupCrawler).withDebugConfig(EventCollectorBaseConfig("Steirische Eisenbahnfreunde")),
-                EbmSchwechatCollector(jsoupCrawler).withDebugConfig(EventCollectorBaseConfig("EBM Schwechat")),
-                OesekStrasshofCollector(jsoupCrawler).withDebugConfig(EventCollectorBaseConfig("OESEK Strasshof")),
-                RegiobahnCollector(jsoupCrawler).withDebugConfig(EventCollectorBaseConfig("Regiobahn")),
+                OegegShopCollector(jsoupCrawler).configureFromYaml(configuration),
+                OegegSchmalspurCollector(jsoupCrawler).configureFromYaml(configuration),
+                ProBahnVorarlbergCollector().configureFromYaml(configuration),
+                NostalgiebahnenKärntenCollector(jsoupCrawler).configureFromYaml(configuration),
+                SteirischeEisenbahnfreundeCollector(jsoupCrawler).configureFromYaml(configuration),
+                EbmSchwechatCollector(jsoupCrawler).configureFromYaml(configuration),
+                OesekStrasshofCollector(jsoupCrawler).configureFromYaml(configuration),
+                RegiobahnCollector(jsoupCrawler).configureFromYaml(configuration),
                 // local railways
-                ErzbergbahnCollector().withDebugConfig(EventCollectorBaseConfig("Erzbergbahn")),
-                MLVZwettlCollector(jsoupCrawler).withDebugConfig(EventCollectorBaseConfig("MLV Zwettl")),
-                ReblausexpressCollector(jsoupCrawler).withDebugConfig(EventCollectorBaseConfig("Reblausexpress")),
-                WaldviertelbahnCollector(jsoupCrawler).withDebugConfig(EventCollectorBaseConfig("Waldviertelbahn")),
+                ErzbergbahnCollector().configureFromYaml(configuration),
+                MLVZwettlCollector(jsoupCrawler).configureFromYaml(configuration),
+                ReblausexpressCollector(jsoupCrawler).configureFromYaml(configuration),
+                WaldviertelbahnCollector(jsoupCrawler).configureFromYaml(configuration),
                 // narrow gauge
-                RheinbähnleCollector(jsoupCrawler).withDebugConfig(EventCollectorBaseConfig("Rheinbähnle")),
-                WälderbähnleCollector(jsoupCrawler).withDebugConfig(EventCollectorBaseConfig("Wälderbähnle")),
-                WackelsteinexpressCollector(jsoupCrawler).withDebugConfig(EventCollectorBaseConfig("Wackelsteinexpress")),
-                HoellentalbahnCollector(jsoupCrawler).withDebugConfig(EventCollectorBaseConfig("Höllentalbahn")),
-                YbbstalbahnCollector(jsoupCrawler).withDebugConfig(EventCollectorBaseConfig("Ybbstalbahn")),
-                Mh6Collector(jsoupCrawler).withDebugConfig(EventCollectorBaseConfig("Mh6")),
+                RheinbähnleCollector(jsoupCrawler).configureFromYaml(configuration),
+                WälderbähnleCollector(jsoupCrawler).configureFromYaml(configuration),
+                WackelsteinexpressCollector(jsoupCrawler).configureFromYaml(configuration),
+                HoellentalbahnCollector(jsoupCrawler).configureFromYaml(configuration),
+                YbbstalbahnCollector(jsoupCrawler).configureFromYaml(configuration),
+                Mh6Collector(jsoupCrawler).configureFromYaml(configuration),
                 // tram
-                WienerTramwayMuseumCollector(jsoupCrawler).withDebugConfig(EventCollectorBaseConfig("Wiener Tramway Museum")),
-                TramwaymuseumGrazCollector(jsoupCrawler).withDebugConfig(EventCollectorBaseConfig("Tramwaymuseum Graz")),
+                WienerTramwayMuseumCollector(jsoupCrawler).configureFromYaml(configuration),
+                TramwaymuseumGrazCollector(jsoupCrawler).configureFromYaml(configuration),
             ),
         ).withFetcherCache(FileBackedFetcherCache(File("./fetcher.cache"))).buildDebugRunner()
 

@@ -1,5 +1,6 @@
 package at.museumrailwayevents.eventcollectors.collectors
 
+import at.museumrailwayevents.eventcollectors.collectors.config.MuseumRailwayCollectorConfig
 import at.museumrailwayevents.eventcollectors.collectors.dateParser.DateParser
 import at.museumrailwayevents.eventcollectors.collectors.util.toTagsValue
 import at.museumrailwayevents.eventcollectors.service.JsoupCrawler
@@ -18,12 +19,13 @@ val fahrplanUrl = "https://waelderbaehnle.at/fahrplanbetrieb-preise-2025"
 val sonderfahrtenUrl = "https://waelderbaehnle.at/aktuelles/veranstaltungskalender-2025"
 
 @BoudiccaEventCollector(collectorTypeName = "waelderbahnle")
-class WälderbähnleCollector(val jsoupCrawler: JsoupCrawler) : MuseumRailwayEventCollector(
-    operatorId = "waelderbaehnle",
-    locationId = "waelderbaehnle",
-    locationName = "Bregenzerwaldbahn Museumsbahn",
-    sourceUrl = fahrplanUrl,
-) {
+class WälderbähnleCollector(val jsoupCrawler: JsoupCrawler) :
+    MuseumRailwayEventCollector<MuseumRailwayCollectorConfig>(MuseumRailwayCollectorConfig::class) {
+
+    override val operatorId = "waelderbaehnle"
+    override val locationId = "waelderbaehnle"
+    override val locationName = "Bregenzerwaldbahn Museumsbahn"
+    override val sourceUrl = fahrplanUrl
     val locale = Locale.GERMAN
     val dateFormatter = getWaelderbaehnleDateFormatter(locale)
     val timeFormatter = getWaelderbaehnleTimeFormatter(locale)

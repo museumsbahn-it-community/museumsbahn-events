@@ -1,31 +1,15 @@
 package at.museumrailwayevents.eventcollectors.collectors
 
 import at.museumrailwayevents.eventcollectors.service.JsoupCrawler
-import at.museumrailwayevents.model.conventions.VehicleType
 import base.boudicca.api.eventcollector.annotations.BoudiccaEventCollector
 import base.boudicca.model.Event
 
 @BoudiccaEventCollector(collectorTypeName = "ybbstalbahn")
-class YbbstalbahnCollector(jsoupCrawler: JsoupCrawler) : OeglbCollector(
-    jsoupCrawler,
-    VehicleType.DIESEL_TRAIN, // jan 2025: i hope they will ever run the steamer again :D
-    operatorId = "oeglb",
-    locationId = "ybbstalbahn",
-    locationName = "Ybbstalbahn Bergstrecke",
-    sourceUrl = "https://www.lokalbahnen.at/bergstrecke/"
-) {
-
-    private val baseUrl = "https://www.lokalbahnen.at/"
-
-    private val fahrplanUrls = listOf(
-        "https://www.lokalbahnen.at/bergstrecke/mitfahren/fahrplan/"
-    )
-
-    private val sonderfahrtenUrl = "https://www.lokalbahnen.at/bergstrecke/mitfahren/sonderveranstaltungen/"
+class YbbstalbahnCollector(jsoupCrawler: JsoupCrawler) : OeglbCollector(jsoupCrawler) {
 
     override fun collectEvents(): List<Event> {
-        val regularEvents = fahrplanUrls.flatMap { collectFahrplanPage(it) }
-        val sonderfahrten = collectSonderfahrten(baseUrl, sonderfahrtenUrl)
+        val regularEvents = config.fahrplanUrls.flatMap { collectFahrplanPage(it) }
+        val sonderfahrten = collectSonderfahrten(config.baseUrl, config.sonderfahrtenUrl)
         return regularEvents + sonderfahrten
     }
 

@@ -51,6 +51,15 @@ boudicca:
       - type: ybbstalbahn
         name: Ybbstalbahn
         enabled: true
+        properties:
+          operatorId: oeglb
+          locationId: ybbstalbahn
+          locationName: Ybbstalbahn Bergstrecke
+          sourceUrl: https://www.lokalbahnen.at/bergstrecke/
+          baseUrl: https://www.lokalbahnen.at/
+          fahrplanUrls[0]: https://www.lokalbahnen.at/bergstrecke/mitfahren/fahrplan/
+          sonderfahrtenUrl: https://www.lokalbahnen.at/bergstrecke/mitfahren/sonderveranstaltungen/
+          locomotiveType: diesel_train
       - type: mh6
         name: MH6
         enabled: true

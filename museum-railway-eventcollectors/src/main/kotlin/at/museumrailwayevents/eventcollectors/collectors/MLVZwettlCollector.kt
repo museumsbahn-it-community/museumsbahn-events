@@ -1,5 +1,6 @@
 package at.museumrailwayevents.eventcollectors.collectors
 
+import at.museumrailwayevents.eventcollectors.collectors.config.MuseumRailwayCollectorConfig
 import at.museumrailwayevents.eventcollectors.collectors.dateParser.DateParser
 import at.museumrailwayevents.eventcollectors.collectors.util.keepLineBreaks
 import at.museumrailwayevents.eventcollectors.collectors.util.toTagsValue
@@ -11,12 +12,13 @@ import base.boudicca.model.Event
 import org.jsoup.nodes.Element
 
 @BoudiccaEventCollector(collectorTypeName = "mlv_zwettl")
-class MLVZwettlCollector(val jsoupCrawler: JsoupCrawler) : MuseumRailwayEventCollector(
-    "mlv_zwettl",
-    "mlv_zwettl",
-    "https://www.lokalbahnverein.at/veranstaltungen/",
-    locationName = "Museums-Lokalbahnverein Zwettl"
-) {
+class MLVZwettlCollector(val jsoupCrawler: JsoupCrawler) :
+    MuseumRailwayEventCollector<MuseumRailwayCollectorConfig>(MuseumRailwayCollectorConfig::class) {
+
+    override val operatorId = "mlv_zwettl"
+    override val locationId = "mlv_zwettl"
+    override val sourceUrl = "https://www.lokalbahnverein.at/veranstaltungen/"
+    override val locationName = "Museums-Lokalbahnverein Zwettl"
     override fun collectEvents(): List<Event> {
         val document = jsoupCrawler.getDocument(sourceUrl)
             .keepLineBreaks(

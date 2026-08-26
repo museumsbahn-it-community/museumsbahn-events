@@ -1,6 +1,7 @@
 package at.museumrailwayevents.eventcollectors.collectors.erzbergbahn
 
 import at.museumrailwayevents.eventcollectors.collectors.MuseumRailwayEventCollector
+import at.museumrailwayevents.eventcollectors.collectors.config.MuseumRailwayCollectorConfig
 import at.museumrailwayevents.eventcollectors.collectors.dateParser.DateParser
 import at.museumrailwayevents.eventcollectors.collectors.erzbergbahn.model.Products
 import at.museumrailwayevents.eventcollectors.collectors.erzbergbahn.model.Times
@@ -26,19 +27,13 @@ private const val PLANFAHRTEN = "Planfahrten"
 
 
 abstract class RegiondoCollector(
-    operatorId: String,
-    locationId: String,
-    sourceUrl: String,
-    locationName: String,
+    override val operatorId: String,
+    override val locationId: String,
+    override val sourceUrl: String,
+    override val locationName: String,
     private val eventOverviewUrl: String,
     private val regiondoPartnerCode: String,
-) :
-    MuseumRailwayEventCollector(
-        operatorId,
-        locationId,
-        sourceUrl,
-        locationName = locationName,
-    ) {
+) : MuseumRailwayEventCollector<MuseumRailwayCollectorConfig>(MuseumRailwayCollectorConfig::class) {
 
     // products -> https://shopping-experience-api.prod.regiondo.net/api/v1/products?includeInactive=true&tags=27511
     // times -> https://shopping-experience-api.prod.regiondo.net/api/v1/timeslots/times?productId=216864&numberOfMonths=12
