@@ -1,9 +1,11 @@
 package base.boudicca.api.eventcollector.runner
 
+import base.boudicca.api.enricher.DefaultEnricherClient
 import base.boudicca.api.enricher.EnricherClient
 import base.boudicca.api.eventcollector.EventCollectionRunner
 import base.boudicca.api.eventcollector.EventCollector
 import base.boudicca.api.eventcollector.util.FetcherFactory
+import base.boudicca.api.eventdb.ingest.DefaultEventDbIngestClient
 import base.boudicca.api.eventdb.ingest.EventDbIngestClient
 import base.boudicca.fetcher.FetcherCache
 import base.boudicca.model.Event
@@ -32,7 +34,7 @@ class RunnerBuilderDsl(
         eventDbUrl: String,
         user: String,
         password: String,
-    ): RunnerBuilderDsl = withIngestion(EventDbIngestClient(eventDbUrl, user, password))
+    ): RunnerBuilderDsl = withIngestion(DefaultEventDbIngestClient(eventDbUrl, user, password))
 
     fun withIngestion(ingestClient: EventDbIngestClient): RunnerBuilderDsl = withIngestion(BoudiccaRunnerIngestionInterface(ingestClient))
 
@@ -41,7 +43,7 @@ class RunnerBuilderDsl(
         return this
     }
 
-    fun withEnricher(enricherUrl: String): RunnerBuilderDsl = withEnricher(EnricherClient(enricherUrl))
+    fun withEnricher(enricherUrl: String): RunnerBuilderDsl = withEnricher(DefaultEnricherClient(enricherUrl))
 
     fun withEnricher(enricherClient: EnricherClient): RunnerBuilderDsl = withEnricher(BoudiccaRunnerEnricherInterface(enricherClient))
 
