@@ -55,14 +55,13 @@ jobs:
 
       - run: npm run build
 
-  # Builds and publishes all 3 images (backend, eventcollectors, web) in one run. Pinned to a
-  # self-hosted runner so it only ever executes where a matching runner is registered - see
+  # Builds and publishes all 3 images (backend, eventcollectors, web) in one run. see
   # docs/decision-records/0001-hybrid-container-image-build-mechanism.md and the CI/CD
   # architecture plan for why no hostname or platform-specific condition lives in this file.
   images:
     name: Build, tag, and push container images
     needs: [test, web-test]
-    runs-on: [self-hosted]
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
         with:
