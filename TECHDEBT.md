@@ -26,35 +26,25 @@ boudicca modules (see `CLAUDE.md` → "Vendored Boudicca modules"). Checked Mave
   `eventcollector-client`, `remote-collector-client` — checked each on Maven Central). This bump
   is independent of the vendoring cleanup and can happen regardless.
 
-## 2. CI/CD (Gitea pipeline)
+## 2. CI/CD container image publish — done
 
-`origin` is GitHub (`.github/workflows/ci.yml` exists: Gradle build+test, frontend build — no lint,
-no container build, no publish step). The `gitea` remote (`git.cloud.twatzl.eu`) has **no pipeline
-at all** — no `.gitea/workflows/`. To add one:
-
-- **Build job**: mirror what `ci.yml` already does (Gradle build/test, frontend build) so Gitea
-  Actions/CI catches regressions independently of GitHub.
-- **Container build job**: `bootBuildImage` Gradle task already exists per module
-  (`museum-railway-backend`, `museum-railway-eventcollectors`) and builds via Podman
-  (`build.gradle.kts` → `containerEngine`). Nothing currently invokes it in any pipeline. A gitea
-  job needs to run `bootBuildImage`, tag the resulting image, and push it to a registry.
-- **Version tag source**: `allprojects { version = "0.3.0" }` in root `build.gradle.kts` is
-  hand-bumped and not tied to git tags. Before wiring container tagging, decide whether the image
-  tag should come from that Gradle `version`, from a git tag pushed to trigger the pipeline, or
-  from both (Gradle version as the "release" tag, commit SHA as a floating dev tag).
-- Gitea's built-in CI is Actions-compatible (`.gitea/workflows/*.yml`, same syntax as GitHub
-  Actions) if the instance has Actions enabled and a runner registered — worth confirming before
-  assuming feature parity with the GitHub workflow.
+`.github/workflows/ci.yml` handles build+test (Gradle + frontend), shared with the private
+mirror. `.github/workflows/release.yml` now builds, tags, and pushes all 3 service images
+(backend, eventcollectors, web) — see internal CI/CD architecture notes (not committed) for the full design
+and `docs/decision-records/0001-hybrid-container-image-build-mechanism.md` for the build-mechanism
+decision. The image-publish job is confined to the private mirror's runner via `runs-on:
+self-hosted`; registry hostname/auth details are intentionally kept out of this public repo (see
+that architecture doc's Decision 6).
 
 ## 3. Dependency updates (Dependabot equivalent)
 
-No `dependabot.yml`, no Renovate config anywhere in the repo. Gitea has no native Dependabot;
-options if staying on Gitea:
-- **Renovate** self-hosted against the Gitea instance (Renovate has first-class Gitea platform
-  support) — covers both Gradle (`gradle/libs.versions.toml`) and npm (`museum-railway-web`).
+No `dependabot.yml`, no Renovate config anywhere in the repo. The private mirror's git platform has
+no native Dependabot; options if staying on it:
+- **Renovate** self-hosted against the private mirror (Renovate has first-class support for it) —
+  covers both Gradle (`gradle/libs.versions.toml`) and npm (`museum-railway-web`).
 - If GitHub `origin` is meant to stay authoritative for dependency PRs, a plain
   `.github/dependabot.yml` (gradle + npm ecosystems) is the lower-effort option but only fires on
-  GitHub, not Gitea.
+  GitHub, not the private mirror.
 Either way, this project has two dependency manifests (Gradle version catalog + npm) that
 currently get bumped manually.
 
@@ -64,7 +54,7 @@ Confirmed absent: no detekt or ktlint plugin in any `build.gradle.kts`, `buildSr
 `gradle/libs.versions.toml`, no `detekt.yml`/`.editorconfig` ktlint rules. Nothing enforces Kotlin
 style or catches common issues (unused imports, magic numbers, etc.) across `museum-railway-api`,
 `museum-railway-backend`, `museum-railway-eventcollectors`. Adding either would also want a CI step
-(`.github/workflows/ci.yml` and the new Gitea pipeline) so it's actually enforced, not just runnable
+(`.github/workflows/ci.yml` and `release.yml`) so it's actually enforced, not just runnable
 locally.
 
 ## 5. ESLint (frontend)
@@ -134,7 +124,5 @@ custom rules are wanted beyond Nuxt's defaults.
 
 ## Not investigated further (flag if it becomes relevant)
 
-- Whether Gitea Actions is actually enabled/has a runner on `git.cloud.twatzl.eu` — needs
-  confirming before committing to the pipeline design in §2.
 - Whether `museum-railway-eventcollectors-base`'s functionality is already covered by the
   now-published `fetcher-lib`/`eventcollector-client` (would need reading both sides to know).

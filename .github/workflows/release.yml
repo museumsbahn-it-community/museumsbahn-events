@@ -1,0 +1,98 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - "v*"
+  workflow_dispatch:
+    inputs:
+      pr_number:
+        description: "PR number to tag this build for (leave empty for a plain staging build)"
+        required: false
+        type: string
+
+concurrency:
+  group: release-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: false
+
+env:
+  LANG: C.UTF-8
+  LC_ALL: C.UTF-8
+
+jobs:
+  test:
+    name: Gradle build (backend, eventcollectors, api, dateparser-lib)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
+
+      - uses: actions/setup-java@cf277c60eb25467037889841efdb72551f06f6c3 # v4.9.1
+        with:
+          distribution: temurin
+          java-version: "21"
+
+      - uses: gradle/actions/setup-gradle@ed408507eac070d1f99cc633dbcf757c94c7933a # v4.4.3
+
+      - name: Build and test
+        run: ./gradlew build
+
+  web-test:
+    name: Frontend build (museum-railway-web)
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: museum-railway-web
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
+
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
+        with:
+          node-version: "20"
+          cache: npm
+          cache-dependency-path: museum-railway-web/package-lock.json
+
+      - run: npm ci
+
+      - run: npm run build
+
+  # Builds and publishes all 3 images (backend, eventcollectors, web) in one run. Pinned to a
+  # self-hosted runner so it only ever executes where a matching runner is registered - see
+  # docs/decision-records/0001-hybrid-container-image-build-mechanism.md and the CI/CD
+  # architecture plan for why no hostname or platform-specific condition lives in this file.
+  images:
+    name: Build, tag, and push container images
+    needs: [test, web-test]
+    runs-on: [self-hosted]
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-java@cf277c60eb25467037889841efdb72551f06f6c3 # v4.9.1
+        with:
+          distribution: temurin
+          java-version: "21"
+
+      - name: Resolve image tag (release)
+        if: startsWith(github.ref, 'refs/tags/v')
+        run: echo "IMAGE_TAG=$(scripts/ci/resolve-image-tag.sh --mode release --ref '${{ github.ref }}')" >> "$GITHUB_ENV"
+
+      - name: Resolve image tag (manual/staging)
+        if: github.event_name == 'workflow_dispatch'
+        run: echo "IMAGE_TAG=$(scripts/ci/resolve-image-tag.sh --mode manual --pr-number '${{ inputs.pr_number }}')" >> "$GITHUB_ENV"
+
+      - name: Build all images
+        run: ./gradlew :museum-railway-backend:bootBuildImage :museum-railway-eventcollectors:bootBuildImage :museum-railway-web:imageBuild -PimageVersion="${{ env.IMAGE_TAG }}"
+
+      - name: Log in to the container registry
+        run: echo "${{ secrets.REGISTRY_TOKEN }}" | podman login "${{ secrets.REGISTRY_HOST }}" -u "${{ secrets.REGISTRY_USERNAME }}" --password-stdin
+
+      - name: Tag and push images
+        run: |
+          set -euo pipefail
+          for service in backend eventcollectors web; do
+            src_image="localhost/museum-railway-events-${service}:${{ env.IMAGE_TAG }}"
+            dst_image="${{ secrets.REGISTRY_HOST }}/twatzl/museum-railway-events-${service}:${{ env.IMAGE_TAG }}"
+            podman tag "$src_image" "$dst_image"
+            podman push "$dst_image"
+          done

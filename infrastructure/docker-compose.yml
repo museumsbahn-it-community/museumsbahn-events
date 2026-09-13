@@ -53,7 +53,7 @@ services:
     networks:
       - museumsbahn-events-local
   museum-railway-events-backend:
-    image: git.twatzl.eu/twatzl/museum-railway-events-backend:latest
+    image: ${REGISTRY_HOST}/twatzl/museum-railway-events-backend:${IMAGE_TAG}
     ports:
       - "8080:8080"
     environment:
@@ -74,7 +74,7 @@ services:
     networks:
       - museumsbahn-events-local
   museum-railway-events-eventcollectors:
-    image: git.twatzl.eu/twatzl/museum-railway-events-eventcollectors:latest
+    image: ${REGISTRY_HOST}/twatzl/museum-railway-events-eventcollectors:${IMAGE_TAG}
     depends_on:
       - boudicca-eventdb
     ports:
@@ -82,7 +82,7 @@ services:
     networks:
       - museumsbahn-events-local
   museum-railway-events-web:
-    image: git.twatzl.eu/twatzl/museum-railway-events-web:latest
+    image: ${REGISTRY_HOST}/twatzl/museum-railway-events-web:${IMAGE_TAG}
     depends_on:
       - boudicca-eventdb
       - boudicca-search
