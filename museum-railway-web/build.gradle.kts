@@ -4,7 +4,7 @@ task<Exec>("imageBuild") {
     inputs.file("Dockerfile")
     commandLine(
         containerEngine, "build",
-        "-t", "localhost/museum-railway-events-web",
+        "-t", "localhost/museum-railway-events-web:${project.findProperty("imageVersion") ?: "latest"}",
         "-f", "Dockerfile", "."
     )
 }

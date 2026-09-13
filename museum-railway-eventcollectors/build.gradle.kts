@@ -46,23 +46,9 @@ java {
     }
 }
 
-val containerEngine: String by rootProject.extra
-
-task<Exec>("imageBuild") {
-    inputs.file("src/main/docker/Dockerfile")
-    inputs.files(tasks.named("bootJar"))
-    dependsOn(tasks.named("assemble"))
-    commandLine(
-        containerEngine,
-        "build",
-        "-t",
-        "localhost/museum-railway-events-eventcollectors",
-        "-f",
-        "src/main/docker/Dockerfile",
-        "."
-    )
+tasks.named<org.springframework.boot.gradle.tasks.bundling.BootBuildImage>("bootBuildImage") {
+    imageName.set("localhost/museum-railway-events-eventcollectors:${project.findProperty("imageVersion") ?: "latest"}")
 }
-
 
 tasks.withType<Test> {
     useJUnitPlatform()
